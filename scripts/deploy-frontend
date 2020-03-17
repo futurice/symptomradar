@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+  echo "Usage examples:"
+  echo "  $ $(basename -- "$0") dev"
+  echo "  $ $(basename -- "$0") prod"
+  exit 1
+fi
+
+aws s3 cp \
+  --profile vigilant-sniffle \
+  --cache-control=no-store,must-revalidate \
+  --recursive \
+  frontend/ s3://vigilant-sniffle-$1-frontend/
+
+# TODO: --cache-control=max-age=31536000 for static/*

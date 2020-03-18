@@ -8,7 +8,6 @@ if [ "$#" -ne 1 ]; then
 fi
 
 aws s3 cp \
-  --profile vigilant-sniffle \
   --cache-control=no-store,must-revalidate \
   --recursive \
   frontend/ s3://vigilant-sniffle-$1-frontend/

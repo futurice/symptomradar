@@ -18,7 +18,7 @@ FRONTEND_DIR="$SELF_DIR/../frontend"
   npm run build
 )
 
-# Upload & clean up files that can be aggressively cached
+# Upload & clean up files that can be aggressively cached (i.e. for 1 day)
 aws s3 cp \
   --cache-control=max-age=86400 \
   --recursive \

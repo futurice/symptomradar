@@ -1,10 +1,3 @@
-# https://www.terraform.io/docs/providers/aws/index.html
-provider "aws" {
-  version = "~> 2.53"
-  profile = "vigilant-sniffle"
-  region  = "eu-central-1"
-}
-
 # https://www.terraform.io/docs/providers/aws/r/s3_bucket.html
 resource "aws_s3_bucket" "terraform_state" {
   bucket = "vigilant-sniffle-terraform"

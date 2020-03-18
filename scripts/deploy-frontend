@@ -7,9 +7,27 @@ if [ "$#" -ne 1 ]; then
   exit 1
 fi
 
+set -euo pipefail # exit on error; treat unset variables as errors; exit on errors in piped commands
+SELF_DIR="$(perl -e 'use File::Basename; use Cwd "abs_path"; print dirname(abs_path(@ARGV[0]));' -- "$0")" # figure out the absolute path to the current script, regardless of pwd (perl is more cross-platform than realpath; https://stackoverflow.com/a/30795461)
+FRONTEND_DIR="$SELF_DIR/../frontend"
+
+# Build the frontend static files
+(
+  cd "$FRONTEND_DIR"
+  npm install
+  npm run build
+)
+
+# Upload & clean up files that can be aggressively cached
+aws s3 cp \
+  --cache-control=max-age=86400 \
+  --recursive \
+  frontend/build/static/ "s3://vigilant-sniffle-$1-frontend/static/"
+rm -rfv "$FRONTEND_DIR/build/static"
+
+# Upload & clean up files that need to be served fresh
 aws s3 cp \
   --cache-control=no-store,must-revalidate \
   --recursive \
-  frontend/ s3://vigilant-sniffle-$1-frontend/
-
-# TODO: --cache-control=max-age=31536000 for static/*
+  frontend/build/ "s3://vigilant-sniffle-$1-frontend/"
+rm -rfv "$FRONTEND_DIR/build"

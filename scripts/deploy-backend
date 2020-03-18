@@ -11,7 +11,7 @@ set -euo pipefail # exit on error; treat unset variables as errors; exit on erro
 SELF_DIR="$(perl -e 'use File::Basename; use Cwd "abs_path"; print dirname(abs_path(@ARGV[0]));' -- "$0")" # figure out the absolute path to the current script, regardless of pwd (perl is more cross-platform than realpath; https://stackoverflow.com/a/30795461)
 
 (
-  cd $SELF_DIR/../backend # ensure correct pwd
+  cd "$SELF_DIR/../backend" # ensure correct pwd
   npm install # install dev dependencies at root
   ./node_modules/.bin/check-node-version --package # check that we're running the correct version of node
   ./node_modules/.bin/tsc # compile TypeScript into "temp" (defined is tsconfig.json)
@@ -23,9 +23,9 @@ SELF_DIR="$(perl -e 'use File::Basename; use Cwd "abs_path"; print dirname(abs_p
 
 aws s3 cp \
   backend/dist/backend-lambda.zip \
-  s3://vigilant-sniffle-$1-backend/
+  "s3://vigilant-sniffle-$1-backend/"
 
 aws lambda update-function-code \
-  --function-name vigilant-sniffle-$1-api-$1-vigilant-sniffle-com \
-  --s3-bucket vigilant-sniffle-$1-backend \
+  --function-name "vigilant-sniffle-$1-api-$1-vigilant-sniffle-com" \
+  --s3-bucket "vigilant-sniffle-$1-backend" \
   --s3-key backend-lambda.zip

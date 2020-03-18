@@ -23,4 +23,3 @@ resource "aws_route53_record" "ipv6" {
     evaluate_target_health = false
   }
 }
-

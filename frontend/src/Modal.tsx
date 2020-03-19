@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
+import { Form } from './Form';
 
 type ModalProps = {
   isShowing: boolean;
@@ -74,6 +75,7 @@ const Modal = ({ isShowing, hide }: ModalProps) =>
                 </ModalCloseButton>
               </ModalHeader>
               <p>Hello, I'm a modal.</p>
+              <Form submitted={console.log} />
             </ModalContent>
           </ModalWrapper>
         </React.Fragment>,

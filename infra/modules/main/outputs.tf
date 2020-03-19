@@ -1,14 +1,8 @@
-output "s3_web_endpoint" {
-  value = aws_s3_bucket.frontend.website_endpoint
-}
-
-output "s3_bucket_name" {
-  value = aws_s3_bucket.frontend.id
-}
-
 output "debug" {
   value = {
-    frontend = module.frontend
-    backend_api = module.backend_api
+    s3_storage     = aws_s3_bucket.storage.id
+    frontend       = module.frontend
+    backend_api    = module.backend_api
+    backend_worker = module.backend_worker
   }
 }

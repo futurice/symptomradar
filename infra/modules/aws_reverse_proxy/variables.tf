@@ -28,7 +28,7 @@ variable "viewer_https_only" {
 
 variable "cache_ttl_override" {
   description = "When `-1`, cache based on origin cache headers; when `0`, disable caching completely; when `>0`, cache ALL objects for this many seconds, regardless of their cache headers"
-  default     = 0
+  default     = -1
 }
 
 variable "default_root_object" {

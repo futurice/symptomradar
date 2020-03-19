@@ -1,5 +1,6 @@
 import { APIGatewayProxyHandler, Handler } from 'aws-lambda';
 import { KEY } from './common/const';
+import { v4 as uuidV4 } from 'uuid';
 
 export const apiEntrypoint: APIGatewayProxyHandler = () => {
   return Promise.resolve({
@@ -14,4 +15,5 @@ export const workerEntrypoint: Handler<unknown> = () => {
 
 if (process.argv[0].match(/\/ts-node$/)) {
   console.log(`${KEY}: CLI`);
+  console.log(uuidV4());
 }

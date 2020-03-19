@@ -8,5 +8,9 @@
     "@types/node": "^13.9.1",
     "check-node-version": "^4.0.2",
     "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "@types/uuid": "^7.0.2",
+    "uuid": "^7.0.2"
   }
 }

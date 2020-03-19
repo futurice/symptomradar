@@ -33,3 +33,7 @@ aws lambda update-function-code \
   --function-name "vigilant-sniffle-$1-api-$1-vigilant-sniffle-com" \
   --s3-bucket "vigilant-sniffle-$1-backend" \
   --s3-key backend-lambda.zip
+aws lambda update-function-code \
+  --function-name "vigilant-sniffle-$1-worker" \
+  --s3-bucket "vigilant-sniffle-$1-backend" \
+  --s3-key backend-lambda.zip

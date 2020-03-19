@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
+import Filters from './Filters';
 
 type ModalProps = {
   isShowing: boolean;
-  hide: any;
+  hide: any; // TODO: add type
 };
 
 const ModalOverlay = styled.div`
@@ -33,22 +34,20 @@ const ModalWrapper = styled.div`
 const ModalContent = styled.div`
   z-index: 100;
   background: white;
-  border-radius: 3px;
-  padding: 2rem;
+  border-radius: 14px 14px 0 0;
+  padding: 18px;
   width: 100%;
-  position: fixed;
+  position: absolute;
   bottom: 0;
+  max-height: 90vh;
+  overflow: scroll;
 
   @media (min-width: 768px) {
     max-width: 500px;
     position: relative;
     margin: 1.75rem auto;
+    border-radius: 14px;
   }
-`;
-
-const ModalHeader = styled.div`
-  display: flex;
-  justify-content: flex-end;
 `;
 
 const ModalCloseButton = styled.button`
@@ -56,9 +55,11 @@ const ModalCloseButton = styled.button`
   font-weight: 700;
   line-height: 1;
   color: #000;
-  opacity: 0.3;
   cursor: pointer;
   border: none;
+  position: absolute;
+  right: 18px;
+  background-color: transparent;
 `;
 
 const Modal = ({ isShowing, hide }: ModalProps) =>
@@ -68,12 +69,10 @@ const Modal = ({ isShowing, hide }: ModalProps) =>
           <ModalOverlay />
           <ModalWrapper aria-modal aria-hidden tabIndex={-1} role="dialog">
             <ModalContent>
-              <ModalHeader>
-                <ModalCloseButton type="button" data-dismiss="modal" aria-label="Close" onClick={hide}>
-                  <span aria-hidden="true">&times;</span>
-                </ModalCloseButton>
-              </ModalHeader>
-              <p>Hello, I'm a modal.</p>
+              <ModalCloseButton type="button" data-dismiss="modal" aria-label="Close" onClick={hide}>
+                <span aria-hidden="true">&times;</span>
+              </ModalCloseButton>
+              <Filters />
             </ModalContent>
           </ModalWrapper>
         </React.Fragment>,

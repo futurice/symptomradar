@@ -1,4 +1,18 @@
 import React, { FormEvent, FC } from 'react';
+type RadioInputYesNoProps = {
+  title: string;
+  name: string;
+};
+
+const RadioInputYesNo: FC<RadioInputYesNoProps> = ({ title, name }) => (
+  <div>
+    <legend>{title}</legend>
+    <input id={`${name}No`} type="radio" name={name} value={'no'} />
+    <label htmlFor={`${name}No`}>no</label>
+    <input id={`${name}Yes`} type="radio" name={name} value={'yes'} />
+    <label htmlFor={`${name}Yes`}>yes</label>
+  </div>
+);
 
 type FormProps = {
   submitted: (data: any) => void;
@@ -70,35 +84,11 @@ export const Form: FC<FormProps> = ({ submitted }) => {
           <input id="coughIntense" type="radio" name="cough" value="intense" />
           <label htmlFor="coughIntense">intense</label>
         </div>
-        <div>
-          <legend>Difficulty breathing</legend>
-          <em>If you have breathing difficulties, contact doctor immediately.</em>
-          <input id="respiratoryNone" type="radio" name="respiratory" value="no" />
-          <label htmlFor="respiratoryNone">no</label>
-          <input id="respiratoryYes" type="radio" name="respiratory" value="yes" />
-          <label htmlFor="respiratoryYes">yes</label>
-        </div>
-        <div>
-          <legend>Muscle pain</legend>
-          <input id="muscularNone" type="radio" name="muscular" value="no" />
-          <label htmlFor="muscularNone">no</label>
-          <input id="muscularYes" type="radio" name="muscular" value="yes" />
-          <label htmlFor="muscularYes">yes</label>
-        </div>
-        <div>
-          <legend>Sore throat</legend>
-          <input id="throatNone" type="radio" name="throat" value="no" />
-          <label htmlFor="throatNone">no</label>
-          <input id="throatYes" type="radio" name="throat" value="yes" />
-          <label htmlFor="throatYes">yes</label>
-        </div>
-        <div>
-          <legend>Rhinitis</legend>
-          <input id="rhinitisNone" type="radio" name="rhinitis" value="no" />
-          <label htmlFor="rhinitisNone">no</label>
-          <input id="rhinitisYes" type="radio" name="rhinitis" value="yes" />
-          <label htmlFor="rhinitisYes">yes</label>
-        </div>
+        <em>If you have breathing difficulties, contact doctor immediately.</em>
+        <RadioInputYesNo title="Difficulty breathing" name="breathingDifficulties" />
+        <RadioInputYesNo title="Muscle pain" name="musclePain" />
+        <RadioInputYesNo title="Sore throat" name="soreThroat" />
+        <RadioInputYesNo title="Rhinitis" name="rhinitis" />
       </fieldset>
       <fieldset>
         <div>
@@ -117,29 +107,11 @@ export const Form: FC<FormProps> = ({ submitted }) => {
           <input id="duration" type="number" inputMode="numeric" size={2} maxLength={2} placeholder="days" />
         </div>
 
-        <div>
-          <legend>Do you have long-term illness that requires medication?</legend>
-          <input id="medicationNone" type="radio" name="medication" value="no" />
-          <label htmlFor="medicationNone">no</label>
-          <input id="medicationYes" type="radio" name="medication" value="yes" />
-          <label htmlFor="medicationYes">yes</label>
-        </div>
+        <RadioInputYesNo title="Do you have long-term illness that requires medication?" name="longTermMedication" />
 
-        <div>
-          <legend>Do you smoke?</legend>
-          <input id="smokingNone" type="radio" name="smoking" value="no" />
-          <label htmlFor="smokingNone">no</label>
-          <input id="smokingYes" type="radio" name="smoking" value="yes" />
-          <label htmlFor="smokingYes">yes</label>
-        </div>
+        <RadioInputYesNo title="Do you smoke?" name="smoking" />
 
-        <div>
-          <legend>Do you suspect you have Coronavirus?</legend>
-          <input id="suspicionNone" type="radio" name="suspicion" value="no" />
-          <label htmlFor="suspicionNone">no</label>
-          <input id="suspicionYes" type="radio" name="suspicion" value="yes" />
-          <label htmlFor="suspicionYes">yes</label>
-        </div>
+        <RadioInputYesNo title="Do you suspect you have Coronavirus?" name="coronaSuspection" />
       </fieldset>
       <button type="submit">Report symptoms</button>
     </form>

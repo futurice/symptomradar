@@ -9,15 +9,23 @@ fi
 
 set -euo pipefail # exit on error; treat unset variables as errors; exit on errors in piped commands
 SELF_DIR="$(perl -e 'use File::Basename; use Cwd "abs_path"; print dirname(abs_path(@ARGV[0]));' -- "$0")" # figure out the absolute path to the current script, regardless of pwd (perl is more cross-platform than realpath; https://stackoverflow.com/a/30795461)
+ROOT_DIR="$SELF_DIR/.."
 BACKEND_DIR="$SELF_DIR/../backend"
+
+# Install root dependencies
+(
+  cd "$ROOT_DIR"
+  npm install
+  ./node_modules/.bin/check-node-version --package # check that we're running the correct version of node
+)
 
 # Build the backend code into a self-contained zipfile
 (
   cd "$BACKEND_DIR"
-  npm install # install dev dependencies at root
-  ./node_modules/.bin/check-node-version --package # check that we're running the correct version of node
-  ./node_modules/.bin/tsc # compile TypeScript into "temp" (defined is tsconfig.json)
-  cp package*.json temp # install production dependencies under "temp"
+  mkdir -p temp
+  cp "$ROOT_DIR"/package*.json temp
+  cp "$ROOT_DIR"/tsconfig.json .
+  "$ROOT_DIR/node_modules/.bin/tsc" # compile TypeScript into "temp" (defined in tsconfig.json)
   (cd temp && npm install --production)
   (cd temp && zip -r ../dist/backend-lambda.zip *) # create Lambda zipfile under "dist"
   rm -rf temp # clean up

@@ -1,11 +1,23 @@
 {
+  "engines": {
+    "npm": ">=6 <7",
+    "node": ">=12 <13"
+  },
   "scripts": {
     "backend-cli": "ts-node backend/src/index.ts"
   },
+  "dependencies": {
+    "fp-ts": "^2.5.3",
+    "io-ts": "^2.1.2",
+    "uuid": "^7.0.2"
+  },
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.46",
     "@types/aws-sdk": "^2.7.0",
     "@types/node": "^13.9.2",
+    "@types/uuid": "^7.0.2",
     "aws-sdk": "^2.642.0",
+    "check-node-version": "^4.0.2",
     "ts-node": "^8.7.0",
     "typescript": "^3.8.3"
   }

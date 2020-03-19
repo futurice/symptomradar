@@ -1,4 +1,4 @@
 .history
 .terraform
 .envrc
-/node_modules
+node_modules

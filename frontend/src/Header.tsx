@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import useModal from './useModal';
+import Modal from './Modal';
 
 const AppHeader = styled.header`
   height: 105px;
@@ -21,16 +23,27 @@ const H1 = styled.h1`
 const Select = styled.select`
   margin: 26px 0;
 `;
+
+const FilterToggle = styled.button`
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  background-color: transparent;
+`;
+
 function Header() {
+  const { isShowing, toggle } = useModal();
   return (
     <AppHeader>
       <HeaderWrapper>
-      <H1>Symptom radar</H1>
+        <H1>Symptom radar</H1>
         <Select name="language" id="">
           <option value="Fi">Fi</option>
           <option value="En">En</option>
         </Select>
       </HeaderWrapper>
+      <FilterToggle onClick={toggle}>Filter</FilterToggle>
+      <Modal isShowing={isShowing} hide={toggle} />
     </AppHeader>
   );
 }

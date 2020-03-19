@@ -3,6 +3,8 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { KEY } from './common/const';
 import Header from './Header';
 import Map from './Map';
+import Modal from './Modal';
+import useModal from './useModal';
 
 const GlobalStyles = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Roboto');
@@ -30,6 +32,7 @@ const Main = styled.main`
 `;
 
 function App() {
+  const { isShowing, toggle } = useModal();
   return (
     <AppContainer>
       <GlobalStyles />
@@ -37,6 +40,8 @@ function App() {
       <Main>
         <p>{KEY}: frontend</p>
         <Map />
+        <button onClick={toggle}>Report your symptoms</button>
+        <Modal isShowing={isShowing} hide={toggle} />
       </Main>
     </AppContainer>
   );

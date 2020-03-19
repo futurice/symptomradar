@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { KEY } from './common/const';
 import Header from './Header';
+import Map from './Map';
 
 const GlobalStyles = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Roboto');
@@ -35,6 +36,7 @@ function App() {
       <Header />
       <Main>
         <p>{KEY}: frontend</p>
+        <Map />
       </Main>
     </AppContainer>
   );

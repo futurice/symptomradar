@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import useModal from './useModal';
 import Modal from './Modal';
+import filterIcon from './assets/filter-icon.svg';
 
 const AppHeader = styled.header`
   height: 105px;
@@ -29,6 +30,10 @@ const FilterToggle = styled.button`
   font-weight: bold;
   border: none;
   background-color: transparent;
+  position: relative;
+  padding: 5px 5px 5px 25px;
+  background-repeat: no-repeat;
+  background-position: center left;
 `;
 
 const Header = () => {
@@ -42,10 +47,12 @@ const Header = () => {
           <option value="En">En</option>
         </Select>
       </HeaderWrapper>
-      <FilterToggle onClick={toggle}>Filter</FilterToggle>
+      <FilterToggle onClick={toggle} style={{ backgroundImage: `url(${filterIcon})` }}>
+        Filter
+      </FilterToggle>
       <Modal isShowing={isShowing} hide={toggle} />
     </AppHeader>
   );
-}
+};
 
 export default Header;

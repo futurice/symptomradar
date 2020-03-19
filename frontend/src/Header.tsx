@@ -7,14 +7,30 @@ const AppHeader = styled.header`
   background-color: #fff;
 `;
 
-const H1 = styled.h1`
-  font-size: 32px;
+const HeaderWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 `;
 
+const H1 = styled.h1`
+  font-size: 32px;
+  margin: 16px 0;
+`;
+
+const Select = styled.select`
+  margin: 26px 0;
+`;
 function Header() {
   return (
     <AppHeader>
+      <HeaderWrapper>
       <H1>Symptom radar</H1>
+        <Select name="language" id="">
+          <option value="Fi">Fi</option>
+          <option value="En">En</option>
+        </Select>
+      </HeaderWrapper>
     </AppHeader>
   );
 }

@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "backend-cli": "ts-node backend/src/index.ts"
+  },
+  "devDependencies": {
+    "@types/aws-sdk": "^2.7.0",
+    "@types/node": "^13.9.2",
+    "aws-sdk": "^2.642.0",
+    "ts-node": "^8.7.0",
+    "typescript": "^3.8.3"
+  }
+}

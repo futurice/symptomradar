@@ -5,6 +5,12 @@ import Header from './Header';
 
 const GlobalStyles = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Roboto');
+  html {
+    box-sizing: border-box;
+  }
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
   body {
     font-family: 'Roboto', sans-serif;
     background-color: #4A4A4A;

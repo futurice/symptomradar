@@ -31,7 +31,7 @@ const Main = styled.main`
   padding: 0 24px;
 `;
 
-function App() {
+const App = () => {
   const { isShowing, toggle } = useModal();
   return (
     <AppContainer>

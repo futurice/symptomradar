@@ -31,7 +31,7 @@ const FilterToggle = styled.button`
   background-color: transparent;
 `;
 
-function Header() {
+const Header = () => {
   const { isShowing, toggle } = useModal();
   return (
     <AppHeader>

@@ -20,7 +20,6 @@ const TagGroup = styled.div`
 
 const Tag = styled.div`
   background-color: #ffb7b7;
-  display: inline-block;
   padding: 5px 25px;
   margin: 5px;
   height: 50px;

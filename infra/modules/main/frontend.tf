@@ -61,6 +61,6 @@ module "frontend" {
   name_prefix                = var.name_prefix
   site_domain                = "dev.vigilant-sniffle.com"
   viewer_https_only          = true
-  basic_auth_username        = "paavo"
-  basic_auth_password        = "vayrynen"
+  basic_auth_username        = "dev"
+  basic_auth_password        = var.frontend_password
 }

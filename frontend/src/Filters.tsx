@@ -1,11 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-
-const H2 = styled.h2`
-  font-size: 21px;
-  margin: 5px 0 16px;
-  padding-bottom: 44px;
-`;
+import PrimaryButton from './PrimaryButton';
 
 const H3 = styled.h3`
   font-size: 16px;
@@ -35,10 +30,13 @@ const BlueTag = styled(Tag)`
   background-color: #b7e5ff;
 `;
 
+const ButtonWrapper = styled.div`
+  margin-top: 35px;
+`;
+
 const Filters = () => {
   return (
     <div>
-      <H2>Filter</H2>
       <H3>Symptoms</H3>
       <TagGroup>
         <Tag>Fever</Tag>
@@ -55,6 +53,9 @@ const Filters = () => {
         <BlueTag>40-60</BlueTag>
         <BlueTag>Over 60</BlueTag>
       </TagGroup>
+      <ButtonWrapper>
+        <PrimaryButton label={'Apply filters'} />
+      </ButtonWrapper>
     </div>
   );
 };

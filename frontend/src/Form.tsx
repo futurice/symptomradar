@@ -1,4 +1,5 @@
 import React, { FormEvent, FC, useState, ChangeEvent, Fragment } from 'react';
+import PrimaryButton from './PrimaryButton';
 
 type RadioInputProps = {
   name: string;
@@ -189,8 +190,7 @@ export const Form: FC<FormProps> = ({ submitted }) => {
           currentValue={coronaSuspicion}
           valueChanged={setCoronaSuspicion}
         />
-      </fieldset>
-      <button type="submit">Report symptoms</button>
+      <PrimaryButton type="submit" label={'Report symptoms'} />
     </form>
   );
 };

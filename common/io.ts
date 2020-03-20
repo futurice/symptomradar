@@ -1,29 +1,25 @@
 import * as t from 'io-ts';
 
-const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+function defineRegexValidatedStringType(name: string, regex: RegExp) {
+  const guard = (input: unknown): input is string => typeof input === 'string' && !!input.match(regex);
+  return new t.Type<string, string, unknown>(
+    // A unique name for this codec:
+    name,
+    // A custom type guard:
+    guard,
+    // Succeeds if a value of type I can be decoded to a value of type A:
+    (input, context) => (guard(input) ? t.success(input) : t.failure(input, context)),
+    // Converts a value of type A to a value of type O:
+    t.identity,
+  );
+}
 
-export const uuidString = new t.Type<string, string, unknown>(
-  // A unique name for this codec:
+export const uuidString = defineRegexValidatedStringType(
   'uuidString',
-  // A custom type guard:
-  (input: unknown): input is string => typeof input === 'string' && !!input.match(UUID_PATTERN),
-  // Succeeds if a value of type I can be decoded to a value of type A:
-  (input, context) =>
-    typeof input === 'string' && !!input.match(UUID_PATTERN) ? t.success(input) : t.failure(input, context),
-  // Converts a value of type A to a value of type O:
-  t.identity,
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,
 );
 
-const ISO8601_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})\.(\d{3})Z$/;
-
-export const iso8601DateString = new t.Type<string, string, unknown>(
-  // A unique name for this codec:
-  'iso8601DateString',
-  // A custom type guard:
-  (input: unknown): input is string => typeof input === 'string' && !!input.match(ISO8601_DATE_PATTERN),
-  // Succeeds if a value of type I can be decoded to a value of type A:
-  (input, context) =>
-    typeof input === 'string' && !!input.match(ISO8601_DATE_PATTERN) ? t.success(input) : t.failure(input, context),
-  // Converts a value of type A to a value of type O:
-  t.identity,
+export const iso8601DateString = defineRegexValidatedStringType(
+  'iso8601DateString', // ...particularly the flavor produced by Date.toISOString()
+  /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})\.(\d{3})Z$/,
 );

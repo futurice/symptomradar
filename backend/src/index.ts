@@ -33,8 +33,7 @@ if (process.argv[0].match(/\/ts-node$/)) {
       favoriteColor: colors[Math.floor(Math.random() * colors.length)],
     }))
     .then(assertIs(ResponseModel))
-    .then(() => response(200, { success: true }))
-    .catch(err => response(500, { error: true }, err))
+    .catch(err => err)
     .then(res => console.log(res));
 }
 

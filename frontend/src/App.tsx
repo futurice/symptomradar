@@ -1,6 +1,5 @@
 import React from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import { KEY } from './common/const';
 import Header from './Header';
 import Map from './Map';
 import Modal from './Modal';
@@ -29,22 +28,37 @@ const AppContainer = styled.div`
 
 const Main = styled.main`
   padding: 0 24px;
+  text-align: center;
 `;
 
-function App() {
+const Button = styled.button`
+  background-color: #ffffff;
+  position: absolute;
+  bottom: 60px;
+  width: 212px;
+  height: 77px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: bold;
+`;
+
+const App = () => {
   const { isShowing, toggle } = useModal();
   return (
     <AppContainer>
       <GlobalStyles />
       <Header />
       <Main>
-        <p>{KEY}: frontend</p>
         <Map />
-        <button onClick={toggle}>Report your symptoms</button>
+        <Button onClick={toggle}>Report your symptoms</Button>
         <Modal isShowing={isShowing} hide={toggle} />
       </Main>
     </AppContainer>
   );
-}
+};
 
 export default App;

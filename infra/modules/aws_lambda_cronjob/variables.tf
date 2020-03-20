@@ -4,7 +4,7 @@ variable "cronjob_name" {
 
 variable "name_prefix" {
   description = "Name prefix to use for objects that need to be created (only lowercase alphanumeric characters and hyphens allowed, for S3 bucket name compatibility)"
-  default     = "aws-lambda-cronjob---"
+  default     = "aws-lambda-cronjob-"
 }
 
 variable "comment_prefix" {
@@ -66,8 +66,4 @@ variable "tags" {
   description = "AWS Tags to add to all resources created (where possible); see https://aws.amazon.com/answers/account-management/aws-tagging-strategies/"
   type        = map(string)
   default     = {}
-}
-
-locals {
-  prefix_with_name = "${var.name_prefix}${replace(var.cronjob_name, "/[^a-z0-9-]+/", "-")}" # only lowercase alphanumeric characters and hyphens are allowed in e.g. S3 bucket names
 }

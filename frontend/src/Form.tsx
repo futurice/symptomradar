@@ -59,8 +59,8 @@ const RadioInput: FC<RadioInputProps> = ({ name, value, isChecked, onChange }) =
 type RadioInputGroupProps = {
   title: string;
   name: string;
-  currentValue: string | null;
-  valueChanged: (value: any) => any;
+  currentValue: string;
+  valueChanged: (value: string) => void;
   values?: string[];
 };
 const RadioInputGroup: FC<RadioInputGroupProps> = ({
@@ -92,20 +92,20 @@ type FormProps = {
 };
 
 export const Form: FC<FormProps> = ({ submitted }) => {
-  const [age, setAge] = useState(null);
-  const [gender, setGender] = useState(null);
-  const [postcode, setPostcode] = useState(null);
-  const [fever, setFever] = useState(null);
-  const [cough, setCough] = useState(null);
-  const [difficultyBreathing, setDifficultyBreathing] = useState(null);
-  const [musclePain, setMusclePain] = useState(null);
-  const [soreThroat, setSoreThroat] = useState(null);
-  const [rhinitis, setRhinitis] = useState(null);
-  const [generalWellbeing, setGeneralWellbeing] = useState(null);
-  const [duration, setDuration] = useState(null);
-  const [longTermMedication, setLongTermMedication] = useState(null);
-  const [smoking, setSmoking] = useState(null);
-  const [coronaSuspicion, setCoronaSuspicion] = useState(null);
+  const [age, setAge] = useState<string>('');
+  const [gender, setGender] = useState<string>('');
+  const [postcode, setPostcode] = useState<string>('');
+  const [fever, setFever] = useState<string>('');
+  const [cough, setCough] = useState<string>('');
+  const [difficultyBreathing, setDifficultyBreathing] = useState<string>('');
+  const [musclePain, setMusclePain] = useState<string>('');
+  const [soreThroat, setSoreThroat] = useState<string>('');
+  const [rhinitis, setRhinitis] = useState<string>('');
+  const [generalWellbeing, setGeneralWellbeing] = useState<string>('');
+  const [duration, setDuration] = useState<string>('');
+  const [longTermMedication, setLongTermMedication] = useState<string>('');
+  const [smoking, setSmoking] = useState<string>('');
+  const [coronaSuspicion, setCoronaSuspicion] = useState<string>('');
 
   const valueChange = (stateUpdater: any) => (event: ChangeEvent<HTMLInputElement>) => stateUpdater(event.target.value);
 
@@ -178,14 +178,14 @@ export const Form: FC<FormProps> = ({ submitted }) => {
           name="fever"
           currentValue={fever}
           valueChanged={setFever}
-          values={['no', 'slight', 'high']}
+          values={['none', 'slight', 'high']}
         />
         <RadioInputGroup
           title="Cough"
           name="cough"
           currentValue={cough}
           valueChanged={setCough}
-          values={['no', 'mild', 'intense']}
+          values={['none', 'mild', 'intense']}
         />
         <RadioInputGroup
           title="Difficulty breathing"
@@ -204,7 +204,7 @@ export const Form: FC<FormProps> = ({ submitted }) => {
           name="generalWellbeing"
           currentValue={generalWellbeing}
           valueChanged={setGeneralWellbeing}
-          values={['fine', 'not ok', 'bad']}
+          values={['fine', 'impaired', 'bad']}
         />
         <QuestionWrapper>
           <Label htmlFor="duration">How long have you had symptoms?</Label>

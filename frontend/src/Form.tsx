@@ -1,4 +1,47 @@
 import React, { FormEvent, FC, useState, ChangeEvent, Fragment } from 'react';
+import styled from 'styled-components';
+import PrimaryButton from './PrimaryButton';
+
+const Input = styled.input`
+  height: 40px;
+  border: 1px solid #000;
+  display: block;
+  width: 100%;
+  padding: 0 5px;
+
+  &::-webkit-input-placeholder {
+    font-size: 14px;
+  }
+`;
+
+const Fieldset = styled.fieldset`
+  border: none;
+  padding: 0 0 10px 0;
+`;
+
+const QuestionWrapper = styled.div`
+  margin: 0 0 24px 0;
+`;
+
+const Label = styled.label`
+  margin: 0 0 5px 0;
+  display: block;
+`;
+
+const Legend = styled.legend`
+  margin: 0 0 5px 0;
+  display: block;
+`;
+
+const QuestionGroupTitle = styled.p`
+  font-weight: bold;
+  margin: 0 0 10px 0;
+`;
+
+const Em = styled.em`
+  margin: 0 0 20px 0;
+  display: block;
+`;
 
 type RadioInputProps = {
   name: string;
@@ -29,8 +72,8 @@ const RadioInputGroup: FC<RadioInputGroupProps> = ({
 }) => {
   const inputChanged = (event: ChangeEvent<HTMLInputElement>) => valueChanged(event.target.value);
   return (
-    <div>
-      <legend>{title}</legend>
+    <QuestionWrapper>
+      <Legend>{title}</Legend>
       {values.map(value => (
         <RadioInput
           name={name}
@@ -40,7 +83,7 @@ const RadioInputGroup: FC<RadioInputGroupProps> = ({
           key={`${name}-${value}`}
         />
       ))}
-    </div>
+    </QuestionWrapper>
   );
 };
 
@@ -89,10 +132,10 @@ export const Form: FC<FormProps> = ({ submitted }) => {
 
   return (
     <form onSubmit={formSubmit}>
-      <fieldset>
-        <div>
-          <label htmlFor="age">What's your age?</label>
-          <input
+      <Fieldset>
+        <QuestionWrapper>
+          <Label htmlFor="age">What's your age?</Label>
+          <Input
             id="age"
             type="number"
             inputMode="numeric"
@@ -104,7 +147,7 @@ export const Form: FC<FormProps> = ({ submitted }) => {
             value={age || ''}
             onChange={valueChange(setAge)}
           />
-        </div>
+        </QuestionWrapper>
         <RadioInputGroup
           title="What's your gender?"
           name="gender"
@@ -112,9 +155,9 @@ export const Form: FC<FormProps> = ({ submitted }) => {
           valueChanged={setGender}
           values={['female', 'male', 'other']}
         />
-        <div>
-          <label htmlFor="postcode">Where do you live?</label>
-          <input
+        <QuestionWrapper>
+          <Label htmlFor="postcode">Where do you live?</Label>
+          <Input
             id="postcode"
             type="text"
             inputMode="numeric"
@@ -122,14 +165,14 @@ export const Form: FC<FormProps> = ({ submitted }) => {
             minLength={5}
             maxLength={5}
             autoComplete="postal-code"
-            placeholder="post code"
+            placeholder="postal code"
             value={postcode || ''}
             onChange={valueChange(setPostcode)}
           />
-        </div>
-      </fieldset>
-      <fieldset>
-        Do you have:
+        </QuestionWrapper>
+      </Fieldset>
+      <Fieldset>
+        <QuestionGroupTitle>Do you have:</QuestionGroupTitle>
         <RadioInputGroup
           title="Fever"
           name="fever"
@@ -144,18 +187,18 @@ export const Form: FC<FormProps> = ({ submitted }) => {
           valueChanged={setCough}
           values={['no', 'mild', 'intense']}
         />
-        <em>If you have breathing difficulties, contact doctor immediately.</em>
         <RadioInputGroup
           title="Difficulty breathing"
           name="breathingDifficulties"
           currentValue={difficultyBreathing}
           valueChanged={setDifficultyBreathing}
         />
+        <Em>If you have breathing difficulties, contact doctor immediately.</Em>
         <RadioInputGroup title="Muscle pain" name="musclePain" currentValue={musclePain} valueChanged={setMusclePain} />
         <RadioInputGroup title="Sore throat" name="soreThroat" currentValue={soreThroat} valueChanged={setSoreThroat} />
         <RadioInputGroup title="Rhinitis" name="rhinitis" currentValue={rhinitis} valueChanged={setRhinitis} />
-      </fieldset>
-      <fieldset>
+      </Fieldset>
+      <Fieldset>
         <RadioInputGroup
           title="How is your general well-being?"
           name="generalWellbeing"
@@ -163,9 +206,9 @@ export const Form: FC<FormProps> = ({ submitted }) => {
           valueChanged={setGeneralWellbeing}
           values={['fine', 'not ok', 'bad']}
         />
-        <div>
-          <label htmlFor="duration">How long have you had symptoms?</label>
-          <input
+        <QuestionWrapper>
+          <Label htmlFor="duration">How long have you had symptoms?</Label>
+          <Input
             id="duration"
             type="number"
             inputMode="numeric"
@@ -175,7 +218,7 @@ export const Form: FC<FormProps> = ({ submitted }) => {
             value={duration || ''}
             onChange={valueChange(setDuration)}
           />
-        </div>
+        </QuestionWrapper>
         <RadioInputGroup
           title="Do you have long-term illness that requires medication?"
           name="longTermMedication"
@@ -189,8 +232,8 @@ export const Form: FC<FormProps> = ({ submitted }) => {
           currentValue={coronaSuspicion}
           valueChanged={setCoronaSuspicion}
         />
-      </fieldset>
-      <button type="submit">Report symptoms</button>
+      </Fieldset>
+      <PrimaryButton type="submit" label={'Report symptoms'} />
     </form>
   );
 };

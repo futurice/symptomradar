@@ -4,6 +4,7 @@ import Header from './Header';
 import Map from './Map';
 import Modal from './Modal';
 import useModal from './useModal';
+import { Form } from './Form';
 
 const GlobalStyles = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Roboto');
@@ -55,7 +56,9 @@ const App = () => {
       <Main>
         <Map />
         <Button onClick={toggle}>Report your symptoms</Button>
-        <Modal isShowing={isShowing} hide={toggle} />
+        <Modal isShowing={isShowing} hide={toggle} modalTitle={'Report your symptoms'}>
+          <Form submitted={console.log} />
+        </Modal>
       </Main>
     </AppContainer>
   );

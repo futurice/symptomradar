@@ -1,5 +1,5 @@
 import { APIGatewayProxyHandler, Handler } from 'aws-lambda';
-import { KEY } from './common/const';
+import { v4 as uuidV4 } from 'uuid';
 import { assertIs, ResponseModel } from './common/model';
 import { storeResponseInS3 } from './core/main';
 
@@ -18,11 +18,21 @@ export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
 };
 
 export const workerEntrypoint: Handler<unknown> = () => {
-  console.log({ [KEY]: 'worker' });
+  console.log('Worker started');
 };
 
 if (process.argv[0].match(/\/ts-node$/)) {
-  console.log(`${KEY}: CLI`);
+  const colors = ['red', 'green', 'blue', 'yellow', 'orange', 'cyan', 'purple'];
+  Promise.resolve()
+    .then(() => ({
+      participantUuid: uuidV4(),
+      responseTimestamp: new Date().toISOString(),
+      firstName: 'Bob',
+      favoriteColor: colors[Math.floor(Math.random() * colors.length)],
+    }))
+    .then(assertIs(ResponseModel))
+    .catch(err => err)
+    .then(res => console.log(res));
 }
 
 const response = (statusCode: number, body: object, logError?: Error) => {

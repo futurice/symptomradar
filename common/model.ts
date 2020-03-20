@@ -1,12 +1,13 @@
 import { isRight } from 'fp-ts/lib/Either';
-import { PathReporter } from 'io-ts/lib/PathReporter';
 import * as t from 'io-ts';
+import { PathReporter } from 'io-ts/lib/PathReporter';
+import { uuidString, iso8601DateString } from './io';
 
 export const ResponseModel = t.exact(
   t.type({
     // Metadata:
-    participantUuid: t.string,
-    responseTimestamp: t.string,
+    participantUuid: uuidString,
+    responseTimestamp: iso8601DateString,
     // Payload:
     firstName: t.string,
     favoriteColor: t.union([

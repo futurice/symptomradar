@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-import Filters from './Filters';
+import { Form } from './Form';
 
 type ModalProps = {
   isShowing: boolean;
@@ -49,6 +49,7 @@ const ModalContent = styled.div`
     border-radius: 14px;
   }
 `;
+const ModalHeader = styled.button``;
 
 const ModalCloseButton = styled.button`
   font-size: 1.4rem;
@@ -69,10 +70,12 @@ const Modal = ({ isShowing, hide }: ModalProps) =>
           <ModalOverlay />
           <ModalWrapper aria-modal aria-hidden tabIndex={-1} role="dialog">
             <ModalContent>
-              <ModalCloseButton type="button" data-dismiss="modal" aria-label="Close" onClick={hide}>
-                <span aria-hidden="true">&times;</span>
-              </ModalCloseButton>
-              <Filters />
+              <ModalHeader>
+                <ModalCloseButton type="button" data-dismiss="modal" aria-label="Close" onClick={hide}>
+                  <span aria-hidden="true">&times;</span>
+                </ModalCloseButton>
+              </ModalHeader>
+              <Form submitted={console.log} />
             </ModalContent>
           </ModalWrapper>
         </React.Fragment>,

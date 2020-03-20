@@ -1,16 +1,27 @@
-import React, { FormEvent, FC } from 'react';
-type RadioInputYesNoProps = {
+import React, { FormEvent, FC, useState, ChangeEvent, Fragment } from 'react';
+
+type RadioInputProps = {
+  name: string;
+  value: string;
+};
+const RadioInput: FC<RadioInputProps> = ({ name, value }) => (
+  <Fragment>
+    <input id={`${name}-${value}`} type="radio" name={name} value={value} />
+    <label htmlFor={`${name}-${value}`}>{value}</label>
+  </Fragment>
+);
+
+type RadioInputGroupProps = {
   title: string;
   name: string;
+  values?: string[];
 };
-
-const RadioInputYesNo: FC<RadioInputYesNoProps> = ({ title, name }) => (
+const RadioInputGroup: FC<RadioInputGroupProps> = ({ title, name, values = ['no', 'yes'] }) => (
   <div>
     <legend>{title}</legend>
-    <input id={`${name}No`} type="radio" name={name} value={'no'} />
-    <label htmlFor={`${name}No`}>no</label>
-    <input id={`${name}Yes`} type="radio" name={name} value={'yes'} />
-    <label htmlFor={`${name}Yes`}>yes</label>
+    {values.map(value => (
+      <RadioInput name={name} value={value} />
+    ))}
   </div>
 );
 
@@ -41,15 +52,7 @@ export const Form: FC<FormProps> = ({ submitted }) => {
             autoComplete="age"
           />
         </div>
-        <div>
-          <legend>What's your gender?</legend>
-          <input id="genderFemale" type="radio" name="gender" value="female" />
-          <label htmlFor="genderFemale">female</label>
-          <input id="genderFemale" type="radio" name="gender" value="male" />
-          <label htmlFor="genderMale">male</label>
-          <input id="genderFemale" type="radio" name="gender" value="other" />
-          <label htmlFor="genderOther">other</label>
-        </div>
+        <RadioInputGroup title="What's your gender?" name="gender" values={['female', 'male', 'other']} />
         <div>
           <label htmlFor="postcode">Where do you live?</label>
           <input
@@ -66,52 +69,29 @@ export const Form: FC<FormProps> = ({ submitted }) => {
       </fieldset>
       <fieldset>
         Do you have:
-        <div>
-          <legend>Fever</legend>
-          <input id="feverNone" type="radio" name="fever" value="no" />
-          <label htmlFor="feverNone">no</label>
-          <input id="feverNormal" type="radio" name="fever" value="normal" />
-          <label htmlFor="feverNormal">less than 38,5 degrees</label>
-          <input id="feverHigh" type="radio" name="fever" value="high" />
-          <label htmlFor="feverHigh">38,5 degrees or more</label>
-        </div>
-        <div>
-          <legend>Cough</legend>
-          <input id="coughNone" type="radio" name="cough" value="none" />
-          <label htmlFor="coughNone">no</label>
-          <input id="coughMild" type="radio" name="cough" value="mild" />
-          <label htmlFor="coughMild">mild</label>
-          <input id="coughIntense" type="radio" name="cough" value="intense" />
-          <label htmlFor="coughIntense">intense</label>
-        </div>
+        <RadioInputGroup title="Fever" name="fever" values={['no', 'slight', 'high']} />
+        <RadioInputGroup title="Cough" name="cough" values={['no', 'mild', 'intense']} />
         <em>If you have breathing difficulties, contact doctor immediately.</em>
-        <RadioInputYesNo title="Difficulty breathing" name="breathingDifficulties" />
-        <RadioInputYesNo title="Muscle pain" name="musclePain" />
-        <RadioInputYesNo title="Sore throat" name="soreThroat" />
-        <RadioInputYesNo title="Rhinitis" name="rhinitis" />
+        <RadioInputGroup title="Difficulty breathing" name="breathingDifficulties" />
+        <RadioInputGroup title="Muscle pain" name="musclePain" />
+        <RadioInputGroup title="Sore throat" name="soreThroat" />
+        <RadioInputGroup title="Rhinitis" name="rhinitis" />
       </fieldset>
       <fieldset>
-        <div>
-          <legend>How is your general well-being?</legend>
-          <em>If you are unable to get out of bed, contact doctor immediately.</em>
-          <input id="wellbeingOk" type="radio" name="wellbeing" value="ok" />
-          <label htmlFor="wellbeingOk">I can stay up</label>
-          <input id="wellbeingMild" type="radio" name="wellbeing" value="mild" />
-          <label htmlFor="wellbeingMild"> I can take care of basic everyday chores, but need rest</label>
-          <input id="wellbeingIntense" type="radio" name="wellbeing" value="intense" />
-          <label htmlFor="wellbeingIntense">I can hardly get up from bed</label>
-        </div>
-
+        <RadioInputGroup
+          title="How is your general well-being?"
+          name="generalWellbeing"
+          values={['fine', 'not ok', 'bad']}
+        />
         <div>
           <label htmlFor="duration">How long have you had symptoms?</label>
           <input id="duration" type="number" inputMode="numeric" size={2} maxLength={2} placeholder="days" />
         </div>
+        <RadioInputGroup title="Do you have long-term illness that requires medication?" name="longTermMedication" />
 
-        <RadioInputYesNo title="Do you have long-term illness that requires medication?" name="longTermMedication" />
+        <RadioInputGroup title="Do you smoke?" name="smoking" />
 
-        <RadioInputYesNo title="Do you smoke?" name="smoking" />
-
-        <RadioInputYesNo title="Do you suspect you have Coronavirus?" name="coronaSuspection" />
+        <RadioInputGroup title="Do you suspect you have Coronavirus?" name="coronaSuspection" />
       </fieldset>
       <button type="submit">Report symptoms</button>
     </form>

@@ -54,7 +54,7 @@ const Filters = () => {
         <BlueTag>Over 60</BlueTag>
       </TagGroup>
       <ButtonWrapper>
-        <PrimaryButton label={'Apply filters'} />
+        <PrimaryButton type="button" label={'Apply filters'} />
       </ButtonWrapper>
     </div>
   );

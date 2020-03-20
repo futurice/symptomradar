@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 type ButtonProps = {
   label: string;
-  type?: any;
+  type: 'submit' | 'button';
 };
 
 const Wrapper = styled.div`

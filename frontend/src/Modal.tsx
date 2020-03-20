@@ -6,7 +6,6 @@ type ModalProps = {
   isShowing: boolean;
   hide: () => void;
   modalTitle: string;
-  children: any;
 };
 
 const ModalOverlay = styled.div`
@@ -72,7 +71,7 @@ const ModalCloseButton = styled.button`
   background-color: transparent;
 `;
 
-const Modal = ({ isShowing, hide, modalTitle, children }: ModalProps) =>
+const Modal: React.FC<ModalProps> = ({ isShowing, hide, modalTitle, children }) =>
   isShowing
     ? ReactDOM.createPortal(
         <React.Fragment>

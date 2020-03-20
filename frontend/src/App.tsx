@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
+import { v4 as uuidV4 } from 'uuid';
 import Header from './Header';
 import Map from './Map';
 import Modal from './Modal';
@@ -48,6 +49,25 @@ const Button = styled.button`
 `;
 
 const App = () => {
+  const saveResponse = (formData: { key: string; value: string }) => {
+    const payload = {
+      ...formData,
+      participantUuid: uuidV4(),
+      responseTimestamp: new Date().toISOString(),
+    };
+    console.log(payload);
+
+    fetch('https://api.dev.vigilant-sniffle.com/', {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+      .then(console.log)
+      .catch(console.error);
+  };
   const { isShowing, toggle } = useModal();
   return (
     <AppContainer>
@@ -57,7 +77,7 @@ const App = () => {
         <Map />
         <Button onClick={toggle}>Report your symptoms</Button>
         <Modal isShowing={isShowing} hide={toggle} modalTitle={'Report your symptoms'}>
-          <Form submitted={console.log} />
+          <Form submitted={saveResponse} />
         </Modal>
       </Main>
     </AppContainer>

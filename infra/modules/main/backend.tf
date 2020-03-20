@@ -35,3 +35,32 @@ module "backend_worker" {
     ENV_NAME = "dev"
   }
 }
+
+# Attach the required extra permissions to the backend API function
+resource "aws_iam_policy" "backend_api" {
+  name = "${var.name_prefix}-policy"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+   {
+      "Action": [
+        "s3:*"
+      ],
+      "Resource": [
+        "arn:aws:s3:::${aws_s3_bucket.storage.id}",
+        "arn:aws:s3:::${aws_s3_bucket.storage.id}/*"
+      ],
+      "Effect": "Allow"
+    }
+  ]
+}
+EOF
+}
+
+# Attach the required extra permissions to the backend API function
+resource "aws_iam_role_policy_attachment" "backend_api" {
+  role       = module.backend_api.function_role
+  policy_arn = aws_iam_policy.backend_api.arn
+}

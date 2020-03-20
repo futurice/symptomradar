@@ -53,7 +53,6 @@ resource "aws_iam_policy" "this" {
   ]
 }
 EOF
-
 }
 
 # Attach the policy to the role

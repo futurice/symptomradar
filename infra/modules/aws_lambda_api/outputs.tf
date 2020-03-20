@@ -7,3 +7,8 @@ output "api_web_endpoint" {
   description = "This URL can be used to invoke the Lambda through the API Gateway"
   value       = var.api_domain == "" ? aws_api_gateway_deployment.this.invoke_url : "https://${var.api_domain}/"
 }
+
+output "function_role" {
+  value       = aws_iam_role.this.name
+  description = "The IAM role for the function created; can be used to attach additional policies/permissions"
+}

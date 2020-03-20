@@ -29,7 +29,20 @@ resource "aws_athena_named_query" "create_response_table" {
         `uuid` string,
         `timestamp` string,
         `firstName` string,
-        `favoriteColor` string
+        `age` string,
+        `gender` string,
+        `location` string,
+        `feverSymptoms` string,
+        `coughSymptoms` string,
+        `difficultyBreathing` string,
+        `musclePain` string,
+        `soreThroat` string,
+        `rhinitis` string,
+        `generalWellbeing` string,
+        `symptomsDuration` string,
+        `longTermMedication` string,
+        `smoking` string,
+        `suspectsCorona` string
       )
     ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
     WITH SERDEPROPERTIES ('serialization.format' = '1')

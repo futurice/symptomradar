@@ -22,13 +22,24 @@ export const workerEntrypoint: Handler<unknown> = () => {
 };
 
 if (process.argv[0].match(/\/ts-node$/)) {
-  const colors = ['red', 'green', 'blue', 'yellow', 'orange', 'cyan', 'purple'];
   Promise.resolve()
     .then(() => ({
       participantUuid: uuidV4(),
       responseTimestamp: new Date().toISOString(),
-      firstName: 'Bob',
-      favoriteColor: colors[Math.floor(Math.random() * colors.length)],
+      age: '',
+      gender: '',
+      location: '',
+      feverSymptoms: '',
+      coughSymptoms: '',
+      difficultyBreathing: '',
+      musclePain: '',
+      soreThroat: '',
+      rhinitis: '',
+      generalWellbeing: '',
+      symptomsDuration: '',
+      longTermMedication: '',
+      smoking: '',
+      suspectsCorona: '',
     }))
     .then(assertIs(ResponseModel))
     .catch(err => err)

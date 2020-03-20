@@ -1,7 +1,19 @@
 import { isRight } from 'fp-ts/lib/Either';
 import * as t from 'io-ts';
 import { PathReporter } from 'io-ts/lib/PathReporter';
-import { uuidString, iso8601DateString } from './io';
+import {
+  uuidString,
+  iso8601DateString,
+  postCode,
+  gender,
+  feverSymptoms,
+  coughSymptoms,
+  yesOrNo,
+  generalWellbeing,
+  symptomsDuration,
+  age,
+  notAnswered,
+} from './io';
 
 export const ResponseModel = t.exact(
   t.type({
@@ -9,16 +21,20 @@ export const ResponseModel = t.exact(
     participantUuid: uuidString,
     responseTimestamp: iso8601DateString,
     // Payload:
-    firstName: t.string,
-    favoriteColor: t.union([
-      t.literal('red'),
-      t.literal('green'),
-      t.literal('blue'),
-      t.literal('yellow'),
-      t.literal('orange'),
-      t.literal('cyan'),
-      t.literal('purple'),
-    ]),
+    age: t.union([age, notAnswered]),
+    gender: t.union([gender, notAnswered]),
+    location: t.union([postCode, notAnswered]),
+    feverSymptoms: t.union([feverSymptoms, notAnswered]),
+    coughSymptoms: t.union([coughSymptoms, notAnswered]),
+    difficultyBreathing: t.union([yesOrNo, notAnswered]),
+    musclePain: t.union([yesOrNo, notAnswered]),
+    soreThroat: t.union([yesOrNo, notAnswered]),
+    rhinitis: t.union([yesOrNo, notAnswered]),
+    generalWellbeing: t.union([generalWellbeing, notAnswered]),
+    symptomsDuration: t.union([symptomsDuration, notAnswered]),
+    longTermMedication: t.union([yesOrNo, notAnswered]),
+    smoking: t.union([yesOrNo, notAnswered]),
+    suspectsCorona: t.union([yesOrNo, notAnswered]),
   }),
   'ResponseModel',
 );

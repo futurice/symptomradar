@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-import { Form } from './Form';
 
 type ModalProps = {
   isShowing: boolean;
   hide: () => void;
+  modalTitle: string;
+  children: any;
 };
 
 const ModalOverlay = styled.div`
@@ -49,7 +50,17 @@ const ModalContent = styled.div`
     border-radius: 14px;
   }
 `;
-const ModalHeader = styled.button``;
+const ModalHeader = styled.div`
+  position: relative;
+  display: flex;
+  padding: 0px 0 40px 0;
+  justify-content: space-between;
+`;
+
+const H2 = styled.h2`
+  font-size: 21px;
+  margin: 8px 0;
+`;
 
 const ModalCloseButton = styled.button`
   font-size: 1.4rem;
@@ -58,12 +69,10 @@ const ModalCloseButton = styled.button`
   color: #000;
   cursor: pointer;
   border: none;
-  position: absolute;
-  right: 18px;
   background-color: transparent;
 `;
 
-const Modal = ({ isShowing, hide }: ModalProps) =>
+const Modal = ({ isShowing, hide, modalTitle, children }: ModalProps) =>
   isShowing
     ? ReactDOM.createPortal(
         <React.Fragment>
@@ -71,11 +80,12 @@ const Modal = ({ isShowing, hide }: ModalProps) =>
           <ModalWrapper aria-modal aria-hidden tabIndex={-1} role="dialog">
             <ModalContent>
               <ModalHeader>
+                <H2>{modalTitle}</H2>
                 <ModalCloseButton type="button" data-dismiss="modal" aria-label="Close" onClick={hide}>
                   <span aria-hidden="true">&times;</span>
                 </ModalCloseButton>
               </ModalHeader>
-              <Form submitted={console.log} />
+              {children}
             </ModalContent>
           </ModalWrapper>
         </React.Fragment>,

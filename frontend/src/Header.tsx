@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import useModal from './useModal';
 import Modal from './Modal';
 import filterIcon from './assets/filter-icon.svg';
+import Filters from './Filters';
 
 const AppHeader = styled.header`
   height: 105px;
@@ -50,7 +51,9 @@ const Header = () => {
       <FilterToggle onClick={toggle} style={{ backgroundImage: `url(${filterIcon})` }}>
         Filter
       </FilterToggle>
-      <Modal isShowing={isShowing} hide={toggle} />
+      <Modal isShowing={isShowing} hide={toggle} modalTitle={'Filter'}>
+        <Filters />
+      </Modal>
     </AppHeader>
   );
 };

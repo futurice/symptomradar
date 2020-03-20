@@ -22,10 +22,16 @@ data "template_file" "lambda" {
   }
 }
 
+# This is to ensure there's a unique component to the filename, so that invoking the module multiple times doesn't interfere with other instances
+resource "random_string" "zipfile_name" {
+  length  = 32
+  special = false
+}
+
 # Lambda functions can only be uploaded as ZIP files, so we need to package our JS file into one
 data "archive_file" "lambda_zip" {
   type        = "zip"
-  output_path = "${path.module}/lambda-${local.prefix_with_domain}.zip" # use the domain as part of the file name to make it unique, so that invoking the module multiple times doesn't interfere with itself
+  output_path = "${path.module}/lambda-${random_string.zipfile_name.result}.zip"
 
   source {
     filename = "lambda.js"
@@ -38,7 +44,7 @@ resource "aws_lambda_function" "viewer_request" {
 
   filename         = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
-  function_name    = "${local.prefix_with_domain}---viewer_request"
+  function_name    = "${var.name_prefix}-edge-lambda-request"
   role             = aws_iam_role.this.arn
   description      = "${var.comment_prefix}${var.site_domain} (request handler)"
   handler          = "lambda.viewer_request"
@@ -52,7 +58,7 @@ resource "aws_lambda_function" "viewer_response" {
 
   filename         = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
-  function_name    = "${local.prefix_with_domain}---viewer_response"
+  function_name    = "${var.name_prefix}-edge-lambda-response"
   role             = aws_iam_role.this.arn
   description      = "${var.comment_prefix}${var.site_domain} (response handler)"
   handler          = "lambda.viewer_response"
@@ -63,7 +69,7 @@ resource "aws_lambda_function" "viewer_response" {
 
 # Allow Lambda@Edge to invoke our functions
 resource "aws_iam_role" "this" {
-  name = local.prefix_with_domain
+  name = var.name_prefix
   tags = var.tags
 
   assume_role_policy = <<EOF
@@ -89,7 +95,7 @@ EOF
 # Allow writing logs to CloudWatch from our functions
 resource "aws_iam_policy" "this" {
   count = var.lambda_logging_enabled ? 1 : 0
-  name  = local.prefix_with_domain
+  name  = var.name_prefix
 
   policy = <<EOF
 {

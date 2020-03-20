@@ -5,7 +5,7 @@ import Filters from './Filters';
 
 type ModalProps = {
   isShowing: boolean;
-  hide: any; // TODO: add type
+  hide: () => void;
 };
 
 const ModalOverlay = styled.div`

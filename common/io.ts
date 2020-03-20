@@ -3,14 +3,10 @@ import * as t from 'io-ts';
 function defineRegexValidatedStringType(name: string, regex: RegExp) {
   const guard = (input: unknown): input is string => typeof input === 'string' && !!input.match(regex);
   return new t.Type<string, string, unknown>(
-    // A unique name for this codec:
-    name,
-    // A custom type guard:
-    guard,
-    // Succeeds if a value of type I can be decoded to a value of type A:
-    (input, context) => (guard(input) ? t.success(input) : t.failure(input, context)),
-    // Converts a value of type A to a value of type O:
-    t.identity,
+    name, // a unique name for this codec
+    guard, // a custom type guard
+    (input, context) => (guard(input) ? t.success(input) : t.failure(input, context)), // succeeds if a value of type I can be decoded to a value of type A
+    t.identity, // converts a value of type A to a value of type O
   );
 }
 

@@ -1,0 +1,76 @@
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+main {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px 0 40px 0;
+}
+
+h1 {
+  font-size: 21px;
+}
+
+.input-field {
+  height: 40px;
+  border: 1px solid #000;
+  display: block;
+  width: 100%;
+  padding: 0 5px;
+}
+
+.input-field::-webkit-input-placeholder {
+  font-size: 14px;
+}
+
+fieldset {
+  border: none;
+  padding: 0 0 10px 0;
+}
+
+.input-wrapper {
+  margin: 0 0 24px 0;
+}
+
+.input-field-label {
+  margin: 0 0 5px 0;
+  display: block;
+}
+
+legend {
+  margin: 0 0 5px 0;
+  display: block;
+}
+
+.questions-group-title {
+  font-weight: bold;
+  margin: 0 0 10px 0;
+}
+
+em {
+  margin: 0 0 20px 0;
+  display: block;
+}
+
+.submit-button {
+  display: block;
+  margin: 0 auto;
+  height: 50px;
+  padding: 5px 25px;
+  background: #75af59;
+  border-radius: 100px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #ffffff;
+}

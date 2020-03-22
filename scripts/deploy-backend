@@ -34,7 +34,7 @@ BACKEND_DIR="$SELF_DIR/../backend"
 # Upload code to S3
 aws s3 cp \
   backend/dist/backend-lambda.zip \
-  "s3://vigilant-sniffle-$1-backend/"
+  "s3://vigilant-sniffle-$1-backend-code/"
 
 # Let Lambda know function code has been updated
 aws lambda update-function-code \

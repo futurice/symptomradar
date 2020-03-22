@@ -18,7 +18,7 @@ module "backend_api" {
   lambda_logging_enabled = true
 
   function_env_vars = {
-    ENV_NAME = "dev"
+    BUCKET_NAME_STORAGE = aws_s3_bucket.storage.id
   }
 }
 
@@ -35,7 +35,7 @@ module "backend_worker" {
   lambda_logging_enabled = true
 
   function_env_vars = {
-    ENV_NAME = "dev"
+    BUCKET_NAME_STORAGE = aws_s3_bucket.storage.id
   }
 }
 

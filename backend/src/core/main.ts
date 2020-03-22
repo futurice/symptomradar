@@ -2,7 +2,9 @@ import * as AWS from 'aws-sdk';
 import { ResponseModelT } from '../common/model';
 
 const s3: AWS.S3 = new AWS.S3({ apiVersion: '2006-03-01' });
-const bucket: string = 'vigilant-sniffle-dev-storage';
+const bucket = process.env.BUCKET_NAME_STORAGE || '';
+
+if (!bucket) throw new Error('Storage bucket name missing from environment');
 
 export function storeResponseInS3(response: ResponseModelT) {
   const timestamp = new Date().toISOString();

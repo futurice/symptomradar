@@ -4,7 +4,7 @@ variable "cronjob_name" {
 
 variable "name_prefix" {
   description = "Name prefix to use for objects that need to be created (only lowercase alphanumeric characters and hyphens allowed, for S3 bucket name compatibility)"
-  default     = "aws-lambda-cronjob-"
+  default     = "aws-lambda-cronjob"
 }
 
 variable "comment_prefix" {

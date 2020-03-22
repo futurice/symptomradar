@@ -1,15 +1,16 @@
 # This bucket contains the stored responses
 resource "aws_s3_bucket" "storage" {
-  bucket = "${var.name_prefix}storage"
+  bucket = "${var.name_prefix}-storage"
+  tags   = local.tags_storage
 }
 
 resource "aws_athena_database" "storage" {
-  name   = "responses"
+  name   = replace("${var.name_prefix}-storage", "/[^a-z0-9_]+/", "_") # only alphanumerics and underscores allowed here
   bucket = aws_s3_bucket.storage.bucket
 }
 
 locals {
-  table = "${aws_athena_database.storage.id}.vigilant_sniffle_dev_responses"
+  table = "${aws_athena_database.storage.id}.responses"
 }
 
 resource "aws_athena_named_query" "create_response_table" {

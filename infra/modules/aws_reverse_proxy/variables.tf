@@ -4,7 +4,7 @@ variable "site_domain" {
 
 variable "name_prefix" {
   description = "Name prefix to use for objects that need to be created (only lowercase alphanumeric characters and hyphens allowed, for S3 bucket name compatibility)"
-  default     = "aws-reverse-proxy---"
+  default     = "aws-reverse-proxy"
 }
 
 variable "comment_prefix" {
@@ -112,8 +112,7 @@ variable "tags" {
 }
 
 locals {
-  prefix_with_domain = "${var.name_prefix}${replace(var.site_domain, "/[^a-z0-9-]+/", "-")}" # only lowercase alphanumeric characters and hyphens are allowed in S3 bucket names
-  error_ttl          = var.cache_ttl_override >= 0 ? var.cache_ttl_override : 0
+  error_ttl = var.cache_ttl_override >= 0 ? var.cache_ttl_override : 0
 }
 
 # Because CloudFront origins expect the URL to be provided as components, we need to do a bit of URL "parsing"

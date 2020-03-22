@@ -7,4 +7,3 @@ output "site_domain" {
   description = "Domain on which the site will be made available"
   value       = var.site_domain
 }
-

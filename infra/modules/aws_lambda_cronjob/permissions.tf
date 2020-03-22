@@ -1,6 +1,6 @@
 # Allow Lambda to invoke our functions
 resource "aws_iam_role" "this" {
-  name = local.prefix_with_name
+  name = var.name_prefix
   tags = var.tags
 
   assume_role_policy = <<EOF
@@ -24,7 +24,7 @@ EOF
 # Allow writing logs to CloudWatch from our functions
 resource "aws_iam_policy" "this" {
   count = var.lambda_logging_enabled ? 1 : 0
-  name  = local.prefix_with_name
+  name  = var.name_prefix
 
   policy = <<EOF
 {
@@ -54,7 +54,7 @@ resource "aws_iam_role_policy_attachment" "this" {
 # Add the scheduled execution rules & permissions:
 
 resource "aws_cloudwatch_event_rule" "this" {
-  name                = "${local.prefix_with_name}---scheduled-invocation"
+  name                = "${var.name_prefix}-scheduled-invocation"
   schedule_expression = var.schedule_expression
   tags                = var.tags
 }
@@ -66,7 +66,7 @@ resource "aws_cloudwatch_event_target" "this" {
 }
 
 resource "aws_lambda_permission" "this" {
-  statement_id  = "${local.prefix_with_name}---scheduled-invocation"
+  statement_id  = "${var.name_prefix}-scheduled-invocation"
   action        = "lambda:InvokeFunction"
   function_name = local.function_id
   principal     = "events.amazonaws.com"

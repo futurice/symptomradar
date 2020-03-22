@@ -1,6 +1,7 @@
 resource "aws_api_gateway_rest_api" "this" {
-  name        = local.prefix_with_domain
+  name        = "${var.name_prefix}-rest-api"
   description = "${var.comment_prefix}${var.api_domain}"
+  tags        = var.tags
 }
 
 resource "aws_api_gateway_deployment" "this" {
@@ -37,6 +38,7 @@ resource "aws_api_gateway_method_settings" "this" {
 resource "aws_api_gateway_domain_name" "this" {
   domain_name              = var.api_domain
   regional_certificate_arn = aws_acm_certificate_validation.this.certificate_arn
+  tags                     = var.tags
 
   endpoint_configuration {
     types = ["REGIONAL"]

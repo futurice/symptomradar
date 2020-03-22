@@ -4,7 +4,7 @@ variable "api_domain" {
 
 variable "name_prefix" {
   description = "Name prefix to use for objects that need to be created (only lowercase alphanumeric characters and hyphens allowed, for S3 bucket name compatibility)"
-  default     = "aws-lambda-api---"
+  default     = "aws-lambda-api"
 }
 
 variable "comment_prefix" {
@@ -86,8 +86,4 @@ variable "throttling_rate_limit" {
 variable "throttling_burst_limit" {
   description = "How many burst requests should the API process at most; see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-request-throttling.html"
   default     = 5000
-}
-
-locals {
-  prefix_with_domain = "${var.name_prefix}${replace(var.api_domain, "/[^a-z0-9-]+/", "-")}" # only lowercase alphanumeric characters and hyphens are allowed in e.g. S3 bucket names
 }

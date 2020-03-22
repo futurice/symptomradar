@@ -12,7 +12,7 @@ resource "aws_lambda_function" "local_zipfile" {
 
   # These are the SAME for both:
   description   = "${var.comment_prefix}${var.api_domain}"
-  function_name = local.prefix_with_domain
+  function_name = var.name_prefix
   handler       = var.function_handler
   runtime       = var.function_runtime
   timeout       = var.function_timeout
@@ -35,7 +35,7 @@ resource "aws_lambda_function" "s3_zipfile" {
 
   # These are the SAME for both:
   description   = "${var.comment_prefix}${var.api_domain}"
-  function_name = local.prefix_with_domain
+  function_name = var.name_prefix
   handler       = var.function_handler
   runtime       = var.function_runtime
   timeout       = var.function_timeout

@@ -3,12 +3,7 @@
 resource "aws_acm_certificate" "this" {
   domain_name       = var.api_domain
   validation_method = "DNS" # the required records are created below
-  tags = merge(
-    var.tags,
-    {
-      Name = "${var.comment_prefix}${var.api_domain}"
-    },
-  )
+  tags              = var.tags
 }
 
 # Add the DNS records needed by the ACM validation process

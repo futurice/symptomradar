@@ -29,6 +29,21 @@ h1 {
   margin-bottom: 58px;
 }
 
+.hidden {
+  display: none;
+}
+
+.success-message {
+  display: block;
+  margin-bottom: 24px;
+  font-size: 18px;
+}
+
+.error-message {
+  color: #d32222;
+  font-size: 18px;
+}
+
 .input-field {
   height: 40px;
   min-width: 100px;

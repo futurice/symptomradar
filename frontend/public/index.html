@@ -13,7 +13,14 @@
   <noscript>Tämä sivusto vaatii JavaScript-tuen toimiakseen.</noscript>
   <main>
     <h1>Raportoi oireesi</h1>
-    <form action="">
+    <div id="submit-success" class="hidden">
+      <p>
+        <span class="success-message">Vastauksesi on nyt tallennettu.</span>
+        Ota tämä osoite talteen,<em>oiretutka.fi/personalid</em>
+        niin voit palata päivittämään tietosi tilanteen muuttuessa.
+      </p>
+    </div>
+    <form id="symptom-questionnaire">
       <div class="question-group">
         <h2 class="question-group-title">Millaisia oireita sinulla on?</h2>
         <fieldset class="input-wrapper">
@@ -169,6 +176,9 @@
           <input id="postalCode" type="text" name="postal_code" class="input-field" inputmode="numeric" pattern="[0-9]*"
             size="5" minlength="5" maxlength="5" autocomplete="postal-code" placeholder="00100" value="" />
         </div>
+      </div>
+      <div id="submit-error" class="hidden">
+        <p><span class="error-message">Tietojen lähetys epäonnistui.</span> Ole hyvä ja yritä uudelleen</p>
       </div>
       <button type="submit" class="submit-button">Lähetä</button>
     </form>

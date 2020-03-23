@@ -61,8 +61,8 @@ module "frontend" {
   origin_url                 = "http://${aws_s3_bucket.frontend_code.website_endpoint}/" # S3 website endpoints are only available over plain HTTP
   origin_custom_header_name  = "User-Agent"                                              # our S3 bucket will only allow requests containing this custom header
   origin_custom_header_value = random_string.s3_read_password.result                     # somewhat perplexingly, this is the "correct" way to ensure users can't bypass CloudFront on their way to S3 resources; https://abridge2devnull.com/posts/2018/01/restricting-access-to-a-cloudfront-s3-website-origin/
-  site_domain                = "dev.oiretutka.fi"
+  site_domain                = var.frontend_domain
   viewer_https_only          = true
-  basic_auth_username        = "dev"
+  basic_auth_username        = "symptomradar"
   basic_auth_password        = var.frontend_password
 }

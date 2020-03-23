@@ -1,11 +1,11 @@
 # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/configuring-a-workflow
 
-name: Deployment
+name: Deploy PROD
 
 on:
-  push:
-    branches:
-      - master
+  release:
+    types:
+      - created # ...but not e.g. "edited", "deleted" etc
 
 jobs:
   deploy:
@@ -22,9 +22,9 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: eu-west-1
-          REACT_APP_API_ENDPOINT: https://api.dev.oiretutka.fi/
+          REACT_APP_API_ENDPOINT: https://api.oiretutka.fi/
         run: |
           sudo apt-get install -y awscli
           npm install
-          ./scripts/deploy-frontend dev
-          ./scripts/deploy-backend dev
+          ./scripts/deploy-frontend prod
+          ./scripts/deploy-backend prod

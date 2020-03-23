@@ -72,6 +72,11 @@ variable "api_gateway_cloudwatch_metrics" {
   default     = false
 }
 
+variable "api_gateway_endpoint_config" {
+  description = "Either `\"EDGE\"`, `\"REGIONAL\"` or `\"PRIVATE\"`; see https://docs.aws.amazon.com/apigateway/latest/developerguide/create-regional-api.html"
+  default     = "EDGE"
+}
+
 variable "tags" {
   description = "AWS Tags to add to all resources created (where possible); see https://aws.amazon.com/answers/account-management/aws-tagging-strategies/"
   type        = map(string)

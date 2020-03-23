@@ -5,8 +5,8 @@ resource "aws_route53_record" "ipv4" {
   type    = "A"
 
   alias {
-    name                   = aws_api_gateway_domain_name.this.regional_domain_name
-    zone_id                = aws_api_gateway_domain_name.this.regional_zone_id
+    name                   = var.api_gateway_endpoint_config == "EDGE" ? aws_api_gateway_domain_name.this.cloudfront_domain_name : aws_api_gateway_domain_name.this.regional_domain_name
+    zone_id                = var.api_gateway_endpoint_config == "EDGE" ? aws_api_gateway_domain_name.this.cloudfront_zone_id : aws_api_gateway_domain_name.this.regional_zone_id
     evaluate_target_health = false
   }
 }
@@ -18,8 +18,8 @@ resource "aws_route53_record" "ipv6" {
   type    = "AAAA"
 
   alias {
-    name                   = aws_api_gateway_domain_name.this.regional_domain_name
-    zone_id                = aws_api_gateway_domain_name.this.regional_zone_id
+    name                   = var.api_gateway_endpoint_config == "EDGE" ? aws_api_gateway_domain_name.this.cloudfront_domain_name : aws_api_gateway_domain_name.this.regional_domain_name
+    zone_id                = var.api_gateway_endpoint_config == "EDGE" ? aws_api_gateway_domain_name.this.cloudfront_zone_id : aws_api_gateway_domain_name.this.regional_zone_id
     evaluate_target_health = false
   }
 }

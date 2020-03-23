@@ -4,9 +4,15 @@ resource "aws_s3_bucket" "storage" {
   tags   = local.tags_storage
 }
 
+# This bucket contains result files from Athena queries
+resource "aws_s3_bucket" "storage_results" {
+  bucket = "${var.name_prefix}-storage-results"
+  tags   = local.tags_storage
+}
+
 resource "aws_athena_database" "storage" {
   name   = replace("${var.name_prefix}-storage", "/[^a-z0-9_]+/", "_") # only alphanumerics and underscores allowed here
-  bucket = aws_s3_bucket.storage.bucket
+  bucket = aws_s3_bucket.storage_results.id
 }
 
 locals {

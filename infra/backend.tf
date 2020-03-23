@@ -32,7 +32,6 @@ terraform {
   backend "s3" {
     bucket         = "symptomradar-terraform-state"
     key            = "terraform"
-    region         = "eu-central-1"
     dynamodb_table = "symptomradar-terraform-state-lock"
   }
 }

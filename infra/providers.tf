@@ -1,6 +1,5 @@
 provider "aws" {
   version = "~> 2.53"
-  region  = "eu-central-1"
 }
 
 # This alias is needed because ACM is only available in the "us-east-1" region

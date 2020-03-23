@@ -9,3 +9,5 @@
 1. `./scripts/deploy-backend dev-tmp` (fails with an error about function missing; this is fine for now)
 1. `terraform apply`
 1. `./scripts/deploy-frontend dev-tmp`
+
+For reasons unknown, the Athena result bucket needs to be set manually, even if it's defined in the Terraform config. For the `dev` env for instance, it'd be `s3://symptomradar-dev-storage-results/`.

@@ -22,12 +22,12 @@ FRONTEND_DIR="$SELF_DIR/../frontend"
 aws s3 cp \
   --cache-control=max-age=86400 \
   --recursive \
-  frontend/build/static/ "s3://vigilant-sniffle-$1-frontend-code/static/"
+  frontend/build/static/ "s3://symptomradar-$1-frontend-code/static/"
 rm -rfv "$FRONTEND_DIR/build/static"
 
 # Upload & clean up files that need to be served fresh
 aws s3 cp \
   --cache-control=no-store,must-revalidate \
   --recursive \
-  frontend/build/ "s3://vigilant-sniffle-$1-frontend-code/"
+  frontend/build/ "s3://symptomradar-$1-frontend-code/"
 rm -rfv "$FRONTEND_DIR/build"

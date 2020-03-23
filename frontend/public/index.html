@@ -1,12 +1,176 @@
 <!DOCTYPE html>
 <html lang="fi">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>vigilant-sniffle</title>
-  </head>
-  <body>
-    <noscript>Tämä sivusto vaatii JavaScript-tuen toimiakseen.</noscript>
-    <pre>vigilant-sniffle</pre>
-  </body>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" type="text/css" href="./styles.css" />
+  <title>Oiretutka</title>
+</head>
+
+<body>
+  <noscript>Tämä sivusto vaatii JavaScript-tuen toimiakseen.</noscript>
+  <main>
+    <h1>Raportoi oireesi</h1>
+    <form action="">
+      <div class="question-group">
+        <h2 class="question-group-title">Millaisia oireita sinulla on?</h2>
+        <fieldset class="input-wrapper">
+          <legend>Kuumetta</legend>
+          <div class="options">
+            <div class="option-wrapper">
+              <input id="fever-no" type="radio" name="fever" value="no">
+              <label for="fever-no">ei</label>
+            </div>
+            <div class="option-wrapper">
+              <input id="fever-slight" type="radio" name="fever" value="slight">
+              <label for="fever-slight">alle 38,5 astetta</label>
+            </div>
+            <div class="option-wrapper">
+              <input id="fever-high" type="radio" name="fever" value="high">
+              <label for="fever-high">yli 38,5 astetta</label>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset class="input-wrapper">
+          <legend>Yskää</legend>
+          <div class="options">
+            <div class="option-wrapper">
+              <input id="cough-mild" type="radio" name="cough" value="mild">
+              <label for="cough-mild">lievää</label>
+            </div>
+            <div class="option-wrapper">
+              <input id="cough-intense" type="radio" name="cough" value="intense">
+              <label for="cough-intense">voimakasta</label>
+            </div>
+            <div class="option-wrapper">
+              <input id="cough-no" type="radio" name="cough" value="no">
+              <label for="cough-no">ei</label>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset class="input-wrapper">
+          <legend>Vaikeuksia hengittää</legend>
+          <div class="options">
+            <em>Huom! Jos sinulla on hengitysvaikeuksia, ota heti yhteys terveydenhuoltoon.</em>
+            <input id="breathingDifficulties-yes" type="radio" name="breathingDifficulties" value="yes">
+            <label for="breathingDifficulties-yes">kyllä</label>
+            <input id="breathingDifficulties-no" type="radio" name="breathingDifficulties" value="no">
+            <label for="breathingDifficulties-no">ei</label>
+          </div>
+        </fieldset>
+        <fieldset class="input-wrapper">
+          <legend>Lihaskipuja</legend>
+          <div class="options">
+            <input id="musclePain-yes" type="radio" name="musclePain" value="yes">
+            <label for="musclePain-yes">kyllä</label>
+            <input id="musclePain-no" type="radio" name="musclePain" value="no">
+            <label for="musclePain-no">ei</label>
+          </div>
+        </fieldset>
+        <fieldset class="input-wrapper">
+          <legend>Kurkkukipua</legend>
+          <div class="options">
+            <input id="soreThroat-yes" type="radio" name="soreThroat" value="yes">
+            <label for="soreThroat-yes">kyllä</label>
+            <input id="soreThroat-no" type="radio" name="soreThroat" value="no">
+            <label for="soreThroat-no">ei</label>
+          </div>
+        </fieldset>
+        <fieldset class="input-wrapper">
+          <legend>Nuhaa</legend>
+          <div class="options">
+            <input id="rhinitis-yes" type="radio" name="rhinitis" value="yes">
+            <label for="rhinitis-yes">kyllä</label>
+            <input id="rhinitis-no" type="radio" name="rhinitis" value="no">
+            <label for="rhinitis-no">ei</label>
+          </div>
+        </fieldset>
+      </div>
+      <div class="question-group">
+        <h2 class="question-group-title">Yleinen terveys</h2>
+        <fieldset class="input-wrapper">
+          <legend>Millainen on yleisvointisi?</legend>
+          <div class="options">
+            <em>Huom! Jos et jaksa nousta vuoteesta, ota heti yhteys terveydenhuoltoon.
+            </em>
+            <div class="option-wrapper">
+              <input id="generalWellbeing-fine" type="radio" name="generalWellbeing" value="fine">
+              <label for="generalWellbeing-fine">jaksan olla jalkeilla </label>
+            </div>
+            <div class="option-wrapper">
+              <input id="generalWellbeing-not ok" type="radio" name="generalWellbeing" value="not ok">
+              <label for="generalWellbeing-not ok">jaksan olla jonkun verran jalkeilla ja hoitaa välttämättömät
+                kotiaskareet</label>
+            </div>
+            <div class="option-wrapper">
+              <input id="generalWellbeing-bad" type="radio" name="generalWellbeing" value="bad">
+              <label for="generalWellbeing-bad">en juurikaan jaksa nousta vuoteesta</label>
+            </div>
+          </div>
+        </fieldset>
+        <div class="input-wrapper">
+          <label for="duration" class="input-field-label">Kuinka kauan sinulla on ollut oireita?</label>
+          <input id="duration" type="number" class="input-field" inputmode="numeric" size="2" maxlength="2"
+            placeholder="xx päivää" value=""></div>
+        <fieldset class="input-wrapper">
+          <legend>Onko sinulla lääkehoitoa vaativa pitkäaikaissairaus?</legend>
+          <div class="options">
+            <input id="longTermMedication-yes" type="radio" name="longTermMedication" value="yes">
+            <label for="longTermMedication-yes">kyllä</label>
+            <input id="longTermMedication-no" type="radio" name="longTermMedication" value="no">
+            <label for="longTermMedication-no">ei</label>
+          </div>
+        </fieldset>
+        <fieldset class="input-wrapper">
+          <legend>Tupakoitko?</legend>
+          <div class="options">
+            <input id="smoking-yes" type="radio" name="smoking" value="yes">
+            <label for="smoking-yes">kyllä</label>
+            <input id="smoking-no" type="radio" name="smoking" value="no">
+            <label for="smoking-no">en</label>
+          </div>
+        </fieldset>
+        <fieldset class="input-wrapper">
+          <legend>Epäiletkö että sinulla on koronavirus?</legend>
+          <div class="options">
+            <input id="coronaSuspection-yes" type="radio" name="coronaSuspection" value="yes">
+            <label for="coronaSuspection-yes">kyllä</label>
+            <input id="coronaSuspection-no" type="radio" name="coronaSuspection" value="no">
+            <label for="coronaSuspection-no">en</label>
+          </div>
+        </fieldset>
+      </div>
+      <div class="question-group">
+        <h2 class="question-group-title">General information</h2>
+        <div class="input-wrapper">
+          <label for="age" class="input-field-label">Ikä</label>
+          <input id="age" type="number" class="input-field" inputmode="numeric" size="3" minlength="1" maxlength="3"
+            placeholder="" autocomplete="age" value="" />
+        </div>
+        <div class="input-wrapper">
+          <fieldset>
+            <legend>Sukupuoli</legend>
+            <div class="options">
+              <input id="gender-female" type="radio" name="gender" value="female">
+              <label for="gender-female">nainen</label>
+              <input id="gender-male" type="radio" name="gender" value="male">
+              <label for="gender-male">mies</label>
+              <input id="gender-other" type="radio" name="gender" value="other">
+              <label for="gender-other">muu</label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="input-wrapper">
+          <label for="postal-code" class="input-field-label">Postinumero</label>
+          <input id="postal-code" type="text" class="input-field" inputmode="numeric" size="5" minlength="5"
+            maxlength="5" autocomplete="postal-code" placeholder="00100" value="" />
+        </div>
+      </div>
+      <button type="submit" class="submit-button">Lähetä</button>
+
+    </form>
+  </main>
+</body>
+
 </html>

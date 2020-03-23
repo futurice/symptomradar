@@ -1,0 +1,118 @@
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: sans-serif;
+  margin: 0;
+  font-size: 16px;
+  color: #000000;
+}
+
+main {
+  margin: 0 auto;
+  padding: 20px 18px 40px;
+}
+
+form {
+  padding: 0 8px;
+}
+
+h1 {
+  font-size: 21px;
+  margin-bottom: 58px;
+}
+
+.input-field {
+  height: 40px;
+  min-width: 100px;
+  border: 1px solid #000;
+  display: block;
+  padding: 0 5px;
+  margin-bottom: 24px;
+}
+
+.input-field::-webkit-input-placeholder {
+  font-size: 14px;
+}
+
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  margin: 0 0 16px 0;
+  display: block;
+}
+
+label {
+  padding: 3px 6px 3px 0;
+}
+
+.options {
+  padding-left: 24px;
+  margin-bottom: 24px;
+}
+
+.input-wrapper {
+  margin: 0 0 24px 0;
+}
+
+.input-wrapper:not(:last-child) {
+  border-bottom: 1px solid #b4b4b4;
+}
+
+.option-wrapper {
+  display: flex;
+}
+
+.option-wrapper:not(:last-child) {
+  margin: 0 0 16px 0;
+}
+
+.option-wrapper label {
+  padding-left: 6px;
+}
+
+.input-field-label {
+  margin: 0 0 5px 0;
+  display: block;
+}
+
+.question-group-title {
+  font-weight: bold;
+  margin: 0 0 16px -25px;
+  font-weight: bold;
+  font-size: 18px;
+  background: #f0f0f0;
+  border: 1px solid #b4b4b4;
+  border-width: 1px 0 1px 0;
+  width: 100vw;
+  padding: 12px 24px;
+}
+
+em {
+  margin: 0 0 24px 0;
+  display: block;
+  color: #4e4e4e;
+}
+
+.submit-button {
+  display: block;
+  margin: 0 auto;
+  height: 50px;
+  padding: 5px 25px;
+  background: #75af59;
+  border-radius: 100px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #ffffff;
+}

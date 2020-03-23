@@ -12,6 +12,8 @@ module "env_dev" {
   name_prefix       = "${var.name_prefix}-dev"
   tags              = merge(var.tags, { Environment = "dev" })
   frontend_password = var.frontend_password
+  frontend_domain   = "dev.oiretutka.fi"
+  backend_domain    = "api.dev.oiretutka.fi"
 }
 
 # Pass along any output from the instantiated module

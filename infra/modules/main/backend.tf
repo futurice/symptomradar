@@ -11,7 +11,7 @@ module "backend_api" {
 
   name_prefix            = "${var.name_prefix}-backend-api"
   tags                   = local.tags_backend
-  api_domain             = "api.dev.oiretutka.fi"
+  api_domain             = var.backend_domain
   function_s3_bucket     = aws_s3_bucket.backend_code.id
   function_zipfile       = "backend-lambda.zip"
   function_handler       = "index.apiEntrypoint"

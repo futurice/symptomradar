@@ -50,10 +50,10 @@
             </div>
           </div>
         </fieldset>
-        <fieldset class="input-wrapper">
+        <fieldset class="input-wrapper" aria-describedby="breathingDifficulties-description">
           <legend>Vaikeuksia hengittää</legend>
           <div class="options">
-            <em>Huom! Jos sinulla on hengitysvaikeuksia, ota heti yhteys terveydenhuoltoon.</em>
+            <em id="breathingDifficulties-description">Huom! Jos sinulla on hengitysvaikeuksia, ota heti yhteys terveydenhuoltoon.</em>
             <input id="breathingDifficulties-yes" type="radio" name="breathingDifficulties" value="yes">
             <label for="breathingDifficulties-yes">kyllä</label>
             <input id="breathingDifficulties-no" type="radio" name="breathingDifficulties" value="no">
@@ -90,10 +90,10 @@
       </div>
       <div class="question-group">
         <h2 class="question-group-title">Yleinen terveys</h2>
-        <fieldset class="input-wrapper">
+        <fieldset class="input-wrapper" aria-describedby="generalWellBeing-description">
           <legend>Millainen on yleisvointisi?</legend>
           <div class="options">
-            <em>Huom! Jos et jaksa nousta vuoteesta, ota heti yhteys terveydenhuoltoon.
+            <em id="generalWellBeing-description">Huom! Jos et jaksa nousta vuoteesta, ota heti yhteys terveydenhuoltoon.
             </em>
             <div class="option-wrapper">
               <input id="generalWellbeing-fine" type="radio" name="generalWellbeing" value="fine">
@@ -112,7 +112,7 @@
         </fieldset>
         <div class="input-wrapper">
           <label for="duration" class="input-field-label">Kuinka kauan sinulla on ollut oireita?</label>
-          <input id="duration" type="number" class="input-field" inputmode="numeric" size="2" maxlength="2"
+          <input id="duration" class="input-field" type="text" inputmode="numeric" pattern="[0-9]*" min="0" size="2" maxlength="2"
             placeholder="xx päivää" value=""></div>
         <fieldset class="input-wrapper">
           <legend>Onko sinulla lääkehoitoa vaativa pitkäaikaissairaus?</legend>
@@ -146,8 +146,8 @@
         <h2 class="question-group-title">General information</h2>
         <div class="input-wrapper">
           <label for="age" class="input-field-label">Ikä</label>
-          <input id="age" type="number" class="input-field" inputmode="numeric" size="3" minlength="1" maxlength="3"
-            placeholder="" autocomplete="age" value="" />
+          <input id="age" type="text" inputmode="numeric" pattern="[0-9]*" class="input-field" size="3" minlength="1" maxlength="3"
+            placeholder="" value="" />
         </div>
         <div class="input-wrapper">
           <fieldset>
@@ -164,12 +164,11 @@
         </div>
         <div class="input-wrapper">
           <label for="postal-code" class="input-field-label">Postinumero</label>
-          <input id="postal-code" type="text" class="input-field" inputmode="numeric" size="5" minlength="5"
+          <input id="postal-code" type="text" class="input-field" inputmode="numeric" pattern="[0-9]*" size="5" minlength="5"
             maxlength="5" autocomplete="postal-code" placeholder="00100" value="" />
         </div>
       </div>
       <button type="submit" class="submit-button">Lähetä</button>
-
     </form>
   </main>
 </body>

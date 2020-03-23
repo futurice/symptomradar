@@ -1,1 +1,1 @@
-# vigilant-sniffle
+# symptomradar

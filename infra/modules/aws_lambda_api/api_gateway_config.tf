@@ -37,11 +37,12 @@ resource "aws_api_gateway_method_settings" "this" {
 
 resource "aws_api_gateway_domain_name" "this" {
   domain_name              = var.api_domain
-  regional_certificate_arn = aws_acm_certificate_validation.this.certificate_arn
+  regional_certificate_arn = var.api_gateway_endpoint_config == "EDGE" ? null : aws_acm_certificate_validation.this.certificate_arn
+  certificate_arn          = var.api_gateway_endpoint_config == "EDGE" ? aws_acm_certificate_validation.this.certificate_arn : null
   tags                     = var.tags
 
   endpoint_configuration {
-    types = ["REGIONAL"]
+    types = [var.api_gateway_endpoint_config]
   }
 }
 

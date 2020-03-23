@@ -24,22 +24,22 @@ export const workerEntrypoint: Handler<unknown> = () => {
 if (process.argv[0].match(/\/ts-node$/)) {
   Promise.resolve()
     .then(() => ({
-      participantUuid: uuidV4(),
-      responseTimestamp: new Date().toISOString(),
-      age: '',
-      gender: '',
-      location: '',
-      feverSymptoms: '',
-      coughSymptoms: '',
-      difficultyBreathing: '',
-      musclePain: '',
-      soreThroat: '',
-      rhinitis: '',
-      generalWellbeing: '',
-      symptomsDuration: '',
-      longTermMedication: '',
-      smoking: '',
-      suspectsCorona: '',
+      participant_uuid: uuidV4(),
+      response_timestamp: new Date().toISOString(),
+      fever: 'no',
+      cough: 'mild',
+      breathing_difficulties: 'no',
+      muscle_pain: 'no',
+      sore_throat: 'no',
+      rhinitis: 'no',
+      general_wellbeing: 'fine',
+      duration: '1',
+      longterm_medication: 'no',
+      smoking: 'no',
+      corona_suspicion: 'no',
+      age: '18',
+      gender: 'other',
+      postal_code: '01234',
     }))
     .then(assertIs(ResponseModel))
     .catch(err => err)

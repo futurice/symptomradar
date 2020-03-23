@@ -23,40 +23,21 @@ export const iso8601DateString = defineRegexValidatedStringType(
 // empty string
 export const notAnswered = defineRegexValidatedStringType('notAnswered', /^$/);
 
-export const yesOrNo = t.keyof({
-  no: null,
-  yes: null,
-});
+export const yesOrNo = t.union([t.literal('yes'), t.literal('no')]);
 
 // range of 0 - 199 years
 export const age = defineRegexValidatedStringType('age', /^[1]{0,1}[0-9]{1,2}$/);
 
-export const gender = t.keyof({
-  female: null,
-  male: null,
-  other: null,
-});
+export const gender = t.union([t.literal('female'), t.literal('male'), t.literal('other')]);
 
 // range of 00000 – 99999
-export const postCode = defineRegexValidatedStringType('postCode', /^[0-9]{5}$/);
+export const postalCode = defineRegexValidatedStringType('postCode', /^[0-9]{5}$/);
 
-export const feverSymptoms = t.keyof({
-  none: null,
-  slight: null,
-  high: null,
-});
+export const fever = t.union([t.literal('none'), t.literal('slight'), t.literal('high')]);
 
-export const coughSymptoms = t.keyof({
-  none: null,
-  mild: null,
-  intense: null,
-});
+export const cough = t.union([t.literal('none'), t.literal('mild'), t.literal('intense')]);
 
-export const generalWellbeing = t.keyof({
-  fine: null,
-  impaired: null,
-  bad: null,
-});
+export const generalWellbeing = t.union([t.literal('fine'), t.literal('impaired'), t.literal('bad')]);
 
 // range of 0–99 days
-export const symptomsDuration = defineRegexValidatedStringType('symptomsDuration', /^[0-9]{2}$/);
+export const duration = defineRegexValidatedStringType('symptomsDuration', /^[0-9]{2}$/);

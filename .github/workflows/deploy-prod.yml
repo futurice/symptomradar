@@ -1,0 +1,30 @@
+# https://help.github.com/en/actions/automating-your-workflow-with-github-actions/configuring-a-workflow
+
+name: Deploy PROD
+
+on:
+  release:
+    types:
+      - created # ...but not e.g. "edited", "deleted" etc
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Set up node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.16'
+      - name: Deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: eu-west-1
+          REACT_APP_API_ENDPOINT: https://api.oiretutka.fi/
+        run: |
+          sudo apt-get install -y awscli
+          npm install
+          ./scripts/deploy-frontend prod
+          ./scripts/deploy-backend prod

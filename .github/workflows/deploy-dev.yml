@@ -1,6 +1,6 @@
 # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/configuring-a-workflow
 
-name: Deployment
+name: Deploy DEV
 
 on:
   push:

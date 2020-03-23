@@ -1,6 +1,6 @@
 # This is the DNS Zone to which we assume we can create DNS records
-resource "aws_route53_zone" "vigilant_sniffle_com" {
-  name = "vigilant-sniffle.com"
+resource "aws_route53_zone" "oiretutka_fi" {
+  name = "oiretutka.fi"
   tags = var.tags
 }
 

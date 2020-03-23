@@ -1,6 +1,5 @@
 provider "aws" {
   version = "~> 2.53"
-  profile = "vigilant-sniffle"
   region  = "eu-central-1"
 }
 
@@ -8,7 +7,6 @@ provider "aws" {
 provider "aws" {
   alias   = "us_east_1"
   version = "~> 2.53"
-  profile = "vigilant-sniffle"
   region  = "us-east-1"
 }
 

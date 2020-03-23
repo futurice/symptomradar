@@ -30,10 +30,9 @@ resource "aws_dynamodb_table" "terraform_state_lock" {
 # IMPORTANT: Terraform doesn't allow variable interpolations here, so var.name_prefix needs to be hard-coded here
 terraform {
   backend "s3" {
-    profile        = "vigilant-sniffle"
-    bucket         = "vigilant-sniffle-terraform-state"
+    bucket         = "symptomradar-terraform-state"
     key            = "terraform"
     region         = "eu-central-1"
-    dynamodb_table = "vigilant-sniffle-terraform-state-lock"
+    dynamodb_table = "symptomradar-terraform-state-lock"
   }
 }

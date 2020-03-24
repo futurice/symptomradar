@@ -1,10 +1,12 @@
 html {
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
 *,
 *:before,
 *:after {
+  -webkit-box-sizing: inherit;
   box-sizing: inherit;
 }
 
@@ -23,6 +25,10 @@ main {
 .container {
   padding: 0 18px;
   max-width: 700px;
+}
+
+.container p {
+  line-height: 19px;
 }
 
 h1 {
@@ -96,10 +102,16 @@ label {
 }
 
 .option-wrapper {
-  display: flex;
+  display: -webkit-box;  
+  display: -ms-flexbox;
+  display: -webkit-flex; 
+  display: flex;       
 }
 
 .option-wrapper input {
+  -webkit-box-flex: 0 0 0; 
+  -webkit-flex: 0 0 0;  
+  -ms-flex: 0 0 0; 
   flex: 0 0 0;
 }
 
@@ -149,14 +161,23 @@ em {
 }
 
 .flex-wrapper {
-  display: flex;
+  display: -webkit-box;  
+  display: -ms-flexbox;
+  display: -webkit-flex; 
+  display: flex; 
+  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   max-width: 450px;
 }
 
 .flex-wrapper .option-wrapper {
-  display: flex;
-  flex-direction: row;
-  flex: 80px 0 0;
+  display: -webkit-box;  
+  display: -ms-flexbox;
+  display: -webkit-flex; 
+  display: flex; 
+  -webkit-box-flex: 80px 0 0;  
+  width: 80px;           
+  -webkit-flex: 80px 0 0;      
+  -ms-flex: 80px 0 0; 
   margin: 0 12px 16px 0;
 }

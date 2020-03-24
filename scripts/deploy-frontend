@@ -16,6 +16,7 @@ FRONTEND_DIR="$SELF_DIR/../frontend$2"
   cd "$FRONTEND_DIR"
   npm install
   INLINE_RUNTIME_CHUNK=false GENERATE_SOURCEMAP=false npm run build # don't inline webpack runtime (inline scripts are categorically banned by our CSP)
+  rm -fv build/*manifest* build/service-worker.js # remove some CRA cruft we don't need
 )
 
 # Upload & clean up files that can be aggressively cached (i.e. for 1 day)

@@ -31,7 +31,9 @@
           ja yksittäisinä vastauksina.</p>
         <p><a href="#">Lue lisää tietosuojasta täältä.</a></p>
     </div>
-    <form id="symptom-questionnaire">
+      <button id="start-survey" class="action-button">Aloita</button>
+    </div>
+    <form id="symptom-questionnaire" class="hidden">
       <div class="question-group">
         <h2 class="question-group-title">Millaisia oireita sinulla on?</h2>
         <fieldset class="input-wrapper">
@@ -222,7 +224,7 @@
       <div id="submit-error" class="hidden">
         <p><span class="error-message">Tietojen lähetys epäonnistui.</span> Ole hyvä ja yritä uudelleen</p>
       </div>
-      <button type="submit" class="submit-button">Lähetä</button>
+      <button type="submit" class="action-button">Lähetä</button>
     </form>
   </main>
 </body>

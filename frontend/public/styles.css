@@ -135,9 +135,9 @@ em {
   padding-left: 24px;
 }
 
-.submit-button {
+.action-button {
   display: block;
-  margin: 0 auto;
+  margin: 24px auto;
   height: 50px;
   width: 274px;
   padding: 5px 25px;

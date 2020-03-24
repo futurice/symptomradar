@@ -30,6 +30,13 @@ h1 {
   margin-bottom: 24px;
 }
 
+.logo {
+  max-width: 200px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
 .hidden {
   display: none;
 }

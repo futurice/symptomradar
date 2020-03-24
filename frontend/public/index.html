@@ -13,7 +13,14 @@
   <noscript>Tämä sivusto vaatii JavaScript-tuen toimiakseen.</noscript>
   <main>
     <h1>Raportoi oireesi</h1>
-    <form action="">
+    <div id="submit-success" class="hidden">
+      <p>
+        <span class="success-message">Vastauksesi on nyt tallennettu.</span>
+        Ota tämä osoite talteen,<em>oiretutka.fi/personalid</em>
+        niin voit palata päivittämään tietosi tilanteen muuttuessa.
+      </p>
+    </div>
+    <form id="symptom-questionnaire">
       <div class="question-group">
         <h2 class="question-group-title">Millaisia oireita sinulla on?</h2>
         <fieldset class="input-wrapper">
@@ -53,28 +60,29 @@
         <fieldset class="input-wrapper" aria-describedby="breathingDifficulties-description">
           <legend>Vaikeuksia hengittää</legend>
           <div class="options">
-            <em id="breathingDifficulties-description">Huom! Jos sinulla on hengitysvaikeuksia, ota heti yhteys terveydenhuoltoon.</em>
-            <input id="breathingDifficulties-yes" type="radio" name="breathingDifficulties" value="yes">
+            <em id="breathingDifficulties-description">Huom! Jos sinulla on hengitysvaikeuksia, ota heti yhteys
+              terveydenhuoltoon.</em>
+            <input id="breathingDifficulties-yes" type="radio" name="breathing_difficulties" value="yes">
             <label for="breathingDifficulties-yes">kyllä</label>
-            <input id="breathingDifficulties-no" type="radio" name="breathingDifficulties" value="no">
+            <input id="breathingDifficulties-no" type="radio" name="breathing_difficulties" value="no">
             <label for="breathingDifficulties-no">ei</label>
           </div>
         </fieldset>
         <fieldset class="input-wrapper">
           <legend>Lihaskipuja</legend>
           <div class="options">
-            <input id="musclePain-yes" type="radio" name="musclePain" value="yes">
+            <input id="musclePain-yes" type="radio" name="muscle_pain" value="yes">
             <label for="musclePain-yes">kyllä</label>
-            <input id="musclePain-no" type="radio" name="musclePain" value="no">
+            <input id="musclePain-no" type="radio" name="muscle_pain" value="no">
             <label for="musclePain-no">ei</label>
           </div>
         </fieldset>
         <fieldset class="input-wrapper">
           <legend>Kurkkukipua</legend>
           <div class="options">
-            <input id="soreThroat-yes" type="radio" name="soreThroat" value="yes">
+            <input id="soreThroat-yes" type="radio" name="sore_throat" value="yes">
             <label for="soreThroat-yes">kyllä</label>
-            <input id="soreThroat-no" type="radio" name="soreThroat" value="no">
+            <input id="soreThroat-no" type="radio" name="sore_throat" value="no">
             <label for="soreThroat-no">ei</label>
           </div>
         </fieldset>
@@ -93,34 +101,35 @@
         <fieldset class="input-wrapper" aria-describedby="generalWellBeing-description">
           <legend>Millainen on yleisvointisi?</legend>
           <div class="options">
-            <em id="generalWellBeing-description">Huom! Jos et jaksa nousta vuoteesta, ota heti yhteys terveydenhuoltoon.
+            <em id="generalWellBeing-description">Huom! Jos et jaksa nousta vuoteesta, ota heti yhteys
+              terveydenhuoltoon.
             </em>
             <div class="option-wrapper">
-              <input id="generalWellbeing-fine" type="radio" name="generalWellbeing" value="fine">
+              <input id="generalWellbeing-fine" type="radio" name="general_wellbeing" value="fine">
               <label for="generalWellbeing-fine">jaksan olla jalkeilla </label>
             </div>
             <div class="option-wrapper">
-              <input id="generalWellbeing-not ok" type="radio" name="generalWellbeing" value="not ok">
+              <input id="generalWellbeing-not ok" type="radio" name="general_wellbeing" value="not ok">
               <label for="generalWellbeing-not ok">jaksan olla jonkun verran jalkeilla ja hoitaa välttämättömät
                 kotiaskareet</label>
             </div>
             <div class="option-wrapper">
-              <input id="generalWellbeing-bad" type="radio" name="generalWellbeing" value="bad">
+              <input id="generalWellbeing-bad" type="radio" name="general_wellbeing" value="bad">
               <label for="generalWellbeing-bad">en juurikaan jaksa nousta vuoteesta</label>
             </div>
           </div>
         </fieldset>
         <div class="input-wrapper">
           <label for="duration" class="input-field-label">Kuinka kauan sinulla on ollut oireita?</label>
-          <input id="duration" class="input-field" type="text" inputmode="numeric" pattern="[0-9]*" min="0" size="2" maxlength="2"
-            placeholder="xx päivää" value=""></div>
+          <input id="duration" class="input-field" type="text" name="duration" inputmode="numeric" pattern="[0-9]*"
+            min="0" size="2" maxlength="2" placeholder="xx päivää" value=""></div>
         <fieldset class="input-wrapper">
           <legend>Onko sinulla lääkehoitoa vaativa pitkäaikaissairaus?</legend>
           <div class="options">
-            <input id="longTermMedication-yes" type="radio" name="longTermMedication" value="yes">
-            <label for="longTermMedication-yes">kyllä</label>
-            <input id="longTermMedication-no" type="radio" name="longTermMedication" value="no">
-            <label for="longTermMedication-no">ei</label>
+            <input id="longtermMedication-yes" type="radio" name="longterm_medication" value="yes">
+            <label for="longtermMedication-yes">kyllä</label>
+            <input id="longtermMedication-no" type="radio" name="longterm_medication" value="no">
+            <label for="longtermMedication-no">ei</label>
           </div>
         </fieldset>
         <fieldset class="input-wrapper">
@@ -135,10 +144,10 @@
         <fieldset class="input-wrapper">
           <legend>Epäiletkö että sinulla on koronavirus?</legend>
           <div class="options">
-            <input id="coronaSuspection-yes" type="radio" name="coronaSuspection" value="yes">
-            <label for="coronaSuspection-yes">kyllä</label>
-            <input id="coronaSuspection-no" type="radio" name="coronaSuspection" value="no">
-            <label for="coronaSuspection-no">en</label>
+            <input id="coronaSuspicion-yes" type="radio" name="corona_suspicion" value="yes">
+            <label for="coronaSuspicion-yes">kyllä</label>
+            <input id="coronaSuspicion-no" type="radio" name="corona_suspicion" value="no">
+            <label for="coronaSuspicion-no">en</label>
           </div>
         </fieldset>
       </div>
@@ -146,8 +155,8 @@
         <h2 class="question-group-title">General information</h2>
         <div class="input-wrapper">
           <label for="age" class="input-field-label">Ikä</label>
-          <input id="age" type="text" inputmode="numeric" pattern="[0-9]*" class="input-field" size="3" minlength="1" maxlength="3"
-            placeholder="" value="" />
+          <input id="age" type="text" name="age" inputmode="numeric" pattern="[0-9]*" class="input-field" size="3"
+            minlength="1" maxlength="3" placeholder="" value="" />
         </div>
         <div class="input-wrapper">
           <fieldset>
@@ -163,10 +172,13 @@
           </fieldset>
         </div>
         <div class="input-wrapper">
-          <label for="postal-code" class="input-field-label">Postinumero</label>
-          <input id="postal-code" type="text" class="input-field" inputmode="numeric" pattern="[0-9]*" size="5" minlength="5"
-            maxlength="5" autocomplete="postal-code" placeholder="00100" value="" />
+          <label for="postalCode" class="input-field-label">Postinumero</label>
+          <input id="postalCode" type="text" name="postal_code" class="input-field" inputmode="numeric" pattern="[0-9]*"
+            size="5" minlength="5" maxlength="5" autocomplete="postal-code" placeholder="00100" value="" />
         </div>
+      </div>
+      <div id="submit-error" class="hidden">
+        <p><span class="error-message">Tietojen lähetys epäonnistui.</span> Ole hyvä ja yritä uudelleen</p>
       </div>
       <button type="submit" class="submit-button">Lähetä</button>
     </form>

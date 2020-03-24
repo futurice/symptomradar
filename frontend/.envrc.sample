@@ -1,0 +1,5 @@
+# environment variables with direnv https://direnv.net/
+# duplicate this file into .envrc
+
+# for local development, setup mock api endpoint with e.g. https://mockoon.com
+export REACT_APP_API_ENDPOINT="http://localhost:3001/submit-response"

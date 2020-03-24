@@ -13,7 +13,7 @@ export function storeResponseInS3(response: ResponseModelT) {
   return s3
     .putObject({
       Bucket: bucket,
-      Key: `responses/raw/${date}/${time}/${r.participantUuid}.json`,
+      Key: `responses/raw/${date}/${time}/${r.participant_uuid}.json`,
       Body: JSON.stringify(r),
       ACL: 'private',
     })

@@ -1,15 +1,14 @@
 import { ResponseModelT } from '../common/model';
 
 export const mapPostalCode = (formData: ResponseModelT) => {
-  const poKey = 'postal_code';
-  const poCode = formData[poKey];
+  const poCode = formData.postal_code;
 
-  return lowPopulationPostalCodes.hasOwnProperty(poCode)
-    ? { ...formData, [poKey]: lowPopulationPostalCodes[poCode] }
+  return typeof poCode === 'string' && lowPopulationPostalCodes.hasOwnProperty(poCode)
+    ? { ...formData, postal_code: lowPopulationPostalCodes[poCode] }
     : formData;
 };
 
-const lowPopulationPostalCodes = {
+const lowPopulationPostalCodes: { [key: string]: string } = {
   '62920': '62900',
   '61150': '63300',
   '63320': '63300',

@@ -55,6 +55,12 @@ const response = (statusCode: number, body: object, logError?: Error) => {
     headers: {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-store,must-revalidate',
+      // Configure CORS to only allow submissions from our own UI:
+      'Access-Control-Allow-Origin': 'https://' + process.env.FRONTEND_DOMAIN,
+      'Access-Control-Allow-Methods': 'POST,OPTIONS,GET,PUT,PATCH,DELETE',
+      'Access-Control-Allow-Headers':
+        'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range',
+      'Access-Control-Expose-Headers': 'Content-Length,Content-Range',
     },
   };
 };

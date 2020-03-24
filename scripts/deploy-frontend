@@ -1,15 +1,15 @@
 #!/bin/bash
 
-if [ "$#" -ne 1 ]; then
+if [ "$#" -ne 2 ]; then
   echo "Usage examples:"
-  echo "  $ $(basename -- "$0") dev"
-  echo "  $ $(basename -- "$0") prod"
+  echo "  $ $(basename -- "$0") dev /embed/v1/"
+  echo "  $ $(basename -- "$0") prod /"
   exit 1
 fi
 
 set -euo pipefail # exit on error; treat unset variables as errors; exit on errors in piped commands
 SELF_DIR="$(perl -e 'use File::Basename; use Cwd "abs_path"; print dirname(abs_path(@ARGV[0]));' -- "$0")" # figure out the absolute path to the current script, regardless of pwd (perl is more cross-platform than realpath; https://stackoverflow.com/a/30795461)
-FRONTEND_DIR="$SELF_DIR/../frontend"
+FRONTEND_DIR="$SELF_DIR/../frontend$2"
 
 # Build the frontend static files
 (
@@ -22,12 +22,12 @@ FRONTEND_DIR="$SELF_DIR/../frontend"
 aws s3 cp \
   --cache-control=max-age=86400 \
   --recursive \
-  frontend/build/static/ "s3://symptomradar-$1-frontend-code/static/"
+  $FRONTEND_DIR/build/static/ "s3://symptomradar-$1-frontend-code${2}static/"
 rm -rfv "$FRONTEND_DIR/build/static"
 
 # Upload & clean up files that need to be served fresh
 aws s3 cp \
   --cache-control=no-store,must-revalidate \
   --recursive \
-  frontend/build/ "s3://symptomradar-$1-frontend-code/"
+  $FRONTEND_DIR/build/ "s3://symptomradar-$1-frontend-code${2}"
 rm -rfv "$FRONTEND_DIR/build"

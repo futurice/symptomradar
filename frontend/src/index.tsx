@@ -1,9 +1,14 @@
 import $ from 'jquery';
 import { v4 as uuidV4 } from 'uuid';
 
+function showForm() {
+  $('#symptom-questionnaire').removeClass('hidden');
+}
+
 function submitSuccessfully() {
   $('#submit-success').removeClass('hidden');
-  $('#symptom-questionnaire').addClass('hidden');
+  $('#symptom-questionnaire, #start-survey').addClass('hidden');
+  $('#form-info').addClass('hidden');
 }
 
 function submitFailed() {
@@ -11,12 +16,16 @@ function submitFailed() {
 }
 
 function init() {
+  $('#start-survey').click(function() {
+    showForm();
+  });
+
   const endpoint = process.env.REACT_APP_API_ENDPOINT;
   if (!endpoint) {
     console.error('Endpoint url missing');
     return;
   }
-
+  
   $('#symptom-questionnaire').submit(function(event) {
     event.preventDefault();
 

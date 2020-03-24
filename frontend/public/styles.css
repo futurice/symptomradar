@@ -1,10 +1,12 @@
 html {
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
 *,
 *:before,
 *:after {
+  -webkit-box-sizing: inherit;
   box-sizing: inherit;
 }
 
@@ -25,9 +27,20 @@ main {
   max-width: 700px;
 }
 
+.container p {
+  line-height: 19px;
+}
+
 h1 {
   font-size: 21px;
   margin-bottom: 24px;
+}
+
+.logo {
+  max-width: 200px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
 
 .hidden {
@@ -51,7 +64,7 @@ h1 {
   border: 1px solid #000;
   display: block;
   padding: 0 5px;
-  margin: 0 24px 24px;
+  margin: 20px 24px 24px;
 }
 
 .input-field::-webkit-input-placeholder {
@@ -89,10 +102,16 @@ label {
 }
 
 .option-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
 }
 
 .option-wrapper input {
+  -webkit-box-flex: 0 0 0;
+  -webkit-flex: 0 0 0;
+  -ms-flex: 0 0 0;
   flex: 0 0 0;
 }
 
@@ -128,9 +147,17 @@ em {
   padding-left: 24px;
 }
 
-.submit-button {
+.optional-field-info {
+  margin: -10px 0 24px 0;
   display: block;
-  margin: 0 auto;
+  color: #595959;
+  padding-left: 24px;
+  font-style: italic;
+}
+
+.action-button {
+  display: block;
+  margin: 24px auto;
   height: 50px;
   width: 274px;
   padding: 5px 25px;
@@ -142,14 +169,23 @@ em {
 }
 
 .flex-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
+  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   max-width: 450px;
 }
 
 .flex-wrapper .option-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
-  flex-direction: row;
-  flex: 80px 0 0;
+  -webkit-box-flex: 80px 0 0;
+  width: 80px;
+  -webkit-flex: 80px 0 0;
+  -ms-flex: 80px 0 0;
   margin: 0 12px 16px 0;
 }

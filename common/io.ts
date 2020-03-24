@@ -21,7 +21,7 @@ export const iso8601DateString = defineRegexValidatedStringType(
 );
 
 // empty string
-export const notAnswered = defineRegexValidatedStringType('notAnswered', /^$/);
+export const notAnswered = t.null;
 
 export const yesOrNo = t.union([t.literal('yes'), t.literal('no')]);
 

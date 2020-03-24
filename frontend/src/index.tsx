@@ -22,16 +22,30 @@ function init() {
 
     // serialize form data into { name: input.name, value: input.value } format
     // unanswered fields are not included
-    const answers = $(this).serializeArray();
+    const answers: { name: string; value: string }[] = $(this).serializeArray();
 
     // TODO: check required fields
 
     // add uuid and timestamp to the request data
     // snake_case is preferred for keys in AWS Athena
     // see https://docs.aws.amazon.com/athena/latest/ug/tables-databases-columns-names.html
-    const requestData: { [key: string]: string } = {
+    const requestData: { [key: string]: string | null } = {
       participant_uuid: uuidV4(),
-      response_timestamp: new Date().toISOString(),
+      timestamp: new Date().toISOString(),
+      fever: null,
+      cough: null,
+      breathing_difficulties: null,
+      muscle_pain: null,
+      sore_throat: null,
+      rhinitis: null,
+      general_wellbeing: null,
+      duration: null,
+      longterm_medication: null,
+      smoking: null,
+      corona_suspicion: null,
+      age: null,
+      gender: null,
+      postal_code: null,
     };
 
     // populate request data with answers

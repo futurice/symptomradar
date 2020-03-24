@@ -19,7 +19,7 @@ export const ResponseModel = t.exact(
   t.type({
     // Metadata:
     participant_uuid: uuidString,
-    response_timestamp: iso8601DateString,
+    timestamp: iso8601DateString,
     // Payload:
     fever: t.union([fever, notAnswered]),
     cough: t.union([cough, notAnswered]),

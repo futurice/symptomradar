@@ -25,7 +25,7 @@ if (process.argv[0].match(/\/ts-node$/)) {
   Promise.resolve()
     .then(() => ({
       participant_uuid: uuidV4(),
-      response_timestamp: new Date().toISOString(),
+      timestamp: new Date().toISOString(),
       fever: 'no',
       cough: 'mild',
       breathing_difficulties: 'no',

@@ -33,11 +33,11 @@ export const gender = t.union([t.literal('female'), t.literal('male'), t.literal
 // range of 00000 – 99999
 export const postalCode = defineRegexValidatedStringType('postCode', /^[0-9]{5}$/);
 
-export const fever = t.union([t.literal('none'), t.literal('slight'), t.literal('high')]);
+export const fever = t.union([t.literal('no'), t.literal('slight'), t.literal('high')]);
 
-export const cough = t.union([t.literal('none'), t.literal('mild'), t.literal('intense')]);
+export const cough = t.union([t.literal('no'), t.literal('mild'), t.literal('intense')]);
 
 export const generalWellbeing = t.union([t.literal('fine'), t.literal('impaired'), t.literal('bad')]);
 
 // range of 0–99 days
-export const duration = defineRegexValidatedStringType('symptomsDuration', /^[0-9]{2}$/);
+export const duration = defineRegexValidatedStringType('symptomsDuration', /^[0-9]{1,2}$/);

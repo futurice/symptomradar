@@ -69,54 +69,56 @@ module "frontend" {
   add_response_headers = {
 
     # Add basic security headers:
-    Strict-Transport-Security = "max-age=31536000"
-    X-Content-Type-Options    = "nosniff"
-    X-XSS-Protection          = "1; mode=block"
-    Referrer-Policy           = "same-origin"
+    Strict-Transport-Security = "max-age=31536000" # the page should ONLY be accessed using HTTPS, instead of using HTTP (max-age == one year)
+    X-Content-Type-Options    = "nosniff"          # the MIME types advertised in the Content-Type headers should ALWAYS be followed; this allows to opt-out of MIME type sniffing
+    X-XSS-Protection          = "1; mode=block"    # stops pages from loading when they detect reflected cross-site scripting (XSS) attacks; besides legacy browsers, superseded by CSP
+    Referrer-Policy           = "same-origin"      # a referrer will be sent for same-site origins, but cross-origin requests will send no referrer information
 
     # Add CSP header:
     # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
     Content-Security-Policy = replace(replace(replace(<<-EOT
-      default-src
-        'none'
+
+      default-src # serves as a fallback for the other CSP fetch directives; for many of the following directives, if they are absent, the user agent will look for the default-src directive and will use this value for it
+        'none' # by default, don't allow anything; we'll specifically white-list things below
         ;
-      block-all-mixed-content
+      block-all-mixed-content # prevents loading any assets using HTTP when the page is loaded using HTTPS
         ;
-      connect-src
-        ${var.backend_domain}
+      connect-src # restricts the URLs which can be loaded using script interfaces (e.g. XHR, WebSocket)
+        ${var.backend_domain} # allow connecting to the backend for this environment (but not others!)
         ;
-      form-action
-        'none'
+      form-action # restricts the URLs which can be used as the target of a form submission
+        'none' # for better or worse, all our forms are JavaScript-only -> we can prohibit all normal form submission
         ;
-      frame-ancestors
-        https://*
+      frame-ancestors # specifies valid parents that may embed a page using <frame>, <iframe>, <object>, <embed>, or <applet>
+        https://* # we host an embeddable form -> allow anyone to embed us
         ;
-      img-src
-        'self'
-        data:
+      img-src # specifies valid sources of images and favicons
+        'self' # allow regular images that ship with the UI
+        data: # allow small assets which have been inlined by webpack
         ;
-      manifest-src
-        'self'
+      manifest-src # specifies which manifest can be applied to the resource
+        'self' # our manifest is always on our own domain
         ;
-      navigate-to
-        'none'
+      navigate-to # restricts the URLs to which a document can initiate navigations by any means including <form> (if form-action is not specified), <a>, window.location, window.open, etc
+        'self' # allow navigating within our own site, but not anywhere else
         ;
-      prefetch-src
-        'none'
+      prefetch-src # specifies valid resources that may be prefetched or prerendered
+        'none' # we don't currently have any <link rel="prefetch" /> or the like -> prohibit until we do
         ;
-      script-src
-        'self'
+      script-src # specifies valid sources for JavaScript; this includes not only URLs loaded directly into <script> elements, but also things like inline script event handlers (onclick) and XSLT stylesheets which can trigger script execution
+        'self' # allow our own scripts
         ;
-      script-src-attr
-        'none'
+      script-src-attr # specifies valid sources for JavaScript inline event handlers; this includes only inline script event handlers like onclick, but not URLs loaded directly into <script> elements
+        'none' # we don't use any inline event handlers, only proper <script> elements -> prohibit them all
         ;
-      style-src
-        'self'
+      style-src # specifies valid sources for stylesheets
+        'self' # allow our CSS bundle
         ;
-      style-src-attr
-        'none'
+      style-src-attr # specifies valid sources for inline styles applied to individual DOM elements
+        'none' # we don't currently use any -> prohibit them all
         ;
 EOT
-    , "/#.*/", " "), "/[ \n]+/", " "), " ;", ";")
+    , "/#.*/", " "), "/[ \n]+/", " "), " ;", ";") # strip out comments and newlines, and collapse consecutive whitespace so it looks pleasant
+
   }
 }

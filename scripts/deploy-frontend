@@ -15,7 +15,7 @@ FRONTEND_DIR="$SELF_DIR/../frontend"
 (
   cd "$FRONTEND_DIR"
   npm install
-  npm run build
+  INLINE_RUNTIME_CHUNK=false npm run build # don't inline webpack runtime (inline scripts are categorically banned by our CSP)
 )
 
 # Upload & clean up files that can be aggressively cached (i.e. for 1 day)

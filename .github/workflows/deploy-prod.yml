@@ -26,5 +26,6 @@ jobs:
         run: |
           sudo apt-get install -y awscli
           npm install
-          ./scripts/deploy-frontend prod
+          ./scripts/deploy-frontend prod /embed/v1/
+          ./scripts/deploy-frontend prod /
           ./scripts/deploy-backend prod

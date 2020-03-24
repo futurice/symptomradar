@@ -65,4 +65,58 @@ module "frontend" {
   viewer_https_only          = true
   basic_auth_username        = "symptomradar"
   basic_auth_password        = var.frontend_password
+
+  add_response_headers = {
+
+    # Add basic security headers:
+    Strict-Transport-Security = "max-age=31536000"
+    X-Content-Type-Options    = "nosniff"
+    X-XSS-Protection          = "1; mode=block"
+    Referrer-Policy           = "same-origin"
+
+    # Add CSP header:
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+    Content-Security-Policy = replace(replace(replace(<<-EOT
+      default-src
+        'none'
+        ;
+      block-all-mixed-content
+        ;
+      connect-src
+        ${var.backend_domain}
+        ;
+      form-action
+        'none'
+        ;
+      frame-ancestors
+        https://*
+        ;
+      img-src
+        'self'
+        data:
+        ;
+      manifest-src
+        'self'
+        ;
+      navigate-to
+        'none'
+        ;
+      prefetch-src
+        'none'
+        ;
+      script-src
+        'self'
+        ;
+      script-src-attr
+        'none'
+        ;
+      style-src
+        'self'
+        ;
+      style-src-attr
+        'none'
+        ;
+EOT
+    , "/#.*/", " "), "/[ \n]+/", " "), " ;", ";")
+  }
 }

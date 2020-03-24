@@ -7,7 +7,7 @@ function showForm() {
 
 function submitSuccessfully() {
   $('#submit-success').removeClass('hidden');
-  $('#symptom-questionnaire').addClass('hidden');
+  $('#symptom-questionnaire, #start-survey').addClass('hidden');
   $('#form-info').addClass('hidden');
 }
 

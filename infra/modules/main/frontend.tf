@@ -67,56 +67,69 @@ module "frontend" {
   basic_auth_password        = var.frontend_password
 
   add_response_headers = {
+    # Hide some pseudo-sensitive upstream headers:
+    Server = ""
 
     # Add basic security headers:
-    Strict-Transport-Security = "max-age=31536000"
-    X-Content-Type-Options    = "nosniff"
-    X-XSS-Protection          = "1; mode=block"
-    Referrer-Policy           = "same-origin"
+    Strict-Transport-Security = "max-age=31536000" # the page should ONLY be accessed using HTTPS, instead of using HTTP (max-age == one year)
+    X-Frame-Options           = "deny"             # the page should NOT be allowed to render in a <frame>, <iframe>, <embed> or <object>; besides legacy browsers, superseded by CSP
+    X-Content-Type-Options    = "nosniff"          # the MIME types advertised in the Content-Type headers should ALWAYS be followed; this allows to opt-out of MIME type sniffing
+    X-XSS-Protection          = "1; mode=block"    # stops pages from loading when they detect reflected cross-site scripting (XSS) attacks; besides legacy browsers, superseded by CSP
+    Referrer-Policy           = "same-origin"      # a referrer will be sent for same-site origins, but cross-origin requests will send no referrer information
 
     # Add CSP header:
     # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
     Content-Security-Policy = replace(replace(replace(<<-EOT
-      default-src
-        'none'
+
+      default-src # serves as a fallback for the other CSP fetch directives; for many of the following directives, if they are absent, the user agent will look for the default-src directive and will use this value for it
+        'none' # by default, don't allow anything; we'll specifically white-list things below
         ;
-      block-all-mixed-content
+      base-uri # restricts the URLs which can be used in a document's <base> element; if this value is absent, then any URI is allowed
+        'self' # we use <base> URL's as part of our deploy process, but they're always local ones
         ;
-      connect-src
-        ${var.backend_domain}
+      block-all-mixed-content # prevents loading any assets using HTTP when the page is loaded using HTTPS
         ;
-      form-action
-        'none'
+      connect-src # restricts the URLs which can be loaded using script interfaces (e.g. XHR, WebSocket)
+        api.dev.example.com # allow connecting to the API for this environment (but not others!)
         ;
-      frame-ancestors
-        https://*
+      font-src # specifies valid sources for fonts loaded using @font-face
+        'self' # we only load Web Fonts from our own domain
         ;
-      img-src
-        'self'
-        data:
+      form-action # restricts the URLs which can be used as the target of a form submission
+        'none' # for better or worse, all our forms are JavaScript-only -> we can prohibit all normal form submission
         ;
-      manifest-src
-        'self'
+      frame-ancestors # specifies valid parents that may embed a page using <frame>, <iframe>, <object>, <embed>, or <applet>
+        'none' # there's (currently) no use cases where the UI should be framed -> prohibit it to prevent click-jacking attacks, etc
         ;
-      navigate-to
-        'none'
+      img-src # specifies valid sources of images and favicons
+        'self' # allow regular images that ship with the UI
+        data: # allow small assets which have been inlined by webpack
+        analytics.google.com # allow loading analytics
         ;
-      prefetch-src
-        'none'
+      manifest-src # specifies which manifest can be applied to the resource
+        'self' # our manifest is always on our own domain
         ;
-      script-src
-        'self'
+      navigate-to # restricts the URLs to which a document can initiate navigations by any means including <form> (if form-action is not specified), <a>, window.location, window.open, etc
+        'none' # TODO: Figure out why this doesn't seem to break our app; in the meantime, might as well lock it down ¯\_(ツ)_/¯
         ;
-      script-src-attr
-        'none'
+      prefetch-src # specifies valid resources that may be prefetched or prerendered
+        'none' # we don't currently have any <link rel="prefetch" /> or the like -> prohibit until we do
         ;
-      style-src
-        'self'
+      script-src # specifies valid sources for JavaScript; this includes not only URLs loaded directly into <script> elements, but also things like inline script event handlers (onclick) and XSLT stylesheets which can trigger script execution
+        'self' # allow our own scripts
+        analytics.google.com # allow loading analytics
         ;
-      style-src-attr
-        'none'
+      script-src-attr # specifies valid sources for JavaScript inline event handlers; this includes only inline script event handlers like onclick, but not URLs loaded directly into <script> elements
+        'none' # we don't use any inline event handlers, only proper <script> elements -> prohibit them all
+        ;
+      style-src # specifies valid sources for stylesheets
+        'self' # allow our CSS bundle
+        'unsafe-inline' # allow CSS dynamically inserted by our CSS-in-JS solution (https://emotion.sh/)
+        ;
+      style-src-attr # specifies valid sources for inline styles applied to individual DOM elements
+        'none' # we don't currently use any -> prohibit them all
         ;
 EOT
-    , "/#.*/", " "), "/[ \n]+/", " "), " ;", ";")
+    , "/#.*/", " "), "/[ \n]+/", " "), " ;", ";") # strip out comments and newlines, and collapse consecutive whitespace so it looks pleasant
   }
 }

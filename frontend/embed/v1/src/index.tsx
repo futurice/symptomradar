@@ -1,3 +1,4 @@
+import 'iframe-resizer/js/iframeResizer.contentWindow'; // because we ONLY need the part for the page being embedded, let's not import the whole library, to shave off some bytes from our bundle
 import './index.css';
 import $ from 'jquery';
 import { v4 as uuidV4 } from 'uuid';
@@ -26,7 +27,7 @@ function init() {
     console.error('Endpoint url missing');
     return;
   }
-  
+
   $('#symptom-questionnaire').submit(function(event) {
     event.preventDefault();
 

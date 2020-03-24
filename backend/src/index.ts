@@ -2,6 +2,7 @@ import { APIGatewayProxyHandler, Handler } from 'aws-lambda';
 import { v4 as uuidV4 } from 'uuid';
 import { assertIs, ResponseModel } from './common/model';
 import { storeResponseInS3 } from './core/main';
+import { mapPostalCode } from './core/postalCode';
 
 export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
   console.log(`Incoming request: ${event.httpMethod} ${event.path}`, {
@@ -12,6 +13,7 @@ export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
   return Promise.resolve()
     .then(() => JSON.parse(event.body || '') as unknown)
     .then(assertIs(ResponseModel))
+    .then(mapPostalCode)
     .then(storeResponseInS3)
     .then(() => response(200, { success: true }))
     .catch(err => response(500, { error: true }, err));
@@ -39,9 +41,10 @@ if (process.argv[0].match(/\/ts-node$/)) {
       corona_suspicion: 'no',
       age: '18',
       gender: 'other',
-      postal_code: '01234',
+      postal_code: '27160',
     }))
     .then(assertIs(ResponseModel))
+    .then(mapPostalCode)
     .catch(err => err)
     .then(res => console.log(res));
 }

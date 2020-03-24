@@ -1,3 +1,4 @@
+import './index.css';
 import $ from 'jquery';
 import { v4 as uuidV4 } from 'uuid';
 

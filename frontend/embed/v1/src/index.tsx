@@ -75,21 +75,26 @@ function init() {
   $('#symptom-questionnaire').submit(function(event) {
     event.preventDefault();
 
-    const answers = Array.prototype.slice
-      .call(document.querySelectorAll('#symptom-questionnaire input'))
-      .map((el: HTMLInputElement) => (el.type !== 'radio' || el.checked ? { [el.name]: el.value } : {}))
-      .reduce((memo, next) => ({ ...memo, ...next }), {});
+    // serialize form data into { name: input.name, value: input.value } format
+    // unanswered fields are not included
+    const answers = $(this)
+      .serializeArray()
+      .map(x => (x.value === '' ? { ...x, value: null } : x)) // convert empty strings (i.e. skipped questions) to nulls
+      .reduce((memo, next) => ({ ...memo, [next.name]: next.value }), {});
     const meta = { participant_uuid: getParticipantId(), timestamp: new Date().toISOString() };
     const submission = { ...meta, ...answers };
 
     // persist participant_uuid – it will be reused if participant answers again
     storeParticipantId(submission.participant_uuid);
 
-    fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(submission),
-    }).then(res => (res.ok ? submitSuccessfully() : submitFailed()));
+    $.ajax({
+      url: endpoint,
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify(submission),
+    })
+      .done(submitSuccessfully)
+      .fail(submitFailed);
   });
 }
 

@@ -67,7 +67,7 @@ module "frontend" {
   origin_custom_header_value = random_string.s3_read_password.result                     # somewhat perplexingly, this is the "correct" way to ensure users can't bypass CloudFront on their way to S3 resources; https://abridge2devnull.com/posts/2018/01/restricting-access-to-a-cloudfront-s3-website-origin/
   site_domain                = var.frontend_domain
   viewer_https_only          = true
-  basic_auth_username        = "symptomradar"
+  basic_auth_username        = var.frontend_password == "" ? "" : "symptomradar"
   basic_auth_password        = var.frontend_password
 
   add_response_headers = {

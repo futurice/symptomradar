@@ -3,6 +3,50 @@ import './index.css';
 import $ from 'jquery';
 import { v4 as uuidV4 } from 'uuid';
 
+function storageAvailable() {
+  try {
+    const storage = window.localStorage;
+    const test = 'storageTest';
+    storage.setItem(test, test);
+    storage.removeItem(test);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function localStorageIdKey() {
+  return 'submitId';
+}
+
+function localStorageTimestampKey() {
+  return 'lastSubmitAt';
+}
+
+function getParticipantId() {
+  if (storageAvailable()) {
+    const participantId = window.localStorage.getItem(localStorageIdKey());
+    const previousTimestamp = window.localStorage.getItem(localStorageTimestampKey());
+
+    // if id already exists and timestamp is less than 14 days old, use the same id
+    // otherwise generate new id
+    // always generate new timestamp
+    const isValid =
+      !!participantId && !!previousTimestamp && Date.now() - parseInt(previousTimestamp, 10) < 14 * 24 * 60 * 60 * 1000;
+
+    return isValid ? participantId : uuidV4();
+  }
+  return uuidV4();
+}
+
+function storeParticipantId(participantId: string) {
+  if (storageAvailable()) {
+    window.localStorage.clear();
+    window.localStorage.setItem(localStorageIdKey(), participantId);
+    window.localStorage.setItem(localStorageTimestampKey(), Date.now().toString(10));
+  }
+}
+
 function showForm() {
   $('#symptom-questionnaire').removeClass('hidden');
 }
@@ -41,7 +85,7 @@ function init() {
     // snake_case is preferred for keys in AWS Athena
     // see https://docs.aws.amazon.com/athena/latest/ug/tables-databases-columns-names.html
     const requestData: { [key: string]: string | null } = {
-      participant_uuid: uuidV4(),
+      participant_uuid: getParticipantId(),
       timestamp: new Date().toISOString(),
       fever: null,
       cough: null,
@@ -65,6 +109,9 @@ function init() {
     }
 
     console.log(requestData);
+
+    // persist participant_uuid – it will be reused if participant answers again
+    storeParticipantId(requestData.participant_uuid as string);
 
     $.post(endpoint, requestData)
       .done(submitSuccessfully)

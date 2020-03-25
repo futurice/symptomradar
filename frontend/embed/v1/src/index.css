@@ -24,7 +24,10 @@ main {
 
 .container {
   padding: 0 18px;
-  max-width: 700px;
+}
+
+.form-info {
+  max-width: 800px;
 }
 
 .container p {
@@ -32,15 +35,16 @@ main {
 }
 
 h1 {
-  font-size: 21px;
-  margin-bottom: 24px;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 0 24px;
 }
 
 .logo {
   max-width: 200px;
   height: auto;
   display: block;
-  margin: 0 auto;
+  margin-bottom: 24px;
 }
 
 .hidden {
@@ -113,6 +117,7 @@ label {
   -webkit-flex: 0 0 0;
   -ms-flex: 0 0 0;
   flex: 0 0 0;
+  min-width: 20px;
 }
 
 .option-wrapper:not(:last-child) {
@@ -157,15 +162,24 @@ em {
 
 .action-button {
   display: block;
-  margin: 24px auto;
+  margin: 24px 0;
   height: 50px;
   width: 274px;
   padding: 5px 25px;
-  background: #328709;
+  background-color: #328709;
   border-radius: 100px;
   font-weight: bold;
   font-size: 16px;
   color: #ffffff;
+  cursor: pointer;
+}
+
+.action-button:hover, .action-button:active {
+  background-color: #409615;
+}
+
+form .action-button {
+  margin-left: 24px;
 }
 
 .flex-wrapper {

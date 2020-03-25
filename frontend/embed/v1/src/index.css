@@ -23,7 +23,7 @@ main {
 }
 
 .container {
-  padding: 0 18px;
+  padding: 0 2px;
 }
 
 .form-info {
@@ -68,7 +68,7 @@ h1 {
   border: 1px solid #000;
   display: block;
   padding: 0 5px;
-  margin: 20px 24px 24px;
+  margin: 20px 24px 24px 18px;
 }
 
 .input-field::-webkit-input-placeholder {
@@ -92,13 +92,13 @@ label {
 }
 
 .options {
-  padding-left: 24px;
+  padding-left: 18px;
   margin-bottom: 24px;
 }
 
 .input-wrapper {
   margin: 0 0 24px 0;
-  padding: 0 24px;
+  padding: 0 16px;
 }
 
 .input-wrapper:not(:last-child) {
@@ -113,11 +113,12 @@ label {
 }
 
 .option-wrapper input {
-  -webkit-box-flex: 0 0 0;
-  -webkit-flex: 0 0 0;
-  -ms-flex: 0 0 0;
-  flex: 20px 0 0;
+  -webkit-box-flex: 0 0 20px;
+  -webkit-flex: 0 0 20px;
+  -ms-flex: 0 0 20px;
+  flex: 0 0 20px;
   min-width: 20px;
+  width: 20px;
 }
 
 .option-wrapper:not(:last-child) {
@@ -142,7 +143,7 @@ label {
   border: 1px solid #b4b4b4;
   border-width: 1px 0 1px 0;
   width: 100%;
-  padding: 12px 24px;
+  padding: 12px 16px;
 }
 
 em {
@@ -153,7 +154,7 @@ em {
 }
 
 .optional-field-info {
-  margin: -10px 0 24px 0;
+  margin: -10px 0 18px 0;
   display: block;
   color: #595959;
   padding-left: 24px;
@@ -197,9 +198,9 @@ form .action-button {
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
-  -webkit-box-flex: 80px 0 0;
+  -webkit-box-flex: 0 0 80px;
   width: 80px;
-  -webkit-flex: 80px 0 0;
-  -ms-flex: 80px 0 0;
+  -webkit-flex: 0 0 80px;
+  -ms-flex: 0 0 80px;
   margin: 0 12px 16px 0;
 }

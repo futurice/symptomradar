@@ -63,7 +63,7 @@ const response = (statusCode: number, body?: object, logError?: Error) => {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-store,must-revalidate',
       // Configure CORS to only allow submissions from our own UI:
-      'Access-Control-Allow-Origin': 'https://' + process.env.FRONTEND_DOMAIN,
+      'Access-Control-Allow-Origin': process.env.CORS_ALLOW_ORIGIN || '',
       'Access-Control-Allow-Methods': 'POST,OPTIONS,GET,PUT,PATCH,DELETE',
       'Access-Control-Allow-Headers':
         'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range',

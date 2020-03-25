@@ -174,7 +174,7 @@ em {
   cursor: pointer;
 }
 
-.action-button:hover {
+.action-button:hover, .action-button:active {
   background-color: #409615;
 }
 

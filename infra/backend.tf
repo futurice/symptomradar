@@ -12,7 +12,7 @@ resource "aws_s3_bucket" "terraform_state" {
   }
 
   logging {
-    target_bucket = aws_s3_bucket.s3logs.id
+    target_bucket = aws_s3_bucket.s3_logs.id
     target_prefix = "${var.name_prefix}-terraform-state/"
   }
 }

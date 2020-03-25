@@ -21,6 +21,10 @@ variable "frontend_password" {
   default     = ""
 }
 
+variable "s3_logs_bucket" {
+  description = "S3 Access logs bucket"
+}
+
 locals {
   tags_backend  = merge(var.tags, { Component = "backend" })
   tags_frontend = merge(var.tags, { Component = "frontend" })

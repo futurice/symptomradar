@@ -14,6 +14,7 @@ module "env_dev" {
   frontend_password = var.frontend_password
   frontend_domain   = "dev.oiretutka.fi"
   backend_domain    = "api.dev.oiretutka.fi"
+  s3_logs_bucket    = aws_s3_bucket.s3logs.id
 }
 
 # Implements an instance of the app, for a specific env
@@ -26,6 +27,25 @@ module "env_prod" {
   frontend_password = var.frontend_password
   frontend_domain   = "www.oiretutka.fi"
   backend_domain    = "api.oiretutka.fi"
+
+  s3_logs_bucket = aws_s3_bucket.s3logs.id
+}
+
+resource "aws_s3_bucket" "s3logs" {
+  bucket = "s3logs-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}"
+  acl    = "log-delivery-write"
+
+  versioning {
+    enabled = true
+  }
+
+  lifecycle_rule {
+    id      = "log"
+    enabled = true
+    expiration {
+      days = 730
+    }
+  }
 }
 
 # Pass along any output from the instantiated module

@@ -24,6 +24,10 @@ resource "aws_s3_bucket" "frontend_code" {
     index_document = "index.html"
     error_document = "error.html"
   }
+  logging {
+    target_bucket = var.s3_logs_bucket
+    target_prefix = "${var.name_prefix}-frontend-code/"
+  }
 }
 
 # This is used to allow access to our S3 bucket from CloudFront, and nowhere else

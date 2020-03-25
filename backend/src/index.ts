@@ -10,13 +10,17 @@ export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
     queryString: event.queryStringParameters,
     body: event.body,
   });
-  return Promise.resolve()
-    .then(() => JSON.parse(event.body || '') as unknown)
-    .then(assertIs(ResponseModel))
-    .then(mapPostalCode)
-    .then(storeResponseInS3)
-    .then(() => response(200, { success: true }))
-    .catch(err => response(500, { error: true }, err));
+  if (event.httpMethod === 'OPTIONS') {
+    return Promise.resolve().then(() => response(200, undefined));
+  } else {
+    return Promise.resolve()
+      .then(() => JSON.parse(event.body || '') as unknown)
+      .then(assertIs(ResponseModel))
+      .then(mapPostalCode)
+      .then(storeResponseInS3)
+      .then(() => response(200, { success: true }))
+      .catch(err => response(500, { error: true }, err));
+  }
 };
 
 export const workerEntrypoint: Handler<unknown> = () => {
@@ -49,12 +53,12 @@ if (process.argv[0].match(/\/ts-node$/)) {
     .then(res => console.log(res));
 }
 
-const response = (statusCode: number, body: object, logError?: Error) => {
+const response = (statusCode: number, body?: object, logError?: Error) => {
   console.log(`Outgoing response: ${statusCode}`, { body });
   if (logError) console.error('ERROR', logError);
   return {
     statusCode,
-    body: JSON.stringify(body, null, 2),
+    body: body ? JSON.stringify(body, null, 2) : '',
     headers: {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-store,must-revalidate',

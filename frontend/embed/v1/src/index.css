@@ -14,6 +14,7 @@ body {
   font-family: sans-serif;
   margin: 0;
   font-size: 16px;
+  line-height: 1.25;
   color: #000000;
 }
 
@@ -30,12 +31,9 @@ main {
   max-width: 800px;
 }
 
-.container p {
-  line-height: 19px;
-}
-
 h1 {
   font-size: 16px;
+  line-height: 1.25;
   font-weight: bold;
   margin: 0 0 24px;
 }
@@ -46,6 +44,9 @@ h1 {
   display: block;
   margin-bottom: 24px;
 }
+
+/* To make sure mobile devices don't zoom in on input focus */ 
+input { font-size: 100%; }
 
 .hidden {
   display: none;
@@ -176,11 +177,9 @@ em {
 }
 
 .optional-field-info {
-  margin: -10px 0 18px 0;
-  display: block;
   color: #595959;
-  padding-left: 24px;
   font-style: italic;
+  font-weight: normal;
 }
 
 .button {
@@ -220,9 +219,7 @@ form .action-button {
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
-  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  max-width: 450px;
 }
 
 .flex-wrapper .option-wrapper {

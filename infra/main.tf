@@ -29,7 +29,7 @@ module "env_prod" {
 }
 
 resource "aws_s3_bucket" "s3_logs" {
-  bucket = "s3logs-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}"
+  bucket = "${var.name_prefix}-s3logs-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}"
   acl    = "log-delivery-write"
 
   versioning {

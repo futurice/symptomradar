@@ -29,9 +29,11 @@ module "env_prod" {
   s3_logs_bucket  = aws_s3_bucket.s3_logs.id
 }
 
+# S3 access logs for our various buckets are stored here
 resource "aws_s3_bucket" "s3_logs" {
   bucket = "${var.name_prefix}-s3logs-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}"
   acl    = "log-delivery-write"
+  tags   = var.tags
 
   versioning {
     enabled = true

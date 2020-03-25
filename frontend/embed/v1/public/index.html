@@ -13,25 +13,26 @@
     <div class="container">
       <img class="logo" src="./oiretutka-logo.svg" alt="">
       <div id="submit-success" class="hidden">
-        <p>
-          <span class="success-message">Kiitos vastauksistasi. Pyydämme, että palaat kertomaan oireistasi kolmen päivän
-            kuluttua. Jos epäilet sairastuneesi koronavirukseen ja haluat tehdä oirearvion, siirry THL:n ylläpitämään <a
-              href="https://www.omaolo.fi/">Omaolo.fi -palveluun.</a></span>
-        </p>
+        <div class="success-message">
+          <p>Kiitos vastauksistasi.</p>
+          <p>Pyydämme, että palaat kertomaan oireistasi kolmen päivän kuluttua. Jos täytät kyselyn uudelleen samalla laitteella 14 vuorokauden kuluessa, vastaukset voidaan yhdistää keskenään, jolloin tiedoista on enemmän hyötyä. Tiedot ovat silti anonyymejä, eikä niitä voi palvelussa yhdistää vastaajaan. <a href="#">Lue lisää tietosuojasta täältä.</a></p>
+          <p>Kun vastauksia on kertynyt riittävästi, niitä aletaan tutkia yhteistyössä terveydenhuollon asiantuntijoiden kanssa.</p>
+          <p>Jos epäilet sairastuneesi koronaviruksen aiheuttamaan tautiin ja haluat tehdä oirearvion, siirry Terveyden ja hyvinvoinnin laitoksen ylläpitämään <a
+              href="https://www.omaolo.fi/">Omaolo.fi-palveluun.</a></p>
+        </div>
       </div>
       <div id="form-info" class="form-info">
-        <h1>Kerro onko sinulla oireita vai ei: auta seuraamaan, miten koronavirus leviää</h1>
+        <h1>Kerro, onko sinulla oireita vai ei: auta selvittämään, miten koronavirus leviää</h1>
         <p>Suomalaiset mediat pyytävät Oiretutka-palvelussa lukijoiltaan tietoa, onko heillä koronavirukseen viittaavia
           oireita vai ei. </p>
         <p>Kertomalla tilanteestasi – myös terveenä – voit auttaa mediaa kertomaan paremmin siitä, miten
-          virus leviää. Oiretutkaan tallennettuja tietoja ei voi yhdistää vastaajaan. Vastauksia julkaistaan
-          yhteenvetona
-          ja yksittäisinä vastauksina.</p>
+          virus leviää. Oiretutkaan tallennettuja tietoja ei voi yhdistää vastaajaan. Vastauksia julkaistaan yhteenvetona ja yksittäisinä vastauksina. Kysely on suunniteltu yhteistyössä Helsingin yliopiston kansanterveystieteen osaston kanssa.</p>
         <p><a href="#">Lue lisää tietosuojasta täältä.</a></p>
       </div>
-      <button id="start-survey" class="action-button">Aloita</button>
+      <button id="start-survey" class="button action-button">Aloita</button>
     </div>
     <form id="symptom-questionnaire" class="hidden">
+      <button id="collapse-survey" class="collapse-button">Sulje kysely</button>
       <div class="question-group">
         <h2 class="question-group-title">Millaisia oireita sinulla on?</h2>
         <fieldset class="input-wrapper">
@@ -76,7 +77,7 @@
             <input id="breathingDifficulties-no" type="radio" name="breathing_difficulties" value="no">
             <label for="breathingDifficulties-no">ei</label>
           </div>
-          <em id="breathingDifficulties-description">Huom! Jos sinulla on hengitysvaikeuksia, ota heti yhteys
+          <em id="breathingDifficulties-description">Jos sinulla on hengitysvaikeuksia, ota heti yhteys
             terveydenhuoltoon.</em>
         </fieldset>
         <fieldset class="input-wrapper">
@@ -126,7 +127,7 @@
               <label for="generalWellbeing-bad">en juurikaan jaksa nousta vuoteesta</label>
             </div>
           </div>
-          <em id="generalWellBeing-description">Huom! Jos et jaksa nousta vuoteesta, ota heti yhteys terveydenhuoltoon.
+          <em id="generalWellBeing-description">Jos et jaksa nousta vuoteesta, ota heti yhteys terveydenhuoltoon.
           </em>
         </fieldset>
         <div class="input-wrapper">
@@ -155,7 +156,7 @@
           </div>
         </fieldset>
         <fieldset class="input-wrapper">
-          <legend>Epäiletkö että sinulla on koronavirus?</legend>
+          <legend>Epäiletkö, että olet saanut koronavirustartunnan?</legend>
           <div class="options">
             <input id="coronaSuspicion-yes" type="radio" name="corona_suspicion" value="yes" required>
             <label for="coronaSuspicion-yes">kyllä</label>
@@ -169,6 +170,10 @@
         <fieldset class="input-wrapper">
           <legend>Ikä</legend>
           <div class="options flex-wrapper">
+            <div class="option-wrapper">
+              <input id="age-0-9" type="radio" name="age_group" value="0" required>
+              <label for="age-0-9">0-9</label>
+            </div>
             <div class="option-wrapper">
               <input id="age-10-19" type="radio" name="age_group" value="10" required>
               <label for="age-10-19">10-19</label>
@@ -223,9 +228,10 @@
         </div>
       </div>
       <div id="submit-error" class="hidden">
-        <p><span class="error-message">Tietojen lähetys epäonnistui.</span> Ole hyvä ja yritä uudelleen</p>
+        <p><span class="error-message">Tietojen lähetys epäonnistui.</span> Ole hyvä ja yritä uudelleen.</p>
       </div>
-      <button type="submit" class="action-button">Lähetä</button>
+      <button type="submit" class="button action-button">Lähetä</button>
+      <button type="button" id="cancel-survey" class="button cancel-button">Peruuta</button>
     </form>
   </main>
 </body>

@@ -47,13 +47,19 @@ function storeParticipantId(participantId: string) {
   }
 }
 
-function showForm() {
+function startSurvey() {
   $('#symptom-questionnaire').removeClass('hidden');
+  $('#start-survey').addClass('hidden');
+}
+
+function hideSurvey() {
+  $('#symptom-questionnaire').addClass('hidden');
+  $('#start-survey').removeClass('hidden');
 }
 
 function submitSuccessfully() {
   $('#submit-success').removeClass('hidden');
-  $('#symptom-questionnaire, #start-survey').addClass('hidden');
+  $('#symptom-questionnaire').addClass('hidden');
   $('#form-info').addClass('hidden');
 }
 
@@ -63,7 +69,16 @@ function submitFailed() {
 
 function init() {
   $('#start-survey').click(function() {
-    showForm();
+    startSurvey();
+  });
+
+  $('#collapse-survey').click(function() {
+    hideSurvey();
+  });
+
+  $('#cancel-survey').click(function() {
+    hideSurvey();
+    $("#symptom-questionnaire").trigger("reset")
   });
 
   const endpoint = process.env.REACT_APP_API_ENDPOINT;

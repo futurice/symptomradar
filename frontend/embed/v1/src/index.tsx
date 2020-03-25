@@ -34,7 +34,7 @@ function getParticipantId() {
     const isValid =
       !!participantId && !!previousTimestamp && Date.now() - parseInt(previousTimestamp, 10) < 14 * 24 * 60 * 60 * 1000;
 
-    return isValid ? participantId : uuidV4();
+    return isValid && participantId ? participantId : uuidV4();
   }
   return uuidV4();
 }

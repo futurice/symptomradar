@@ -137,13 +137,13 @@
           <em id="generalWellBeing-description">Jos et jaksa nousta vuoteesta, ota heti yhteys terveydenhuoltoon.
           </em>
         </fieldset>
-        <div class="input-wrapper">
+        <fieldset class="input-wrapper">
           <label for="duration" class="input-field-label">Kuinka monta päivää oireesi ovat kestäneet? <span
               class="optional-field-info">(Voit jättää vastaamatta, jos sinulla ei ole
               oireita)</span></label>
           <input id="duration" class="input-field" type="text" name="duration" inputmode="numeric" pattern="[0-9]*"
             min="0" size="2" maxlength="2" placeholder="" value="" aria-describedby="duration-optional">
-        </div>
+        </fieldset>
         <fieldset class="input-wrapper">
           <legend>Onko sinulla lääkehoitoa vaativa pitkäaikaissairaus?</legend>
           <div class="options">
@@ -219,24 +219,22 @@
             </div>
           </div>
         </fieldset>
-        <div class="input-wrapper">
-          <fieldset>
-            <legend>Sukupuoli</legend>
-            <div class="options">
-              <input id="gender-female" type="radio" name="gender" value="female" required>
-              <label for="gender-female">nainen</label>
-              <input id="gender-male" type="radio" name="gender" value="male">
-              <label for="gender-male">mies</label>
-              <input id="gender-other" type="radio" name="gender" value="other">
-              <label for="gender-other">muu</label>
-            </div>
-          </fieldset>
-        </div>
-        <div class="input-wrapper">
+        <fieldset class="input-wrapper">
+          <legend>Sukupuoli</legend>
+          <div class="options">
+            <input id="gender-female" type="radio" name="gender" value="female" required>
+            <label for="gender-female">nainen</label>
+            <input id="gender-male" type="radio" name="gender" value="male">
+            <label for="gender-male">mies</label>
+            <input id="gender-other" type="radio" name="gender" value="other">
+            <label for="gender-other">muu</label>
+          </div>
+        </fieldset>
+        <fieldset class="input-wrapper">
           <label for="postalCode" class="input-field-label">Postinumero</label>
           <input id="postalCode" type="text" name="postal_code" class="input-field" inputmode="numeric" pattern="[0-9]*"
             size="5" minlength="5" maxlength="5" autocomplete="postal-code" placeholder="00100" value="" required />
-        </div>
+        </fieldset>
       </div>
       <div id="submit-error" class="hidden">
         <p><span class="error-message">Tietojen lähetys epäonnistui.</span> Ole hyvä ja yritä uudelleen.</p>

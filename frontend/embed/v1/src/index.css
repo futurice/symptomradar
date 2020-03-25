@@ -45,8 +45,10 @@ h1 {
   margin-bottom: 24px;
 }
 
-/* To make sure mobile devices don't zoom in on input focus */ 
-input { font-size: 100%; }
+/* To make sure mobile devices don't zoom in on input focus */
+input {
+  font-size: 100%;
+}
 
 .hidden {
   display: none;
@@ -128,6 +130,14 @@ label {
   border-bottom: 1px solid #b4b4b4;
 }
 
+.input-wrapper.invalid-value {
+  border-left: solid 2px #d32222;
+}
+
+.input-wrapper.invalid-value label {
+  color: #d32222;
+}
+
 .option-wrapper {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -205,7 +215,8 @@ em {
   background-color: #848484;
 }
 
-.action-button:hover, .action-button:active {
+.action-button:hover,
+.action-button:active {
   background-color: #409615;
 }
 

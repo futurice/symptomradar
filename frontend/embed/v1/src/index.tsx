@@ -78,7 +78,28 @@ function init() {
 
   $('#cancel-survey').click(function() {
     hideSurvey();
-    $("#symptom-questionnaire").trigger("reset")
+    $('#symptom-questionnaire').trigger('reset');
+  });
+
+  $('#symptom-questionnaire input:required').change(function(event) {
+    // attach onchange handler to each input
+    // on value change, remove invalid highlight from the input wrapper if exists
+    const $inputWrapper = $(this).parents('.invalid-value');
+
+    if ($inputWrapper.hasClass('invalid-value') && $inputWrapper.not(':invalid')) {
+      $inputWrapper.removeClass('invalid-value');
+    }
+  });
+
+  $('#submit-survey').click(function(event) {
+    // check that inputs with __required__ attribute are filled
+    // if a required input has invalid value, the form submit event won't fire at all
+    const $invalidFields = $('#symptom-questionnaire .input-wrapper:invalid');
+
+    if ($invalidFields.length > 0) {
+      $invalidFields.addClass('invalid-value');
+      $('#submit-error').removeClass('hidden');
+    }
   });
 
   const endpoint = process.env.REACT_APP_API_ENDPOINT;

@@ -19,7 +19,7 @@
           <p>Kun vastauksia on kertynyt riittävästi, niitä aletaan tutkia yhteistyössä terveydenhuollon asiantuntijoiden kanssa.</p>
           <p>Jos epäilet sairastuneesi koronaviruksen aiheuttamaan tautiin ja haluat tehdä oirearvion, siirry Terveyden ja hyvinvoinnin laitoksen ylläpitämään <a
               href="https://www.omaolo.fi/">Omaolo.fi-palveluun.</a></p>
-      </div>
+        </div>
       </div>
       <div id="form-info" class="form-info">
         <h1>Kerro, onko sinulla oireita vai ei: auta selvittämään, miten koronavirus leviää</h1>
@@ -29,9 +29,10 @@
           virus leviää. Oiretutkaan tallennettuja tietoja ei voi yhdistää vastaajaan. Vastauksia julkaistaan yhteenvetona ja yksittäisinä vastauksina. Kysely on suunniteltu yhteistyössä Helsingin yliopiston kansanterveystieteen osaston kanssa.</p>
         <p><a href="#">Lue lisää tietosuojasta täältä.</a></p>
       </div>
-      <button id="start-survey" class="action-button">Aloita</button>
+      <button id="start-survey" class="button action-button">Aloita</button>
     </div>
     <form id="symptom-questionnaire" class="hidden">
+      <button id="collapse-survey" class="collapse-button">Sulje kysely</button>
       <div class="question-group">
         <h2 class="question-group-title">Millaisia oireita sinulla on?</h2>
         <fieldset class="input-wrapper">
@@ -229,7 +230,8 @@
       <div id="submit-error" class="hidden">
         <p><span class="error-message">Tietojen lähetys epäonnistui.</span> Ole hyvä ja yritä uudelleen.</p>
       </div>
-      <button type="submit" class="action-button">Lähetä</button>
+      <button type="submit" class="button action-button">Lähetä</button>
+      <button type="button" id="cancel-survey" class="button cancel-button">Peruuta</button>
     </form>
   </main>
 </body>

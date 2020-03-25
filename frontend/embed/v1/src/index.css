@@ -54,12 +54,34 @@ h1 {
 .success-message {
   display: block;
   margin-bottom: 24px;
-  font-size: 18px;
 }
 
 .error-message {
   color: #d32222;
   font-size: 18px;
+}
+
+.collapse-button {
+  background-color: transparent;
+  font-size: 16px;
+  font-weight: bold;
+  position: relative;
+  padding: 5px 16px 5px 2px;
+  margin: 12px 0;
+  border: none;
+  cursor: pointer;
+}
+
+.collapse-button:after {
+  content: '';
+  position: absolute;
+  right: 0;
+  background-image: url('./angle.svg');
+  background-size: 10px 10px;
+  height: 10px;
+  width: 10px;
+  top: 10px;
+  transform: rotate(180deg);
 }
 
 .input-field {
@@ -161,18 +183,27 @@ em {
   font-style: italic;
 }
 
-.action-button {
-  display: block;
-  margin: 24px 0;
+.button {
+  min-width: 136px;
   height: 50px;
-  width: 274px;
   padding: 5px 25px;
-  background-color: #328709;
+  border: none;
   border-radius: 100px;
   font-weight: bold;
   font-size: 16px;
   color: #ffffff;
   cursor: pointer;
+  margin: 24px 0;
+}
+
+
+.action-button {
+  width: 274px;
+  background-color: #328709;
+}
+
+.cancel-button {
+  background-color: #848484;
 }
 
 .action-button:hover, .action-button:active {
@@ -180,7 +211,8 @@ em {
 }
 
 form .action-button {
-  margin-left: 24px;
+  margin: 24px 16px 24px;
+  width: auto;
 }
 
 .flex-wrapper {
@@ -198,9 +230,9 @@ form .action-button {
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
-  -webkit-box-flex: 0 0 80px;
-  width: 80px;
-  -webkit-flex: 0 0 80px;
-  -ms-flex: 0 0 80px;
+  -webkit-box-flex: 0 0 85px;
+  width: 85px;
+  -webkit-flex: 0 0 85px;
+  -ms-flex: 0 0 85px;
   margin: 0 12px 16px 0;
 }

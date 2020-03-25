@@ -32,7 +32,7 @@ export const ResponseModel = t.exact(
     longterm_medication: t.union([yesOrNo, notAnswered]),
     smoking: t.union([yesOrNo, notAnswered]),
     corona_suspicion: t.union([yesOrNo, notAnswered]),
-    age: t.union([age, notAnswered]),
+    age_group: t.union([age, notAnswered]),
     gender: t.union([gender, notAnswered]),
     postal_code: t.union([postalCode, notAnswered]),
   }),

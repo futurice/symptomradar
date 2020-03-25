@@ -94,9 +94,6 @@ module "frontend" {
       form-action # restricts the URLs which can be used as the target of a form submission
         'none' # for better or worse, all our forms are JavaScript-only -> we can prohibit all normal form submission
         ;
-      frame-ancestors # specifies valid parents that may embed a page using <frame>, <iframe>, <object>, <embed>, or <applet>
-        https://* # we host an embeddable form -> allow anyone to embed us
-        ;
       img-src # specifies valid sources of images and favicons
         'self' # allow regular images that ship with the UI
         data: # allow small assets which have been inlined by webpack

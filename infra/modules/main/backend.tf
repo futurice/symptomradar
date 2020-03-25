@@ -19,7 +19,7 @@ module "backend_api" {
 
   function_env_vars = {
     BUCKET_NAME_STORAGE = aws_s3_bucket.storage.id
-    FRONTEND_DOMAIN     = var.frontend_domain
+    CORS_ALLOW_ORIGIN   = var.backend_cors_allow_any ? "*" : "https://${var.frontend_domain}"
   }
 }
 

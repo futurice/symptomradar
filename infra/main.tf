@@ -9,10 +9,11 @@ module "env_dev" {
   source    = "./modules/main"
   providers = { aws.us_east_1 = aws.us_east_1 } # this alias is needed because ACM is only available in the "us-east-1" region
 
-  name_prefix     = "${var.name_prefix}-dev"
-  tags            = merge(var.tags, { Environment = "dev" })
-  frontend_domain = "dev.oiretutka.fi"
-  backend_domain  = "api.dev.oiretutka.fi"
+  name_prefix            = "${var.name_prefix}-dev"
+  tags                   = merge(var.tags, { Environment = "dev" })
+  frontend_domain        = "dev.oiretutka.fi"
+  backend_domain         = "api.dev.oiretutka.fi"
+  backend_cors_allow_any = true
 }
 
 # Implements an instance of the app, for a specific env

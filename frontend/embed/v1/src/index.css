@@ -117,6 +117,7 @@ label {
   -webkit-flex: 0 0 0;
   -ms-flex: 0 0 0;
   flex: 0 0 0;
+  min-width: 20px;
 }
 
 .option-wrapper:not(:last-child) {

@@ -11,14 +11,19 @@
   <noscript>Tämä sivusto vaatii JavaScript-tuen toimiakseen.</noscript>
   <main>
     <div class="container">
-      <img class="logo" src="./oiretutka-logo.svg" alt="">
+      <img class="logo" src="./oiretutka-logo.svg" alt="Oiretutka. Helsingin Sanomat ja Futurice.">
       <div id="submit-success" class="hidden">
         <div class="success-message">
           <p>Kiitos vastauksistasi.</p>
-          <p>Pyydämme, että palaat kertomaan oireistasi kolmen päivän kuluttua. Jos täytät kyselyn uudelleen samalla laitteella 14 vuorokauden kuluessa, vastaukset voidaan yhdistää keskenään, jolloin tiedoista on enemmän hyötyä. Tiedot ovat silti anonyymejä, eikä niitä voi palvelussa yhdistää vastaajaan. <a href="#">Lue lisää tietosuojasta täältä.</a></p>
-          <p>Kun vastauksia on kertynyt riittävästi, niitä aletaan tutkia yhteistyössä terveydenhuollon asiantuntijoiden kanssa.</p>
-          <p>Jos epäilet sairastuneesi koronaviruksen aiheuttamaan tautiin ja haluat tehdä oirearvion, siirry Terveyden ja hyvinvoinnin laitoksen ylläpitämään <a
-              href="https://www.omaolo.fi/">Omaolo.fi-palveluun.</a></p>
+          <p>Pyydämme, että palaat kertomaan oireistasi kolmen päivän kuluttua. Jos täytät kyselyn uudelleen samalla
+            laitteella 14 vuorokauden kuluessa, vastaukset voidaan yhdistää keskenään, jolloin tiedoista on enemmän
+            hyötyä. Tiedot ovat silti anonyymejä, eikä niitä voi palvelussa yhdistää vastaajaan. <a href="#">Lue lisää
+              tietosuojasta täältä.</a></p>
+          <p>Kun vastauksia on kertynyt riittävästi, niitä aletaan tutkia yhteistyössä terveydenhuollon asiantuntijoiden
+            kanssa.</p>
+          <p>Jos epäilet sairastuneesi koronaviruksen aiheuttamaan tautiin ja haluat tehdä oirearvion, siirry Terveyden
+            ja hyvinvoinnin laitoksen ylläpitämään <a
+              href="https://www.omaolo.fi/palvelut/oirearviot/649">Omaolo.fi-palveluun.</a></p>
         </div>
       </div>
       <div id="form-info" class="form-info">
@@ -26,13 +31,15 @@
         <p>Suomalaiset mediat pyytävät Oiretutka-palvelussa lukijoiltaan tietoa, onko heillä koronavirukseen viittaavia
           oireita vai ei. </p>
         <p>Kertomalla tilanteestasi – myös terveenä – voit auttaa mediaa kertomaan paremmin siitä, miten
-          virus leviää. Oiretutkaan tallennettuja tietoja ei voi yhdistää vastaajaan. Vastauksia julkaistaan yhteenvetona ja yksittäisinä vastauksina. Kysely on suunniteltu yhteistyössä Helsingin yliopiston kansanterveystieteen osaston kanssa.</p>
+          virus leviää. Oiretutkaan tallennettuja tietoja ei voi yhdistää vastaajaan. Vastauksia julkaistaan
+          yhteenvetona ja yksittäisinä vastauksina. Kysely on suunniteltu yhteistyössä Helsingin yliopiston
+          kansanterveystieteen osaston kanssa.</p>
         <p><a href="#">Lue lisää tietosuojasta täältä.</a></p>
       </div>
       <button id="start-survey" class="button action-button">Aloita</button>
     </div>
     <form id="symptom-questionnaire" class="hidden">
-      <button id="collapse-survey" class="collapse-button">Sulje kysely</button>
+      <button id="collapse-survey" type="button" class="collapse-button">Sulje kysely</button>
       <div class="question-group">
         <h2 class="question-group-title">Millaisia oireita sinulla on?</h2>
         <fieldset class="input-wrapper">
@@ -131,11 +138,11 @@
           </em>
         </fieldset>
         <div class="input-wrapper">
-          <label for="duration" class="input-field-label">Kuinka monta päivää oireesi ovat kestäneet?</label>
+          <label for="duration" class="input-field-label">Kuinka monta päivää oireesi ovat kestäneet? <span
+              class="optional-field-info">(Voit jättää vastaamatta, jos sinulla ei ole
+              oireita)</span></label>
           <input id="duration" class="input-field" type="text" name="duration" inputmode="numeric" pattern="[0-9]*"
             min="0" size="2" maxlength="2" placeholder="" value="" aria-describedby="duration-optional">
-          <span id="duration-optional" class="optional-field-info">Voit jättää vastaamatta, jos sinulla ei ole
-            oireita.</span>
         </div>
         <fieldset class="input-wrapper">
           <legend>Onko sinulla lääkehoitoa vaativa pitkäaikaissairaus?</legend>
@@ -170,41 +177,45 @@
         <fieldset class="input-wrapper">
           <legend>Ikä</legend>
           <div class="options flex-wrapper">
-            <div class="option-wrapper">
-              <input id="age-0-9" type="radio" name="age_group" value="0" required>
-              <label for="age-0-9">0-9</label>
+            <div class="column">
+              <div class="option-wrapper">
+                <input id="age-0-9" type="radio" name="age_group" value="0" required>
+                <label for="age-0-9">0-9</label>
+              </div>
+              <div class="option-wrapper">
+                <input id="age-10-19" type="radio" name="age_group" value="10" required>
+                <label for="age-10-19">10-19</label>
+              </div>
+              <div class="option-wrapper">
+                <input id="age-20-29" type="radio" name="age_group" value="20">
+                <label for="age-20-29">20-29</label>
+              </div>
+              <div class="option-wrapper">
+                <input id="age-30-39" type="radio" name="age_group" value="30">
+                <label for="age-30-39">30-39</label>
+              </div>
+              <div class="option-wrapper">
+                <input id="age-40-49" type="radio" name="age_group" value="40">
+                <label for="age-40-49">40-49</label>
+              </div>
             </div>
-            <div class="option-wrapper">
-              <input id="age-10-19" type="radio" name="age_group" value="10" required>
-              <label for="age-10-19">10-19</label>
-            </div>
-            <div class="option-wrapper">
-              <input id="age-20-29" type="radio" name="age_group" value="20">
-              <label for="age-20-29">20-29</label>
-            </div>
-            <div class="option-wrapper">
-              <input id="age-30-39" type="radio" name="age_group" value="30">
-              <label for="age-30-39">30-39</label>
-            </div>
-            <div class="option-wrapper">
-              <input id="age-40-49" type="radio" name="age_group" value="40">
-              <label for="age-40-49">40-49</label>
-            </div>
-            <div class="option-wrapper">
-              <input id="age-50-59" type="radio" name="age_group" value="50">
-              <label for="age-50-59">50-59</label>
-            </div>
-            <div class="option-wrapper">
-              <input id="age-60-69" type="radio" name="age_group" value="60">
-              <label for="age-60-69">60-69</label>
-            </div>
-            <div class="option-wrapper">
-              <input id="age-70-79" type="radio" name="age_group" value="70">
-              <label for="age-70-79">70-79</label>
-            </div>
-            <div class="option-wrapper">
-              <input id="age-80+" type="radio" name="age_group" value="80">
-              <label for="age-80+">80+</label>
+            <div class="column">
+              <div class="option-wrapper">
+                <input id="age-50-59" type="radio" name="age_group" value="50">
+                <label for="age-50-59">50-59</label>
+              </div>
+              <div class="option-wrapper">
+                <input id="age-60-69" type="radio" name="age_group" value="60">
+                <label for="age-60-69">60-69</label>
+              </div>
+              <div class="option-wrapper">
+                <input id="age-70-79" type="radio" name="age_group" value="70">
+                <label for="age-70-79">70-79</label>
+              </div>
+              <div class="option-wrapper">
+                <input id="age-80+" type="radio" name="age_group" value="80">
+                <label for="age-80+">80+</label>
+              </div>
             </div>
           </div>
         </fieldset>

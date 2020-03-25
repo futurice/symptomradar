@@ -10,6 +10,11 @@ resource "aws_s3_bucket" "terraform_state" {
   lifecycle {
     prevent_destroy = true
   }
+
+  logging {
+    target_bucket = aws_s3_bucket.s3_logs.id
+    target_prefix = "${var.name_prefix}-terraform-state/"
+  }
 }
 
 # https://www.terraform.io/docs/providers/aws/r/dynamodb_table.html

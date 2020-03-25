@@ -2,6 +2,12 @@
 resource "aws_s3_bucket" "backend_code" {
   bucket = "${var.name_prefix}-backend-code"
   tags   = local.tags_backend
+
+  logging {
+    target_bucket = var.s3_logs_bucket
+    target_prefix = "${var.name_prefix}-backend-code/"
+  }
+
 }
 
 # Implements the Lambda API processing requests from the web

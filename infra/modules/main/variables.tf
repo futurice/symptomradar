@@ -21,6 +21,10 @@ variable "frontend_password" {
   default     = ""
 }
 
+variable "s3_logs_bucket" {
+  description = "S3 Access logs bucket"
+}
+
 variable "backend_cors_allow_any" {
   description = "When true, the backend API will send very permissive CORS headers (useful during development)"
   type        = bool

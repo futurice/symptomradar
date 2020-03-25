@@ -13,6 +13,7 @@ module "env_dev" {
   tags                   = merge(var.tags, { Environment = "dev" })
   frontend_domain        = "dev.oiretutka.fi"
   backend_domain         = "api.dev.oiretutka.fi"
+  s3_logs_bucket         = aws_s3_bucket.s3_logs.id
   backend_cors_allow_any = true
 }
 
@@ -25,6 +26,25 @@ module "env_prod" {
   tags            = merge(var.tags, { Environment = "prod" })
   frontend_domain = "www.oiretutka.fi"
   backend_domain  = "api.oiretutka.fi"
+  s3_logs_bucket  = aws_s3_bucket.s3_logs.id
+}
+
+resource "aws_s3_bucket" "s3_logs" {
+  bucket = "${var.name_prefix}-s3logs-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}"
+  acl    = "log-delivery-write"
+
+  versioning {
+    enabled = true
+  }
+
+  lifecycle_rule {
+    id      = "log"
+    enabled = true
+
+    expiration {
+      days = 730
+    }
+  }
 }
 
 # Pass along any output from the instantiated module

@@ -2,6 +2,7 @@
 resource "aws_s3_bucket" "storage" {
   bucket = "${var.name_prefix}-storage"
   tags   = local.tags_storage
+
   logging {
     target_bucket = var.s3_logs_bucket
     target_prefix = "${var.name_prefix}-storage/"

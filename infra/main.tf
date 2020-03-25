@@ -39,6 +39,7 @@ resource "aws_s3_bucket" "s3_logs" {
   lifecycle_rule {
     id      = "log"
     enabled = true
+
     expiration {
       days = 730
     }

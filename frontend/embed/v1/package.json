@@ -12,6 +12,7 @@
     "@types/styled-components": "^5.0.1",
     "iframe-resizer": "^4.2.10",
     "jquery": "^3.4.1",
+    "normalize.css": "^8.0.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-scripts": "3.4.0",

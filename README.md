@@ -22,6 +22,10 @@ For good first issues regarding contributing, see issues labeled with [open sour
 
 Please contribute by writing a document about local development environment. See above.
 
+# Contact
+
+To contact the team behind the project, email datadeski@hs.fi
+
 # MIT License
 
 Copyright 2020 Futurice & Helsingin Sanomat

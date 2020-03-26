@@ -8,6 +8,7 @@ import {
   fever,
   gender,
   generalWellbeing,
+  iso8601DateString,
   notAnswered,
   postalCode,
   uuidString,
@@ -26,7 +27,6 @@ const responseFields = {
   sore_throat: yesOrNo,
   rhinitis: yesOrNo,
   general_wellbeing: generalWellbeing,
-  duration: t.union([duration, notAnswered]),
   longterm_medication: yesOrNo,
   smoking: yesOrNo,
   corona_suspicion: yesOrNo,
@@ -39,18 +39,24 @@ export const FrontendResponseModel = t.strict(
   {
     participant_id: uuidString,
     ...responseFields,
+    duration: t.union([duration, notAnswered]),
   },
   'FrontendResponseModel',
 );
-
 export type FrontendResponseModelT = t.TypeOf<typeof FrontendResponseModel>;
 
-// TODO: Re-implement in io-ts, so we can eventually validate this too
-export type StoredResponseModelT = FrontendResponseModelT & {
-  response_id: string;
-  timestamp: string;
-  app_version: string;
-};
+export const BackendResponseModel = t.strict(
+  {
+    response_id: t.string,
+    timestamp: iso8601DateString,
+    participant_id: t.string, // after hashing, this is no longer uuidString
+    app_version: t.string,
+    ...responseFields,
+    duration: t.union([t.number, t.null]), // for persistence, let's cast to number
+  },
+  'BackendResponseModel',
+);
+export type BackendResponseModelT = t.TypeOf<typeof BackendResponseModel>;
 
 // Returns a function that either throws, or returns a valid instance of the Model type provided
 export function assertIs<C extends t.ExactC<any>>(codec: C): (x: unknown) => t.TypeOf<C> {

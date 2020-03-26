@@ -8,13 +8,15 @@ The project is open source with MIT license. We encourage media outlets to colla
 
 # How to contribute
 
-This project was developed in a hurry after the coronavirus really started spreading. So we don't have much documentation yet. 
+This project was developed in a hurry after the coronavirus really started spreading. So we don't have much documentation yet.
 
 If you find any problems, please open an issue or submit a fix as a pull request.
 
 We welcome new features, but for large changes let's discuss first to make sure the changes can be accepted and integrated smoothly. Discussion should take place in issue dedicated to the new feature.
 
 Feel free to pick an issue and start contributing.
+
+For good first issues regarding contributing, see issues labeled with [open sourcing improvements](https://github.com/futurice/symptomradar/labels/open%20sourcing%20improvements).
 
 # Local development environment
 

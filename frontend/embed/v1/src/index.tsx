@@ -129,7 +129,7 @@ function init() {
       .serializeArray()
       .map(x => (x.value === '' ? { ...x, value: null } : x)) // convert empty strings (i.e. skipped questions) to nulls
       .reduce((memo, next) => ({ ...memo, [next.name]: next.value }), {});
-    const meta = { participant_id: getParticipantId(), timestamp: new Date().toISOString() };
+    const meta = { participant_id: getParticipantId() };
     const submission = { ...meta, ...answers };
 
     // persist participant_id – it will be reused if participant answers again

@@ -40,7 +40,7 @@ if (process.argv[0].match(/\/ts-node$/)) {
     longterm_medication: 'no',
     smoking: 'no',
     corona_suspicion: 'no',
-    age_group: '18',
+    age_group: '20',
     gender: 'other',
     postal_code: '27160',
   };

@@ -2,6 +2,7 @@ import * as AWS from 'aws-sdk';
 import { createHash } from 'crypto';
 import { v4 as uuidV4 } from 'uuid';
 import { FrontendResponseModelT, StoredResponseModelT } from '../common/model';
+import { mapPostalCode } from './postalCode';
 
 const s3: AWS.S3 = new AWS.S3({ apiVersion: '2006-03-01' });
 const bucket = process.env.BUCKET_NAME_STORAGE || '';
@@ -35,6 +36,7 @@ export function prepareResponseForStorage(response: FrontendResponseModelT): Sto
     timestamp: new Date() // for security, don't trust browser clock, as it may be wrong or fraudulent
       .toISOString()
       .replace(/:..\..*/, ':00.000Z'), // to preserve privacy, intentionally reduce precision of the timestamp
+    postal_code: mapPostalCode(response).postal_code, // to protect the privacy of participants from very small postal code areas, they are merged into larger ones, based on known population data
   };
   return { ...meta, ...response, ...meta }; // the double "...meta" is just for vanity: we want the meta-fields to appear first in the JSON representation
 }

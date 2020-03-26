@@ -4,11 +4,7 @@ import { assertIs, FrontendResponseModel, FrontendResponseModelT } from './commo
 import { prepareResponseForStorage, storeResponseInS3 } from './core/main';
 
 export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
-  console.log(`Incoming request: ${event.httpMethod} ${event.path}`, {
-    headers: event.headers,
-    queryString: event.queryStringParameters,
-    body: event.body,
-  });
+  console.log(`Incoming request: ${event.httpMethod} ${event.path}`); // to preserve privacy, don't log any headers, etc
   if (event.httpMethod === 'OPTIONS') {
     return Promise.resolve().then(() => response(200, undefined));
   } else {
@@ -52,7 +48,7 @@ if (process.argv[0].match(/\/ts-node$/)) {
 }
 
 const response = (statusCode: number, body?: object, logError?: Error) => {
-  console.log(`Outgoing response: ${statusCode}`, { body });
+  console.log(`Outgoing response: ${statusCode}`);
   if (logError) console.error('ERROR', logError);
   return {
     statusCode,

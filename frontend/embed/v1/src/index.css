@@ -18,6 +18,11 @@ body {
   color: #000000;
 }
 
+[tabindex='-1']:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 main {
   margin: 0 auto;
   padding: 20px 0 40px;
@@ -137,7 +142,7 @@ label {
 }
 
 .input-wrapper.invalid-value:before {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   top: 0;
@@ -217,7 +222,6 @@ em {
   cursor: pointer;
   margin: 24px 0;
 }
-
 
 .action-button {
   width: 274px;

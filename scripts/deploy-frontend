@@ -28,7 +28,7 @@ rm -rfv "$FRONTEND_DIR/build/static"
 
 # Upload & clean up files that need to be served fresh
 aws s3 cp \
-  --cache-control=no-store,must-revalidate \
+  --cache-control=max-age=15 \
   --recursive \
   $FRONTEND_DIR/build/ "s3://symptomradar-$1-frontend-code${2}"
 rm -rfv "$FRONTEND_DIR/build"

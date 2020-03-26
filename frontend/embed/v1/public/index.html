@@ -12,20 +12,6 @@
   <main>
     <div class="container">
       <img class="logo" src="./oiretutka-logo-gradient.svg" alt="Oiretutka. Helsingin Sanomat ja Futurice.">
-      <div id="submit-success" class="hidden">
-        <div class="success-message">
-          <p>Kiitos vastauksistasi.</p>
-          <p>Pyydämme, että palaat kertomaan oireistasi kolmen päivän kuluttua. Jos täytät kyselyn uudelleen samalla
-            laitteella 14 vuorokauden kuluessa, vastaukset voidaan yhdistää keskenään, jolloin tiedoista on enemmän
-            hyötyä. Tiedot ovat silti anonyymejä, eikä niitä voi palvelussa yhdistää vastaajaan. <a href="https://www.oiretutka.fi/tietosuojalauseke.html" target="_blank">Lue lisää
-              tietosuojasta täältä.</a></p>
-          <p>Kun vastauksia on kertynyt riittävästi, niitä aletaan tutkia yhteistyössä terveydenhuollon asiantuntijoiden
-            kanssa.</p>
-          <p>Jos epäilet sairastuneesi koronaviruksen aiheuttamaan tautiin ja haluat tehdä oirearvion, siirry Terveyden
-            ja hyvinvoinnin laitoksen ylläpitämään <a href="https://www.omaolo.fi/palvelut/oirearviot/649"
-              target="_blank">Omaolo.fi-palveluun.</a></p>
-        </div>
-      </div>
       <div id="form-info" class="form-info">
         <h1>Kerro, onko sinulla oireita vai ei: auta selvittämään, miten koronavirus leviää</h1>
         <p>Suomalaiset mediat pyytävät Oiretutka-palvelussa lukijoiltaan tietoa, onko heillä koronavirukseen viittaavia
@@ -34,6 +20,7 @@
           virus leviää. Oiretutkaan tallennettuja tietoja ei voi yhdistää vastaajaan. Vastauksia julkaistaan
           yhteenvetona ja yksittäisinä vastauksina. Kysely on suunniteltu yhteistyössä Helsingin yliopiston
           kansanterveystieteen osaston kanssa.</p>
+          <p>Palvelua ei ole tarkoitettu yksittäisen henkilön opastamiseksi terveyteensä liittyen tai ohjaamiseksi terveydenhuoltoon.</p>
         <p><a href="https://www.oiretutka.fi/tietosuojalauseke.html" target="_blank">Lue lisää tietosuojasta täältä.</a></p>
       </div>
       <button id="start-survey" class="button action-button">Aloita</button>
@@ -76,7 +63,7 @@
             </div>
           </div>
         </fieldset>
-        <fieldset class="input-wrapper" aria-describedby="breathingDifficulties-description">
+        <fieldset class="input-wrapper">
           <legend>Vaikeuksia hengittää</legend>
           <div class="options">
             <input id="breathingDifficulties-yes" type="radio" name="breathing_difficulties" value="yes" required>
@@ -84,8 +71,6 @@
             <input id="breathingDifficulties-no" type="radio" name="breathing_difficulties" value="no" required>
             <label for="breathingDifficulties-no">ei</label>
           </div>
-          <em id="breathingDifficulties-description">Jos sinulla on hengitysvaikeuksia, ota heti yhteys
-            terveydenhuoltoon.</em>
         </fieldset>
         <fieldset class="input-wrapper">
           <legend>Lihaskipuja</legend>
@@ -94,6 +79,15 @@
             <label for="musclePain-yes">kyllä</label>
             <input id="musclePain-no" type="radio" name="muscle_pain" value="no" required>
             <label for="musclePain-no">ei</label>
+          </div>
+        </fieldset>
+        <fieldset class="input-wrapper">
+          <legend>Päänsärkyä</legend>
+          <div class="options">
+            <input id="headache-yes" type="radio" name="headache" value="yes" required>
+            <label for="headache-yes">kyllä</label>
+            <input id="headache-no" type="radio" name="headache" value="no">
+            <label for="headache-no">ei</label>
           </div>
         </fieldset>
         <fieldset class="input-wrapper">
@@ -117,7 +111,7 @@
       </div>
       <div class="question-group">
         <h2 class="question-group-title">Terveydentila</h2>
-        <fieldset class="input-wrapper" aria-describedby="generalWellBeing-description">
+        <fieldset class="input-wrapper">
           <legend>Millainen on yleisvointisi?</legend>
           <div class="options">
             <div class="option-wrapper">
@@ -134,8 +128,6 @@
               <label for="generalWellbeing-bad">en juurikaan jaksa nousta vuoteesta</label>
             </div>
           </div>
-          <em id="generalWellBeing-description">Jos et jaksa nousta vuoteesta, ota heti yhteys terveydenhuoltoon.
-          </em>
         </fieldset>
         <fieldset class="input-wrapper">
           <label for="duration" class="input-field-label">Kuinka monta päivää oireesi ovat kestäneet? <span
@@ -243,6 +235,20 @@
       <button type="submit" id="submit-survey" class="button action-button">Lähetä</button>
       <button type="button" id="cancel-survey" class="button cancel-button">Peruuta</button>
     </form>
+    <div id="submit-success" class="hidden">
+      <div class="success-message">
+        <h2>Kiitos vastauksistasi.</h2>
+        <p>Pyydämme, että palaat kertomaan oireistasi kolmen päivän kuluttua. Jos täytät kyselyn uudelleen samalla
+          laitteella 14 vuorokauden kuluessa, vastaukset voidaan yhdistää keskenään, jolloin tiedoista on enemmän
+          hyötyä. Tiedot ovat silti anonyymejä, eikä niitä voi palvelussa yhdistää vastaajaan. <a href="https://www.oiretutka.fi/tietosuojalauseke.html" target="_blank">Lue lisää
+            tietosuojasta täältä.</a></p>
+        <p>Kun vastauksia on kertynyt riittävästi, niitä aletaan tutkia yhteistyössä terveydenhuollon asiantuntijoiden
+          kanssa.</p>
+        <p>Jos epäilet sairastuneesi koronaviruksen aiheuttamaan tautiin ja haluat tehdä oirearvion, siirry Terveyden
+          ja hyvinvoinnin laitoksen ylläpitämään <a href="https://www.omaolo.fi/palvelut/oirearviot/649"
+            target="_blank">Omaolo.fi-palveluun.</a></p>
+      </div>
+    </div>
   </main>
 </body>
 

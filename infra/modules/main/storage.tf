@@ -38,6 +38,7 @@ resource "aws_athena_named_query" "create_response_table" {
         `cough` string,
         `breathing_difficulties` string,
         `muscle_pain` string,
+        `headache` string,
         `sore_throat` string,
         `rhinitis` string,
         `general_wellbeing` string,

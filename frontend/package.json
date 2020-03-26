@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "normalize.css": "^8.0.1",
     "react-scripts": "3.4.0"
   },
   "scripts": {

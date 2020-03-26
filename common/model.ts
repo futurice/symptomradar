@@ -43,6 +43,7 @@ export type FrontendResponseModelT = t.TypeOf<typeof FrontendResponseModel>;
 
 // TODO: Re-implement in io-ts, so we can eventually validate this too
 export type StoredResponseModelT = FrontendResponseModelT & {
+  response_id: string;
   timestamp: string;
 };
 

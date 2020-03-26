@@ -1,5 +1,6 @@
 import * as AWS from 'aws-sdk';
 import { createHash } from 'crypto';
+import { v4 as uuidV4 } from 'uuid';
 import { FrontendResponseModelT, StoredResponseModelT } from '../common/model';
 
 const s3: AWS.S3 = new AWS.S3({ apiVersion: '2006-03-01' });
@@ -28,6 +29,7 @@ export function storeResponseInS3(response: FrontendResponseModelT) {
 function prepareResponseForStorage(response: FrontendResponseModelT): StoredResponseModelT {
   return {
     ...response,
+    response_id: uuidV4(),
     participant_uuid: createHash('sha256') // to preserve privacy, hash the participant_uuid before storing it, so after opening up the dataset, malicious actors can't submit more responses that pretend to belong to a previous participant
       .update(response.participant_uuid + pepper) // include a global but secret pepper, so the resulting hashes are harder (or impossible) to reverse
       .digest('base64'), // e.g. "3085e05e-6f64-11ea-9f12-3b5bbd3456ee" => "K/FwCDUHL3iVb9JAMBdSEurw4rWuO/iJmcIWCn2B++s="

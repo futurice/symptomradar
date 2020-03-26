@@ -2,16 +2,16 @@ import { isRight } from 'fp-ts/lib/Either';
 import * as t from 'io-ts';
 import { PathReporter } from 'io-ts/lib/PathReporter';
 import {
-  iso8601DateString,
-  postalCode,
-  gender,
-  fever,
-  cough,
-  yesOrNo,
-  generalWellbeing,
-  duration,
   age,
+  cough,
+  duration,
+  fever,
+  gender,
+  generalWellbeing,
   notAnswered,
+  postalCode,
+  uuidString,
+  yesOrNo,
 } from './io';
 
 // Because AWS Athena prefers lower-case column names (https://docs.aws.amazon.com/athena/latest/ug/tables-databases-columns-names.html),
@@ -19,10 +19,7 @@ import {
 
 export const FrontendResponseModel = t.strict(
   {
-    // Metadata:
-    participant_uuid: t.string, // TODO: This can be uuidString when we have separate models for response from browser, and response scrubbed by backend
-    timestamp: iso8601DateString,
-    // Payload:
+    participant_uuid: uuidString,
     fever: t.union([fever, notAnswered]),
     cough: t.union([cough, notAnswered]),
     breathing_difficulties: t.union([yesOrNo, notAnswered]),
@@ -43,6 +40,11 @@ export const FrontendResponseModel = t.strict(
 );
 
 export type FrontendResponseModelT = t.TypeOf<typeof FrontendResponseModel>;
+
+// TODO: Re-implement in io-ts, so we can eventually validate this too
+export type StoredResponseModelT = FrontendResponseModelT & {
+  timestamp: string;
+};
 
 // Returns a function that either throws, or returns a valid instance of the Model type provided
 export function assertIs<C extends t.ExactC<any>>(codec: C): (x: unknown) => t.TypeOf<C> {

@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandler, Handler } from 'aws-lambda';
 import { v4 as uuidV4 } from 'uuid';
-import { assertIs, ResponseModel } from './common/model';
+import { assertIs, FrontendResponseModel } from './common/model';
 import { storeResponseInS3 } from './core/main';
 import { mapPostalCode } from './core/postalCode';
 
@@ -15,7 +15,7 @@ export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
   } else {
     return Promise.resolve()
       .then(() => JSON.parse(event.body || '') as unknown)
-      .then(assertIs(ResponseModel))
+      .then(assertIs(FrontendResponseModel))
       .then(mapPostalCode)
       .then(storeResponseInS3)
       .then(() => response(200, { success: true }))
@@ -48,7 +48,7 @@ if (process.argv[0].match(/\/ts-node$/)) {
       gender: 'other',
       postal_code: '27160',
     }))
-    .then(assertIs(ResponseModel))
+    .then(assertIs(FrontendResponseModel))
     .then(mapPostalCode)
     .catch(err => err)
     .then(res => console.log(res));

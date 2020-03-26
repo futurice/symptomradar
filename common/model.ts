@@ -17,7 +17,7 @@ import {
 // Because AWS Athena prefers lower-case column names (https://docs.aws.amazon.com/athena/latest/ug/tables-databases-columns-names.html),
 // we use snake case for some of these models, instead of camel case (https://en.wikipedia.org/wiki/Letter_case#Special_case_styles).
 
-export const ResponseModel = t.strict(
+export const FrontendResponseModel = t.strict(
   {
     // Metadata:
     participant_uuid: t.string, // TODO: This can be uuidString when we have separate models for response from browser, and response scrubbed by backend
@@ -39,10 +39,10 @@ export const ResponseModel = t.strict(
     gender: t.union([gender, notAnswered]),
     postal_code: t.union([postalCode, notAnswered]),
   },
-  'ResponseModel',
+  'FrontendResponseModel',
 );
 
-export type ResponseModelT = t.TypeOf<typeof ResponseModel>;
+export type FrontendResponseModelT = t.TypeOf<typeof FrontendResponseModel>;
 
 // Returns a function that either throws, or returns a valid instance of the Model type provided
 export function assertIs<C extends t.ExactC<any>>(codec: C): (x: unknown) => t.TypeOf<C> {

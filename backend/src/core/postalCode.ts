@@ -1,6 +1,6 @@
-import { ResponseModelT } from '../common/model';
+import { FrontendResponseModelT } from '../common/model';
 
-export const mapPostalCode = (formData: ResponseModelT) => {
+export const mapPostalCode = (formData: FrontendResponseModelT) => {
   const poCode = formData.postal_code;
 
   return typeof poCode === 'string' && lowPopulationPostalCodes.hasOwnProperty(poCode)

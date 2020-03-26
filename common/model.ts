@@ -16,8 +16,8 @@ import {
 
 // Because AWS Athena prefers lower-case column names (https://docs.aws.amazon.com/athena/latest/ug/tables-databases-columns-names.html),
 // we use snake case for this model instead of camel case (https://en.wikipedia.org/wiki/Letter_case#Special_case_styles).
-export const ResponseModel = t.exact(
-  t.type({
+export const ResponseModel = t.strict(
+  {
     // Metadata:
     participant_uuid: t.string, // TODO: This can be uuidString when we have separate models for response from browser, and response scrubbed by backend
     timestamp: iso8601DateString,
@@ -37,7 +37,7 @@ export const ResponseModel = t.exact(
     age_group: t.union([age, notAnswered]),
     gender: t.union([gender, notAnswered]),
     postal_code: t.union([postalCode, notAnswered]),
-  }),
+  },
   'ResponseModel',
 );
 

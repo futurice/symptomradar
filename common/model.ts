@@ -45,6 +45,7 @@ export type FrontendResponseModelT = t.TypeOf<typeof FrontendResponseModel>;
 export type StoredResponseModelT = FrontendResponseModelT & {
   response_id: string;
   timestamp: string;
+  app_version: string;
 };
 
 // Returns a function that either throws, or returns a valid instance of the Model type provided

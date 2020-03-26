@@ -37,6 +37,7 @@ export function prepareResponseForStorage(response: FrontendResponseModelT): Sto
     timestamp: new Date() // for security, don't trust browser clock, as it may be wrong or fraudulent
       .toISOString()
       .replace(/:..\..*/, ':00.000Z'), // to preserve privacy, intentionally reduce precision of the timestamp
+    app_version: 'v0.6', // TODO: This should be set by the deploy process, not hard-coded!
     postal_code: mapPostalCode(response).postal_code, // to protect the privacy of participants from very small postal code areas, they are merged into larger ones, based on known population data
   };
   return { ...meta, ...response, ...meta }; // the double "...meta" is just for vanity: we want the meta-fields to appear first in the JSON representation

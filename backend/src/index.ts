@@ -1,7 +1,7 @@
 import { APIGatewayProxyHandler, Handler } from 'aws-lambda';
 import { v4 as uuidV4 } from 'uuid';
-import { assertIs, FrontendResponseModel } from './common/model';
-import { storeResponseInS3 } from './core/main';
+import { assertIs, FrontendResponseModel, FrontendResponseModelT } from './common/model';
+import { prepareResponseForStorage, storeResponseInS3 } from './core/main';
 import { mapPostalCode } from './core/postalCode';
 
 export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
@@ -28,28 +28,27 @@ export const workerEntrypoint: Handler<unknown> = () => {
 };
 
 if (process.argv[0].match(/\/ts-node$/)) {
-  Promise.resolve()
-    .then(() => ({
-      participant_uuid: uuidV4(),
-      timestamp: new Date().toISOString(),
-      fever: 'no',
-      cough: 'mild',
-      breathing_difficulties: 'no',
-      muscle_pain: 'no',
-      headache: 'no',
-      sore_throat: 'no',
-      rhinitis: 'no',
-      general_wellbeing: 'fine',
-      duration: '1',
-      longterm_medication: 'no',
-      smoking: 'no',
-      corona_suspicion: 'no',
-      age: '18',
-      gender: 'other',
-      postal_code: '27160',
-    }))
+  const test: FrontendResponseModelT = {
+    participant_uuid: uuidV4(),
+    fever: 'no',
+    cough: 'mild',
+    breathing_difficulties: 'no',
+    muscle_pain: 'no',
+    headache: 'no',
+    sore_throat: 'no',
+    rhinitis: 'no',
+    general_wellbeing: 'fine',
+    duration: '1',
+    longterm_medication: 'no',
+    smoking: 'no',
+    corona_suspicion: 'no',
+    age_group: '18',
+    gender: 'other',
+    postal_code: '27160',
+  };
+  Promise.resolve(test)
     .then(assertIs(FrontendResponseModel))
-    .then(mapPostalCode)
+    .then(prepareResponseForStorage)
     .catch(err => err)
     .then(res => console.log(res));
 }

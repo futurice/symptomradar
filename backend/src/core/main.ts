@@ -26,9 +26,8 @@ export function storeResponseInS3(response: FrontendResponseModelT) {
 }
 
 // Takes a response from the frontend, scrubs it clean, and adds fields required for storing it
-function prepareResponseForStorage(response: FrontendResponseModelT): StoredResponseModelT {
-  return {
-    ...response,
+export function prepareResponseForStorage(response: FrontendResponseModelT): StoredResponseModelT {
+  const meta = {
     response_id: uuidV4(),
     participant_uuid: createHash('sha256') // to preserve privacy, hash the participant_uuid before storing it, so after opening up the dataset, malicious actors can't submit more responses that pretend to belong to a previous participant
       .update(response.participant_uuid + pepper) // include a global but secret pepper, so the resulting hashes are harder (or impossible) to reverse
@@ -37,6 +36,7 @@ function prepareResponseForStorage(response: FrontendResponseModelT): StoredResp
       .toISOString()
       .replace(/:..\..*/, ':00.000Z'), // to preserve privacy, intentionally reduce precision of the timestamp
   };
+  return { ...meta, ...response, ...meta }; // the double "...meta" is just for vanity: we want the meta-fields to appear first in the JSON representation
 }
 
 // Produces the key under which this response should be stored in S3

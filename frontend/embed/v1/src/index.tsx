@@ -112,7 +112,7 @@ function init() {
 
     if ($invalidFields.length > 0) {
       $invalidFields.addClass('invalid-value');
-      showSubmitError('Lomakkeesta puuttuu vielä vastauksia', 'Ole hyvä ja täytä kaikki kohdat.');
+      showSubmitError('Lomakkeesta puuttuu vielä vastauksia', 'Ole hyvä ja täytä puuttuvat kohdat.');
     }
   });
 

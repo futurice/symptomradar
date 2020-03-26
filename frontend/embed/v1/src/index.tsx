@@ -1,5 +1,5 @@
 import 'iframe-resizer/js/iframeResizer.contentWindow'; // because we ONLY need the part for the page being embedded, let's not import the whole library, to shave off some bytes from our bundle
-import './normalize.css';
+import 'normalize.css';
 import './index.css';
 import $ from 'jquery';
 import { v4 as uuidV4 } from 'uuid';

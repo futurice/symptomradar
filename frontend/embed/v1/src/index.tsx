@@ -1,4 +1,5 @@
 import 'iframe-resizer/js/iframeResizer.contentWindow'; // because we ONLY need the part for the page being embedded, let's not import the whole library, to shave off some bytes from our bundle
+import 'normalize.css';
 import './index.css';
 import $ from 'jquery';
 import { v4 as uuidV4 } from 'uuid';
@@ -63,8 +64,16 @@ function submitSuccessfully() {
   $('#form-info').addClass('hidden');
 }
 
-function submitFailed() {
-  $('#submit-error').removeClass('hidden');
+function showSubmitError(error: string, instructions: string) {
+  const $errorElement = $('#submit-error');
+
+  $errorElement.find('.error-message').text(error);
+  $errorElement.find('.error-instructions').text(instructions);
+  $errorElement.removeClass('hidden');
+}
+
+function hideSubmitError() {
+  $('#submit-error').addClass('hidden');
 }
 
 function init() {
@@ -78,7 +87,33 @@ function init() {
 
   $('#cancel-survey').click(function() {
     hideSurvey();
-    $("#symptom-questionnaire").trigger("reset")
+    $('#symptom-questionnaire').trigger('reset');
+  });
+
+  $('#symptom-questionnaire input:required').change(function(event) {
+    // attach onchange handler to each input
+    // on value change, remove invalid highlight from the input wrapper if exists
+    const $inputWrapper = $(this).parents('.invalid-value');
+
+    if ($inputWrapper.hasClass('invalid-value') && $inputWrapper.not(':invalid')) {
+      $inputWrapper.removeClass('invalid-value');
+    }
+
+    // if no more :invalid inputs are left, remove error message as well
+    if ($('symptom-questionnaire .input-wrapper:invalid').length === 0) {
+      hideSubmitError();
+    }
+  });
+
+  $('#submit-survey').click(function(event) {
+    // if a required input has invalid value, the form submit event won't fire at all
+    // check that inputs with __required__ attribute are filled
+    const $invalidFields = $('#symptom-questionnaire .input-wrapper:invalid');
+
+    if ($invalidFields.length > 0) {
+      $invalidFields.addClass('invalid-value');
+      showSubmitError('Lomakkeesta puuttuu vielä vastauksia', 'Ole hyvä ja täytä puuttuvat kohdat.');
+    }
   });
 
   const endpoint = process.env.REACT_APP_API_ENDPOINT;
@@ -109,7 +144,7 @@ function init() {
       data: JSON.stringify(submission),
     })
       .done(submitSuccessfully)
-      .fail(submitFailed);
+      .fail(() => showSubmitError('Tietojen lähetys epäonnistui', 'Ole hyvä ja yritä uudelleen.'));
   });
 }
 

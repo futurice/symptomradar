@@ -15,6 +15,7 @@ if (!pepper) throw new Error('Hashing pepper missing from environment');
 // Saves the given response into our storage bucket
 export function storeResponseInS3(response: FrontendResponseModelT) {
   const r = prepareResponseForStorage(response);
+  console.log('About to store response', r);
   return s3
     .putObject({
       Bucket: bucket,

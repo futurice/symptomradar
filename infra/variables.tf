@@ -21,6 +21,5 @@ variable "central_log_vault_arn" {
   description = "ARN of the centralized log vault"
 }
 
-
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}

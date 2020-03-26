@@ -31,8 +31,8 @@ export function storeResponseInS3(response: FrontendResponseModelT) {
 export function prepareResponseForStorage(response: FrontendResponseModelT): StoredResponseModelT {
   const meta = {
     response_id: uuidV4(),
-    participant_uuid: createHash('sha256') // to preserve privacy, hash the participant_uuid before storing it, so after opening up the dataset, malicious actors can't submit more responses that pretend to belong to a previous participant
-      .update(response.participant_uuid + pepper) // include a global but secret pepper, so the resulting hashes are harder (or impossible) to reverse
+    participant_id: createHash('sha256') // to preserve privacy, hash the participant_id before storing it, so after opening up the dataset, malicious actors can't submit more responses that pretend to belong to a previous participant
+      .update(response.participant_id + pepper) // include a global but secret pepper, so the resulting hashes are harder (or impossible) to reverse
       .digest('base64'), // e.g. "3085e05e-6f64-11ea-9f12-3b5bbd3456ee" => "K/FwCDUHL3iVb9JAMBdSEurw4rWuO/iJmcIWCn2B++s="
     timestamp: new Date() // for security, don't trust browser clock, as it may be wrong or fraudulent
       .toISOString()
@@ -45,5 +45,5 @@ export function prepareResponseForStorage(response: FrontendResponseModelT): Sto
 // Produces the key under which this response should be stored in S3
 function getStorageKey(response: StoredResponseModelT): string {
   const [date, time] = response.timestamp.split('T');
-  return `responses/raw/${date}/${time}/${response.participant_uuid}.json`;
+  return `responses/raw/${date}/${time}/${response.participant_id}.json`;
 }

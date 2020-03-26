@@ -32,7 +32,7 @@ resource "aws_athena_named_query" "create_response_table" {
   query       = <<-SQL
     CREATE EXTERNAL TABLE IF NOT EXISTS
       ${local.table} (
-        `participant_uuid` string,
+        `participant_id` string,
         `timestamp` string,
         `fever` string,
         `cough` string,

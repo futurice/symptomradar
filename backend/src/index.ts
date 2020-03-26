@@ -27,7 +27,7 @@ export const workerEntrypoint: Handler<unknown> = () => {
 
 if (process.argv[0].match(/\/ts-node$/)) {
   const test: FrontendResponseModelT = {
-    participant_uuid: uuidV4(),
+    participant_id: uuidV4(),
     fever: 'no',
     cough: 'mild',
     breathing_difficulties: 'no',

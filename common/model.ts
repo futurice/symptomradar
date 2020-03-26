@@ -19,7 +19,7 @@ import {
 
 export const FrontendResponseModel = t.strict(
   {
-    participant_uuid: uuidString,
+    participant_id: uuidString,
     fever: t.union([fever, notAnswered]),
     cough: t.union([cough, notAnswered]),
     breathing_difficulties: t.union([yesOrNo, notAnswered]),

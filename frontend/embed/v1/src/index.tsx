@@ -60,6 +60,7 @@ function hideSurvey() {
 
 function submitSuccessfully() {
   $('#submit-success').removeClass('hidden');
+  $('#symptom-questionnaire').trigger('reset');
 }
 
 function showSubmitError(error: string, instructions: string) {

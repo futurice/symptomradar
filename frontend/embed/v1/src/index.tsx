@@ -63,8 +63,16 @@ function submitSuccessfully() {
   $('#form-info').addClass('hidden');
 }
 
-function submitFailed() {
-  $('#submit-error').removeClass('hidden');
+function showSubmitError(error: string, instructions: string) {
+  const $errorElement = $('#submit-error');
+
+  $errorElement.find('.error-message').text(error);
+  $errorElement.find('.error-instructions').text(instructions);
+  $errorElement.removeClass('hidden');
+}
+
+function hideSubmitError() {
+  $('#submit-error').addClass('hidden');
 }
 
 function init() {
@@ -89,16 +97,21 @@ function init() {
     if ($inputWrapper.hasClass('invalid-value') && $inputWrapper.not(':invalid')) {
       $inputWrapper.removeClass('invalid-value');
     }
+
+    // if no more :invalid inputs are left, remove error message as well
+    if ($('symptom-questionnaire .input-wrapper:invalid').length === 0) {
+      hideSubmitError();
+    }
   });
 
   $('#submit-survey').click(function(event) {
-    // check that inputs with __required__ attribute are filled
     // if a required input has invalid value, the form submit event won't fire at all
+    // check that inputs with __required__ attribute are filled
     const $invalidFields = $('#symptom-questionnaire .input-wrapper:invalid');
 
     if ($invalidFields.length > 0) {
       $invalidFields.addClass('invalid-value');
-      $('#submit-error').removeClass('hidden');
+      showSubmitError('Lomakkeesta puuttuu vielä vastauksia', 'Ole hyvä ja täytä kaikki kohdat.');
     }
   });
 
@@ -130,7 +143,7 @@ function init() {
       data: JSON.stringify(submission),
     })
       .done(submitSuccessfully)
-      .fail(submitFailed);
+      .fail(() => showSubmitError('Tietojen lähetys epäonnistui', 'Ole hyvä ja yritä uudelleen.'));
   });
 }
 

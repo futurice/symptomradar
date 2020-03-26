@@ -51,16 +51,26 @@ function storeParticipantId(participantId: string) {
 function startSurvey() {
   $('#symptom-questionnaire').removeClass('hidden');
   $('#start-survey').addClass('hidden');
+  setTimeout(function() {
+    $('#form-header').focus();
+  }, 500);
 }
 
 function hideSurvey() {
   $('#symptom-questionnaire').addClass('hidden');
   $('#start-survey').removeClass('hidden');
+
+  setTimeout(function() {
+    $('#page-title').focus();
+  }, 500);
 }
 
 function submitSuccessfully() {
   $('#submit-success').removeClass('hidden');
   $('#symptom-questionnaire').trigger('reset');
+  setTimeout(function() {
+    $('#submit-success').focus();
+  }, 500);
 }
 
 function showSubmitError(error: string, instructions: string) {
@@ -69,6 +79,10 @@ function showSubmitError(error: string, instructions: string) {
   $errorElement.find('.error-message').text(error);
   $errorElement.find('.error-instructions').text(instructions);
   $errorElement.removeClass('hidden');
+
+  setTimeout(function() {
+    $('#submit-error').focus();
+  }, 500);
 }
 
 function hideSubmitError() {

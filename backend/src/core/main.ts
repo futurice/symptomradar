@@ -45,5 +45,5 @@ export function prepareResponseForStorage(response: FrontendResponseModelT): Sto
 // Produces the key under which this response should be stored in S3
 function getStorageKey(response: StoredResponseModelT): string {
   const [date, time] = response.timestamp.split('T');
-  return `responses/raw/${date}/${time}/${response.participant_id}.json`;
+  return `responses/raw/${date}/${time}/${response.response_id}.json`;
 }

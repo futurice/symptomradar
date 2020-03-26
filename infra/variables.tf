@@ -17,5 +17,9 @@ variable "frontend_password" {
   description = "When enabled, this password is required (along with user that's the env name, e.g. 'dev') to access the frontend"
 }
 
+variable "central_log_vault_arn" {
+  description = "ARN of the centralized log vault"
+}
+
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}

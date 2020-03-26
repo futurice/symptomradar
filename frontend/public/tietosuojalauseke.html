@@ -3,18 +3,75 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="styles.css" />
     <title>Oiretutka - Tietosuojalauseke</title>
   </head>
   <body>
-      <main>
-          <img class="logo" src="./oiretutka-logo-gradient.svg" alt="Oiretutka. Helsingin Sanomat ja Futurice.">
-          <h1>Tietosuojalauseke</h1>
-          <p>Aspernatur omnis libero consequuntur in et. Possimus natus delectus facilis illum et non quidem. Possimus rerum reiciendis voluptas quod ratione optio non.</p>
-          <p>Quis ab quas omnis eum. Distinctio voluptatem ea dolores possimus. Recusandae cum eum praesentium et.</p>
-          <p>Ipsum temporibus enim dignissimos expedita blanditiis et rerum ad. Dicta sit totam. Minus perspiciatis sint dignissimos.</p>
-          <p>Aspernatur omnis libero consequuntur in et <a href="https://www.hs.fi" target="_blank">link example</a>. Possimus natus delectus facilis illum et non quidem. Possimus rerum reiciendis voluptas quod ratione optio non.</p>
-          <a href="http://www.futurice.com" target="_blank">Antoher link example</a>
-        </main>
+    <main>
+      <img class="logo" src="./oiretutka-logo-gradient.svg" alt="Oiretutka. Helsingin Sanomat ja Futurice." />
+      <h1>Oiretutka-palvelun kuvaus ja tietosuojakuvaus</h1>
+      <h2>Yleinen kuvaus</h2>
+      <p>
+        Oiretutka on HS:n ja teknologiayhtiö Futuricen yhteinen hanke, jonka tarkoituksena on kerätä suomalaisilta
+        tietoja heidän kokemistaan oireista. Tiedon avulla on tarkoitus ymmärtää paremmin, miten koronavirus
+        mahdollisesti leviää Suomessa. Palvelua ei ole tarkoitettu yksittäisen henkilön opastamiseksi terveyteensä
+        liittyen tai ohjaamiseksi terveydenhuoltoon. Kerätyn tiedon avulla HS ja muut mediat tekevät journalismia, jonka
+        avulla kuvataan koronaviruksen mahdollista leviämistä Suomessa. HS ja muut tiedotusvälineet käsittelevät tietoja
+        ainoastaan toimituksellisessa tarkoituksessa.
+      </p>
+      <p>
+        Hanke tehdään avoimen lähdekoodin periaatteella. HS:n ja muiden medioiden käyttöön annetaan kyselylomake, jonka
+        avulla tietoja kerätään. Kerättävästä datasta tehdään visualisointeja upotettavina elementteinä. Näitä
+        upotettavia elementtejä voivat käyttää kaikki hankkeeseen osallistuvat mediat. Hankkeen keräämiä tietoja jaetaan
+        mahdollisimman avoimesti. Helsingin Sanomat omistaa hankkeessa kerätyt tiedot. Tietoja käsitellään alla
+        kuvatulla tavalla. Tietojen käsittelyä toimituksellisessa kontekstissa kuvataan Helsingin Sanomien
+        <a href="https://oma.sanoma.fi/asiakastuki/helsingin-sanomat/hs-tilausehdot/tietosuojakuvaus" target="_blank"
+          >tietosuojakuvauksessa.</a
+        >
+      </p>
+      <h2>Mitä tietoja palvelu tallentaa ja mihin</h2>
+      <h3>Palvelusta kerätään käyttäjältä ja tämän päätelaitteelta seuraavia tietoja:</h3>
+      <ul>
+        <li>
+          Käyttäjän vastatessa kyselyyn tämän laitteelle tallennetaan uniikki, satunnainen tunniste. Tämä tunniste
+          tallennetaan selaimen tai sovelluksen selainikkunan muistiin. Tätä tunnistetta käytetään kyselyä uudelleen
+          täytettäessä päätelaitteen tunnistamiseen, jotta palvelussa voidaan seurata oireiden mahdollista kehittymistä.
+          Tunniste poistetaan laitteelta 14 päivän jälkeen. Tunnistetta ei pysty lukemaan muut sivustot kuin sen
+          asettanut Oiretutka.fi. Tunniste lähetetään palvelimelle ja tallennetaan sinne salakirjoitettuna.
+        </li>
+      </ul>
+      <h3>Palvelimelle lähetetään seuraavat lomakkeen tiedot:</h3>
+      <ul>
+        <li>Satunnainen tunniste</li>
+        <li>Lomakkeen täyttämiseen kulunut aika</li>
+        <li>Cloudfront-välimuistipalvelun tarjoama maakoodi, jonka avulla vastaajan kotimaa tunnistetaan</li>
+      </ul>
+      <p>Palvelimelle lähetetään seuraavat vastaajan täyttämät tiedot:</p>
+      <ul>
+        <li>Kaikki oirekyselyn vastaukset</li>
+        <li>Postinumero</li>
+        <li>Ikäryhmä kymmenen vuoden ryhmissä</li>
+        <li>Sukupuoli (mies/nainen/muu)</li>
+      </ul>
+      <h3>Palvelimelle lähetetään seuraavat tekniset tiedot väärinkäytösten estämiseksi:</h3>
+      <ul>
+        <li>IP-osoite</li>
+        <li>Selaimen versiotunniste (useragent)</li>
+      </ul>
+      <p>
+        Palvelimen päässä satunnainen tunniste, IP-osoite ja versiotunniste salakirjoitetaan ja käyttäjän tiedot jaetaan
+        useampaan tietokantaan. Oiretiedot ja tekniset tiedot jaetaan erillisiin tietokantoihin siten, että
+        salakirjoitettua IP-osoitetta eikä selaimen versiotunnistetta voida yhdistää yksittäisen vastauslomakkeen
+        tietoihin. Tallennusvaiheessa lomakkeen tietoihin lisätään tieto siitä, kuinka monta kertaa samanlaisesta
+        osoitteesta on lähiaikoina lähetetty vastauksia. Tämä tehdään väärinkäytösten estämiseksi. Postinumero
+        tallennetaan vain sellaisista postinumeroalueista, joissa on yli 100 asukasta. Pienemmät postinumeroalueet
+        yhdistetään kunnan suurimpaan postinumeroalueeseen.
+      </p>
+      <h2>Palvelinympäristön kuvaus ja tietoturvallisuus</h2>
+      <p>
+        Oiretutka-palvelu on toteutettu omalle muista Sanoman palveluista erilliselle AWS-tililleen. Sinne on pääsy
+        ainoastaan rajoitetulla määrällä HS:n ja Futuricen henkilökuntaa.
+      </p>
+    </main>
   </body>
 </html>

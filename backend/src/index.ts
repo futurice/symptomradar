@@ -1,8 +1,7 @@
 import { APIGatewayProxyHandler, Handler } from 'aws-lambda';
 import { v4 as uuidV4 } from 'uuid';
-import { assertIs, ResponseModel } from './common/model';
-import { storeResponseInS3 } from './core/main';
-import { mapPostalCode } from './core/postalCode';
+import { assertIs, FrontendResponseModel, FrontendResponseModelT } from './common/model';
+import { prepareResponseForStorage, storeResponseInS3 } from './core/main';
 
 export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
   console.log(`Incoming request: ${event.httpMethod} ${event.path}`, {
@@ -15,8 +14,7 @@ export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
   } else {
     return Promise.resolve()
       .then(() => JSON.parse(event.body || '') as unknown)
-      .then(assertIs(ResponseModel))
-      .then(mapPostalCode)
+      .then(assertIs(FrontendResponseModel))
       .then(storeResponseInS3)
       .then(() => response(200, { success: true }))
       .catch(err => response(500, { error: true }, err));
@@ -28,28 +26,27 @@ export const workerEntrypoint: Handler<unknown> = () => {
 };
 
 if (process.argv[0].match(/\/ts-node$/)) {
-  Promise.resolve()
-    .then(() => ({
-      participant_uuid: uuidV4(),
-      timestamp: new Date().toISOString(),
-      fever: 'no',
-      cough: 'mild',
-      breathing_difficulties: 'no',
-      muscle_pain: 'no',
-      headache: 'no',
-      sore_throat: 'no',
-      rhinitis: 'no',
-      general_wellbeing: 'fine',
-      duration: '1',
-      longterm_medication: 'no',
-      smoking: 'no',
-      corona_suspicion: 'no',
-      age: '18',
-      gender: 'other',
-      postal_code: '27160',
-    }))
-    .then(assertIs(ResponseModel))
-    .then(mapPostalCode)
+  const test: FrontendResponseModelT = {
+    participant_id: uuidV4(),
+    fever: 'no',
+    cough: 'mild',
+    breathing_difficulties: 'no',
+    muscle_pain: 'no',
+    headache: 'no',
+    sore_throat: 'no',
+    rhinitis: 'no',
+    general_wellbeing: 'fine',
+    duration: '1',
+    longterm_medication: 'no',
+    smoking: 'no',
+    corona_suspicion: 'no',
+    age_group: '20',
+    gender: 'other',
+    postal_code: '27160',
+  };
+  Promise.resolve(test)
+    .then(assertIs(FrontendResponseModel))
+    .then(prepareResponseForStorage)
     .catch(err => err)
     .then(res => console.log(res));
 }

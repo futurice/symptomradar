@@ -36,6 +36,7 @@ if (process.argv[0].match(/\/ts-node$/)) {
       cough: 'mild',
       breathing_difficulties: 'no',
       muscle_pain: 'no',
+      headache: 'no',
       sore_throat: 'no',
       rhinitis: 'no',
       general_wellbeing: 'fine',

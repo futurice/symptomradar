@@ -25,6 +25,7 @@ export const ResponseModel = t.exact(
     cough: t.union([cough, notAnswered]),
     breathing_difficulties: t.union([yesOrNo, notAnswered]),
     muscle_pain: t.union([yesOrNo, notAnswered]),
+    headache: t.union([yesOrNo, notAnswered]),
     sore_throat: t.union([yesOrNo, notAnswered]),
     rhinitis: t.union([yesOrNo, notAnswered]),
     general_wellbeing: t.union([generalWellbeing, notAnswered]),

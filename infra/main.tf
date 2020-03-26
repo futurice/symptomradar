@@ -47,6 +47,87 @@ resource "aws_s3_bucket" "s3_logs" {
       days = 730
     }
   }
+
+
+  replication_configuration {
+    role = aws_iam_role.replication.arn
+
+    rules {
+      id     = "security-vault"
+      status = "Enabled"
+
+      destination {
+        bucket = var.central_log_vault_arn
+      }
+    }
+  }
+}
+
+
+resource "aws_iam_role" "replication" {
+  name = "${var.name_prefix}-logs-replication"
+
+  assume_role_policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "s3.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+POLICY
+}
+
+resource "aws_iam_policy" "replication" {
+  name = "${var.name_prefix}-logs-replication"
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "s3:GetReplicationConfiguration",
+        "s3:ListBucket"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "${aws_s3_bucket.s3_logs.arn}"
+      ]
+    },
+    {
+      "Action": [
+        "s3:GetObjectVersion",
+        "s3:GetObjectVersionAcl"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "${aws_s3_bucket.s3_logs.arn}/*"
+      ]
+    },
+    {
+      "Action": [
+        "s3:ReplicateObject",
+        "s3:ReplicateDelete"
+      ],
+      "Effect": "Allow",
+      "Resource": "${var.central_log_vault_arn}"
+    }
+  ]
+}
+POLICY
+}
+
+
+resource "aws_iam_role_policy_attachment" "replication" {
+  role       = "${aws_iam_role.replication.name}"
+  policy_arn = "${aws_iam_policy.replication.arn}"
 }
 
 # Pass along any output from the instantiated module

@@ -57,6 +57,12 @@ input {
 .success-message {
   display: block;
   margin-bottom: 24px;
+  padding: 0 2px;
+}
+
+.success-message h2 {
+  font-weight: bold;
+  font-size: 16px;
 }
 
 .error-message {

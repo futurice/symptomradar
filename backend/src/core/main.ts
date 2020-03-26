@@ -1,24 +1,34 @@
 import * as AWS from 'aws-sdk';
-import { ResponseModelT } from '../common/model';
+import { assertIs, ResponseModel, ResponseModelT } from '../common/model';
 
 const s3: AWS.S3 = new AWS.S3({ apiVersion: '2006-03-01' });
 const bucket = process.env.BUCKET_NAME_STORAGE || '';
 
+// Crash and burn immediately (instead of at first request) for invalid configuration
 if (!bucket) throw new Error('Storage bucket name missing from environment');
 
 // Saves the given response into our storage bucket
 export function storeResponseInS3(response: ResponseModelT) {
-  const timestamp = new Date().toISOString();
-  const r = { ...response, timestamp }; // browser clock may be wrong/fraudulent, so overwrite with server time
+  response = scrubResponseForStorage(response);
   return s3
     .putObject({
       Bucket: bucket,
-      Key: getStorageKey(r),
-      Body: JSON.stringify(r),
+      Key: getStorageKey(response),
+      Body: JSON.stringify(response),
       ACL: 'private',
     })
     .promise()
-    .then(() => {});
+    .then(() => {}); // don't promise any value, just the success of the operation
+}
+
+// Makes the response safe for storage
+function scrubResponseForStorage(response: ResponseModelT): ResponseModelT {
+  return assertIs(ResponseModel)({
+    ...response,
+    timestamp: new Date()
+      .toISOString() // for security, don't trust browser clock, as it may be wrong or fraudulent
+      .replace(/:..\..*/, ':00.000Z'), // to preserve privacy, intentionally reduce precision of the timestamp
+  });
 }
 
 // Produces the key under which this response should be stored in S3

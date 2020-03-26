@@ -36,7 +36,7 @@ if (process.argv[0].match(/\/ts-node$/)) {
     sore_throat: 'no',
     rhinitis: 'no',
     general_wellbeing: 'fine',
-    duration: '1',
+    duration: '1', // or null
     longterm_medication: 'no',
     smoking: 'no',
     corona_suspicion: 'no',

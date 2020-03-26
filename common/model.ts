@@ -8,6 +8,7 @@ import {
   fever,
   gender,
   generalWellbeing,
+  iso8601DateString,
   notAnswered,
   postalCode,
   uuidString,
@@ -17,36 +18,45 @@ import {
 // Because AWS Athena prefers lower-case column names (https://docs.aws.amazon.com/athena/latest/ug/tables-databases-columns-names.html),
 // we use snake case for some of these models, instead of camel case (https://en.wikipedia.org/wiki/Letter_case#Special_case_styles).
 
+const responseFields = {
+  fever: fever,
+  cough: cough,
+  breathing_difficulties: yesOrNo,
+  muscle_pain: yesOrNo,
+  headache: yesOrNo,
+  sore_throat: yesOrNo,
+  rhinitis: yesOrNo,
+  general_wellbeing: generalWellbeing,
+  longterm_medication: yesOrNo,
+  smoking: yesOrNo,
+  corona_suspicion: yesOrNo,
+  age_group: age,
+  gender: gender,
+  postal_code: postalCode,
+};
+
 export const FrontendResponseModel = t.strict(
   {
     participant_id: uuidString,
-    fever: t.union([fever, notAnswered]),
-    cough: t.union([cough, notAnswered]),
-    breathing_difficulties: t.union([yesOrNo, notAnswered]),
-    muscle_pain: t.union([yesOrNo, notAnswered]),
-    headache: t.union([yesOrNo, notAnswered]),
-    sore_throat: t.union([yesOrNo, notAnswered]),
-    rhinitis: t.union([yesOrNo, notAnswered]),
-    general_wellbeing: t.union([generalWellbeing, notAnswered]),
+    ...responseFields,
     duration: t.union([duration, notAnswered]),
-    longterm_medication: t.union([yesOrNo, notAnswered]),
-    smoking: t.union([yesOrNo, notAnswered]),
-    corona_suspicion: t.union([yesOrNo, notAnswered]),
-    age_group: t.union([age, notAnswered]),
-    gender: t.union([gender, notAnswered]),
-    postal_code: t.union([postalCode, notAnswered]),
   },
   'FrontendResponseModel',
 );
-
 export type FrontendResponseModelT = t.TypeOf<typeof FrontendResponseModel>;
 
-// TODO: Re-implement in io-ts, so we can eventually validate this too
-export type StoredResponseModelT = FrontendResponseModelT & {
-  response_id: string;
-  timestamp: string;
-  app_version: string;
-};
+export const BackendResponseModel = t.strict(
+  {
+    response_id: t.string,
+    timestamp: iso8601DateString,
+    participant_id: t.string, // after hashing, this is no longer uuidString
+    app_version: t.string,
+    ...responseFields,
+    duration: t.union([t.number, t.null]), // for persistence, let's cast to number
+  },
+  'BackendResponseModel',
+);
+export type BackendResponseModelT = t.TypeOf<typeof BackendResponseModel>;
 
 // Returns a function that either throws, or returns a valid instance of the Model type provided
 export function assertIs<C extends t.ExactC<any>>(codec: C): (x: unknown) => t.TypeOf<C> {

@@ -44,32 +44,15 @@ resource "aws_athena_named_query" "create_response_table" {
         `duration` string,
         `longterm_medication` string,
         `smoking` string,
-        `corona_suspicion` string
-        `age` string,
+        `corona_suspicion` string,
+        `age_group` string,
         `gender` string,
-        `postal_code` string,
-
+        `postal_code` string
       )
     ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
     WITH SERDEPROPERTIES ('serialization.format' = '1')
     LOCATION 's3://${aws_s3_bucket.storage.id}/responses/'
     TBLPROPERTIES ('has_encrypted_data'='false')
     ;
-  SQL
-}
-
-resource "aws_athena_named_query" "responses_per_color" {
-  name        = "responses_per_color"
-  description = "Shows how many people like a specific color"
-  database    = aws_athena_database.storage.name
-  query       = <<-SQL
-    SELECT
-      favoriteColor,
-      COUNT(*) AS count
-    FROM
-      ${local.table}
-    GROUP BY
-      favoriteColor
-   ;
   SQL
 }

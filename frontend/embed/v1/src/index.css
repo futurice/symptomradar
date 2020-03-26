@@ -204,7 +204,8 @@ em {
   padding-left: 24px;
 }
 
-.optional-field-info {
+.optional-field-info,
+.invalid-value-info {
   color: #595959;
   font-style: italic;
   font-weight: normal;

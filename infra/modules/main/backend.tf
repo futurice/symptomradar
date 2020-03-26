@@ -15,13 +15,14 @@ module "backend_api" {
   source    = "../aws_lambda_api"
   providers = { aws.us_east_1 = aws.us_east_1 } # this alias is needed because ACM is only available in the "us-east-1" region
 
-  name_prefix            = "${var.name_prefix}-backend-api"
-  tags                   = local.tags_backend
-  api_domain             = var.backend_domain
-  function_s3_bucket     = aws_s3_bucket.backend_code.id
-  function_zipfile       = "backend-lambda.zip"
-  function_handler       = "index.apiEntrypoint"
-  lambda_logging_enabled = true
+  name_prefix                    = "${var.name_prefix}-backend-api"
+  tags                           = local.tags_backend
+  api_domain                     = var.backend_domain
+  function_s3_bucket             = aws_s3_bucket.backend_code.id
+  function_zipfile               = "backend-lambda.zip"
+  function_handler               = "index.apiEntrypoint"
+  lambda_logging_enabled         = true
+  api_gateway_cloudwatch_metrics = true
 
   function_env_vars = {
     BUCKET_NAME_STORAGE = aws_s3_bucket.storage.id

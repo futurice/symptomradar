@@ -15,6 +15,8 @@ import {
   notAnswered,
 } from './io';
 
+// Because AWS Athena prefers lower-case column names (https://docs.aws.amazon.com/athena/latest/ug/tables-databases-columns-names.html),
+// we use snake case for this model instead of camel case (https://en.wikipedia.org/wiki/Letter_case#Special_case_styles).
 export const ResponseModel = t.exact(
   t.type({
     // Metadata:

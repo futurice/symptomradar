@@ -2,7 +2,6 @@ import { isRight } from 'fp-ts/lib/Either';
 import * as t from 'io-ts';
 import { PathReporter } from 'io-ts/lib/PathReporter';
 import {
-  uuidString,
   iso8601DateString,
   postalCode,
   gender,
@@ -20,7 +19,7 @@ import {
 export const ResponseModel = t.exact(
   t.type({
     // Metadata:
-    participant_uuid: uuidString,
+    participant_uuid: t.string, // TODO: This can be uuidString when we have separate models for response from browser, and response scrubbed by backend
     timestamp: iso8601DateString,
     // Payload:
     fever: t.union([fever, notAnswered]),

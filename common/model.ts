@@ -51,6 +51,7 @@ export const BackendResponseModel = t.strict(
     timestamp: iso8601DateString,
     participant_id: t.string, // after hashing, this is no longer uuidString
     app_version: t.string,
+    country_code: t.string,
     ...responseFields,
     duration: t.union([t.number, t.null]), // for persistence, let's cast to number
   },

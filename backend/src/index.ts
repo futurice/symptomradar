@@ -8,10 +8,11 @@ export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
   if (event.httpMethod === 'OPTIONS') {
     return Promise.resolve().then(() => response(200, undefined));
   } else {
+    const countryCode = event.headers['CloudFront-Viewer-Country'] || '';
     return Promise.resolve()
       .then(() => JSON.parse(event.body || '') as unknown)
       .then(assertIs(FrontendResponseModel))
-      .then(storeResponseInS3)
+      .then(res => storeResponseInS3(res, countryCode))
       .then(() => response(200, { success: true }))
       .catch(err => response(500, { error: true }, err));
   }
@@ -42,7 +43,7 @@ if (process.argv[0].match(/\/ts-node$/)) {
   };
   Promise.resolve(test)
     .then(assertIs(FrontendResponseModel))
-    .then(prepareResponseForStorage)
+    .then(res => prepareResponseForStorage(res, 'FI'))
     .catch(err => err)
     .then(res => console.log(res));
 }

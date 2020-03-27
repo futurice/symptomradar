@@ -37,6 +37,7 @@ resource "aws_athena_named_query" "create_table" {
         `timestamp` string,
         `participant_id` string,
         `app_version` string,
+        `country_code` string,
         `fever` string,
         `cough` string,
         `breathing_difficulties` string,

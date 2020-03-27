@@ -15,6 +15,7 @@ module "env_dev" {
   backend_domain         = "api.dev.oiretutka.fi"
   s3_logs_bucket         = aws_s3_bucket.s3_logs.id
   backend_cors_allow_any = true
+  frontend_password      = var.frontend_password
 }
 
 # Implements an instance of the app, for a specific env

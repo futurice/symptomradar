@@ -48,12 +48,12 @@ function storeParticipantId(participantId: string) {
   }
 }
 
-function inputBlurred(event: JQuery.TriggeredEvent) {
-  const { valid, patternMismatch } = event.target.validity;
+function markInvalidInput(input: HTMLInputElement) {
+  const { valid, patternMismatch } = input.validity;
 
   if (!valid) {
     const errorDescription = `(${patternMismatch ? 'virheellinen arvo' : 'pakollinen tieto'})`;
-    const $inputWrapper = $(event.target).parents('.input-wrapper');
+    const $inputWrapper = $(input).parents('.input-wrapper');
 
     $inputWrapper.addClass('invalid-value');
     $inputWrapper
@@ -64,16 +64,22 @@ function inputBlurred(event: JQuery.TriggeredEvent) {
 }
 
 function inputChanged(event: JQuery.TriggeredEvent) {
+  // check input validity on value change
   const { valid } = event.target.validity;
 
   if (valid) {
-    const $inputWrapper = $(event.target).parents('.input-wrapper');
-
+    // remove invalid highlight from the input wrapper
+    const $inputWrapper = $(event.target).parents('.invalid-value');
     $inputWrapper.removeClass('invalid-value');
     $inputWrapper
       .find('.invalid-value-info')
       .text('')
       .addClass('hidden');
+  }
+
+  // if no more :invalid inputs are left, remove error message as well
+  if ($('symptom-questionnaire .input-wrapper:invalid').length === 0) {
+    hideSubmitError();
   }
 }
 
@@ -82,8 +88,12 @@ function startSurvey() {
   $('#start-survey').addClass('hidden');
   setTimeout(function() {
     $('#form-header').focus();
+
+    // attach onchange and onblur handler to each input for dynamic validation
     $('#symptom-questionnaire input:required')
-      .blur(inputBlurred)
+      .blur(event => {
+        markInvalidInput((event as JQuery.BlurEvent<HTMLInputElement>).target);
+      })
       .change(inputChanged);
   }, 500);
 }
@@ -135,21 +145,6 @@ function init() {
     $('#symptom-questionnaire').trigger('reset');
   });
 
-  $('#symptom-questionnaire input:required').change(function(event) {
-    // attach onchange handler to each input
-    // on value change, remove invalid highlight from the input wrapper if exists
-    const $inputWrapper = $(this).parents('.invalid-value');
-
-    if ($inputWrapper.hasClass('invalid-value') && $inputWrapper.not(':invalid')) {
-      $inputWrapper.removeClass('invalid-value');
-    }
-
-    // if no more :invalid inputs are left, remove error message as well
-    if ($('symptom-questionnaire .input-wrapper:invalid').length === 0) {
-      hideSubmitError();
-    }
-  });
-
   const endpoint = process.env.REACT_APP_API_ENDPOINT;
   if (!endpoint) {
     console.error('Endpoint url missing');
@@ -160,11 +155,11 @@ function init() {
     event.preventDefault();
 
     // if a required input has invalid value, the form submit event won't fire at all
-    // check that inputs with __required__ attribute are filled
-    const $invalidFields = $('#symptom-questionnaire .input-wrapper:invalid');
+    // check that inputs with __required__ attribute are valid
+    const $invalidFields = $('#symptom-questionnaire input:required:invalid');
 
     if ($invalidFields.length > 0) {
-      $invalidFields.addClass('invalid-value');
+      $invalidFields.each((_, element) => markInvalidInput(element as HTMLInputElement));
       showSubmitError('Lomakkeesta puuttuu vielä vastauksia', 'Ole hyvä ja täytä puuttuvat kohdat.');
       return;
     }

@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="fi">
+<html lang="{{ lng }}">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Oiretutka</title>
+    <title>{{ title }}</title>
   </head>
 
   <body>
-    <noscript>Tämä sivusto vaatii JavaScript-tuen toimiakseen.</noscript>
+    <noscript>{{ no_js }}</noscript>
     <main>
       <div class="container">
         <img class="logo" src="./oiretutka-logo-gradient.svg" alt="Oiretutka. Helsingin Sanomat ja Futurice." />
         <div id="form-info" class="form-info">
           <h1 id="page-title" tabindex="-1">
-            Kerro, onko sinulla oireita vai ei: auta selvittämään, miten koronavirus leviää
+            {{ page_title }}
           </h1>
           <p>
             Suomalaiset mediat pyytävät Oiretutka-palvelussa lukijoiltaan tietoa, onko heillä koronavirukseen viittaavia
@@ -35,7 +35,7 @@
             >
           </p>
         </div>
-        <button id="start-survey" class="button action-button">Aloita</button>
+        <button id="start-survey" class="button action-button">{{ start_survey }}</button>
       </div>
       <form id="symptom-questionnaire" class="hidden" novalidate>
         <button id="collapse-survey" type="button" class="collapse-button">Sulje kysely</button>

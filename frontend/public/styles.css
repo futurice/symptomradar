@@ -19,9 +19,16 @@ body {
   margin: 24px 24px 60px;
 }
 
+header {
+  max-width: 600px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
 main {
   max-width: 600px;
   margin: 0 auto;
+  padding: 20px 0 40px;
 }
 
 h1 {
@@ -48,6 +55,14 @@ h3 {
   height: auto;
   display: block;
   margin-bottom: 24px;
+}
+
+header .notice {
+  font-size: 16px;
+  line-height: 1.25;
+  font-weight: 700;
+  margin: 0 0 24px;
+  font-style: normal;
 }
 
 ul {

@@ -37,12 +37,12 @@
         </div>
         <button id="start-survey" class="button action-button">Aloita</button>
       </div>
-      <form id="symptom-questionnaire" class="hidden">
+      <form id="symptom-questionnaire" class="hidden" novalidate>
         <button id="collapse-survey" type="button" class="collapse-button">Sulje kysely</button>
         <div class="question-group">
           <h2 id="form-header" class="question-group-title" tabindex="-1">Millaisia oireita sinulla on?</h2>
           <fieldset class="input-wrapper">
-            <legend>Kuumetta</legend>
+            <legend aria-live="assertive">Kuumetta <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <div class="option-wrapper">
                 <input id="fever-no" type="radio" name="fever" value="no" required />
@@ -59,7 +59,7 @@
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend>Yskää</legend>
+            <legend aria-live="assertive">Yskää <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <div class="option-wrapper">
                 <input id="cough-no" type="radio" name="cough" value="no" required />
@@ -76,7 +76,7 @@
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend>Vaikeuksia hengittää</legend>
+            <legend aria-live="assertive">Vaikeuksia hengittää <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <input id="breathingDifficulties-yes" type="radio" name="breathing_difficulties" value="yes" required />
               <label for="breathingDifficulties-yes">kyllä</label>
@@ -85,7 +85,7 @@
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend>Lihaskipuja</legend>
+            <legend aria-live="assertive">Lihaskipuja <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <input id="musclePain-yes" type="radio" name="muscle_pain" value="yes" required />
               <label for="musclePain-yes">kyllä</label>
@@ -94,7 +94,7 @@
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend>Päänsärkyä</legend>
+            <legend aria-live="assertive">Päänsärkyä <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <input id="headache-yes" type="radio" name="headache" value="yes" required />
               <label for="headache-yes">kyllä</label>
@@ -103,7 +103,7 @@
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend>Kurkkukipua</legend>
+            <legend aria-live="assertive">Kurkkukipua <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <input id="soreThroat-yes" type="radio" name="sore_throat" value="yes" required />
               <label for="soreThroat-yes">kyllä</label>
@@ -112,7 +112,7 @@
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend>Nuhaa</legend>
+            <legend aria-live="assertive">Nuhaa <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <input id="rhinitis-yes" type="radio" name="rhinitis" value="yes" required />
               <label for="rhinitis-yes">kyllä</label>
@@ -124,7 +124,9 @@
         <div class="question-group">
           <h2 class="question-group-title">Terveydentila</h2>
           <fieldset class="input-wrapper">
-            <legend>Millainen on yleisvointisi?</legend>
+            <legend aria-live="assertive">
+              Millainen on yleisvointisi? <span class="invalid-value-info hidden" />
+            </legend>
             <div class="options">
               <div class="option-wrapper">
                 <input id="generalWellbeing-fine" type="radio" name="general_wellbeing" value="fine" required />
@@ -153,16 +155,17 @@
               type="text"
               name="duration"
               inputmode="numeric"
-              pattern="[0-9]*"
-              min="0"
-              size="2"
+              pattern="[0-9]{1,2}"
               maxlength="2"
+              size="2"
               placeholder=""
               value=""
             />
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend>Onko sinulla lääkehoitoa vaativa pitkäaikaissairaus?</legend>
+            <legend aria-live="assertive">
+              Onko sinulla lääkehoitoa vaativa pitkäaikaissairaus? <span class="invalid-value-info hidden" />
+            </legend>
             <div class="options">
               <input id="longtermMedication-yes" type="radio" name="longterm_medication" value="yes" required />
               <label for="longtermMedication-yes">kyllä</label>
@@ -171,7 +174,7 @@
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend>Tupakoitko?</legend>
+            <legend aria-live="assertive">Tupakoitko? <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <input id="smoking-yes" type="radio" name="smoking" value="yes" required />
               <label for="smoking-yes">kyllä</label>
@@ -180,7 +183,9 @@
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend>Epäiletkö, että olet saanut koronavirustartunnan?</legend>
+            <legend aria-live="assertive">
+              Epäiletkö, että olet saanut koronavirustartunnan? <span class="invalid-value-info hidden" />
+            </legend>
             <div class="options">
               <input id="coronaSuspicion-yes" type="radio" name="corona_suspicion" value="yes" required />
               <label for="coronaSuspicion-yes">kyllä</label>
@@ -192,7 +197,7 @@
         <div class="question-group">
           <h2 class="question-group-title">Yleistiedot</h2>
           <fieldset class="input-wrapper">
-            <legend>Ikä</legend>
+            <legend aria-live="assertive">Ikä <span class="invalid-value-info hidden" /></legend>
             <div class="options flex-wrapper">
               <div class="column">
                 <div class="option-wrapper">
@@ -237,7 +242,7 @@
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend>Sukupuoli</legend>
+            <legend aria-live="assertive">Sukupuoli <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <input id="gender-female" type="radio" name="gender" value="female" required />
               <label for="gender-female">nainen</label>
@@ -248,17 +253,18 @@
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <label for="postalCode" class="input-field-label">Postinumero</label>
+            <label for="postalCode" class="input-field-label" aria-live="assertive"
+              >Postinumero <span class="invalid-value-info hidden"
+            /></label>
             <input
               id="postalCode"
               type="text"
               name="postal_code"
               class="input-field"
               inputmode="numeric"
-              pattern="[0-9]*"
-              size="5"
-              minlength="5"
+              pattern="[0-9]{5}"
               maxlength="5"
+              size="5"
               autocomplete="postal-code"
               placeholder="00100"
               value=""

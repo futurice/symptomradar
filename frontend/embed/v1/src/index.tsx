@@ -48,11 +48,43 @@ function storeParticipantId(participantId: string) {
   }
 }
 
+function inputBlurred(event: JQuery.TriggeredEvent) {
+  const { valid, patternMismatch } = event.target.validity;
+
+  if (!valid) {
+    const errorDescription = `(${patternMismatch ? 'virheellinen arvo' : 'pakollinen tieto'})`;
+    const $inputWrapper = $(event.target).parents('.input-wrapper');
+
+    $inputWrapper.addClass('invalid-value');
+    $inputWrapper
+      .find('.invalid-value-info')
+      .text(errorDescription)
+      .removeClass('hidden');
+  }
+}
+
+function inputChanged(event: JQuery.TriggeredEvent) {
+  const { valid } = event.target.validity;
+
+  if (valid) {
+    const $inputWrapper = $(event.target).parents('.input-wrapper');
+
+    $inputWrapper.removeClass('invalid-value');
+    $inputWrapper
+      .find('.invalid-value-info')
+      .text('')
+      .addClass('hidden');
+  }
+}
+
 function startSurvey() {
   $('#symptom-questionnaire').removeClass('hidden');
   $('#start-survey').addClass('hidden');
   setTimeout(function() {
     $('#form-header').focus();
+    $('#symptom-questionnaire input:required')
+      .blur(inputBlurred)
+      .change(inputChanged);
   }, 500);
 }
 
@@ -118,17 +150,6 @@ function init() {
     }
   });
 
-  $('#submit-survey').click(function(event) {
-    // if a required input has invalid value, the form submit event won't fire at all
-    // check that inputs with __required__ attribute are filled
-    const $invalidFields = $('#symptom-questionnaire .input-wrapper:invalid');
-
-    if ($invalidFields.length > 0) {
-      $invalidFields.addClass('invalid-value');
-      showSubmitError('Lomakkeesta puuttuu vielä vastauksia', 'Ole hyvä ja täytä puuttuvat kohdat.');
-    }
-  });
-
   const endpoint = process.env.REACT_APP_API_ENDPOINT;
   if (!endpoint) {
     console.error('Endpoint url missing');
@@ -137,6 +158,16 @@ function init() {
 
   $('#symptom-questionnaire').submit(function(event) {
     event.preventDefault();
+
+    // if a required input has invalid value, the form submit event won't fire at all
+    // check that inputs with __required__ attribute are filled
+    const $invalidFields = $('#symptom-questionnaire .input-wrapper:invalid');
+
+    if ($invalidFields.length > 0) {
+      $invalidFields.addClass('invalid-value');
+      showSubmitError('Lomakkeesta puuttuu vielä vastauksia', 'Ole hyvä ja täytä puuttuvat kohdat.');
+      return;
+    }
 
     // serialize form data into { name: input.name, value: input.value } format
     // unanswered fields are not included

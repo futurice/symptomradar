@@ -13,8 +13,8 @@ if (!bucket) throw new Error('Storage bucket name missing from environment');
 if (!pepper) throw new Error('Hashing pepper missing from environment');
 
 // Saves the given response into our storage bucket
-export function storeResponseInS3(response: FrontendResponseModelT) {
-  const r = prepareResponseForStorage(response);
+export function storeResponseInS3(response: FrontendResponseModelT, countryCode: string) {
+  const r = prepareResponseForStorage(response, countryCode);
   console.log('About to store response', r);
   return s3
     .putObject({
@@ -28,7 +28,7 @@ export function storeResponseInS3(response: FrontendResponseModelT) {
 }
 
 // Takes a response from the frontend, scrubs it clean, and adds fields required for storing it
-export function prepareResponseForStorage(response: FrontendResponseModelT) {
+export function prepareResponseForStorage(response: FrontendResponseModelT, countryCode: string) {
   const meta = {
     response_id: uuidV4(),
     participant_id: createHash('sha256') // to preserve privacy, hash the participant_id before storing it, so after opening up the dataset, malicious actors can't submit more responses that pretend to belong to a previous participant
@@ -38,6 +38,7 @@ export function prepareResponseForStorage(response: FrontendResponseModelT) {
       .toISOString()
       .replace(/:..\..*/, ':00.000Z'), // to preserve privacy, intentionally reduce precision of the timestamp
     app_version: 'v0.6', // TODO: This should be set by the deploy process, not hard-coded!
+    country_code: countryCode,
     postal_code: mapPostalCode(response).postal_code, // to protect the privacy of participants from very small postal code areas, they are merged into larger ones, based on known population data
     duration: response.duration === null ? null : parseInt(response.duration),
   };

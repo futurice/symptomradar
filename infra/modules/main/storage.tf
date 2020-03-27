@@ -37,6 +37,7 @@ resource "aws_athena_named_query" "create_table" {
         `timestamp` string,
         `participant_id` string,
         `app_version` string,
+        `country_code` string,
         `fever` string,
         `cough` string,
         `breathing_difficulties` string,
@@ -80,4 +81,11 @@ resource "aws_athena_named_query" "by_postal_code" {
   description = "How many participants per postal code"
   database    = aws_athena_database.storage.name
   query       = "SELECT postal_code, COUNT(*) AS responses FROM ${local.table} GROUP BY postal_code ORDER BY responses DESC"
+}
+
+resource "aws_athena_named_query" "by_country_code" {
+  name        = "${var.name_prefix}-by-country-code"
+  description = "How many participants per country code"
+  database    = aws_athena_database.storage.name
+  query       = "SELECT country_code, COUNT(*) AS responses FROM ${local.table} GROUP BY country_code ORDER BY responses DESC"
 }

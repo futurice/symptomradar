@@ -132,6 +132,10 @@ label {
   margin-bottom: 24px;
 }
 
+.options label {
+  padding-right: 16px;
+}
+
 .input-wrapper {
   padding: 0 16px;
   position: relative;

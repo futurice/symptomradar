@@ -74,3 +74,10 @@ resource "aws_athena_named_query" "total_participants" {
   database    = aws_athena_database.storage.name
   query       = "SELECT COUNT(DISTINCT participant_id) AS distinct_participants FROM ${local.table}"
 }
+
+resource "aws_athena_named_query" "by_postal_code" {
+  name        = "${var.name_prefix}-by-postal-code"
+  description = "How many participants per postal code"
+  database    = aws_athena_database.storage.name
+  query       = "SELECT postal_code, COUNT(*) AS responses FROM ${local.table} GROUP BY postal_code ORDER BY responses DESC"
+}

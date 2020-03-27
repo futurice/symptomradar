@@ -25,8 +25,9 @@ locals {
   table = "${aws_athena_database.storage.id}.responses"
 }
 
-resource "aws_athena_named_query" "create_response_table" {
-  name        = "create_response_table"
+# https://docs.aws.amazon.com/athena/latest/ug/create-table.html
+resource "aws_athena_named_query" "create_table" {
+  name        = "${var.name_prefix}-create-table"
   description = "Sets up the main table if it doesn't yet exist"
   database    = aws_athena_database.storage.name
   query       = <<-SQL

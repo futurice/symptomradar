@@ -1,7 +1,9 @@
 #!/bin/bash
 
 if [ "$#" -ne 1 ]; then
-  echo "Usage examples:"
+  echo "Usage:"
+  echo "  $ $(basename -- "$0") <env>"
+  echo "Examples:"
   echo "  $ $(basename -- "$0") dev"
   echo "  $ $(basename -- "$0") prod"
   exit 1

@@ -1,15 +1,17 @@
 #!/bin/bash
 
-if [ "$#" -ne 2 ]; then
-  echo "Usage examples:"
-  echo "  $ $(basename -- "$0") dev /embed/v1/"
-  echo "  $ $(basename -- "$0") prod /"
+if [ "$#" -ne 3 ]; then
+  echo "Usage:"
+  echo "  $ $(basename -- "$0") <env> <local-path> <remote-path>"
+  echo "Examples:"
+  echo "  $ $(basename -- "$0") dev   embed/v1     /embed/v1/"
+  echo "  $ $(basename -- "$0") prod  main         /"
   exit 1
 fi
 
 set -euo pipefail # exit on error; treat unset variables as errors; exit on errors in piped commands
 SELF_DIR="$(perl -e 'use File::Basename; use Cwd "abs_path"; print dirname(abs_path(@ARGV[0]));' -- "$0")" # figure out the absolute path to the current script, regardless of pwd (perl is more cross-platform than realpath; https://stackoverflow.com/a/30795461)
-FRONTEND_DIR="$SELF_DIR/../frontend$2"
+FRONTEND_DIR="$SELF_DIR/../frontend/$2"
 
 # Build the frontend static files
 (
@@ -23,12 +25,12 @@ FRONTEND_DIR="$SELF_DIR/../frontend$2"
 aws s3 cp \
   --cache-control=max-age=86400 \
   --recursive \
-  $FRONTEND_DIR/build/static/ "s3://symptomradar-$1-frontend-code${2}static/"
+  $FRONTEND_DIR/build/static/ "s3://symptomradar-$1-frontend-code${3}static/"
 rm -rfv "$FRONTEND_DIR/build/static"
 
 # Upload & clean up files that need to be served fresh
 aws s3 cp \
   --cache-control=max-age=15 \
   --recursive \
-  $FRONTEND_DIR/build/ "s3://symptomradar-$1-frontend-code${2}"
+  $FRONTEND_DIR/build/ "s3://symptomradar-$1-frontend-code${3}"
 rm -rfv "$FRONTEND_DIR/build"

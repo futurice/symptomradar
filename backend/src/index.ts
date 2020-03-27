@@ -62,6 +62,8 @@ const response = (statusCode: number, body?: object, logError?: Error) => {
       'Access-Control-Allow-Headers':
         'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range',
       'Access-Control-Expose-Headers': 'Content-Length,Content-Range',
+      // Enforce HTTPS-only connections when possible:
+      'Strict-Transport-Security': 'max-age=31557600; preload', // i.e. one year in seconds
     },
   };
 };

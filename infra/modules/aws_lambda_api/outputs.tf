@@ -12,3 +12,10 @@ output "function_role" {
   value       = aws_iam_role.this.name
   description = "The IAM role for the function created; can be used to attach additional policies/permissions"
 }
+
+output "resources" {
+  description = "Names/ID's of resources created; can be used for e.g. monitoring, or attaching external resources"
+  value = {
+    rest_api = aws_api_gateway_rest_api.this.name
+  }
+}

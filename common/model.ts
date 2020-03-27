@@ -26,6 +26,8 @@ const responseFields = {
   headache: yesOrNo,
   sore_throat: yesOrNo,
   rhinitis: yesOrNo,
+  stomachIssues: yesOrNo,
+  senseIssues: yesOrNo,
   general_wellbeing: generalWellbeing,
   longterm_medication: yesOrNo,
   smoking: yesOrNo,

@@ -106,6 +106,22 @@ resource "aws_cloudwatch_dashboard" "overview" {
                 "region": "${data.aws_region.current.name}",
                 "title": "Concurrent API executions"
             }
+        },
+        {
+            "type": "metric",
+            "x": 6,
+            "y": 12,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "view": "timeSeries",
+                "stacked": false,
+                "metrics": [
+                    [ "AWS/ApiGateway", "Latency", "ApiName", "${module.backend_api.resources.rest_api}" ]
+                ],
+                "region": "${data.aws_region.current.name}",
+                "title": "API Gateway latency"
+            }
         }
     ]
 }

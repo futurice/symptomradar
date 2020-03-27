@@ -67,3 +67,10 @@ resource "aws_athena_named_query" "total_responses" {
   database    = aws_athena_database.storage.name
   query       = "SELECT COUNT(*) FROM ${local.table}"
 }
+
+resource "aws_athena_named_query" "total_participants" {
+  name        = "${var.name_prefix}-total-participants"
+  description = "How many people have responded"
+  database    = aws_athena_database.storage.name
+  query       = "SELECT COUNT(DISTINCT participant_id) AS distinct_participants FROM ${local.table}"
+}

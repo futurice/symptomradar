@@ -45,6 +45,8 @@ resource "aws_athena_named_query" "create_table" {
         `headache` string,
         `sore_throat` string,
         `rhinitis` string,
+        `stomach_issues` string,
+        `sensory_issues` string,
         `general_wellbeing` string,
         `longterm_medication` string,
         `smoking` string,

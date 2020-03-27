@@ -26,6 +26,10 @@ resource "aws_cloudwatch_dashboard" "overview" {
                         {
                             "label": "Private beta",
                             "value": "2020-03-25T14:25:36Z"
+                        },
+                        {
+                            "label": "Public beta",
+                            "value": "2020-03-26T19:01:00+02:00"
                         }
                     ]
                 }

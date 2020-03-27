@@ -32,8 +32,10 @@ resource "aws_athena_named_query" "create_response_table" {
   query       = <<-SQL
     CREATE EXTERNAL TABLE IF NOT EXISTS
       ${local.table} (
-        `participant_id` string,
+        `response_id` string,
         `timestamp` string,
+        `participant_id` string,
+        `app_version` string,
         `fever` string,
         `cough` string,
         `breathing_difficulties` string,
@@ -42,14 +44,14 @@ resource "aws_athena_named_query" "create_response_table" {
         `sore_throat` string,
         `rhinitis` string,
         `general_wellbeing` string,
-        `duration` string,
         `longterm_medication` string,
         `smoking` string,
         `corona_suspicion` string,
         `age_group` string,
         `gender` string,
-        `postal_code` string
-      )
+        `postal_code` string,
+        `duration` smallint
+     )
     ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
     WITH SERDEPROPERTIES ('serialization.format' = '1')
     LOCATION 's3://${aws_s3_bucket.storage.id}/responses/'

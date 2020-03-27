@@ -122,6 +122,62 @@ resource "aws_cloudwatch_dashboard" "overview" {
                 "region": "${data.aws_region.current.name}",
                 "title": "API Gateway latency"
             }
+        },
+        {
+            "type": "metric",
+            "x": 12,
+            "y": 12,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "view": "timeSeries",
+                "stacked": false,
+                "metrics": [
+                    [ "AWS/CloudFront", "Requests", "Region", "Global", "DistributionId", "${module.frontend.resources.cloudfront_distribution}" ]
+                ],
+                "region": "us-east-1",
+                "title": "CloudFront requests",
+                "yAxis": {
+                    "left": {
+                        "showUnits": false
+                    },
+                    "right": {
+                        "showUnits": false
+                    }
+                },
+                "stat": "Sum"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 18,
+            "y": 12,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "view": "timeSeries",
+                "stacked": false,
+                "metrics": [
+                    [ "AWS/CloudFront", "TotalErrorRate", "Region", "Global", "DistributionId", "${module.frontend.resources.cloudfront_distribution}" ],
+                    [ "AWS/CloudFront", "4xxErrorRate", "Region", "Global", "DistributionId", "${module.frontend.resources.cloudfront_distribution}", { "label": "Total4xxErrors", "region": "us-east-1" } ],
+                    [ "AWS/CloudFront", "5xxErrorRate", "Region", "Global", "DistributionId", "${module.frontend.resources.cloudfront_distribution}", { "label": "Total5xxErrors", "region": "us-east-1" } ],
+                    [ { "expression": "(m4+m5+m6)/m7*100", "label": "5xxErrorByLambdaEdge", "id": "e1", "region": "us-east-1" } ],
+                    [ "AWS/CloudFront", "LambdaExecutionError", "Region", "Global", "DistributionId", "${module.frontend.resources.cloudfront_distribution}", { "id": "m4", "stat": "Sum", "visible": false, "region": "us-east-1" } ],
+                    [ "AWS/CloudFront", "LambdaValidationError", "Region", "Global", "DistributionId", "${module.frontend.resources.cloudfront_distribution}", { "id": "m5", "stat": "Sum", "visible": false, "region": "us-east-1" } ],
+                    [ "AWS/CloudFront", "LambdaLimitExceededErrors", "Region", "Global", "DistributionId", "${module.frontend.resources.cloudfront_distribution}", { "id": "m6", "stat": "Sum", "visible": false, "region": "us-east-1" } ],
+                    [ "AWS/CloudFront", "Requests", "Region", "Global", "DistributionId", "${module.frontend.resources.cloudfront_distribution}", { "id": "m7", "stat": "Sum", "visible": false, "region": "us-east-1" } ]
+                ],
+                "region": "us-east-1",
+                "title": "CloudFront Error rate (% of requests)",
+                "yAxis": {
+                    "left": {
+                        "showUnits": false
+                    },
+                    "right": {
+                        "showUnits": false
+                    }
+                }
+            }
         }
     ]
 }

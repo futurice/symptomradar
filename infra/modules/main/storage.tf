@@ -60,3 +60,10 @@ resource "aws_athena_named_query" "create_table" {
     ;
   SQL
 }
+
+resource "aws_athena_named_query" "total_responses" {
+  name        = "${var.name_prefix}-total-responses"
+  description = "How many responses we currently have received"
+  database    = aws_athena_database.storage.name
+  query       = "SELECT COUNT(*) FROM ${local.table}"
+}

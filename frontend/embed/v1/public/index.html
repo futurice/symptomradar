@@ -1,279 +1,309 @@
 <!DOCTYPE html>
 <html lang="fi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Oiretutka</title>
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Oiretutka</title>
-</head>
-
-<body>
-  <noscript>Tämä sivusto vaatii JavaScript-tuen toimiakseen.</noscript>
-  <main>
-    <div class="container">
-      <img class="logo" src="./oiretutka-logo-gradient.svg" alt="Oiretutka. Helsingin Sanomat ja Futurice." />
-      <div id="form-info" class="form-info">
-        <h1 id="page-title" tabindex="-1">
-          Kerro, onko sinulla oireita vai ei: auta selvittämään, miten koronavirus leviää
-        </h1>
-        <p>
-          Suomalaiset mediat pyytävät Oiretutka-palvelussa lukijoiltaan tietoa, onko heillä koronavirukseen viittaavia
-          oireita vai ei.
-        </p>
-        <p>
-          Kertomalla tilanteestasi – myös terveenä – voit auttaa mediaa kertomaan paremmin siitä, miten virus leviää.
-          Oiretutkaan tallennettuja tietoja ei voi yhdistää vastaajaan. Vastauksia julkaistaan yhteenvetona ja
-          yksittäisinä vastauksina. Kysely on suunniteltu yhteistyössä Helsingin yliopiston kansanterveystieteen
-          osaston kanssa.
-        </p>
-        <p>
-          Palvelua ei ole tarkoitettu yksittäisen henkilön opastamiseksi terveyteensä liittyen tai ohjaamiseksi
-          terveydenhuoltoon.
-        </p>
-        <p>
-          <a href="https://www.oiretutka.fi/tietosuojalauseke.html" target="_blank" rel="noopener noreferrer">Lue lisää
-            tietosuojasta täältä.</a>
-        </p>
+  <body>
+    <noscript>Tämä sivusto vaatii JavaScript-tuen toimiakseen.</noscript>
+    <main>
+      <div class="container">
+        <img class="logo" src="./oiretutka-logo-gradient.svg" alt="Oiretutka. Helsingin Sanomat ja Futurice." />
+        <div id="form-info" class="form-info">
+          <h1 id="page-title" tabindex="-1">
+            Kerro, onko sinulla oireita vai ei: auta selvittämään, miten koronavirus leviää
+          </h1>
+          <p>
+            Suomalaiset mediat pyytävät Oiretutka-palvelussa lukijoiltaan tietoa, onko heillä koronavirukseen viittaavia
+            oireita vai ei.
+          </p>
+          <p>
+            Kertomalla tilanteestasi – myös terveenä – voit auttaa mediaa kertomaan paremmin siitä, miten virus leviää.
+            Oiretutkaan tallennettuja tietoja ei voi yhdistää vastaajaan. Vastauksia julkaistaan yhteenvetona ja
+            yksittäisinä vastauksina. Kysely on suunniteltu yhteistyössä Helsingin yliopiston kansanterveystieteen
+            osaston kanssa.
+          </p>
+          <p>
+            Palvelua ei ole tarkoitettu yksittäisen henkilön opastamiseksi terveyteensä liittyen tai ohjaamiseksi
+            terveydenhuoltoon.
+          </p>
+          <p>
+            <a href="https://www.oiretutka.fi/tietosuojalauseke.html" target="_blank" rel="noopener noreferrer"
+              >Lue lisää tietosuojasta täältä.</a
+            >
+          </p>
+        </div>
+        <button id="start-survey" class="button action-button">Aloita</button>
       </div>
-      <button id="start-survey" class="button action-button">Aloita</button>
-    </div>
-    <form id="symptom-questionnaire" class="hidden" novalidate>
-      <button id="collapse-survey" type="button" class="collapse-button">Sulje kysely</button>
-      <div class="question-group">
-        <h2 id="form-header" class="question-group-title" tabindex="-1">Millaisia oireita sinulla on?</h2>
-        <fieldset class="input-wrapper">
-          <legend aria-live="assertive">Kuumetta <span class="invalid-value-info hidden" /></legend>
-          <div class="options">
-            <div class="option-wrapper">
-              <input id="fever-no" type="radio" name="fever" value="no" required />
-              <label for="fever-no">ei</label>
+      <form id="symptom-questionnaire" class="hidden" novalidate>
+        <button id="collapse-survey" type="button" class="collapse-button">Sulje kysely</button>
+        <div class="question-group">
+          <h2 id="form-header" class="question-group-title" tabindex="-1">Millaisia oireita sinulla on?</h2>
+          <fieldset class="input-wrapper">
+            <legend aria-live="assertive">Kuumetta <span class="invalid-value-info hidden" /></legend>
+            <div class="options">
+              <div class="option-wrapper">
+                <input id="fever-no" type="radio" name="fever" value="no" required />
+                <label for="fever-no">ei</label>
+              </div>
+              <div class="option-wrapper">
+                <input id="fever-slight" type="radio" name="fever" value="slight" required />
+                <label for="fever-slight">alle 38,5 astetta</label>
+              </div>
+              <div class="option-wrapper">
+                <input id="fever-high" type="radio" name="fever" value="high" required />
+                <label for="fever-high">yli 38,5 astetta</label>
+              </div>
             </div>
-            <div class="option-wrapper">
-              <input id="fever-slight" type="radio" name="fever" value="slight" required />
-              <label for="fever-slight">alle 38,5 astetta</label>
+          </fieldset>
+          <fieldset class="input-wrapper">
+            <legend aria-live="assertive">Yskää <span class="invalid-value-info hidden" /></legend>
+            <div class="options">
+              <div class="option-wrapper">
+                <input id="cough-no" type="radio" name="cough" value="no" required />
+                <label for="cough-no">ei</label>
+              </div>
+              <div class="option-wrapper">
+                <input id="cough-mild" type="radio" name="cough" value="mild" required />
+                <label for="cough-mild">lievää</label>
+              </div>
+              <div class="option-wrapper">
+                <input id="cough-intense" type="radio" name="cough" value="intense" required />
+                <label for="cough-intense">voimakasta</label>
+              </div>
             </div>
-            <div class="option-wrapper">
-              <input id="fever-high" type="radio" name="fever" value="high" required />
-              <label for="fever-high">yli 38,5 astetta</label>
+          </fieldset>
+          <fieldset class="input-wrapper">
+            <legend aria-live="assertive">Vaikeuksia hengittää <span class="invalid-value-info hidden" /></legend>
+            <div class="options">
+              <input id="breathingDifficulties-yes" type="radio" name="breathing_difficulties" value="yes" required />
+              <label for="breathingDifficulties-yes">kyllä</label>
+              <input id="breathingDifficulties-no" type="radio" name="breathing_difficulties" value="no" required />
+              <label for="breathingDifficulties-no">ei</label>
             </div>
-          </div>
-        </fieldset>
-        <fieldset class="input-wrapper">
-          <legend aria-live="assertive">Yskää <span class="invalid-value-info hidden" /></legend>
-          <div class="options">
-            <div class="option-wrapper">
-              <input id="cough-no" type="radio" name="cough" value="no" required />
-              <label for="cough-no">ei</label>
+          </fieldset>
+          <fieldset class="input-wrapper">
+            <legend aria-live="assertive">Lihaskipuja <span class="invalid-value-info hidden" /></legend>
+            <div class="options">
+              <input id="musclePain-yes" type="radio" name="muscle_pain" value="yes" required />
+              <label for="musclePain-yes">kyllä</label>
+              <input id="musclePain-no" type="radio" name="muscle_pain" value="no" required />
+              <label for="musclePain-no">ei</label>
             </div>
-            <div class="option-wrapper">
-              <input id="cough-mild" type="radio" name="cough" value="mild" required />
-              <label for="cough-mild">lievää</label>
+          </fieldset>
+          <fieldset class="input-wrapper">
+            <legend aria-live="assertive">Päänsärkyä <span class="invalid-value-info hidden" /></legend>
+            <div class="options">
+              <input id="headache-yes" type="radio" name="headache" value="yes" required />
+              <label for="headache-yes">kyllä</label>
+              <input id="headache-no" type="radio" name="headache" value="no" />
+              <label for="headache-no">ei</label>
             </div>
-            <div class="option-wrapper">
-              <input id="cough-intense" type="radio" name="cough" value="intense" required />
-              <label for="cough-intense">voimakasta</label>
+          </fieldset>
+          <fieldset class="input-wrapper">
+            <legend aria-live="assertive">Kurkkukipua <span class="invalid-value-info hidden" /></legend>
+            <div class="options">
+              <input id="soreThroat-yes" type="radio" name="sore_throat" value="yes" required />
+              <label for="soreThroat-yes">kyllä</label>
+              <input id="soreThroat-no" type="radio" name="sore_throat" value="no" required />
+              <label for="soreThroat-no">ei</label>
             </div>
-          </div>
-        </fieldset>
-        <fieldset class="input-wrapper">
-          <legend aria-live="assertive">Vaikeuksia hengittää <span class="invalid-value-info hidden" /></legend>
-          <div class="options">
-            <input id="breathingDifficulties-yes" type="radio" name="breathing_difficulties" value="yes" required />
-            <label for="breathingDifficulties-yes">kyllä</label>
-            <input id="breathingDifficulties-no" type="radio" name="breathing_difficulties" value="no" required />
-            <label for="breathingDifficulties-no">ei</label>
-          </div>
-        </fieldset>
-        <fieldset class="input-wrapper">
-          <legend aria-live="assertive">Lihaskipuja <span class="invalid-value-info hidden" /></legend>
-          <div class="options">
-            <input id="musclePain-yes" type="radio" name="muscle_pain" value="yes" required />
-            <label for="musclePain-yes">kyllä</label>
-            <input id="musclePain-no" type="radio" name="muscle_pain" value="no" required />
-            <label for="musclePain-no">ei</label>
-          </div>
-        </fieldset>
-        <fieldset class="input-wrapper">
-          <legend aria-live="assertive">Päänsärkyä <span class="invalid-value-info hidden" /></legend>
-          <div class="options">
-            <input id="headache-yes" type="radio" name="headache" value="yes" required />
-            <label for="headache-yes">kyllä</label>
-            <input id="headache-no" type="radio" name="headache" value="no" />
-            <label for="headache-no">ei</label>
-          </div>
-        </fieldset>
-        <fieldset class="input-wrapper">
-          <legend aria-live="assertive">Kurkkukipua <span class="invalid-value-info hidden" /></legend>
-          <div class="options">
-            <input id="soreThroat-yes" type="radio" name="sore_throat" value="yes" required />
-            <label for="soreThroat-yes">kyllä</label>
-            <input id="soreThroat-no" type="radio" name="sore_throat" value="no" required />
-            <label for="soreThroat-no">ei</label>
-          </div>
-        </fieldset>
-        <fieldset class="input-wrapper">
-          <legend aria-live="assertive">Nuhaa <span class="invalid-value-info hidden" /></legend>
-          <div class="options">
-            <input id="rhinitis-yes" type="radio" name="rhinitis" value="yes" required />
-            <label for="rhinitis-yes">kyllä</label>
-            <input id="rhinitis-no" type="radio" name="rhinitis" value="no" required />
-            <label for="rhinitis-no">ei</label>
-          </div>
-        </fieldset>
-      </div>
-      <div class="question-group">
-        <h2 class="question-group-title">Terveydentila</h2>
-        <fieldset class="input-wrapper">
-          <legend aria-live="assertive">Millainen on yleisvointisi? <span class="invalid-value-info hidden" /></legend>
-          <div class="options">
-            <div class="option-wrapper">
-              <input id="generalWellbeing-fine" type="radio" name="general_wellbeing" value="fine" required />
-              <label for="generalWellbeing-fine">jaksan olla jalkeilla </label>
+          </fieldset>
+          <fieldset class="input-wrapper">
+            <legend aria-live="assertive">Nuhaa <span class="invalid-value-info hidden" /></legend>
+            <div class="options">
+              <input id="rhinitis-yes" type="radio" name="rhinitis" value="yes" required />
+              <label for="rhinitis-yes">kyllä</label>
+              <input id="rhinitis-no" type="radio" name="rhinitis" value="no" required />
+              <label for="rhinitis-no">ei</label>
             </div>
-            <div class="option-wrapper">
-              <input id="generalWellbeing-not ok" type="radio" name="general_wellbeing" value="impaired" required />
-              <label for="generalWellbeing-not ok">jaksan olla jonkun verran jalkeilla ja hoitaa välttämättömät
-                kotiaskareet</label>
+          </fieldset>
+        </div>
+        <div class="question-group">
+          <h2 class="question-group-title">Terveydentila</h2>
+          <fieldset class="input-wrapper">
+            <legend aria-live="assertive">
+              Millainen on yleisvointisi? <span class="invalid-value-info hidden" />
+            </legend>
+            <div class="options">
+              <div class="option-wrapper">
+                <input id="generalWellbeing-fine" type="radio" name="general_wellbeing" value="fine" required />
+                <label for="generalWellbeing-fine">jaksan olla jalkeilla </label>
+              </div>
+              <div class="option-wrapper">
+                <input id="generalWellbeing-not ok" type="radio" name="general_wellbeing" value="impaired" required />
+                <label for="generalWellbeing-not ok"
+                  >jaksan olla jonkun verran jalkeilla ja hoitaa välttämättömät kotiaskareet</label
+                >
+              </div>
+              <div class="option-wrapper">
+                <input id="generalWellbeing-bad" type="radio" name="general_wellbeing" value="bad" required />
+                <label for="generalWellbeing-bad">en juurikaan jaksa nousta vuoteesta</label>
+              </div>
             </div>
-            <div class="option-wrapper">
-              <input id="generalWellbeing-bad" type="radio" name="general_wellbeing" value="bad" required />
-              <label for="generalWellbeing-bad">en juurikaan jaksa nousta vuoteesta</label>
-            </div>
-          </div>
-        </fieldset>
-        <fieldset class="input-wrapper">
-          <label for="duration" class="input-field-label">Kuinka monta päivää oireesi ovat kestäneet?
-            <span class="optional-field-info">(Voit jättää vastaamatta, jos sinulla ei ole oireita)</span></label>
-          <input id="duration" class="input-field" type="text" name="duration" inputmode="numeric" pattern="[0-9]{1,2}"
-            maxlength="2" size="2" placeholder="" value="" />
-        </fieldset>
-        <fieldset class="input-wrapper">
-          <legend aria-live="assertive">Onko sinulla lääkehoitoa vaativa pitkäaikaissairaus? <span
-              class="invalid-value-info hidden" />
+          </fieldset>
+          <fieldset class="input-wrapper">
+            <label for="duration" class="input-field-label"
+              >Kuinka monta päivää oireesi ovat kestäneet?
+              <span class="optional-field-info">(Voit jättää vastaamatta, jos sinulla ei ole oireita)</span></label
+            >
+            <input
+              id="duration"
+              class="input-field"
+              type="text"
+              name="duration"
+              inputmode="numeric"
+              pattern="[0-9]{1,2}"
+              maxlength="2"
+              size="2"
+              placeholder=""
+              value=""
+            />
+          </fieldset>
+          <fieldset class="input-wrapper">
+            <legend aria-live="assertive">
+              Onko sinulla lääkehoitoa vaativa pitkäaikaissairaus? <span class="invalid-value-info hidden" />
+            </legend>
             <div class="options">
               <input id="longtermMedication-yes" type="radio" name="longterm_medication" value="yes" required />
               <label for="longtermMedication-yes">kyllä</label>
               <input id="longtermMedication-no" type="radio" name="longterm_medication" value="no" required />
               <label for="longtermMedication-no">ei</label>
             </div>
-        </fieldset>
-        <fieldset class="input-wrapper">
-          <legend aria-live="assertive">Tupakoitko? <span class="invalid-value-info hidden" /></legend>
-          <div class="options">
-            <input id="smoking-yes" type="radio" name="smoking" value="yes" required />
-            <label for="smoking-yes">kyllä</label>
-            <input id="smoking-no" type="radio" name="smoking" value="no" required />
-            <label for="smoking-no">en</label>
-          </div>
-        </fieldset>
-        <fieldset class="input-wrapper">
-          <legend aria-live="assertive">Epäiletkö, että olet saanut koronavirustartunnan? <span
-              class="invalid-value-info hidden" /></legend>
-          <div class="options">
-            <input id="coronaSuspicion-yes" type="radio" name="corona_suspicion" value="yes" required />
-            <label for="coronaSuspicion-yes">kyllä</label>
-            <input id="coronaSuspicion-no" type="radio" name="corona_suspicion" value="no" required />
-            <label for="coronaSuspicion-no">en</label>
-          </div>
-        </fieldset>
-      </div>
-      <div class="question-group">
-        <h2 class="question-group-title">Yleistiedot</h2>
-        <fieldset class="input-wrapper">
-          <legend aria-live="assertive">Ikä <span class="invalid-value-info hidden" /></legend>
-          <div class="options flex-wrapper">
-            <div class="column">
-              <div class="option-wrapper">
-                <input id="age-0-9" type="radio" name="age_group" value="0" required />
-                <label for="age-0-9">0-9</label>
+          </fieldset>
+          <fieldset class="input-wrapper">
+            <legend aria-live="assertive">Tupakoitko? <span class="invalid-value-info hidden" /></legend>
+            <div class="options">
+              <input id="smoking-yes" type="radio" name="smoking" value="yes" required />
+              <label for="smoking-yes">kyllä</label>
+              <input id="smoking-no" type="radio" name="smoking" value="no" required />
+              <label for="smoking-no">en</label>
+            </div>
+          </fieldset>
+          <fieldset class="input-wrapper">
+            <legend aria-live="assertive">
+              Epäiletkö, että olet saanut koronavirustartunnan? <span class="invalid-value-info hidden" />
+            </legend>
+            <div class="options">
+              <input id="coronaSuspicion-yes" type="radio" name="corona_suspicion" value="yes" required />
+              <label for="coronaSuspicion-yes">kyllä</label>
+              <input id="coronaSuspicion-no" type="radio" name="corona_suspicion" value="no" required />
+              <label for="coronaSuspicion-no">en</label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="question-group">
+          <h2 class="question-group-title">Yleistiedot</h2>
+          <fieldset class="input-wrapper">
+            <legend aria-live="assertive">Ikä <span class="invalid-value-info hidden" /></legend>
+            <div class="options flex-wrapper">
+              <div class="column">
+                <div class="option-wrapper">
+                  <input id="age-0-9" type="radio" name="age_group" value="0" required />
+                  <label for="age-0-9">0-9</label>
+                </div>
+                <div class="option-wrapper">
+                  <input id="age-10-19" type="radio" name="age_group" value="10" required />
+                  <label for="age-10-19">10-19</label>
+                </div>
+                <div class="option-wrapper">
+                  <input id="age-20-29" type="radio" name="age_group" value="20" required />
+                  <label for="age-20-29">20-29</label>
+                </div>
+                <div class="option-wrapper">
+                  <input id="age-30-39" type="radio" name="age_group" value="30" required />
+                  <label for="age-30-39">30-39</label>
+                </div>
+                <div class="option-wrapper">
+                  <input id="age-40-49" type="radio" name="age_group" value="40" required />
+                  <label for="age-40-49">40-49</label>
+                </div>
               </div>
-              <div class="option-wrapper">
-                <input id="age-10-19" type="radio" name="age_group" value="10" required />
-                <label for="age-10-19">10-19</label>
-              </div>
-              <div class="option-wrapper">
-                <input id="age-20-29" type="radio" name="age_group" value="20" required />
-                <label for="age-20-29">20-29</label>
-              </div>
-              <div class="option-wrapper">
-                <input id="age-30-39" type="radio" name="age_group" value="30" required />
-                <label for="age-30-39">30-39</label>
-              </div>
-              <div class="option-wrapper">
-                <input id="age-40-49" type="radio" name="age_group" value="40" required />
-                <label for="age-40-49">40-49</label>
+              <div class="column">
+                <div class="option-wrapper">
+                  <input id="age-50-59" type="radio" name="age_group" value="50" required />
+                  <label for="age-50-59">50-59</label>
+                </div>
+                <div class="option-wrapper">
+                  <input id="age-60-69" type="radio" name="age_group" value="60" required />
+                  <label for="age-60-69">60-69</label>
+                </div>
+                <div class="option-wrapper">
+                  <input id="age-70-79" type="radio" name="age_group" value="70" required />
+                  <label for="age-70-79">70-79</label>
+                </div>
+                <div class="option-wrapper">
+                  <input id="age-80+" type="radio" name="age_group" value="80" required />
+                  <label for="age-80+">80+</label>
+                </div>
               </div>
             </div>
-            <div class="column">
-              <div class="option-wrapper">
-                <input id="age-50-59" type="radio" name="age_group" value="50" required />
-                <label for="age-50-59">50-59</label>
-              </div>
-              <div class="option-wrapper">
-                <input id="age-60-69" type="radio" name="age_group" value="60" required />
-                <label for="age-60-69">60-69</label>
-              </div>
-              <div class="option-wrapper">
-                <input id="age-70-79" type="radio" name="age_group" value="70" required />
-                <label for="age-70-79">70-79</label>
-              </div>
-              <div class="option-wrapper">
-                <input id="age-80+" type="radio" name="age_group" value="80" required />
-                <label for="age-80+">80+</label>
-              </div>
+          </fieldset>
+          <fieldset class="input-wrapper">
+            <legend aria-live="assertive">Sukupuoli <span class="invalid-value-info hidden" /></legend>
+            <div class="options">
+              <input id="gender-female" type="radio" name="gender" value="female" required />
+              <label for="gender-female">nainen</label>
+              <input id="gender-male" type="radio" name="gender" value="male" required />
+              <label for="gender-male">mies</label>
+              <input id="gender-other" type="radio" name="gender" value="other" required />
+              <label for="gender-other">muu</label>
             </div>
-          </div>
-        </fieldset>
-        <fieldset class="input-wrapper">
-          <legend aria-live="assertive">Sukupuoli <span class="invalid-value-info hidden" /></legend>
-          <div class="options">
-            <input id="gender-female" type="radio" name="gender" value="female" required />
-            <label for="gender-female">nainen</label>
-            <input id="gender-male" type="radio" name="gender" value="male" required />
-            <label for="gender-male">mies</label>
-            <input id="gender-other" type="radio" name="gender" value="other" required />
-            <label for="gender-other">muu</label>
-          </div>
-        </fieldset>
-        <fieldset class="input-wrapper">
-          <label for="postalCode" class="input-field-label" aria-live="assertive">Postinumero <span
-              class="invalid-value-info hidden" /></label>
-          <input id="postalCode" type="text" name="postal_code" class="input-field" inputmode="numeric"
-            pattern="[0-9]{5}" maxlength="5" size="5" autocomplete="postal-code" placeholder="00100" value=""
-            required />
-        </fieldset>
+          </fieldset>
+          <fieldset class="input-wrapper">
+            <label for="postalCode" class="input-field-label" aria-live="assertive"
+              >Postinumero <span class="invalid-value-info hidden"
+            /></label>
+            <input
+              id="postalCode"
+              type="text"
+              name="postal_code"
+              class="input-field"
+              inputmode="numeric"
+              pattern="[0-9]{5}"
+              maxlength="5"
+              size="5"
+              autocomplete="postal-code"
+              placeholder="00100"
+              value=""
+              required
+            />
+          </fieldset>
+        </div>
+        <div id="submit-error" class="hidden" tabindex="-1">
+          <h2 class="error-message"></h2>
+          <p class="error-instructions"></p>
+        </div>
+        <button type="submit" id="submit-survey" class="button action-button">Lähetä</button>
+        <button type="button" id="cancel-survey" class="button cancel-button">Peruuta</button>
+      </form>
+      <div id="submit-success" class="hidden" tabindex="-1">
+        <div class="success-message">
+          <h2>Kiitos vastauksistasi.</h2>
+          <p>
+            Pyydämme, että palaat kertomaan oireistasi kolmen päivän kuluttua. Jos täytät kyselyn uudelleen samalla
+            laitteella 14 vuorokauden kuluessa, vastaukset voidaan yhdistää keskenään, jolloin tiedoista on enemmän
+            hyötyä. Tiedot ovat silti anonyymejä, eikä niitä voi palvelussa yhdistää vastaajaan.
+            <a href="https://www.oiretutka.fi/tietosuojalauseke.html" target="_blank" rel="noopener noreferrer"
+              >Lue lisää tietosuojasta täältä.</a
+            >
+          </p>
+          <p>
+            Kun vastauksia on kertynyt riittävästi, niitä aletaan tutkia yhteistyössä terveydenhuollon asiantuntijoiden
+            kanssa.
+          </p>
+          <p>
+            Jos sinulla on hengitysvaikeuksia, kova kuume tai et jaksa nousta vuoteesta, ota yhteys terveydenhuoltoon.
+            Jos epäilet sairastuneesi koronaviruksen aiheuttamaan tautiin ja haluat tehdä oirearvion, siirry Terveyden
+            ja hyvinvoinnin laitoksen ylläpitämään
+            <a href="https://www.omaolo.fi/palvelut/oirearviot/649" target="_blank" rel="noopener noreferrer"
+              >Omaolo.fi-palveluun.</a
+            >
+          </p>
+        </div>
       </div>
-      <div id="submit-error" class="hidden" tabindex="-1">
-        <h2 class="error-message"></h2>
-        <p class="error-instructions"></p>
-      </div>
-      <button type="submit" id="submit-survey" class="button action-button">Lähetä</button>
-      <button type="button" id="cancel-survey" class="button cancel-button">Peruuta</button>
-    </form>
-    <div id="submit-success" class="hidden" tabindex="-1">
-      <div class="success-message">
-        <h2>Kiitos vastauksistasi.</h2>
-        <p>
-          Pyydämme, että palaat kertomaan oireistasi kolmen päivän kuluttua. Jos täytät kyselyn uudelleen samalla
-          laitteella 14 vuorokauden kuluessa, vastaukset voidaan yhdistää keskenään, jolloin tiedoista on enemmän
-          hyötyä. Tiedot ovat silti anonyymejä, eikä niitä voi palvelussa yhdistää vastaajaan.
-          <a href="https://www.oiretutka.fi/tietosuojalauseke.html" target="_blank" rel="noopener noreferrer">Lue lisää
-            tietosuojasta täältä.</a>
-        </p>
-        <p>
-          Kun vastauksia on kertynyt riittävästi, niitä aletaan tutkia yhteistyössä terveydenhuollon asiantuntijoiden
-          kanssa.
-        </p>
-        <p>
-          Jos sinulla on hengitysvaikeuksia, kova kuume tai et jaksa nousta vuoteesta, ota yhteys terveydenhuoltoon.
-          Jos epäilet sairastuneesi koronaviruksen aiheuttamaan tautiin ja haluat tehdä oirearvion, siirry Terveyden
-          ja hyvinvoinnin laitoksen ylläpitämään
-          <a href="https://www.omaolo.fi/palvelut/oirearviot/649" target="_blank"
-            rel="noopener noreferrer">Omaolo.fi-palveluun.</a>
-        </p>
-      </div>
-    </div>
-  </main>
-</body>
-
+    </main>
+  </body>
 </html>

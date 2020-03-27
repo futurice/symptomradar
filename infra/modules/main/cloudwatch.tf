@@ -30,7 +30,12 @@ resource "aws_cloudwatch_dashboard" "overview" {
                         {
                             "label": "Public beta",
                             "value": "2020-03-26T19:01:00+02:00"
+                        },
+                        {
+                            "label": "Public release on HS.fi",
+                            "value": "2020-03-27T15:00:00+02:00"
                         }
+
                     ]
                 }
             }

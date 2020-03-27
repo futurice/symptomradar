@@ -45,6 +45,7 @@ resource "aws_cloudwatch_dashboard" "overview" {
                 "metrics": [
                     [ "AWS/Lambda", "Duration", "FunctionName", "${module.backend_api.function_name}", "Resource", "${module.backend_api.function_name}", { "stat": "Minimum", "label": "Min" } ],
                     [ "...", { "stat": "Average", "label": "Avg" } ],
+                    [ "...", { "stat": "p99", "label": "p99" } ],
                     [ "...", { "stat": "Maximum", "label": "Max" } ]
                 ],
                 "region": "${data.aws_region.current.name}",

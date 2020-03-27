@@ -6,6 +6,12 @@ Crowdsourcing happens by asking questions in an embed that is placed on news med
 
 The project is open source with MIT license. We encourage media outlets to collaborate within countries to create a service to map the spread of the virus. We welcome all contributors to the project.
 
+# Links to live versions of the project
+
+Public beta release from Helsingin Sanomat available [here.](https://www.hs.fi/kotimaa/art-2000006452379.html)
+
+Privacy information, currently only in finnish [here.](https://www.oiretutka.fi/tietosuojalauseke.html)
+
 # How to contribute
 
 This project was developed in a hurry after the coronavirus really started spreading. So we don't have much documentation yet.

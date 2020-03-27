@@ -11,3 +11,5 @@
 1. `./scripts/deploy-frontend dev-tmp`
 
 For reasons unknown, the Athena result bucket needs to be set manually, even if it's defined in the Terraform config. For the `dev` env for instance, it'd be `s3://symptomradar-dev-storage-results/`.
+
+The setup also has cloudfront additional metrics enabled. Currently, this cannot be done through cli or terraform.

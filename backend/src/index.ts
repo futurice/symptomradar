@@ -31,8 +31,8 @@ if (process.argv[0].match(/\/ts-node$/)) {
     headache: 'no',
     sore_throat: 'no',
     rhinitis: 'no',
-    stomachIssues: 'no',
-    senseIssues: 'no',
+    stomach_issues: 'no',
+    sensory_issues: 'no',
     general_wellbeing: 'fine',
     duration: '1', // or null
     longterm_medication: 'no',

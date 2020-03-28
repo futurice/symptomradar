@@ -1,4 +1,4 @@
-import { FrontendResponseModelT } from '../common/model';
+import { FrontendResponseModelT } from '@common/model';
 
 export const mapPostalCode = (formData: FrontendResponseModelT) => {
   const poCode = formData.postal_code;

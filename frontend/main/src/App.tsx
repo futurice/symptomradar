@@ -1,9 +1,9 @@
 import React from 'react';
-import { Router } from '@reach/router';
+import { Router, RouteComponentProps } from '@reach/router';
 import logo from './oiretutka-logo-gradient.svg';
 import './App.css';
 
-const Home = () => (
+const Home = (props: RouteComponentProps) => (
   <>
     <header>
       <img src={logo} className="logo" alt="Oiretutka. Helsingin Sanomat ja Futurice." />

@@ -1,0 +1,16 @@
+{
+    "fi": {
+        "lng": "fi",
+        "title": "Oiretutka",
+        "no_js": "Tämä sivusto vaatii JavaScript-tuen toimiakseen.",
+        "page_title": "Kerro, onko sinulla oireita vai ei: auta selvittämään, miten koronavirus leviää",
+        "start_survey": "Aloita"
+    },
+    "en": {
+        "lng": "en",
+        "title": "English title",
+        "no_js": "This site requires JavaScript to run correctly.",
+        "page_title": "Tell us whether you have symptoms or not: help find out how the coronavirus spreads",
+        "start_survey": "Start"
+    }
+}

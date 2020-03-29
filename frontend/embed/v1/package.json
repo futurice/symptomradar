@@ -6,11 +6,15 @@
     "@testing-library/user-event": "^7.2.1",
     "@types/jest": "^24.9.1",
     "@types/jquery": "^3.3.33",
+    "@types/lodash": "^4.14.149",
     "@types/node": "^12.12.30",
     "@types/react": "^16.9.23",
     "@types/react-dom": "^16.9.5",
     "@types/styled-components": "^5.0.1",
+    "@types/uuid": "^7.0.2",
+    "fp-ts": "^2.5.3",
     "iframe-resizer": "^4.2.10",
+    "io-ts": "^2.1.2",
     "jquery": "^3.4.1",
     "normalize.css": "^8.0.1",
     "react": "^16.13.0",
@@ -23,7 +27,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "create-translations": "ts-node translate.ts"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -39,5 +44,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "ts-node": "^8.8.1"
   }
 }

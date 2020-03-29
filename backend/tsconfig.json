@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.shared.json",
+  "extends": "../tsconfig.shared.json",
   "compilerOptions": {
     "types": ["node", "aws-lambda"],
     "lib": ["es2017"],
@@ -8,5 +8,5 @@
       "@common/*": ["common/*"]
     }
   },
-  "include": ["backend/src/**/*.ts"]
+  "include": ["src/**/*.ts"]
 }

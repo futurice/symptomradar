@@ -25,12 +25,11 @@ BACKEND_DIR="$SELF_DIR/../backend"
 (
   cd "$BACKEND_DIR"
   mkdir -p temp
-  cp "$ROOT_DIR"/package*.json temp
-  cp "$ROOT_DIR"/tsconfig.json .
   "$ROOT_DIR/node_modules/.bin/tsc" # compile TypeScript into "temp" (defined in tsconfig.json)
+  cp "$ROOT_DIR"/package*.json temp
   (cd temp && npm install --production)
   (cd temp && zip -r ../dist/backend-lambda.zip *) # create Lambda zipfile under "dist"
-  rm -rf .tsconfig temp # clean up
+  rm -rf temp # clean up
 )
 
 # Upload code to S3

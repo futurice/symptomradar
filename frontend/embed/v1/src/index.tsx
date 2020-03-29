@@ -168,6 +168,7 @@ function init() {
     // unanswered fields are not included
     const answers = $(this)
       .serializeArray()
+      .map(x => (x.name === 'duration' ? { ...x, value: x.value.replace(/[^0-9]/g, '') } : x)) // clean any non-numeric characters from the "duration" field (https://github.com/futurice/symptomradar/issues/133)
       .map(x => (x.value === '' ? { ...x, value: null } : x)) // convert empty strings (i.e. skipped questions) to nulls
       .reduce((memo, next) => ({ ...memo, [next.name]: next.value }), {});
     const meta = { participant_id: getParticipantId() };

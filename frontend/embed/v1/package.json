@@ -1,6 +1,16 @@
 {
   "homepage": ".",
   "dependencies": {
+    "fp-ts": "^2.5.3",
+    "iframe-resizer": "^4.2.10",
+    "io-ts": "^2.1.2",
+    "jquery": "^3.4.1",
+    "normalize.css": "^8.0.1",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "styled-components": "^5.0.1"
+  },
+  "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -12,15 +22,8 @@
     "@types/react-dom": "^16.9.5",
     "@types/styled-components": "^5.0.1",
     "@types/uuid": "^7.0.2",
-    "fp-ts": "^2.5.3",
-    "iframe-resizer": "^4.2.10",
-    "io-ts": "^2.1.2",
-    "jquery": "^3.4.1",
-    "normalize.css": "^8.0.1",
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0",
     "react-scripts": "3.4.0",
-    "styled-components": "^5.0.1",
+    "ts-node": "^8.8.1",
     "typescript": "^3.8.3"
   },
   "scripts": {
@@ -44,8 +47,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "ts-node": "^8.8.1"
   }
 }

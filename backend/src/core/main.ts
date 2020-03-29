@@ -1,7 +1,7 @@
 import * as AWS from 'aws-sdk';
 import { createHash } from 'crypto';
 import { v4 as uuidV4 } from 'uuid';
-import { assertIs, BackendResponseModel, BackendResponseModelT, FrontendResponseModelT } from '../common/model';
+import { assertIs, BackendResponseModel, BackendResponseModelT, FrontendResponseModelT } from '@common/model';
 import { mapPostalCode } from './postalCode';
 
 const s3: AWS.S3 = new AWS.S3({ apiVersion: '2006-03-01' });

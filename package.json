@@ -4,7 +4,7 @@
     "node": ">=12 <13"
   },
   "scripts": {
-    "backend-cli": "ts-node backend/src/index.ts"
+    "backend-cli": "ts-node --project backend/tsconfig.json backend/src/index.ts"
   },
   "dependencies": {
     "fp-ts": "^2.5.3",

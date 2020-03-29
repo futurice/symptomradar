@@ -5,6 +5,7 @@
     "importHelpers": true,
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "jsx": "react"
+    "jsx": "react",
+    "noEmit": true
   }
 }

@@ -4,6 +4,7 @@
     "types": ["node", "aws-lambda"],
     "lib": ["es2017"],
     "outDir": "temp",
+    "incremental": true,
     "paths": {
       "@common/*": ["common/*"]
     }

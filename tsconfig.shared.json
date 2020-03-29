@@ -13,7 +13,6 @@
     "isolatedModules": true,
     "typeRoots": ["node_modules/@types"],
     "lib": ["es2017"],
-    "incremental": true,
     "removeComments": true,
     "baseUrl": "."
   },

@@ -1,28 +1,50 @@
 import React from 'react';
 import { Router, RouteComponentProps } from '@reach/router';
-import logo from './oiretutka-logo-gradient.svg';
-import './App.css';
+import styled, { createGlobalStyle } from 'styled-components';
+import Header from './Header';
+import Map from './Map';
 
-const Home = (props: RouteComponentProps) => (
-  <>
-    <header>
-      <img src={logo} className="logo" alt="Oiretutka. Helsingin Sanomat ja Futurice." />
-      <em className="notice">Sivusto päivittyy pian</em>
-    </header>
-    <main>
-      <p>
-        Lue projektista lisää{' '}
-        <a href="https://www.hs.fi/kotimaa/art-2000006452379.html" target="_blank" rel="noopener noreferrer">
-          Helsingin Sanomien artikkelista
-        </a>
-        .
-      </p>
-    </main>
-  </>
-);
+const GlobalStyles = createGlobalStyle`
+  html {
+    box-sizing: border-box;
+  }
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+  body {
+    font-family: sans-serif;
+  }
+`;
+
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  width: 100%;
+`;
+
+const Main = styled.main`
+  padding: 0 24px;
+  text-align: center;
+`;
+
+const Home = (props: RouteComponentProps) => {
+  return <p>Home</p>;
+};
+
+const MapView = (props: RouteComponentProps) => {
+  return <Map />;
+};
 
 export const App = () => (
-  <Router>
-    <Home path="/" />
-  </Router>
+  <AppContainer>
+    <GlobalStyles />
+    <Header />
+    <Main>
+      <Router>
+        <Home path="/" />
+        <MapView path="/map" />
+      </Router>
+    </Main>
+  </AppContainer>
 );

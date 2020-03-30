@@ -1,12 +1,14 @@
 {
-  "extends": "./tsconfig.shared.json",
   "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "typeRoots": ["node_modules/@types"],
     "types": ["node", "aws-lambda"],
     "lib": ["es2017"],
-    "outDir": "temp",
-    "paths": {
-      "@common/*": ["common/*"]
-    }
+    "outDir": "temp"
   },
-  "include": ["backend/src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
 }

@@ -9,7 +9,6 @@
   "dependencies": {
     "fp-ts": "^2.5.3",
     "io-ts": "^2.1.2",
-    "module-alias": "^2.2.2",
     "uuid": "^7.0.2"
   },
   "devDependencies": {
@@ -21,8 +20,5 @@
     "check-node-version": "^4.0.2",
     "ts-node": "^8.7.0",
     "typescript": "^3.8.3"
-  },
-  "_moduleAliases": {
-    "@common": "common"
   }
 }

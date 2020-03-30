@@ -1,7 +1,6 @@
-import 'module-alias/register'; // Allows TS path aliases See https://dev.to/larswaechter/path-aliases-with-typescript-in-nodejs-4353
 import { APIGatewayProxyHandler, Handler } from 'aws-lambda';
 import { v4 as uuidV4 } from 'uuid';
-import { assertIs, FrontendResponseModel, FrontendResponseModelT } from '@common/model';
+import { assertIs, FrontendResponseModel, FrontendResponseModelT } from './common/model';
 import { prepareResponseForStorage, storeResponseInS3 } from './core/main';
 
 export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {

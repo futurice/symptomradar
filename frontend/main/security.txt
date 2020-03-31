@@ -1,0 +1,3 @@
+Contact: mailto:cert@sanoma.com
+Contact: mailto:datadeski@hs.fi
+Preferred-Languages: en, fi

@@ -1,5 +1,3 @@
-data "aws_region" "current" {}
-
 resource "aws_cloudwatch_dashboard" "overview" {
   dashboard_name = "${var.name_prefix}-overview"
   dashboard_body = <<EOF

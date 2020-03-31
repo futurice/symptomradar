@@ -52,8 +52,10 @@ const ModalContent = styled.div`
 const ModalHeader = styled.div`
   position: relative;
   display: flex;
-  padding: 0px 0 40px 0;
+  padding: 0px 0 24px 0;
+  margin-bottom: 24px;
   justify-content: space-between;
+  border-bottom: 1px solid #969696;
 `;
 
 const H2 = styled.h2`

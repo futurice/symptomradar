@@ -71,9 +71,7 @@ resource "aws_cloudwatch_dashboard" "overview" {
             "height": 6,
             "properties": {
                 "metrics": [
-                    [ "AWS/Lambda", "Errors", "FunctionName", "${module.backend_api.function_name}", "Resource", "${module.backend_api.function_name}", { "id": "errors", "color": "#d13212" } ],
-                    [ ".", "Invocations", ".", ".", ".", ".", { "id": "invocations", "visible": false } ],
-                    [ { "expression": "100 - 100 * errors / MAX([errors, invocations])", "label": "Success rate (%)", "id": "availability", "yAxis": "right", "region": "${data.aws_region.current.name}", "visible": false } ]
+                    [ "AWS/ApiGateway", "5XXError", "ApiName", "${module.backend_api.resources.rest_api}", { "color": "#d62728" } ]
                 ],
                 "region": "${data.aws_region.current.name}",
                 "title": "API error count",

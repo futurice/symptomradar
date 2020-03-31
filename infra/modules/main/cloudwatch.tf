@@ -58,7 +58,7 @@ resource "aws_cloudwatch_dashboard" "overview" {
                 ],
                 "region": "${data.aws_region.current.name}",
                 "title": "API call duration",
-                "period": 300,
+                "period": 60,
                 "view": "timeSeries",
                 "stacked": false
             }
@@ -82,7 +82,7 @@ resource "aws_cloudwatch_dashboard" "overview" {
                         "max": 100
                     }
                 },
-                "period": 300,
+                "period": 60,
                 "view": "timeSeries",
                 "stacked": false,
                 "stat": "Sum"

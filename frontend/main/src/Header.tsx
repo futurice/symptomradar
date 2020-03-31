@@ -56,7 +56,7 @@ const RouterLink = styled(Link)`
 const LinkText = styled.span<activeLinkProps>`
   margin-left: 4px;
   font-weight: bold;
-  color: ${props => (props.isActive ? '#0047FF' : '#000')};
+  color: ${props => (props.isActive ? '#000' : '#0047FF')};
   text-decoration: ${props => (props.isActive ? 'underline' : 'none')};
 
   &:hover {
@@ -88,12 +88,12 @@ const Header = () => {
           <LinkItem
             to="about"
             linkText="About"
-            icon={(match: { uri: string; path: string } | null) => <AboutIcon fillColor={match ? '#0047FF' : '#000'} />}
+            icon={(match: { uri: string; path: string } | null) => <AboutIcon fillColor={match ? '#000' : '#0047FF'} />}
           />
           <LinkItem
             to="/"
             linkText="Map"
-            icon={(match: { uri: string; path: string } | null) => <MapIcon fillColor={match ? '#0047FF' : '#000'} />}
+            icon={(match: { uri: string; path: string } | null) => <MapIcon fillColor={match ? '#000' : '#0047FF'} />}
           />
         </div>
         <Select name="language" id="">

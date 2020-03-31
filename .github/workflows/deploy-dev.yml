@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - master
+      - test-deploy-dev # you can push to this branch to test the dev-deploy process, without having to iterate on master, potentially interfering with others' work
 
 jobs:
   deploy:

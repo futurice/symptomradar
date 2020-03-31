@@ -20,7 +20,7 @@
     "@types/uuid": "^7.0.2",
     "aws-sdk": "^2.642.0",
     "check-node-version": "^4.0.2",
-    "jest": "^24.9.0",
+    "jest": "^25.2.4",
     "ts-jest": "^25.3.0",
     "ts-node": "^8.7.0",
     "typescript": "^3.8.3"

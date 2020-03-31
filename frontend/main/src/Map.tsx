@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps } from '@reach/router';
 import ModalContent from './ModalContent';
-
 import Modal from './Modal';
 import useModal from './useModal';
 

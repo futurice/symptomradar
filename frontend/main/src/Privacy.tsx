@@ -1,14 +1,20 @@
-<!DOCTYPE html>
-<html lang="fi">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" type="text/css" href="styles.css" />
-    <title>Oiretutka - Tietosuojalauseke</title>
-  </head>
-  <body>
-    <main>
-      <img class="logo" src="./oiretutka-logo-gradient.svg" alt="Oiretutka. Helsingin Sanomat ja Futurice." />
+import React from 'react';
+import styled from 'styled-components';
+import { RouteComponentProps } from '@reach/router';
+
+const Container = styled.div`
+  margin: 24px;
+  max-width: 700px;
+`;
+
+const List = styled.ul`
+  margin-top: 0;
+  padding-left: 18px;
+`;
+
+const Privacy = (props: RouteComponentProps) => {
+  return (
+    <Container>
       <h1>Oiretutka-palvelun kuvaus ja tietosuojakuvaus</h1>
       <h2>Yleinen kuvaus</h2>
       <p>
@@ -24,14 +30,14 @@
         avulla tietoja kerätään. Kerättävästä datasta tehdään visualisointeja upotettavina elementteinä. Näitä
         upotettavia elementtejä voivat käyttää kaikki hankkeeseen osallistuvat mediat. Hankkeen keräämiä tietoja jaetaan
         mahdollisimman avoimesti. Helsingin Sanomat omistaa hankkeessa kerätyt tiedot. Tietoja käsitellään alla
-        kuvatulla tavalla. Tietojen käsittelyä toimituksellisessa kontekstissa kuvataan Helsingin Sanomien
-        <a href="https://oma.sanoma.fi/asiakastuki/helsingin-sanomat/hs-tilausehdot/tietosuojakuvaus" target="_blank"
-          >tietosuojakuvauksessa.</a
-        >
+        kuvatulla tavalla. Tietojen käsittelyä toimituksellisessa kontekstissa kuvataan Helsingin Sanomien{' '}
+        <a href="https://oma.sanoma.fi/asiakastuki/helsingin-sanomat/hs-tilausehdot/tietosuojakuvaus">
+          tietosuojakuvauksessa.
+        </a>
       </p>
       <h2>Mitä tietoja palvelu tallentaa ja mihin</h2>
       <h3>Palvelusta kerätään käyttäjältä ja tämän päätelaitteelta seuraavia tietoja:</h3>
-      <ul>
+      <List>
         <li>
           Käyttäjän vastatessa kyselyyn tämän laitteelle tallennetaan uniikki, satunnainen tunniste. Tämä tunniste
           tallennetaan selaimen tai sovelluksen selainikkunan muistiin. Tätä tunnistetta käytetään kyselyä uudelleen
@@ -39,25 +45,25 @@
           Tunniste poistetaan laitteelta 14 päivän jälkeen. Tunnistetta ei pysty lukemaan muut sivustot kuin sen
           asettanut Oiretutka.fi. Tunniste lähetetään palvelimelle ja tallennetaan sinne salakirjoitettuna.
         </li>
-      </ul>
+      </List>
       <h3>Palvelimelle lähetetään seuraavat lomakkeen tiedot:</h3>
-      <ul>
+      <List>
         <li>Satunnainen tunniste</li>
         <li>Lomakkeen täyttämiseen kulunut aika</li>
         <li>Cloudfront-välimuistipalvelun tarjoama maakoodi, jonka avulla vastaajan kotimaa tunnistetaan</li>
-      </ul>
+      </List>
       <p>Palvelimelle lähetetään seuraavat vastaajan täyttämät tiedot:</p>
-      <ul>
+      <List>
         <li>Kaikki oirekyselyn vastaukset</li>
         <li>Postinumero</li>
         <li>Ikäryhmä kymmenen vuoden ryhmissä</li>
         <li>Sukupuoli (mies/nainen/muu)</li>
-      </ul>
+      </List>
       <h3>Palvelimelle lähetetään seuraavat tekniset tiedot väärinkäytösten estämiseksi:</h3>
-      <ul>
+      <List>
         <li>IP-osoite</li>
         <li>Selaimen versiotunniste (useragent)</li>
-      </ul>
+      </List>
       <p>
         Palvelimen päässä satunnainen tunniste, IP-osoite ja versiotunniste salakirjoitetaan ja käyttäjän tiedot jaetaan
         useampaan tietokantaan. Oiretiedot ja tekniset tiedot jaetaan erillisiin tietokantoihin siten, että
@@ -72,6 +78,8 @@
         Oiretutka-palvelu on toteutettu omalle muista Sanoman palveluista erilliselle AWS-tililleen. Sinne on pääsy
         ainoastaan rajoitetulla määrällä HS:n ja Futuricen henkilökuntaa.
       </p>
-    </main>
-  </body>
-</html>
+    </Container>
+  );
+};
+
+export default Privacy;

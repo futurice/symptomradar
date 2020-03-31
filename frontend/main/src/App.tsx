@@ -4,6 +4,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import Header from './Header';
 import Map from './Map';
 import About from './About';
+import Privacy from './Privacy';
 
 const GlobalStyles = createGlobalStyle`
   html {
@@ -12,8 +13,30 @@ const GlobalStyles = createGlobalStyle`
   *, *:before, *:after {
     box-sizing: inherit;
   }
+  
   body {
     font-family: sans-serif;
+    line-height: 1.5;
+    font-size: 16px;
+  }
+
+  h1 {
+    font-size: 21px;
+    line-height: 1.25;
+    font-weight: bold;
+    margin: 0 0 24px;
+  }
+
+  h2 {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 32px 0 12px 0;
+  }
+
+  h3 {
+    font-weight: normal;
+    font-size: 16px;
+    margin-bottom: 8px;
   }
 `;
 
@@ -33,7 +56,8 @@ export const App = () => (
     <Main>
       <Router>
         <Map path="/" />
-        <About path="/about" />
+        <About path="about" />
+        <Privacy path="tietosuojalauseke" />
       </Router>
     </Main>
   </AppContainer>

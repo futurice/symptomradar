@@ -36,6 +36,18 @@ To contact the team behind the project, email datadeski@hs.fi
 
 If you find a security related issue in our service, please contact datadeski@hs.fi and cert@sanoma.fi, prefererd language is English or Finnish.
 
+# Release process
+
+- Update `app_version` and push it to `master`
+- Ensure `dev` has deployed the release you're planning to put out
+- Test that basic data collection works [directly](https://dev.oiretutka.fi/embed/v1/) and/or [embedded](https://www.hs.fi/datajournalismi/art-2000006450733.html)
+- Take a peek at the `dev` overview dashboard on CloudWatch and make sure everything looks fine
+- Consult the "N commits to master since this release" link in [releases](https://github.com/futurice/symptomradar/releases) and write release notes
+- Create the release on GitHub
+- Check that the [related action](https://github.com/futurice/symptomradar/actions?query=workflow%3A%22Deploy+PROD%22) completes successfully
+- Test that basic data collection works [directly](https://www.oiretutka.fi/embed/v1/) and/or [embedded](https://www.hs.fi/kotimaa/art-2000006452379.html)
+- Take a peek at the `prod` overview dashboard on CloudWatch and make sure everything looks fine
+
 # MIT License
 
 Copyright 2020 Futurice & Helsingin Sanomat

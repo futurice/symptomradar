@@ -53,7 +53,7 @@ export function prepareResponseForStorage(
 }
 
 // Produces the key under which this response should be stored in S3
-function getStorageKey(response: BackendResponseModelT): string {
+export function getStorageKey(response: BackendResponseModelT): string {
   const [date, time] = response.timestamp.split('T');
   return `responses/raw/${date}/${time}/${response.response_id}.json`;
 }

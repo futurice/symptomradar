@@ -1,5 +1,5 @@
 import { BackendResponseModelT, FrontendResponseModelT } from '../common/model';
-import { prepareResponseForStorage } from './main';
+import { getStorageKey, prepareResponseForStorage } from './main';
 
 const cannedUuid = '5fa8764a-7337-11ea-96ca-d38ac3d1909b';
 const incomingResponseSample: FrontendResponseModelT = {
@@ -59,5 +59,11 @@ describe('prepareResponseForStorage()', () => {
         () => 1585649303678, // i.e. "2020-03-31T10:08:23.678Z"
       ),
     ).toEqual(persistedResponseSample);
+  });
+});
+
+describe('getStorageKey()', () => {
+  it('works', () => {
+    expect(getStorageKey(persistedResponseSample)).toEqual(`responses/raw/2020-03-31/10:08:00.000Z/${cannedUuid}.json`);
   });
 });

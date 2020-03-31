@@ -4,6 +4,7 @@ resource "aws_cloudwatch_dashboard" "overview" {
   dashboard_name = "${var.name_prefix}-overview"
   dashboard_body = <<EOF
 {
+    "start": "-P1D",
     "widgets": [
         {
             "type": "metric",

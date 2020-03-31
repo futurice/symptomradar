@@ -34,7 +34,7 @@ To contact the team behind the project, email datadeski@hs.fi
 
 # Security
 
-If you find out security related issue in our service, please contact datadeski@hs.fi and cert@sanoma.fi, prefererd language is english or finnish.
+If you find a security related issue in our service, please contact datadeski@hs.fi and cert@sanoma.fi, prefererd language is English or Finnish.
 
 # MIT License
 

@@ -32,6 +32,10 @@ Please contribute by writing a document about local development environment. See
 
 To contact the team behind the project, email datadeski@hs.fi
 
+# Security
+
+If you find a security related issue in our service, please contact datadeski@hs.fi and cert@sanoma.fi, prefererd language is English or Finnish.
+
 # MIT License
 
 Copyright 2020 Futurice & Helsingin Sanomat

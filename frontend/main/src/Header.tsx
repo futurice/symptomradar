@@ -2,13 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link, Match } from '@reach/router';
 import Logo from './assets/oiretutka-logo-gradient.svg';
-import { ReactComponent as AboutIcon } from './assets/about-icon.svg';
-import { ReactComponent as MapIcon } from './assets/map-icon.svg';
+import AboutIcon from './assets/AboutIcon';
+import MapIcon from './assets/MapIcon';
 
 type LinkProps = {
   to: string;
   linkText: string;
-  children: any;
 };
 
 interface activeLinkProps {
@@ -16,7 +15,7 @@ interface activeLinkProps {
 }
 
 const AppHeader = styled.header`
-  padding: 24px 24px 16px;
+  padding: 24px 24px 10px;
   background-color: #fff;
   border-bottom: 1px solid #000;
   height: 130px;
@@ -41,16 +40,12 @@ const Select = styled.select`
   margin: 0;
 `;
 
-const LinkWrapper = styled.div<activeLinkProps>`
-  display: inline-block;
-  color: ${props => (props.isActive ? '#0047FF' : '#000')};
-`;
-
 const RouterLink = styled(Link)`
   padding: 6px;
   margin-right: 16px;
   text-decoration: none;
   color: inherit;
+  display: inline-block;
 
   &:active {
     color: inherit;
@@ -59,19 +54,24 @@ const RouterLink = styled(Link)`
 
 const LinkText = styled.span<activeLinkProps>`
   margin-left: 4px;
+  font-weight: bold;
+  color: ${props => (props.isActive ? '#0047FF' : '#000')};
   text-decoration: ${props => (props.isActive ? 'underline' : 'none')};
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
-const LinkComponent = ({ to, linkText, children }: LinkProps) => {
+const LinkItem = ({ to, linkText }: LinkProps) => {
   return (
     <Match path={to}>
       {({ match }) => (
-        <LinkWrapper isActive={match ? true : false}>
-          <RouterLink to={to}>
-            {children}
-            <LinkText isActive={match ? true : false}>{linkText}</LinkText>
-          </RouterLink>
-        </LinkWrapper>
+        <RouterLink to={to}>
+          {to === '/' && <MapIcon fillColor={match ? '#0047FF' : '#000'} />}
+          {to === 'about' && <AboutIcon fillColor={match ? '#0047FF' : '#000'} />}
+          <LinkText isActive={match ? true : false}>{linkText}</LinkText>
+        </RouterLink>
       )}
     </Match>
   );
@@ -85,12 +85,8 @@ const Header = () => {
       </div>
       <Nav>
         <div>
-          <LinkComponent to="about" linkText="About">
-            <AboutIcon style={{ fill: '#000' }} />{' '}
-          </LinkComponent>
-          <LinkComponent to="/" linkText="Map">
-            <MapIcon style={{ fill: '#000' }} />{' '}
-          </LinkComponent>
+          <LinkItem to="about" linkText="About" />
+          <LinkItem to="/" linkText="Map" />
         </div>
         <Select name="language" id="">
           <option value="Fi">Fi</option>

@@ -3,6 +3,7 @@ import { Router, RouteComponentProps } from '@reach/router';
 import styled, { createGlobalStyle } from 'styled-components';
 import Header from './Header';
 import Map from './Map';
+import About from './About';
 
 const GlobalStyles = createGlobalStyle`
   html {
@@ -23,18 +24,7 @@ const AppContainer = styled.div`
   width: 100%;
 `;
 
-const Main = styled.main`
-  padding: 0 24px;
-  text-align: center;
-`;
-
-const Home = (props: RouteComponentProps) => {
-  return <p>Home</p>;
-};
-
-const MapView = (props: RouteComponentProps) => {
-  return <Map />;
-};
+const Main = styled.main``;
 
 export const App = () => (
   <AppContainer>
@@ -42,8 +32,8 @@ export const App = () => (
     <Header />
     <Main>
       <Router>
-        <Home path="/" />
-        <MapView path="/map" />
+        <Map path="/" />
+        <About path="/about" />
       </Router>
     </Main>
   </AppContainer>

@@ -8,6 +8,7 @@ import MapIcon from './assets/MapIcon';
 type LinkProps = {
   to: string;
   linkText: string;
+  icon: (match: { uri: string; path: string } | null) => void;
 };
 
 interface activeLinkProps {
@@ -63,13 +64,12 @@ const LinkText = styled.span<activeLinkProps>`
   }
 `;
 
-const LinkItem = ({ to, linkText }: LinkProps) => {
+const LinkItem = ({ to, linkText, icon }: LinkProps) => {
   return (
     <Match path={to}>
       {({ match }) => (
         <RouterLink to={to}>
-          {to === '/' && <MapIcon fillColor={match ? '#0047FF' : '#000'} />}
-          {to === 'about' && <AboutIcon fillColor={match ? '#0047FF' : '#000'} />}
+          {icon(match)}
           <LinkText isActive={match ? true : false}>{linkText}</LinkText>
         </RouterLink>
       )}
@@ -85,8 +85,16 @@ const Header = () => {
       </div>
       <Nav>
         <div>
-          <LinkItem to="about" linkText="About" />
-          <LinkItem to="/" linkText="Map" />
+          <LinkItem
+            to="about"
+            linkText="About"
+            icon={(match: { uri: string; path: string } | null) => <AboutIcon fillColor={match ? '#0047FF' : '#000'} />}
+          />
+          <LinkItem
+            to="/"
+            linkText="Map"
+            icon={(match: { uri: string; path: string } | null) => <MapIcon fillColor={match ? '#0047FF' : '#000'} />}
+          />
         </div>
         <Select name="language" id="">
           <option value="Fi">Fi</option>

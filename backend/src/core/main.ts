@@ -28,13 +28,19 @@ export function storeResponseInS3(response: FrontendResponseModelT, countryCode:
 }
 
 // Takes a response from the frontend, scrubs it clean, and adds fields required for storing it
-export function prepareResponseForStorage(response: FrontendResponseModelT, countryCode: string) {
+export function prepareResponseForStorage(
+  response: FrontendResponseModelT,
+  countryCode: string,
+  // Allow overriding non-deterministic parts in test code:
+  uuid: () => string = uuidV4,
+  timestamp = Date.now,
+) {
   const meta = {
-    response_id: uuidV4(),
+    response_id: uuid(),
     participant_id: createHash('sha256') // to preserve privacy, hash the participant_id before storing it, so after opening up the dataset, malicious actors can't submit more responses that pretend to belong to a previous participant
       .update(response.participant_id + pepper) // include a global but secret pepper, so the resulting hashes are harder (or impossible) to reverse
       .digest('base64'), // e.g. "3085e05e-6f64-11ea-9f12-3b5bbd3456ee" => "K/FwCDUHL3iVb9JAMBdSEurw4rWuO/iJmcIWCn2B++s="
-    timestamp: new Date() // for security, don't trust browser clock, as it may be wrong or fraudulent
+    timestamp: new Date(timestamp()) // for security, don't trust browser clock, as it may be wrong or fraudulent
       .toISOString()
       .replace(/:..\..*/, ':00.000Z'), // to preserve privacy, intentionally reduce precision of the timestamp
     app_version: 'v1.2', // TODO: This should be set by the deploy process, not hard-coded!

@@ -1,12 +1,51 @@
 import React from 'react';
-import { Router, RouteComponentProps } from '@reach/router';
+import { Router } from '@reach/router';
 import styled, { createGlobalStyle } from 'styled-components';
 import Header from './Header';
 import Map from './Map';
 import About from './About';
 import Privacy from './Privacy';
 
+import RobotoEot from './assets/fonts/roboto-v20-latin-ext_latin-regular.eot';
+import RobotoSvg from './assets/fonts/roboto-v20-latin-ext_latin-regular.svg';
+import RobotoTtf from './assets/fonts/roboto-v20-latin-ext_latin-regular.ttf';
+import RobotoWoff from './assets/fonts/roboto-v20-latin-ext_latin-regular.woff';
+import RobotoWoff2 from './assets/fonts/roboto-v20-latin-ext_latin-regular.woff2';
+import Roboto700Eot from './assets/fonts/roboto-v20-latin-ext_latin-700.eot';
+import Roboto700Svg from './assets/fonts/roboto-v20-latin-ext_latin-700.svg';
+import Roboto700Ttf from './assets/fonts/roboto-v20-latin-ext_latin-700.ttf';
+import Roboto700Woff from './assets/fonts/roboto-v20-latin-ext_latin-700.woff';
+import Roboto700Woff2 from './assets/fonts/roboto-v20-latin-ext_latin-700.woff2';
+
 const GlobalStyles = createGlobalStyle`
+
+  /* roboto-regular - latin-ext_latin */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url(${RobotoEot}); /* IE9 Compat Modes */
+    src: local('Roboto'), local('Roboto-Regular'),
+        url(${RobotoEot}) format('embedded-opentype'), /* IE6-IE8 */
+        url(${RobotoWoff2}) format('woff2'), /* Super Modern Browsers */
+        url(${RobotoWoff}) format('woff'), /* Modern Browsers */
+        url(${RobotoTtf}) format('truetype'), /* Safari, Android, iOS */
+        url(${RobotoSvg}) format('svg'); /* Legacy iOS */
+  }
+  /* roboto-700 - latin-ext_latin */
+  @font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    src: url(${Roboto700Eot}); /* IE9 Compat Modes */
+    src: local('Roboto Bold'), local('Roboto-Bold'),
+        url(${Roboto700Eot}) format('embedded-opentype'), /* IE6-IE8 */
+        url(${Roboto700Woff2}) format('woff2'), /* Super Modern Browsers */
+        url(${Roboto700Woff}) format('woff'), /* Modern Browsers */
+        url(${Roboto700Ttf}) format('truetype'), /* Safari, Android, iOS */
+        url(${Roboto700Svg}) format('svg'); /* Legacy iOS */
+  }
+
   html {
     box-sizing: border-box;
   }
@@ -15,11 +54,11 @@ const GlobalStyles = createGlobalStyle`
   }
   
   body {
-    font-family: sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
     line-height: 1.5;
     font-size: 16px;
   }
-
+  
   h1 {
     font-size: 21px;
     line-height: 1.25;

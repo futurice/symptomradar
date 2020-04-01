@@ -13,7 +13,7 @@
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "@types/styled-components": "^5.0.1",
-    "iframe-resizer-react": "^1.0.2",
+    "iframe-resizer": "^4.2.10",
     "normalize.css": "^8.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

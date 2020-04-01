@@ -7,8 +7,7 @@
     "typeRoots": ["node_modules/@types"],
     "types": ["node", "aws-lambda"],
     "lib": ["es2017"],
-    "outDir": "temp"
+    "outDir": "build"
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["src/index-backend.ts"]
 }

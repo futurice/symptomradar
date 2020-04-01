@@ -78,6 +78,20 @@ function markInvalidInput(input: HTMLInputElement) {
   }
 }
 
+function isReturningUser() {
+  if (storageAvailable()) {
+    const participantId = window.localStorage.getItem(localStorageIdKey());
+    const previousTimestamp = window.localStorage.getItem(localStorageTimestampKey());
+
+    // return true if id already exists and timestamp is less than 14 days old
+    const isValid =
+      !!participantId && !!previousTimestamp && Date.now() - parseInt(previousTimestamp, 10) < 14 * 24 * 60 * 60 * 1000;
+
+    return isValid;
+  }
+  return false;
+}
+
 function inputChanged(event: JQuery.TriggeredEvent) {
   // check input validity on value change
   const { valid } = event.target.validity;
@@ -177,6 +191,12 @@ function init() {
     }
     $('#symptom-questionnaire').trigger('reset');
   });
+
+  const returningUser = isReturningUser();
+  if (returningUser) {
+    $('#form-info').addClass('hidden');
+    $('#form-info-returning').removeClass('hidden');
+  }
 
   $('#symptom-questionnaire').submit(function(event) {
     event.preventDefault();

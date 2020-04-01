@@ -14,4 +14,4 @@ For reasons unknown, the Athena result bucket needs to be set manually, even if 
 
 The setup also has cloudfront additional metrics enabled. Currently, this cannot be done through cli or terraform.
 
-It also creates an IAM user for deploying lambdas. However, access keys needs to be created using AWS Console.
+It also creates an IAM user for deploying Lambdas and uploading to S3. However, access keys needs to be created using AWS Console.

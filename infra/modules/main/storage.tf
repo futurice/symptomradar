@@ -47,6 +47,7 @@ resource "aws_athena_named_query" "create_table" {
         `rhinitis` string,
         `stomach_issues` string,
         `sensory_issues` string,
+        `healthcare_contact` string,
         `general_wellbeing` string,
         `longterm_medication` string,
         `smoking` string,
@@ -90,4 +91,33 @@ resource "aws_athena_named_query" "by_country_code" {
   description = "How many participants per country code"
   database    = aws_athena_database.storage.name
   query       = "SELECT country_code, COUNT(*) AS responses FROM ${local.table} GROUP BY country_code ORDER BY responses DESC"
+}
+
+resource "aws_athena_named_query" "by_day" {
+  name        = "${var.name_prefix}-by-day"
+  description = "How many responses per day"
+  database    = aws_athena_database.storage.name
+  query       = <<-SQL
+    SELECT
+      day,
+      COUNT(*) AS ${local.table}
+    FROM (
+      SELECT SUBSTR(timestamp, 1, 10) AS day FROM ${local.table}
+    )
+    GROUP BY day
+    ORDER BY day
+    ;
+  SQL
+}
+
+resource "aws_athena_named_query" "returning_participants" {
+  name        = "${var.name_prefix}-returning-participants"
+  description = "How often do participants return to update their answers"
+  database    = aws_athena_database.storage.name
+  query       = <<-SQL
+    SELECT response_count, COUNT(*) AS participants_with_this_many_responses FROM (
+      SELECT participant_id, COUNT(*) AS response_count FROM responses GROUP BY participant_id
+    ) GROUP BY response_count ORDER BY response_count DESC
+    ;
+  SQL
 }

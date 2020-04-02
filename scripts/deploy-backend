@@ -12,38 +12,36 @@ fi
 set -euo pipefail # exit on error; treat unset variables as errors; exit on errors in piped commands
 SELF_DIR="$(perl -e 'use File::Basename; use Cwd "abs_path"; print dirname(abs_path(@ARGV[0]));' -- "$0")" # figure out the absolute path to the current script, regardless of pwd (perl is more cross-platform than realpath; https://stackoverflow.com/a/30795461)
 ROOT_DIR="$SELF_DIR/.."
-BACKEND_DIR="$SELF_DIR/../backend"
-
-# Install root dependencies
-(
-  cd "$ROOT_DIR"
-  npm install
-  ./node_modules/.bin/check-node-version --package # check that we're running the correct version of node
-)
+BUILD_DIR="$SELF_DIR/../build"
+ZIP_FILE_LOCAL="$SELF_DIR/../lambda.zip"
+ZIP_FILE_REMOTE="backend-lambda.zip" # note: this needs to be in sync with the relevant TF config
+REMOVE_PACKAGES="react react-dom react-scripts" # remove packages we KNOW we won't need on the backend (this takes node_modules from 244M to 19M)
 
 # Build the backend code into a self-contained zipfile
 (
-  cd "$BACKEND_DIR"
-  mkdir -p temp
-  cp "$ROOT_DIR"/package*.json temp
-  cp "$ROOT_DIR"/tsconfig.json .
-  "$ROOT_DIR/node_modules/.bin/tsc" # compile TypeScript into "temp" (defined in tsconfig.json)
-  (cd temp && npm install --production)
-  (cd temp && zip -r ../dist/backend-lambda.zip *) # create Lambda zipfile under "dist"
-  rm -rf .tsconfig temp # clean up
+  cd "$ROOT_DIR"
+  npm run backend-build
+  cd "$BUILD_DIR"
+  mv index-backend.js index.js # TODO: Update TF config to make this unnecessary
+  cp ../package* . # use the same dependencies from root
+  npm uninstall --save $REMOVE_PACKAGES # ...but remove specific ones we KNOW we don't need for the backend
+  rm -rf node_modules && npm install --production # reinstall to get rid of the above packages and their dependency trees (this takes node_modules from 244M to 19M)
+  zip -r "$ZIP_FILE_LOCAL" * # create zipfile to root
+  du -hs "$ZIP_FILE_LOCAL" # document the size of the zipfile (so someone can notice if it suddenly balloons)
 )
 
-# Upload code to S3
+# Upload code to S3 & clean up
 aws s3 cp \
-  backend/dist/backend-lambda.zip \
-  "s3://symptomradar-$1-backend-code/"
+  "$ZIP_FILE_LOCAL" \
+  "s3://symptomradar-$1-backend-code/$ZIP_FILE_REMOTE"
+rm -vf "$ZIP_FILE_LOCAL"
 
 # Let Lambda know function code has been updated
 aws lambda update-function-code \
   --function-name "symptomradar-$1-backend-api" \
   --s3-bucket "symptomradar-$1-backend-code" \
-  --s3-key backend-lambda.zip
+  --s3-key "$ZIP_FILE_REMOTE"
 aws lambda update-function-code \
   --function-name "symptomradar-$1-backend-worker" \
   --s3-bucket "symptomradar-$1-backend-code" \
-  --s3-key backend-lambda.zip
+  --s3-key "$ZIP_FILE_REMOTE"

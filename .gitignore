@@ -1,3 +1,8 @@
+# These files will be symlinked versions of other entrypoint TSX/HTML files,
+# depending on which CRA-based frontend we're currently running/building
+/src/index.tsx
+/public/index.html
+
 .history
 .terraform
 .envrc

@@ -14,7 +14,7 @@ const AboutContent = styled.div`
 
 const About = (props: RouteComponentProps) => {
   useEffect(() => {
-    resizer.iframeResizer({ log: true }, '#formIframe');
+    resizer.iframeResizer({ log: false }, '#formIframe');
   });
 
   return (

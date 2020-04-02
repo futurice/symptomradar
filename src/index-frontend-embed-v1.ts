@@ -147,19 +147,6 @@ function hideSubmitError() {
 }
 
 function init() {
-  $('#start-survey').click(function() {
-    startSurvey();
-  });
-
-  $('#collapse-survey').click(function() {
-    hideSurvey();
-  });
-
-  $('#cancel-survey').click(function() {
-    hideSurvey();
-    $('#symptom-questionnaire').trigger('reset');
-  });
-
   const endpoint = process.env.REACT_APP_API_ENDPOINT;
   if (!endpoint) {
     console.error('Endpoint url missing');
@@ -170,11 +157,26 @@ function init() {
 
   // Embedding only the form
   if (variant === 'plain') {
-    $('#logo').addClass('hidden');
-    $('#form-info').addClass('hidden');
+    $('#logo, #start-survey, #collapse-survey').addClass('hidden');
     $('body').addClass('plain');
-    $('#start-survey').html('Vastaa kyselyyn');
+    $('#symptom-questionnaire').removeClass('hidden');
+    $('#start-survey').addClass('hidden');
   }
+
+  $('#start-survey').click(function() {
+    startSurvey();
+  });
+
+  $('#collapse-survey').click(function() {
+    hideSurvey();
+  });
+
+  $('#cancel-survey').click(function() {
+    if (variant !== 'plain') {
+      hideSurvey();
+    }
+    $('#symptom-questionnaire').trigger('reset');
+  });
 
   $('#symptom-questionnaire').submit(function(event) {
     event.preventDefault();

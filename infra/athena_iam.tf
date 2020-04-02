@@ -58,7 +58,11 @@ resource "aws_iam_group_policy" "athena_developers" {
             "${module.env_dev.storage_bucket_arn}",
             "${module.env_dev.storage_bucket_arn}/*",
             "${module.env_dev.storage_result_bucket_arn}",
-            "${module.env_dev.storage_result_bucket_arn}/*"
+            "${module.env_dev.storage_result_bucket_arn}/*",
+            "${module.env_prod.storage_bucket_arn}",
+            "${module.env_prod.storage_bucket_arn}/*",
+            "${module.env_prod.storage_result_bucket_arn}",
+            "${module.env_prod.storage_result_bucket_arn}/*"
         ]
     }
   ]

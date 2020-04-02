@@ -18,7 +18,7 @@ DEFAULT_LANG="fi"
 (
   INLINE_RUNTIME_CHUNK=false GENERATE_SOURCEMAP=false npm run "$2" # don't inline webpack runtime (inline scripts are categorically banned by our CSP)
   (cd "$BUILD_DIR" && rm -fv index-*.html *manifest* service-worker.js) # remove some cruft we don't need
-  npm run ts-node "$SELF_DIR/../scripts/translate.ts"
+  npm run ts-node "$SELF_DIR/../scripts/translate-frontend.ts"
   (cd "$BUILD_DIR" && [ ! -f index.$DEFAULT_LANG.html ] || mv -v index{.$DEFAULT_LANG,}.html) # if translated index files got generated, replace the templated index HTML with the default-lang one
 )
 

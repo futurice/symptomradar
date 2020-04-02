@@ -92,7 +92,7 @@ const Header = () => {
           />
           <LinkItem
             to="/"
-            linkText="Map"
+            linkText="Kartta"
             icon={(match: { uri: string; path: string } | null) => <MapIcon fillColor={match ? '#000' : '#0047FF'} />}
           />
         </div>

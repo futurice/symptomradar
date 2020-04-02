@@ -23,6 +23,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '12.16'
+      - name: Document GH ref # see https://github.com/futurice/symptomradar/issues/110
+        run: echo GITHUB_REF=$GITHUB_REF
       - name: Install dependencies
         run: |
           sudo apt-get install -y awscli

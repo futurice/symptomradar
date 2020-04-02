@@ -4,6 +4,10 @@ resource "aws_iam_user" "lambda_deployment" {
 
 }
 
+resource "aws_iam_access_key" "lambda_deployment" {
+  user = aws_iam_user.lambda_deployment.name
+}
+
 resource "aws_iam_user_policy" "lambda_deployment" {
   name = "${var.name_prefix}-lambda-deployment"
   user = aws_iam_user.lambda_deployment.name

@@ -266,3 +266,14 @@ form .action-button {
   -ms-flex: 0 0 85px;
   margin: 0 12px 16px 0;
 }
+
+/* Form embedded on main site, without page paddings */
+.plain #collapse-survey,
+.plain #start-survey {
+  margin-left: 24px;
+}
+
+.plain #submit-success,
+.plain #submit-error {
+  margin: 0 16px;
+}

@@ -10,7 +10,7 @@
     <noscript>{{ no_js }}</noscript>
     <main>
       <div class="container">
-        <img class="logo" src="./oiretutka-logo-gradient.svg" alt="Oiretutka. Helsingin Sanomat ja Futurice." />
+        <img id="logo" class="logo" src="./oiretutka-logo-gradient.svg" alt="Oiretutka. Helsingin Sanomat ja Futurice." />
         <div id="form-info" class="form-info">
           <h1 id="page-title" tabindex="-1">
             {{ page_title }}
@@ -140,17 +140,6 @@
               <label for="sensoryIssues-yes">kyllä</label>
               <input id="sensoryIssues-no" type="radio" name="sensory_issues" value="no" required />
               <label for="sensoryIssues-no">ei</label>
-            </div>
-          </fieldset>
-          <fieldset class="input-wrapper">
-            <legend aria-live="assertive">
-              Oletko ollut yhteydessä terveydenhuoltoon oireittesi takia? <span class="invalid-value-info hidden" />
-            </legend>
-            <div class="options">
-              <input id="healthcareContact-yes" type="radio" name="healthcare_contact" value="yes" required />
-              <label for="healthcareContact-yes">kyllä</label>
-              <input id="healthcareContact-no" type="radio" name="healthcare_contact" value="no" required />
-              <label for="healthcareContact-no">en</label>
             </div>
           </fieldset>
         </div>

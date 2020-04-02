@@ -16,6 +16,21 @@ function storageAvailable() {
   }
 }
 
+function getUrlParameter(parameter: string) {
+  var pageURL = window.location.search.substring(1),
+    URLVariables = pageURL.split('&'),
+    parameterName,
+    i;
+
+  for (i = 0; i < URLVariables.length; i++) {
+    parameterName = URLVariables[i].split('=');
+
+    if (parameterName[0] === parameter) {
+      return parameterName[1] === undefined ? true : decodeURIComponent(parameterName[1]);
+    }
+  }
+}
+
 function localStorageIdKey() {
   return 'submitId';
 }
@@ -149,6 +164,16 @@ function init() {
   if (!endpoint) {
     console.error('Endpoint url missing');
     return;
+  }
+
+  const variant = getUrlParameter('variant');
+
+  // Embedding only the form
+  if (variant === 'plain') {
+    $('#logo').addClass('hidden');
+    $('#form-info').addClass('hidden');
+    $('body').addClass('plain');
+    $('#start-survey').html('Vastaa kyselyyn');
   }
 
   $('#symptom-questionnaire').submit(function(event) {

@@ -8,8 +8,6 @@ const s3: AWS.S3 = new AWS.S3({ apiVersion: '2006-03-01' });
 const bucket = process.env.BUCKET_NAME_STORAGE || '';
 const pepper = process.env.SECRET_HASHING_PEPPER || '';
 
-console.log('branch = test-deploy-dev');
-
 // Crash and burn immediately (instead of at first request) for invalid configuration
 if (!bucket) throw new Error('Storage bucket name missing from environment');
 if (!pepper) throw new Error('Hashing pepper missing from environment');

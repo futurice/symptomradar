@@ -189,3 +189,5 @@ function init() {
 }
 
 $(document).ready(init);
+
+console.log('branch = test-deploy-dev');

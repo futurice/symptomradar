@@ -12,6 +12,12 @@ const AboutContent = styled.div`
   padding: 24px 24px 0;
 `;
 
+const Iframe = styled.iframe`
+  border: none;
+  width: 100px;
+  min-width: 100%;
+`;
+
 const About = (props: RouteComponentProps) => {
   useEffect(() => {
     resizer.iframeResizer({ log: false }, '#formIframe');
@@ -31,12 +37,7 @@ const About = (props: RouteComponentProps) => {
           <Link to="../tietosuojalauseke">Lue lisää tietosuojasta täältä.</Link>
         </p>
       </AboutContent>
-      <iframe
-        id="formIframe"
-        title="Oiretutka-kysely"
-        src="/embed/v1/?variant=plain"
-        style={{ border: 'none', width: '100px', minWidth: '100%' }}
-      />
+      <Iframe id="formIframe" title="Oiretutka-kysely" src="/embed/v1/?variant=plain" />
     </Container>
   );
 };

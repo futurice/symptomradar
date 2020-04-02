@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import Modal from './Modal';
-import filterIcon from './assets/filter-icon.svg';
+/* TODO add the icon if this component needed later */
+
+// import filterIcon from './assets/filter-icon.svg';
 import Filters from './Filters';
 import useModal from './useModal';
 
@@ -21,9 +23,7 @@ const FilterToggle = () => {
 
   return (
     <>
-      <FilterButton onClick={toggle} style={{ backgroundImage: `url(${filterIcon})` }}>
-        Filter
-      </FilterButton>
+      <FilterButton onClick={toggle}>Filter</FilterButton>
       <Modal isShowing={isShowing} hide={toggle} modalTitle={'Filter'}>
         <Filters />
       </Modal>

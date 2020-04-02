@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './frontend/main/index.css';
+import 'normalize.css';
 import { App } from './frontend/main/App';
 
 ReactDOM.render(

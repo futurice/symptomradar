@@ -16,6 +16,21 @@ function storageAvailable() {
   }
 }
 
+function getUrlParameter(parameter: string) {
+  var pageURL = window.location.search.substring(1),
+    URLVariables = pageURL.split('&'),
+    parameterName,
+    i;
+
+  for (i = 0; i < URLVariables.length; i++) {
+    parameterName = URLVariables[i].split('=');
+
+    if (parameterName[0] === parameter) {
+      return parameterName[1] === undefined ? true : decodeURIComponent(parameterName[1]);
+    }
+  }
+}
+
 function localStorageIdKey() {
   return 'submitId';
 }
@@ -132,6 +147,22 @@ function hideSubmitError() {
 }
 
 function init() {
+  const endpoint = process.env.REACT_APP_API_ENDPOINT;
+  if (!endpoint) {
+    console.error('Endpoint url missing');
+    return;
+  }
+
+  const variant = getUrlParameter('variant');
+
+  // Embedding only the form
+  if (variant === 'plain') {
+    $('#logo, #start-survey, #collapse-survey').addClass('hidden');
+    $('body').addClass('plain');
+    $('#symptom-questionnaire').removeClass('hidden');
+    $('#start-survey').addClass('hidden');
+  }
+
   $('#start-survey').click(function() {
     startSurvey();
   });
@@ -141,15 +172,11 @@ function init() {
   });
 
   $('#cancel-survey').click(function() {
-    hideSurvey();
+    if (variant !== 'plain') {
+      hideSurvey();
+    }
     $('#symptom-questionnaire').trigger('reset');
   });
-
-  const endpoint = process.env.REACT_APP_API_ENDPOINT;
-  if (!endpoint) {
-    console.error('Endpoint url missing');
-    return;
-  }
 
   $('#symptom-questionnaire').submit(function(event) {
     event.preventDefault();

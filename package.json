@@ -49,6 +49,7 @@
     "@testing-library/user-event": "^7.2.1",
     "@types/aws-lambda": "^8.10.46",
     "@types/aws-sdk": "^2.7.0",
+    "@types/iframe-resizer": "^3.5.8",
     "@types/jest": "^24.9.1",
     "@types/jquery": "^3.3.33",
     "@types/lodash": "^4.14.149",

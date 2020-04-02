@@ -14,7 +14,7 @@
             terveydenhuoltoon.",
         "privacy_readmore": "Lue lisää tietosuojasta täältä.",
         "start_survey": "Aloita",
-        "close_survey":" "Sulje kysely",
+        "close_survey": "Sulje kysely",
         "what_symptoms_headline": "Millaisia oireita sinulla on?",
         "fever": "Kuumetta",
         "no": "ei",
@@ -57,8 +57,7 @@
             hyötyä. Tiedot ovat silti anonyymejä, eikä niitä voi palvelussa yhdistää vastaajaan.",
         "end_text_2": "Kun vastauksia on kertynyt riittävästi, niitä aletaan tutkia yhteistyössä terveydenhuollon asiantuntijoiden
             kanssa.",
-        "end_text_3": "Jos sinulla on hengitysvaikeuksia, kova kuume tai et jaksa nousta vuoteesta, ota yhteys terveydenhuoltoon.
-            Jos epäilet sairastuneesi koronaviruksen aiheuttamaan tautiin ja haluat tehdä oirearvion, siirry",
+        "end_text_3": "Jos sinulla on hengitysvaikeuksia, kova kuume tai et jaksa nousta vuoteesta, ota yhteys terveydenhuoltoon. Jos epäilet sairastuneesi koronaviruksen aiheuttamaan tautiin ja haluat tehdä oirearvion, siirry",
         "end_text_4": "Omaolo.fi-palveluun."  
     },
     "en": {
@@ -71,7 +70,7 @@
         "start_info_3": "This service is not meant to be used as an aid to self-diagnose symptoms, or as a guide to seek medical aid.",
         "privacy_readmore": "More on privacy here.",
         "start_survey": "Start",
-        "close_survey":" "Close the form",
+        "close_survey": "Close the form",
         "what_symptoms_headline": "What kinds of symptoms are you experiencing?",
         "fever": "Fever",
         "no": "no",

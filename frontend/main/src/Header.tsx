@@ -88,7 +88,7 @@ const Header = () => {
           <LinkItem
             to="about"
             linkText="About"
-            icon={(match: { uri: string; path: string } | null) => <AboutIcon fillColor={match ? '#000' : '#0047FF'} />}
+            icon={match => <AboutIcon fillColor={match ? '#000' : '#0047FF'} />}
           />
           <LinkItem
             to="/"

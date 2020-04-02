@@ -1,7 +1,7 @@
 import { APIGatewayProxyHandler, Handler } from 'aws-lambda';
 import { v4 as uuidV4 } from 'uuid';
 import { assertIs, FrontendResponseModel, FrontendResponseModelT } from './common/model';
-import { prepareResponseForStorage, storeResponseInS3 } from './core/main';
+import { storeResponseInS3, prepareResponseForStorage } from './backend/main';
 
 export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
   console.log(`Incoming request: ${event.httpMethod} ${event.path}`); // to preserve privacy, don't log any headers, etc
@@ -34,6 +34,7 @@ if (process.argv[0].match(/\/ts-node$/)) {
     rhinitis: 'no',
     stomach_issues: 'no',
     sensory_issues: 'no',
+    healthcare_contact: 'no',
     general_wellbeing: 'fine',
     duration: '1', // or null
     longterm_medication: 'no',

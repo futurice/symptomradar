@@ -28,6 +28,7 @@ const responseFields = {
   rhinitis: yesOrNo,
   stomach_issues: yesOrNo,
   sensory_issues: yesOrNo,
+  healthcare_contact: yesOrNo,
   general_wellbeing: generalWellbeing,
   longterm_medication: yesOrNo,
   smoking: yesOrNo,

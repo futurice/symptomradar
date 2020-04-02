@@ -1,9 +1,8 @@
-data "aws_region" "current" {}
-
 resource "aws_cloudwatch_dashboard" "overview" {
   dashboard_name = "${var.name_prefix}-overview"
   dashboard_body = <<EOF
 {
+    "start": "-P1D",
     "widgets": [
         {
             "type": "metric",
@@ -24,18 +23,21 @@ resource "aws_cloudwatch_dashboard" "overview" {
                 "annotations": {
                     "vertical": [
                         {
-                            "label": "Private beta",
+                            "label": "Private beta (HS internal only)",
                             "value": "2020-03-25T14:25:36Z"
                         },
                         {
-                            "label": "Public beta",
+                            "label": "Public beta (https://www.hs.fi/kotimaa/art-2000006455647.html)",
                             "value": "2020-03-26T19:01:00+02:00"
                         },
                         {
-                            "label": "Public release on HS.fi",
-                            "value": "2020-03-27T15:00:00+02:00"
+                            "label": "Public release (https://www.hs.fi/kotimaa/art-2000006452379.html)",
+                            "value": "2020-03-27T14:58:00+02:00"
+                        },
+                        {
+                            "label": "First result article (https://www.hs.fi/kotimaa/art-2000006458290.html)",
+                            "value": "2020-03-30T17:51:00+03:00"
                         }
-
                     ]
                 }
             }
@@ -55,7 +57,7 @@ resource "aws_cloudwatch_dashboard" "overview" {
                 ],
                 "region": "${data.aws_region.current.name}",
                 "title": "API call duration",
-                "period": 300,
+                "period": 60,
                 "view": "timeSeries",
                 "stacked": false
             }
@@ -68,9 +70,7 @@ resource "aws_cloudwatch_dashboard" "overview" {
             "height": 6,
             "properties": {
                 "metrics": [
-                    [ "AWS/Lambda", "Errors", "FunctionName", "${module.backend_api.function_name}", "Resource", "${module.backend_api.function_name}", { "id": "errors", "color": "#d13212" } ],
-                    [ ".", "Invocations", ".", ".", ".", ".", { "id": "invocations", "visible": false } ],
-                    [ { "expression": "100 - 100 * errors / MAX([errors, invocations])", "label": "Success rate (%)", "id": "availability", "yAxis": "right", "region": "${data.aws_region.current.name}", "visible": false } ]
+                    [ "AWS/ApiGateway", "5XXError", "ApiName", "${module.backend_api.resources.rest_api}", { "color": "#d62728" } ]
                 ],
                 "region": "${data.aws_region.current.name}",
                 "title": "API error count",
@@ -79,7 +79,7 @@ resource "aws_cloudwatch_dashboard" "overview" {
                         "max": 100
                     }
                 },
-                "period": 300,
+                "period": 60,
                 "view": "timeSeries",
                 "stacked": false,
                 "stat": "Sum"

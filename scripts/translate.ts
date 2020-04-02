@@ -2,9 +2,9 @@ const _ = require('lodash');
 _.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
 
 const fs = require('fs');
-const translations = require('./src/translations.json');
+const translations = require('../src/frontend/embed/v1/translations.json');
 
-const getOutputPath = (lng: String): String => `./build/index.${lng}.html`;
+const getOutputPath = (lng: String): String => `${__dirname}/../build/index.${lng}.html`;
 
 const createLocalizedTemplate = (html: string, lng: String, translations: Object): void => {
   const path = getOutputPath(lng);
@@ -17,7 +17,7 @@ const createLocalizedTemplate = (html: string, lng: String, translations: Object
   });
 };
 
-fs.readFile('./build/index.html', (err: Error, data: Buffer) => {
+fs.readFile(`${__dirname}/../build/index.html`, (err: Error, data: Buffer) => {
   if (err) throw err;
 
   Object.keys(translations).map(lng => createLocalizedTemplate(data.toString(), lng, translations[lng]));

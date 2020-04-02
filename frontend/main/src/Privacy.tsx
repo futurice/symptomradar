@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import { RouteComponentProps } from '@reach/router';
 
 const Container = styled.div`
-  margin: 24px;
-  max-width: 700px;
+  padding: 24px;
+  max-width: 600px;
+  margin: 0 auto;
 `;
 
 const List = styled.ul`

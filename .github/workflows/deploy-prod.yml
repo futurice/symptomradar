@@ -7,8 +7,14 @@ on:
     types:
       - created # ...but not e.g. "edited", "deleted" etc
 
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: eu-west-1
+  REACT_APP_API_ENDPOINT: https://api.oiretutka.fi/
+
 jobs:
-  deploy:
+  deploy_prod:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -17,15 +23,17 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '12.16'
-      - name: Deploy
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: eu-west-1
-          REACT_APP_API_ENDPOINT: https://api.oiretutka.fi/
+      - name: Install dependencies
         run: |
           sudo apt-get install -y awscli
           npm install
-          ./scripts/deploy-frontend prod embed/v1 /embed/v1/
-          ./scripts/deploy-frontend prod main /
-          ./scripts/deploy-backend prod
+      - name: Run lint
+        run: npm run lint
+      - name: Run tests
+        run: npm test
+      - name: 'Deploy frontend: embed'
+        run: ./scripts/deploy-frontend prod frontend-embed-v1-build /embed/v1/
+      - name: 'Deploy frontend: main'
+        run: ./scripts/deploy-frontend prod frontend-main-build /
+      - name: Deploy backend
+        run: ./scripts/deploy-backend prod

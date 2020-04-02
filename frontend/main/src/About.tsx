@@ -34,7 +34,7 @@ const About = (props: RouteComponentProps) => {
       <iframe
         id="formIframe"
         title="Oiretutka-kysely"
-        src="https://www.oiretutka.fi/embed/v1/?variant=plain"
+        src="/embed/v1/?variant=plain"
         style={{ border: 'none', width: '100px', minWidth: '100%' }}
       />
     </Container>

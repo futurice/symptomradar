@@ -8,7 +8,7 @@ on:
       - master # pushes to "master" are handled by the CD workflow
 
 jobs:
-  deploy:
+  ci_run:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code

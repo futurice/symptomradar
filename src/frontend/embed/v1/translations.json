@@ -4,13 +4,123 @@
         "title": "Oiretutka",
         "no_js": "Tämä sivusto vaatii JavaScript-tuen toimiakseen.",
         "page_title": "Kerro, onko sinulla oireita vai ei: auta selvittämään, miten koronavirus leviää",
-        "start_survey": "Aloita"
+        "start_info_1": "Suomalaiset mediat pyytävät Oiretutka-palvelussa lukijoiltaan tietoa, onko heillä koronavirukseen viittaavia
+            oireita vai ei.",
+        "start_info_2": "Kertomalla tilanteestasi – myös terveenä – voit auttaa mediaa kertomaan paremmin siitä, miten virus leviää.
+            Oiretutkaan tallennettuja tietoja ei voi yhdistää vastaajaan. Vastauksia julkaistaan yhteenvetona ja
+            yksittäisinä vastauksina. Kysely on suunniteltu yhteistyössä Helsingin yliopiston kansanterveystieteen
+            osaston kanssa.",
+        "start_info_3": "Palvelua ei ole tarkoitettu yksittäisen henkilön opastamiseksi terveyteensä liittyen tai ohjaamiseksi
+            terveydenhuoltoon.",
+        "privacy_readmore": "Lue lisää tietosuojasta täältä.",
+        "start_survey": "Aloita",
+        "close_survey":" "Sulje kysely",
+        "what_symptoms_headline": "Millaisia oireita sinulla on?",
+        "fever": "Kuumetta",
+        "no": "ei",
+        "yes": "kyllä",
+        "mild_fever": "alle 38,5 astetta",
+        "high_fever": "yli 38,5 astetta",
+        "cough": "Yskää",
+        "mild": "lievää",
+        "strong": "voimakasta",
+        "breathing": "Vaikeuksia hengittää",
+        "muscle_pain": "Lihaskipuja",
+        "headache": "Päänsärkyä",
+        "sore_throat": "Kurkkukipua",
+        "rhinitis": "Nuhaa",
+        "stomach_issues": "Vatsaoireita kuten ripulia, pahoinvointia tai vatsakipuja",
+        "sensory_issues": "Hajuaistin tai makuaistin heikkenemistä",
+        "healthcare_contact": "Oletko ollut yhteydessä terveydenhuoltoon oireittesi takia?",
+        "general_status": "Terveydentila",
+        "general_wellbeing": "Millainen on yleisvointisi?",
+        "fine": "jaksan olla jalkeilla",
+        "not_ok": "jaksan olla jonkun verran jalkeilla ja hoitaa välttämättömät kotiaskareet",
+        "bad": "en juurikaan jaksa nousta vuoteesta",
+        "duration": "Kuinka monta päivää oireesi ovat kestäneet?",
+        "optional_info": "Voit jättää vastaamatta, jos sinulla ei ole oireita",
+        "longterm_medication": "Onko sinulla lääkehoitoa vaativa pitkäaikaissairaus?",
+        "smoking": "Tupakoitko?",
+        "corona_suspicion": "Epäiletkö, että olet saanut koronavirustartunnan?",
+        "background_questions": "Yleistiedot",
+        "age": "Ikä",
+        "sex": "Sukupuoli",
+        "female": "nainen",
+        "male": "mies",
+        "other": "muu",
+        "postal_code": "Postinumero",
+        "send": "Lähetä",
+        "clear": "Peruuta",
+        "thank_you": "Kiitos vastauksistasi.",
+        "end_text_1": "Pyydämme, että palaat kertomaan oireistasi kolmen päivän kuluttua. Jos täytät kyselyn uudelleen samalla
+            laitteella 14 vuorokauden kuluessa, vastaukset voidaan yhdistää keskenään, jolloin tiedoista on enemmän
+            hyötyä. Tiedot ovat silti anonyymejä, eikä niitä voi palvelussa yhdistää vastaajaan.",
+        "end_text_2": "Kun vastauksia on kertynyt riittävästi, niitä aletaan tutkia yhteistyössä terveydenhuollon asiantuntijoiden
+            kanssa.",
+        "end_text_3": "Jos sinulla on hengitysvaikeuksia, kova kuume tai et jaksa nousta vuoteesta, ota yhteys terveydenhuoltoon.
+            Jos epäilet sairastuneesi koronaviruksen aiheuttamaan tautiin ja haluat tehdä oirearvion, siirry",
+        "end_text_4": "Omaolo.fi-palveluun."  
     },
     "en": {
-        "lng": "en",
-        "title": "English title",
-        "no_js": "This site requires JavaScript to run correctly.",
-        "page_title": "Tell us whether you have symptoms or not: help find out how the coronavirus spreads",
-        "start_survey": "Start"
+      "lng": "fi",
+        "title": "Oiretutka",
+        "no_js": "Tämä sivusto vaatii JavaScript-tuen toimiakseen.",
+        "page_title": "Kerro, onko sinulla oireita vai ei: auta selvittämään, miten koronavirus leviää",
+        "start_info_1": "Suomalaiset mediat pyytävät Oiretutka-palvelussa lukijoiltaan tietoa, onko heillä koronavirukseen viittaavia
+            oireita vai ei.",
+        "start_info_2": "Kertomalla tilanteestasi – myös terveenä – voit auttaa mediaa kertomaan paremmin siitä, miten virus leviää.
+            Oiretutkaan tallennettuja tietoja ei voi yhdistää vastaajaan. Vastauksia julkaistaan yhteenvetona ja
+            yksittäisinä vastauksina. Kysely on suunniteltu yhteistyössä Helsingin yliopiston kansanterveystieteen
+            osaston kanssa.",
+        "start_info_3": "Palvelua ei ole tarkoitettu yksittäisen henkilön opastamiseksi terveyteensä liittyen tai ohjaamiseksi
+            terveydenhuoltoon.",
+        "privacy_readmore": "Lue lisää tietosuojasta täältä.",
+        "start_survey": "Aloita",
+        "close_survey":" "Sulje kysely",
+        "what_symptoms_headline": "Millaisia oireita sinulla on?",
+        "fever": "Kuumetta",
+        "no": "ei",
+        "yes": "kyllä",
+        "mild_fever": "alle 38,5 astetta",
+        "high_fever": "yli 38,5 astetta",
+        "cough": "Yskää",
+        "mild": "lievää",
+        "strong": "voimakasta",
+        "breathing": "Vaikeuksia hengittää",
+        "muscle_pain": "Lihaskipuja",
+        "headache": "Päänsärkyä",
+        "sore_throat": "Kurkkukipua",
+        "rhinitis": "Nuhaa",
+        "stomach_issues": "Vatsaoireita kuten ripulia, pahoinvointia tai vatsakipuja",
+        "sensory_issues": "Hajuaistin tai makuaistin heikkenemistä",
+        "healthcare_contact": "Oletko ollut yhteydessä terveydenhuoltoon oireittesi takia?",
+        "general_status": "Terveydentila",
+        "general_wellbeing": "Millainen on yleisvointisi?",
+        "fine": "jaksan olla jalkeilla",
+        "not_ok": "jaksan olla jonkun verran jalkeilla ja hoitaa välttämättömät kotiaskareet",
+        "bad": "en juurikaan jaksa nousta vuoteesta",
+        "duration": "Kuinka monta päivää oireesi ovat kestäneet?",
+        "optional_info": "Voit jättää vastaamatta, jos sinulla ei ole oireita",
+        "longterm_medication": "Onko sinulla lääkehoitoa vaativa pitkäaikaissairaus?",
+        "smoking": "Tupakoitko?",
+        "corona_suspicion": "Epäiletkö, että olet saanut koronavirustartunnan?",
+        "background_questions": "Yleistiedot",
+        "age": "Ikä",
+        "sex": "Sukupuoli",
+        "female": "nainen",
+        "male": "mies",
+        "other": "muu",
+        "postal_code": "Postinumero",
+        "send": "Lähetä",
+        "clear": "Peruuta",
+        "thank_you": "Kiitos vastauksistasi.",
+        "end_text_1": "Pyydämme, että palaat kertomaan oireistasi kolmen päivän kuluttua. Jos täytät kyselyn uudelleen samalla
+            laitteella 14 vuorokauden kuluessa, vastaukset voidaan yhdistää keskenään, jolloin tiedoista on enemmän
+            hyötyä. Tiedot ovat silti anonyymejä, eikä niitä voi palvelussa yhdistää vastaajaan.",
+        "end_text_2": "Kun vastauksia on kertynyt riittävästi, niitä aletaan tutkia yhteistyössä terveydenhuollon asiantuntijoiden
+            kanssa.",
+        "end_text_3": "Jos sinulla on hengitysvaikeuksia, kova kuume tai et jaksa nousta vuoteesta, ota yhteys terveydenhuoltoon.
+            Jos epäilet sairastuneesi koronaviruksen aiheuttamaan tautiin ja haluat tehdä oirearvion, siirry",
+        "end_text_4": "Omaolo.fi-palveluun."  
     }
 } 

@@ -36,3 +36,6 @@ locals {
   tags_frontend = merge(var.tags, { Component = "frontend" })
   tags_storage  = merge(var.tags, { Component = "storage" })
 }
+
+data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}

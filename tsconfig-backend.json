@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "typeRoots": ["node_modules/@types"],
+    "types": ["node", "aws-lambda"],
+    "lib": ["es2017"],
+    "outDir": "build"
+  },
+  "include": ["src/index-backend.ts"]
+}

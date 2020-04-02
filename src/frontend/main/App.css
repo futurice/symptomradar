@@ -1,0 +1,50 @@
+header {
+  max-width: 600px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+main {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px 0 40px;
+}
+
+h1 {
+  font-size: 21px;
+  line-height: 1.25;
+  font-weight: bold;
+  margin: 0 0 24px;
+}
+
+h2 {
+  font-weight: bold;
+  font-size: 16px;
+  margin: 32px 0 12px 0;
+}
+
+h3 {
+  font-weight: normal;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.logo {
+  max-width: 200px;
+  height: auto;
+  display: block;
+  margin-bottom: 24px;
+}
+
+header .notice {
+  font-size: 16px;
+  line-height: 1.25;
+  font-weight: 700;
+  margin: 0 0 24px;
+  font-style: normal;
+}
+
+ul {
+  margin-top: 0;
+  padding-left: 18px;
+}

@@ -37,9 +37,7 @@ export function prepareResponseForStorage(
 ) {
   const meta = {
     response_id: uuid(),
-    participant_id: createHash('sha256') // to preserve privacy, hash the participant_id before storing it, so after opening up the dataset, malicious actors can't submit more responses that pretend to belong to a previous participant
-      .update(response.participant_id + pepper) // include a global but secret pepper, so the resulting hashes are harder (or impossible) to reverse
-      .digest('base64'), // e.g. "3085e05e-6f64-11ea-9f12-3b5bbd3456ee" => "K/FwCDUHL3iVb9JAMBdSEurw4rWuO/iJmcIWCn2B++s="
+    participant_id: hash(response.participant_id, pepper), // to preserve privacy, hash the participant_id before storing it, so after opening up the dataset, malicious actors can't submit more responses that pretend to belong to a previous participant
     timestamp: new Date(timestamp()) // for security, don't trust browser clock, as it may be wrong or fraudulent
       .toISOString()
       .replace(/:..\..*/, ':00.000Z'), // to preserve privacy, intentionally reduce precision of the timestamp
@@ -56,4 +54,12 @@ export function prepareResponseForStorage(
 export function getStorageKey(response: BackendResponseModelT): string {
   const [date, time] = response.timestamp.split('T');
   return `responses/raw/${date}/${time}/${response.response_id}.json`;
+}
+
+// @example hash("whatever", "secret") => "K/FwCDUHL3iVb9JAMBdSEurw4rWuO/iJmcIWCn2B++s="
+function hash(input: string, pepper: string) {
+  if (!pepper) throw new Error(`No pepper provided for hashing; while possible, this is likely a configuration error`);
+  return createHash('sha256')
+    .update(input + pepper)
+    .digest('base64');
 }

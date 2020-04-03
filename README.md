@@ -8,15 +8,15 @@ The project is open source with MIT license. We encourage media outlets to colla
 
 # Links to live versions of the project
 
-A release from Helsingin Sanomat [here.](https://www.hs.fi/kotimaa/art-2000006463218.html)
+Here you can find [the release from Helsingin Sanomat](https://www.hs.fi/kotimaa/art-2000006463218.html).
 
-Privacy information, currently only in finnish [here.](https://www.oiretutka.fi/tietosuojalauseke.html)
+[Privacy information, currently only in Finnish](https://www.oiretutka.fi/tietosuojalauseke.html).
 
 # Open dataset released
 
-We are releasing the results from the survey as open data. Please read the terms (currently only in finnish) [here.](https://www.oiretutka.fi/tietosuojalauseke.html)
+We are releasing the results from the survey as open data. Please [read the terms (currently only in Finnish)](https://www.oiretutka.fi/tietosuojalauseke.html).
 
-You can download open dataset of some 100k replies in city-level from  [here.](https://interactive.hs.fi/arkku/files/26431963citylevel-opendata-3-4-2020.csv)
+You can [download an open dataset of some 100k replies in city-level from here].(https://interactive.hs.fi/arkku/files/26431963citylevel-opendata-3-4-2020.csv)
 
 # How to contribute
 
@@ -28,7 +28,7 @@ We welcome new features, but for large changes let's discuss first to make sure 
 
 Feel free to pick an issue and start contributing.
 
-For good first issues regarding contributing, see issues labeled with [open sourcing improvements](https://github.com/futurice/symptomradar/labels/open%20sourcing%20improvements).
+For good first issues regarding contributing, see [issues labeled with open sourcing improvements](https://github.com/futurice/symptomradar/labels/open%20sourcing%20improvements).
 
 # Local development environment
 
@@ -46,12 +46,12 @@ If you find a security related issue in our service, please contact datadeski@hs
 
 - Update `app_version` and push it to `master`
 - Ensure `dev` has deployed the release you're planning to put out
-- Test that basic data collection works [directly](https://dev.oiretutka.fi/embed/v1/) and/or [embedded](https://www.hs.fi/datajournalismi/art-2000006450733.html)
+- [Test that basic data collection works directly](https://dev.oiretutka.fi/embed/v1/) and/or [embedded](https://www.hs.fi/datajournalismi/art-2000006450733.html)
 - Take a peek at the `dev` overview dashboard on CloudWatch and make sure everything looks fine
 - Consult the "N commits to master since this release" link in [releases](https://github.com/futurice/symptomradar/releases) and write release notes
 - Create the release on GitHub
 - Check that the [related action](https://github.com/futurice/symptomradar/actions?query=workflow%3A%22Deploy+PROD%22) completes successfully
-- Test that basic data collection works [directly](https://www.oiretutka.fi/embed/v1/) and/or [embedded](https://www.hs.fi/kotimaa/art-2000006452379.html)
+- [Test that basic data collection works directly](https://www.oiretutka.fi/embed/v1/) and/or [embedded](https://www.hs.fi/kotimaa/art-2000006452379.html)
 - Take a peek at the `prod` overview dashboard on CloudWatch and make sure everything looks fine
 
 # MIT License

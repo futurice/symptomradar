@@ -5,12 +5,12 @@ import { assertIs, BackendResponseModel, BackendResponseModelT, FrontendResponse
 import { mapPostalCode } from './postalCode';
 
 const s3: AWS.S3 = new AWS.S3({ apiVersion: '2006-03-01' });
-const bucket = process.env.BUCKET_NAME_STORAGE || '';
-const pepper = process.env.SECRET_HASHING_PEPPER || '';
+const storageBucket = process.env.BUCKET_NAME_STORAGE || '';
+const knownPepper = process.env.KNOWN_HASHING_PEPPER || '';
 
 // Crash and burn immediately (instead of at first request) for invalid configuration
-if (!bucket) throw new Error('Storage bucket name missing from environment');
-if (!pepper) throw new Error('Hashing pepper missing from environment');
+if (!storageBucket) throw new Error('Storage bucket name missing from environment');
+if (!knownPepper) throw new Error('Hashing pepper missing from environment');
 
 // Saves the given response into our storage bucket
 export function storeResponseInS3(response: FrontendResponseModelT, countryCode: string) {
@@ -18,7 +18,7 @@ export function storeResponseInS3(response: FrontendResponseModelT, countryCode:
   console.log('About to store response', r);
   return s3
     .putObject({
-      Bucket: bucket,
+      Bucket: storageBucket,
       Key: getStorageKey(r),
       Body: JSON.stringify(r),
       ACL: 'private',
@@ -37,7 +37,7 @@ export function prepareResponseForStorage(
 ) {
   const meta = {
     response_id: uuid(),
-    participant_id: hash(response.participant_id, pepper), // to preserve privacy, hash the participant_id before storing it, so after opening up the dataset, malicious actors can't submit more responses that pretend to belong to a previous participant
+    participant_id: hash(response.participant_id, knownPepper), // to preserve privacy, hash the participant_id before storing it, so after opening up the dataset, malicious actors can't submit more responses that pretend to belong to a previous participant
     timestamp: new Date(timestamp()) // for security, don't trust browser clock, as it may be wrong or fraudulent
       .toISOString()
       .replace(/:..\..*/, ':00.000Z'), // to preserve privacy, intentionally reduce precision of the timestamp

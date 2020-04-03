@@ -10,6 +10,10 @@ variable "backend_domain" {
   description = "Full domain name under which the backend should be made available on the Internet"
 }
 
+variable "known_hashing_pepper" {
+  description = "To preserve privacy, participant_id's are hashed before storage; this controls the public part of the pepper"
+}
+
 variable "ssm_secrets_prefix" {
   description = "Key prefix under which the secrets for this env are stored in AWS Systems Manager Parameter Store (SSM)"
 }

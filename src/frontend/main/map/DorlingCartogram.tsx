@@ -1,5 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as d3 from 'd3';
+import * as topojson from 'topojson';
+import Modal from '../Modal';
+import ModalContent from '../ModalContent';
+import useModal from '../useModal';
 
 let mapNode!: SVGSVGElement | null;
 
@@ -39,10 +43,12 @@ interface mapProperties {
   Population: number;
 }
 
+const mapSimplified: any = require('./finland-map-simplified.json');
+
 const Map: React.FunctionComponent<{
-  width: number;
-  height: number;
   defaultRadius: number;
+  svgWidth: number;
+  svgHeight: number;
   mapShapeData: { features: { properties: mapProperties }[] };
   mapScale: number;
   colorRange: string[];
@@ -53,6 +59,9 @@ const Map: React.FunctionComponent<{
   radiusRange: [number, number];
   radiusScaleKey: string;
 }> = props => {
+  const [activeCityData, setActiveCityData] = useState({});
+  const { isShowing, toggle } = useModal();
+
   // radius and color scale
   let rScale = d3
     .scaleSqrt()
@@ -68,7 +77,7 @@ const Map: React.FunctionComponent<{
       .geoTransverseMercator()
       .rotate([-27, -65, 0])
       .scale(props.mapScale)
-      .translate([props.width / 2 + (75 * props.width) / 500, props.height / 2 - (20 * props.height) / 920]);
+      .translate([props.svgWidth / 2, props.svgHeight / 2]);
 
     // covert map spahe to path
     const path = d3.geoPath().projection(projection);
@@ -111,7 +120,17 @@ const Map: React.FunctionComponent<{
           (rHelsinki + rVantaa + 2) * Math.sin((45 * Math.PI) / 180);
       }
     });
-
+    g.append('path')
+      .datum(
+        topojson.merge(
+          mapSimplified,
+          mapSimplified.objects.kuntarajat.geometries.filter((d: { id: string }) => true),
+        ),
+      )
+      .attr('d', path)
+      .attr('fill', 'none')
+      .attr('stroke-width', 1.5)
+      .attr('stroke', '#ccd2d5');
     g.selectAll(`.cityCircle`)
       .data(mapShapeData.features)
       .enter()
@@ -126,6 +145,8 @@ const Map: React.FunctionComponent<{
       .attr('fill', '#fff')
       .on('click', (d: {}) => {
         console.log(d);
+        setActiveCityData(d);
+        toggle();
       });
     let tick: () => void = () => {
       g.selectAll('.cityCircle')
@@ -144,13 +165,13 @@ const Map: React.FunctionComponent<{
       )
       .on('tick', tick);
   }, [
-    props.width,
-    props.height,
     props.mapScale,
     props.mapShapeData,
     rScale,
     props.defaultRadius,
     props.radiusScaleKey,
+    props.svgWidth,
+    props.svgHeight,
   ]);
   useEffect(() => {
     let mapSVG = d3.select(mapNode);
@@ -221,12 +242,15 @@ const Map: React.FunctionComponent<{
     props.colorDomain,
     props.colorRange,
     props.mapShapeData.features,
-    props.width,
-    props.height,
+    props.svgWidth,
+    props.svgHeight,
   ]);
   return (
     <div>
-      <svg width={props.width} height={props.height} ref={node => (mapNode = node)} />
+      <svg width={props.svgWidth} height={props.svgHeight} ref={node => (mapNode = node)} />
+      <Modal isShowing={isShowing} hide={toggle}>
+        <ModalContent content={activeCityData} />
+      </Modal>
     </div>
   );
 };

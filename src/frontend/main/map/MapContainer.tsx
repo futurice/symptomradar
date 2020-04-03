@@ -2,19 +2,23 @@ import React, { useState } from 'react';
 import DorlingCartogram from './DorlingCartogram';
 
 const App: React.FunctionComponent<{ mapShapeData: any }> = props => {
-  const [width, setWidth] = useState(window.innerWidth > 820 ? 500 : window.innerWidth - 20);
+  const headerHeight = 130;
+  const mapSelectHeight = 55;
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [screenHeight, setScreenHeight] = useState(window.innerHeight - headerHeight - mapSelectHeight);
   window.addEventListener('resize', () => {
-    setWidth(window.innerWidth > 820 ? 500 : window.innerWidth - 20);
+    setScreenHeight(window.innerHeight - 20);
+    setScreenWidth(window.innerWidth - 20);
   });
 
   return (
     <div className="App">
       <DorlingCartogram
         mapShapeData={props.mapShapeData}
-        width={width}
-        height={(width * 920) / 500}
-        mapScale={width * 10}
-        radiusRange={[2, (width * 30) / 500]}
+        svgWidth={screenWidth}
+        svgHeight={screenHeight}
+        mapScale={(screenHeight * 4750) / 920}
+        radiusRange={[2, (screenHeight * 30) / 920]}
         radiusScaleKey={'Population'}
         defaultRadius={2}
         colorRange={['#bee7fa', '#00bdf2', '#082163']}

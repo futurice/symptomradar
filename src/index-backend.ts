@@ -46,7 +46,7 @@ if (process.argv[0].match(/\/ts-node$/)) {
   };
   Promise.resolve(test)
     .then(assertIs(FrontendResponseModel))
-    .then(res => prepareResponseForStorage(res, 'FI'))
+    .then(res => prepareResponseForStorage(res, 'FI', Promise.resolve('fake-secret-pepper')))
     .catch(err => err)
     .then(res => console.log(res));
 }

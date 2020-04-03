@@ -3,6 +3,7 @@ import { createHash } from 'crypto';
 import { v4 as uuidV4 } from 'uuid';
 import { assertIs, BackendResponseModel, BackendResponseModelT, FrontendResponseModelT } from '../common/model';
 import { mapPostalCode } from './postalCode';
+import { getSecret } from './secrets';
 
 const s3: AWS.S3 = new AWS.S3({ apiVersion: '2006-03-01' });
 const storageBucket = process.env.BUCKET_NAME_STORAGE || '';
@@ -15,7 +16,7 @@ if (!knownPepper) throw new Error('Hashing pepper missing from environment');
 // Saves the given response into our storage bucket
 export function storeResponseInS3(response: FrontendResponseModelT, countryCode: string) {
   return Promise.resolve()
-    .then(() => prepareResponseForStorage(response, countryCode))
+    .then(() => prepareResponseForStorage(response, countryCode, getSecret('secret-pepper')))
     .then(r => {
       console.log('About to store response', r);
       return s3
@@ -34,14 +35,15 @@ export function storeResponseInS3(response: FrontendResponseModelT, countryCode:
 export function prepareResponseForStorage(
   response: FrontendResponseModelT,
   countryCode: string,
+  secretPepper: Promise<string>,
   // Allow overriding non-deterministic parts in test code:
   uuid: () => string = uuidV4,
   timestamp = Date.now,
 ): Promise<BackendResponseModelT> {
-  return Promise.resolve().then(() => {
+  return Promise.resolve(secretPepper).then(secretPepper => {
     const meta = {
       response_id: uuid(),
-      participant_id: hash(response.participant_id, knownPepper), // to preserve privacy, hash the participant_id before storing it, so after opening up the dataset, malicious actors can't submit more responses that pretend to belong to a previous participant
+      participant_id: hash(hash(response.participant_id, knownPepper), secretPepper), // to preserve privacy, hash the participant_id before storing it, so after opening up the dataset, malicious actors can't submit more responses that pretend to belong to a previous participant
       timestamp: new Date(timestamp()) // for security, don't trust browser clock, as it may be wrong or fraudulent
         .toISOString()
         .replace(/:..\..*/, ':00.000Z'), // to preserve privacy, intentionally reduce precision of the timestamp

@@ -38,7 +38,7 @@ const persistedResponseSample: BackendResponseModelT = {
   healthcare_contact: 'no',
   longterm_medication: 'no',
   muscle_pain: 'no',
-  participant_id: 'v7vNU2UYRUXvmGPN/kUPlIgKY8Gr6Gbq9qYfJC+5CCU=',
+  participant_id: 'gJHfWrLSp+DHWEZHponianQCdWSR9svvD5niz9rRM1U=',
   postal_code: '00520',
   response_id: cannedUuid,
   rhinitis: 'no',
@@ -54,6 +54,7 @@ describe('prepareResponseForStorage()', () => {
     return prepareResponseForStorage(
       incomingResponseSample,
       'FI',
+      Promise.resolve('fake-secret-pepper'),
       () => cannedUuid,
       () => 1585649303678, // i.e. "2020-03-31T10:08:23.678Z"
     ).then(r => expect(r).toEqual(persistedResponseSample));

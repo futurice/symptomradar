@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { RouteComponentProps } from '@reach/router';
 import ModalContent from './ModalContent';
 import Modal from './Modal';
+import PrimaryButton from './PrimaryButton';
 import Map from './map/Map';
 import useModal from './useModal';
 
@@ -19,7 +20,28 @@ const Label = styled.label`
 
 const MapWrapper = styled.div`
   text-align: center;
-  padding: 24px;
+  position: relative;
+`;
+
+const FilterWrapper = styled.div`
+  position: absolute;
+  top: 10px;
+  display: flex;
+  max-width: 100vw;
+  flex-wrap: nowrap;
+  padding: 0 16px;
+  overflow: scroll;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+
+  &::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+`;
+
+const FilterButton = styled(PrimaryButton)`
+  flex: 0 0 auto;
+  margin-right: 16px;
 `;
 
 const MapView = (props: RouteComponentProps) => {
@@ -53,7 +75,11 @@ const MapView = (props: RouteComponentProps) => {
       </MapNav>
       <MapWrapper>
         <Map></Map>
-        <button onClick={toggle}>Show region info</button>
+        <FilterWrapper>
+          <FilterButton type="button" label="Epäilys koronasta" />
+          <FilterButton type="button" label="Yskää" />
+          <FilterButton type="button" label="Kuumetta" />
+        </FilterWrapper>
       </MapWrapper>
       <Modal isShowing={isShowing} hide={toggle} modalTitle={'Uusimaa'}>
         <ModalContent region="Uusimaa" />

@@ -17,13 +17,18 @@ interface activeLinkProps {
 
 const AppHeader = styled.header`
   padding: 24px 24px 10px;
-  background-color: #fff;
   border-bottom: 1px solid #000;
   height: 130px;
+`;
+
+const HeaderContainer = styled.div`
+  background-color: #fff;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: stretch;
+  max-width: 600px;
+  margin: 0 auto;
 `;
 
 const LogoImage = styled.img`
@@ -37,16 +42,21 @@ const Nav = styled.nav`
   align-items: flex-end;
 `;
 
+const LinkContainer = styled.div`
+  display: flex;
+`;
+
 const Select = styled.select`
   margin: 0;
 `;
 
 const RouterLink = styled(Link)`
-  padding: 6px;
+  padding: 6px 6px 6px 0;
   margin-right: 16px;
   text-decoration: none;
   color: inherit;
-  display: inline-block;
+  display: flex;
+  align-items: center;
 
   &:active {
     color: inherit;
@@ -57,7 +67,7 @@ const LinkText = styled.span<activeLinkProps>`
   margin-left: 4px;
   font-weight: bold;
   color: ${props => (props.isActive ? '#000' : '#0047FF')};
-  text-decoration: ${props => (props.isActive ? 'underline' : 'none')};
+  text-decoration: ${props => (props.isActive ? 'none' : 'underline')};
 
   &:hover {
     text-decoration: underline;
@@ -80,23 +90,34 @@ const LinkItem = ({ to, linkText, icon }: LinkProps) => {
 const Header = () => {
   return (
     <AppHeader>
-      <div>
-        <LogoImage src={Logo} alt="Oiretutka. Helsingin Sanomat ja Futurice." />
-      </div>
-      <Nav>
+      <HeaderContainer>
         <div>
-          <LinkItem to="about" linkText="About" icon={match => <AboutIcon fillColor={match ? '#000' : '#0047FF'} />} />
-          <LinkItem
-            to="/"
-            linkText="Kartta"
-            icon={(match: { uri: string; path: string } | null) => <MapIcon fillColor={match ? '#000' : '#0047FF'} />}
-          />
+          <LogoImage src={Logo} alt="Oiretutka. Helsingin Sanomat ja Futurice." />
         </div>
-        <Select name="language" id="">
-          <option value="Fi">Fi</option>
-          <option value="En">En</option>
-        </Select>
-      </Nav>
+        <Nav>
+          <LinkContainer>
+            <LinkItem
+              to="about"
+              linkText="Tutustu"
+              icon={match => <AboutIcon fillColor={match ? '#000' : '#0047FF'} />}
+            />
+            <LinkItem
+              to="/"
+              linkText="Kartta"
+              icon={(match: { uri: string; path: string } | null) => <MapIcon fillColor={match ? '#000' : '#0047FF'} />}
+            />
+            <LinkItem
+              to="survey"
+              linkText="Vastaa kyselyyn"
+              icon={match => <AboutIcon fillColor={match ? '#000' : '#0047FF'} />}
+            />
+          </LinkContainer>
+          <Select name="language" id="">
+            <option value="Fi">Fi</option>
+            <option value="En">En</option>
+          </Select>
+        </Nav>
+      </HeaderContainer>
     </AppHeader>
   );
 };

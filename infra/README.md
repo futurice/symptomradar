@@ -10,8 +10,11 @@
 1. `terraform apply`
 1. `./scripts/deploy-frontend dev-tmp`
 
-For reasons unknown, the Athena result bucket needs to be set manually, even if it's defined in the Terraform config. For the `dev` env for instance, it'd be `s3://symptomradar-dev-storage-results/`.
+Manual steps required:
 
-The setup also has cloudfront additional metrics enabled. Currently, this cannot be done through cli or terraform.
-
-It also creates an IAM user for deploying Lambdas and uploading to S3. However, access keys needs to be created using AWS Console.
+1. For reasons unknown, the Athena result bucket needs to be set manually, even if it's defined in the Terraform config. For the `dev` env for instance, it'd be `s3://symptomradar-dev-storage-results/`.
+1. The setup also has CloudFront additional metrics enabled. Currently, this cannot be done through CLI or Terraform.
+1. It also creates an IAM user for deploying Lambdas and uploading to S3. However, access keys needs to be created using AWS Console.
+1. Some secrets are managed outside of Terraform, [so they don't end up as plain-text in the state file](https://www.terraform.io/docs/providers/aws/r/ssm_parameter.html). Set up the global secret pepper used for hashing `participant_id` before persistence:
+   1. `read SECRET && aws ssm put-parameter --type "SecureString" --name "/symptomradar/dev/secret-pepper" --value "$SECRET"`
+   1. `read SECRET && aws ssm put-parameter --type "SecureString" --name "/symptomradar/prod/secret-pepper" --value "$SECRET"`

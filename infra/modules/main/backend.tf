@@ -10,12 +10,6 @@ resource "aws_s3_bucket" "backend_code" {
 
 }
 
-# Create random, secret pepper we can use for hashing
-resource "random_string" "secret_hashing_pepper" {
-  length  = 32
-  special = false
-}
-
 # Implements the Lambda API processing requests from the web
 module "backend_api" {
   source    = "../aws_lambda_api"
@@ -31,9 +25,10 @@ module "backend_api" {
   api_gateway_cloudwatch_metrics = true
 
   function_env_vars = {
-    BUCKET_NAME_STORAGE   = aws_s3_bucket.storage.id
-    CORS_ALLOW_ORIGIN     = var.backend_cors_allow_any ? "*" : "https://${var.frontend_domain}"
-    SECRET_HASHING_PEPPER = random_string.secret_hashing_pepper.result
+    BUCKET_NAME_STORAGE  = aws_s3_bucket.storage.id
+    CORS_ALLOW_ORIGIN    = var.backend_cors_allow_any ? "*" : "https://${var.frontend_domain}"
+    KNOWN_HASHING_PEPPER = var.known_hashing_pepper
+    SSM_SECRETS_PREFIX   = var.ssm_secrets_prefix
   }
 }
 
@@ -71,6 +66,13 @@ resource "aws_iam_policy" "backend_api" {
         "arn:aws:s3:::${aws_s3_bucket.storage.id}/*"
       ],
       "Effect": "Allow"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetParameters"
+      ],
+      "Resource": "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter${var.ssm_secrets_prefix}secret-pepper"
     }
   ]
 }

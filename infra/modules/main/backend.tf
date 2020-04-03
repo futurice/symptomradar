@@ -34,6 +34,7 @@ module "backend_api" {
     BUCKET_NAME_STORAGE   = aws_s3_bucket.storage.id
     CORS_ALLOW_ORIGIN     = var.backend_cors_allow_any ? "*" : "https://${var.frontend_domain}"
     SECRET_HASHING_PEPPER = random_string.secret_hashing_pepper.result
+    SSM_SECRETS_PREFIX    = var.ssm_secrets_prefix
   }
 }
 
@@ -71,6 +72,13 @@ resource "aws_iam_policy" "backend_api" {
         "arn:aws:s3:::${aws_s3_bucket.storage.id}/*"
       ],
       "Effect": "Allow"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetParameters"
+      ],
+      "Resource": "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter${var.ssm_secrets_prefix}secret-pepper"
     }
   ]
 }

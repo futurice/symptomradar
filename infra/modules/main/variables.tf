@@ -10,6 +10,10 @@ variable "backend_domain" {
   description = "Full domain name under which the backend should be made available on the Internet"
 }
 
+variable "ssm_secrets_prefix" {
+  description = "Key prefix under which the secrets for this env are stored in AWS Systems Manager Parameter Store (SSM)"
+}
+
 variable "tags" {
   description = "AWS Tags to add to all resources created (where possible); see https://aws.amazon.com/answers/account-management/aws-tagging-strategies/"
   type        = map(string)

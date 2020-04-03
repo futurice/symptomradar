@@ -32,7 +32,7 @@ jobs:
       - name: Run lint
         run: npm run lint
       - name: Run tests
-        run: npm test
+        run: CI=1 npm test
       - name: 'Deploy frontend: embed'
         run: ./scripts/deploy-frontend prod frontend-embed-v1-build /embed/v1/
       - name: 'Deploy frontend: main'

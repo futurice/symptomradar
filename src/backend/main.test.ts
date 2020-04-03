@@ -51,14 +51,12 @@ const persistedResponseSample: BackendResponseModelT = {
 
 describe('prepareResponseForStorage()', () => {
   it('works', () => {
-    expect(
-      prepareResponseForStorage(
-        incomingResponseSample,
-        'FI',
-        () => cannedUuid,
-        () => 1585649303678, // i.e. "2020-03-31T10:08:23.678Z"
-      ),
-    ).toEqual(persistedResponseSample);
+    return prepareResponseForStorage(
+      incomingResponseSample,
+      'FI',
+      () => cannedUuid,
+      () => 1585649303678, // i.e. "2020-03-31T10:08:23.678Z"
+    ).then(r => expect(r).toEqual(persistedResponseSample));
   });
 });
 

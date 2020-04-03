@@ -62,7 +62,6 @@ const App: React.FunctionComponent<{}> = () => {
       d.properties.cough_yes = d.properties.responses - d.properties.cough_no;
     } else {
       let indx = populationData.findIndex((el: { City: string; population: number }) => d.properties.name === el.City);
-      console.log(indx, d.properties.name);
       let obj = {
         name: d.properties.name,
         responses: -1,
@@ -106,7 +105,7 @@ const App: React.FunctionComponent<{}> = () => {
   // Data Manipulation Ends
 
   return (
-    <div className="App">
+    <div>
       <MapContainer mapShapeData={mapShapeData} />
     </div>
   );

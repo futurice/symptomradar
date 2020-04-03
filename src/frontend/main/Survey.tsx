@@ -21,7 +21,7 @@ const Survey = (props: RouteComponentProps) => {
 
   return (
     <Container>
-      <Iframe id="formIframe" title="Oiretutka-kysely" src="http://dev.oiretutka.fi/embed/v1/?variant=plain" />
+      <Iframe id="formIframe" title="Oiretutka-kysely" src="/embed/v1/?variant=plain" />
     </Container>
   );
 };

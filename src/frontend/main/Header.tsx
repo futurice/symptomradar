@@ -55,7 +55,7 @@ const RouterLink = styled(Link)`
   align-items: center;
 
   &:not(:last-child) {
-    margin-right: 16px;
+    margin-right: 10px;
   }
 
   svg {

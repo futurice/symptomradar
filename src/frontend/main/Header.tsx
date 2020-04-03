@@ -19,6 +19,7 @@ interface activeLinkProps {
 const AppHeader = styled.header`
   padding: 24px 24px 10px;
   border-bottom: 1px solid #000;
+  height: 130px;
 `;
 
 const HeaderContainer = styled.div`

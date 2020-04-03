@@ -9,7 +9,7 @@
     "\n==================== GLOBAL HOOKS ====================": "",
     "preinstall": "if [ -f ./node_modules/.bin/check-node-version ]; then check-node-version --package; fi",
     "\n==================== GLOBAL QA ====================": "",
-    "test": "echo TODO",
+    "test": "react-scripts test",
     "lint": "concurrently npm:lint-node npm:lint-tsc npm:lint-eslint npm:lint-prettier",
     "lint-node": "check-node-version --package",
     "lint-tsc": "tsc --project . --noEmit",

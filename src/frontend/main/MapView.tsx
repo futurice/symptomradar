@@ -13,6 +13,7 @@ const MapNav = styled.div`
   display: flex;
   align-items: center;
   padding: 0 16px;
+  border-bottom: 1px solid #000000;
 `;
 
 const Label = styled.label`
@@ -73,8 +74,8 @@ const MapView = (props: RouteComponentProps) => {
           <FilterButton type="button" label="Kuumetta" />
         </FilterWrapper>
       </MapWrapper>
-      <Modal isShowing={isShowing} hide={toggle} modalTitle={'Uusimaa'}>
-        <ModalContent region="Uusimaa" />
+      <Modal isShowing={isShowing} hide={toggle}>
+        {/* <ModalContent content={{}} /> */}
       </Modal>
     </>
   );

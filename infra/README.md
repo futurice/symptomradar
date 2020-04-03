@@ -10,8 +10,8 @@
 1. `terraform apply`
 1. `./scripts/deploy-frontend dev-tmp`
 
-For reasons unknown, the Athena result bucket needs to be set manually, even if it's defined in the Terraform config. For the `dev` env for instance, it'd be `s3://symptomradar-dev-storage-results/`.
+Manual steps required:
 
-The setup also has cloudfront additional metrics enabled. Currently, this cannot be done through cli or terraform.
-
-It also creates an IAM user for deploying Lambdas and uploading to S3. However, access keys needs to be created using AWS Console.
+1. For reasons unknown, the Athena result bucket needs to be set manually, even if it's defined in the Terraform config. For the `dev` env for instance, it'd be `s3://symptomradar-dev-storage-results/`.
+1. The setup also has CloudFront additional metrics enabled. Currently, this cannot be done through CLI or Terraform.
+1. It also creates an IAM user for deploying Lambdas and uploading to S3. However, access keys needs to be created using AWS Console.

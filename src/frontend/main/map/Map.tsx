@@ -1,5 +1,5 @@
 import React from 'react';
-import DorlingCartogram from './DorlingCartogram';
+import MapContainer from './MapContainer';
 import * as topojson from 'topojson';
 
 const mapShape: {
@@ -52,7 +52,7 @@ const data: mapProperties[] = require('./citylevel-opendata-3-4-2020.json');
 
 const populationData: { City: string; population: number }[] = require('./population.json');
 
-function Map() {
+const App: React.FunctionComponent<{}> = () => {
   // Data Manipulation
   mapShapeData.features.forEach((d: { properties: mapProperties }) => {
     let index = data.findIndex((el: mapProperties) => d.properties.name === el.City);
@@ -62,6 +62,7 @@ function Map() {
       d.properties.cough_yes = d.properties.responses - d.properties.cough_no;
     } else {
       let indx = populationData.findIndex((el: { City: string; population: number }) => d.properties.name === el.City);
+      console.log(indx, d.properties.name);
       let obj = {
         name: d.properties.name,
         responses: -1,
@@ -105,21 +106,10 @@ function Map() {
   // Data Manipulation Ends
 
   return (
-    <DorlingCartogram
-      mapShapeData={mapShapeData}
-      width={760}
-      height={1024}
-      mapScale={5000}
-      radiusRange={[2, 50]}
-      radiusScaleKey={'responses'}
-      defaultRadius={1}
-      colorRange={['#D9F0FC', '#BEE7FA', '#8DD7F7', '#00BDF2', '#007FBD', '#082163']}
-      colorDomain={[10000, 50000, 100000, 200000, 300000]}
-      colorScaleKey={'Population'}
-      defaultColor={'#AAAAAA'}
-      colorScaleTransform={'none'}
-    />
+    <div className="App">
+      <MapContainer mapShapeData={mapShapeData} />
+    </div>
   );
-}
+};
 
-export default Map;
+export default App;

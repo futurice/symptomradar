@@ -46,7 +46,7 @@ const Map: React.FunctionComponent<{
   mapShapeData: { features: { properties: mapProperties }[] };
   mapScale: number;
   colorRange: string[];
-  colorDomain: number[];
+  colorDomain?: number[];
   colorScaleKey: string;
   colorScaleTransform?: string;
   defaultColor: string;
@@ -59,10 +59,6 @@ const Map: React.FunctionComponent<{
     .domain([0, d3.max(props.mapShapeData.features, (el: any) => el.properties[props.radiusScaleKey])])
     .range(props.radiusRange);
 
-  let colorScale = d3
-    .scaleThreshold()
-    .domain(props.colorDomain)
-    .range(props.colorRange);
   useEffect(() => {
     let mapSVG = d3.select(mapNode);
     mapSVG.selectAll('.mapG').remove();
@@ -72,13 +68,24 @@ const Map: React.FunctionComponent<{
       .geoTransverseMercator()
       .rotate([-27, -65, 0])
       .scale(props.mapScale)
-      .translate([props.width / 2, props.height / 2]);
+      .translate([props.width / 2 + (75 * props.width) / 500, props.height / 2 - (20 * props.height) / 920]);
 
     // covert map spahe to path
     const path = d3.geoPath().projection(projection);
 
+    let Zoom = d3
+      .zoom()
+      .scaleExtent([0.8, 8])
+      .on('zoom', zoomed);
+
+    mapSVG.call(Zoom);
+
     //g for adding map
     let g = mapSVG.append('g').attr('class', 'mapG');
+
+    function zoomed() {
+      g.attr('transform', d3.event.transform); // updated for d3 v4
+    }
 
     let mapShapeData: { features: { properties: any }[] } = JSON.parse(JSON.stringify(props.mapShapeData)); // cloning the json
 
@@ -147,6 +154,51 @@ const Map: React.FunctionComponent<{
   ]);
   useEffect(() => {
     let mapSVG = d3.select(mapNode);
+    let sortedData: any = props.mapShapeData.features
+      .filter((a: { properties: { responses: number } }) => a.properties.responses !== -1)
+      .sort((a: any, b: any) => d3.descending(a.properties[props.colorScaleKey], b.properties[props.colorScaleKey]));
+    let colorDomain = [sortedData[19].properties[props.colorScaleKey], sortedData[9].properties[props.colorScaleKey]];
+    switch (props.colorScaleTransform) {
+      case 'percentPopulation':
+        sortedData = props.mapShapeData.features
+          .filter((a: { properties: { responses: number } }) => a.properties.responses !== -1)
+          .sort((a: any, b: any) =>
+            d3.descending(
+              (a.properties[props.colorScaleKey] * 100) / a.properties.Population,
+              (b.properties[props.colorScaleKey] * 100) / b.properties.Population,
+            ),
+          );
+        colorDomain = [
+          (sortedData[19].properties[props.colorScaleKey] * 100) / sortedData[19].properties.Population,
+          (sortedData[9].properties[props.colorScaleKey] * 100) / sortedData[9].properties.Population,
+        ];
+        break;
+      case 'percentResponse':
+        sortedData = props.mapShapeData.features
+          .filter((a: { properties: { responses: number } }) => a.properties.responses !== -1)
+          .sort((a: any, b: any) =>
+            d3.descending(
+              (a.properties[props.colorScaleKey] * 100) / a.properties.responses,
+              (b.properties[props.colorScaleKey] * 100) / b.properties.responses,
+            ),
+          );
+        colorDomain = [
+          (sortedData[19].properties[props.colorScaleKey] * 100) / sortedData[19].properties.responses,
+          (sortedData[9].properties[props.colorScaleKey] * 100) / sortedData[9].properties.responses,
+        ];
+        break;
+      default:
+    }
+    let colorScale = d3
+      .scaleThreshold()
+      .domain(colorDomain)
+      .range(props.colorRange);
+    if (props.colorDomain) {
+      colorScale = d3
+        .scaleThreshold()
+        .domain(props.colorDomain)
+        .range(props.colorRange);
+    }
     mapSVG
       .selectAll('.cityCircle')
       .transition()
@@ -154,16 +206,29 @@ const Map: React.FunctionComponent<{
       .attr('fill', (d: { properties: any }) => {
         if (d.properties[props.colorScaleKey] === -1) return props.defaultColor;
         switch (props.colorScaleTransform) {
-          case 'perCentPopulation':
-            return colorScale((d.properties[props.colorScaleKey] * 100) / d.properties.population);
+          case 'percentPopulation':
+            return colorScale((d.properties[props.colorScaleKey] * 100) / d.properties.Population);
           case 'percentResponse':
             return colorScale((d.properties[props.colorScaleKey] * 100) / d.properties.responses);
           default:
             return colorScale(d.properties[props.colorScaleKey]);
         }
       });
-  }, [props.colorScaleKey, props.defaultColor, props.colorScaleTransform, colorScale]);
-  return <svg width={props.width} height={props.height} ref={node => (mapNode = node)} />;
+  }, [
+    props.colorScaleKey,
+    props.defaultColor,
+    props.colorScaleTransform,
+    props.colorDomain,
+    props.colorRange,
+    props.mapShapeData.features,
+    props.width,
+    props.height,
+  ]);
+  return (
+    <div>
+      <svg width={props.width} height={props.height} ref={node => (mapNode = node)} />
+    </div>
+  );
 };
 
 export default Map;

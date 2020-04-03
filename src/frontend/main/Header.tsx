@@ -4,6 +4,7 @@ import { Link, Match } from '@reach/router';
 import Logo from './assets/oiretutka-logo-gradient.svg';
 import AboutIcon from './assets/AboutIcon';
 import MapIcon from './assets/MapIcon';
+import SurveyIcon from './assets/SurveyIcon';
 
 type LinkProps = {
   to: string;
@@ -18,7 +19,6 @@ interface activeLinkProps {
 const AppHeader = styled.header`
   padding: 24px 24px 10px;
   border-bottom: 1px solid #000;
-  height: 130px;
 `;
 
 const HeaderContainer = styled.div`
@@ -44,19 +44,23 @@ const Nav = styled.nav`
 
 const LinkContainer = styled.div`
   display: flex;
-`;
-
-const Select = styled.select`
-  margin: 0;
+  flex-wrap: wrap;
 `;
 
 const RouterLink = styled(Link)`
   padding: 6px 6px 6px 0;
-  margin-right: 16px;
   text-decoration: none;
   color: inherit;
   display: flex;
   align-items: center;
+
+  &:not(:last-child) {
+    margin-right: 16px;
+  }
+
+  svg {
+    flex: 1 0 16px;
+  }
 
   &:active {
     color: inherit;
@@ -68,6 +72,7 @@ const LinkText = styled.span<activeLinkProps>`
   font-weight: bold;
   color: ${props => (props.isActive ? '#000' : '#0047FF')};
   text-decoration: ${props => (props.isActive ? 'none' : 'underline')};
+  flex: 0 0 auto;
 
   &:hover {
     text-decoration: underline;
@@ -97,25 +102,17 @@ const Header = () => {
         <Nav>
           <LinkContainer>
             <LinkItem
-              to="about"
-              linkText="Tutustu"
-              icon={match => <AboutIcon fillColor={match ? '#000' : '#0047FF'} />}
-            />
-            <LinkItem
               to="/"
               linkText="Kartta"
               icon={(match: { uri: string; path: string } | null) => <MapIcon fillColor={match ? '#000' : '#0047FF'} />}
             />
             <LinkItem
               to="survey"
-              linkText="Vastaa kyselyyn"
-              icon={match => <AboutIcon fillColor={match ? '#000' : '#0047FF'} />}
+              linkText="Kyselylomake"
+              icon={match => <SurveyIcon fillColor={match ? '#000' : '#0047FF'} />}
             />
+            <LinkItem to="about" linkText="Info" icon={match => <AboutIcon fillColor={match ? '#000' : '#0047FF'} />} />
           </LinkContainer>
-          <Select name="language" id="">
-            <option value="Fi">Fi</option>
-            <option value="En">En</option>
-          </Select>
         </Nav>
       </HeaderContainer>
     </AppHeader>

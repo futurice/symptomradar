@@ -105,7 +105,7 @@ function Map() {
   // Data Manipulation Ends
 
   return (
-    <div className="App">
+    <div>
       <DorlingCartogram
         mapShapeData={mapShapeData}
         width={760}

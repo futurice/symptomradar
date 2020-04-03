@@ -5,7 +5,6 @@ import styled from 'styled-components';
 type ModalProps = {
   isShowing: boolean;
   hide: () => void;
-  modalTitle: string;
 };
 
 const ModalOverlay = styled.div`
@@ -34,33 +33,20 @@ const ModalWrapper = styled.div`
 const ModalContent = styled.div`
   z-index: 100;
   background: white;
-  border-radius: 14px 14px 0 0;
   padding: 18px;
   width: 100%;
-  position: absolute;
   bottom: 0;
   max-height: 90vh;
+  max-width: 90vw;
   overflow: scroll;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
   @media (min-width: 768px) {
     max-width: 500px;
-    position: relative;
-    margin: 1.75rem auto;
-    border-radius: 14px;
   }
-`;
-const ModalHeader = styled.div`
-  position: relative;
-  display: flex;
-  padding: 0px 0 24px 0;
-  margin-bottom: 24px;
-  justify-content: space-between;
-  border-bottom: 1px solid #969696;
-`;
-
-const H2 = styled.h2`
-  font-size: 21px;
-  margin: 8px 0;
 `;
 
 const ModalCloseButton = styled.button`
@@ -71,21 +57,21 @@ const ModalCloseButton = styled.button`
   cursor: pointer;
   border: none;
   background-color: transparent;
+  position: absolute;
+  right: 12px;
+  z-index: 1;
 `;
 
-const Modal: React.FC<ModalProps> = ({ isShowing, hide, modalTitle, children }) =>
+const Modal: React.FC<ModalProps> = ({ isShowing, hide, children }) =>
   isShowing
     ? ReactDOM.createPortal(
         <>
           <ModalOverlay />
           <ModalWrapper aria-modal aria-hidden tabIndex={-1} role="dialog">
             <ModalContent>
-              <ModalHeader>
-                <H2>{modalTitle}</H2>
-                <ModalCloseButton type="button" data-dismiss="modal" aria-label="Close" onClick={hide}>
-                  <span aria-hidden="true">&times;</span>
-                </ModalCloseButton>
-              </ModalHeader>
+              <ModalCloseButton type="button" data-dismiss="modal" aria-label="Close" onClick={hide}>
+                <span aria-hidden="true">&times;</span>
+              </ModalCloseButton>
               {children}
             </ModalContent>
           </ModalWrapper>

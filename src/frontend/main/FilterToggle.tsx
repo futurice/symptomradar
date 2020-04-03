@@ -24,7 +24,7 @@ const FilterToggle = () => {
   return (
     <>
       <FilterButton onClick={toggle}>Filter</FilterButton>
-      <Modal isShowing={isShowing} hide={toggle} modalTitle={'Filter'}>
+      <Modal isShowing={isShowing} hide={toggle}>
         <Filters />
       </Modal>
     </>

@@ -8,9 +8,15 @@ The project is open source with MIT license. We encourage media outlets to colla
 
 # Links to live versions of the project
 
-Public beta release from Helsingin Sanomat available [here.](https://www.hs.fi/kotimaa/art-2000006452379.html)
+A release from Helsingin Sanomat [here.](https://www.hs.fi/kotimaa/art-2000006463218.html)
 
 Privacy information, currently only in finnish [here.](https://www.oiretutka.fi/tietosuojalauseke.html)
+
+# Open dataset released
+
+We are releasing the results from the survey as open data. Please read the terms (currently only in finnish) [here.](https://www.oiretutka.fi/tietosuojalauseke.html)
+
+You can download open dataset of some 100k replies in city-level from  [here.](https://interactive.hs.fi/arkku/files/26431963citylevel-opendata-3-4-2020.csv)
 
 # How to contribute
 

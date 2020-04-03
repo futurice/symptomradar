@@ -163,11 +163,7 @@ const Map: React.FunctionComponent<{
         }
       });
   }, [props.colorScaleKey, props.defaultColor, props.colorScaleTransform, colorScale]);
-  return (
-    <div>
-      <svg width={props.width} height={props.height} ref={node => (mapNode = node)} />
-    </div>
-  );
+  return <svg width={props.width} height={props.height} ref={node => (mapNode = node)} />;
 };
 
 export default Map;

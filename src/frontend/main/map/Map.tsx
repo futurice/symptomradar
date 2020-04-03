@@ -105,22 +105,20 @@ function Map() {
   // Data Manipulation Ends
 
   return (
-    <div>
-      <DorlingCartogram
-        mapShapeData={mapShapeData}
-        width={760}
-        height={1024}
-        mapScale={5000}
-        radiusRange={[2, 50]}
-        radiusScaleKey={'responses'}
-        defaultRadius={1}
-        colorRange={['#D9F0FC', '#BEE7FA', '#8DD7F7', '#00BDF2', '#007FBD', '#082163']}
-        colorDomain={[10000, 50000, 100000, 200000, 300000]}
-        colorScaleKey={'Population'}
-        defaultColor={'#AAAAAA'}
-        colorScaleTransform={'none'}
-      />
-    </div>
+    <DorlingCartogram
+      mapShapeData={mapShapeData}
+      width={760}
+      height={1024}
+      mapScale={5000}
+      radiusRange={[2, 50]}
+      radiusScaleKey={'responses'}
+      defaultRadius={1}
+      colorRange={['#D9F0FC', '#BEE7FA', '#8DD7F7', '#00BDF2', '#007FBD', '#082163']}
+      colorDomain={[10000, 50000, 100000, 200000, 300000]}
+      colorScaleKey={'Population'}
+      defaultColor={'#AAAAAA'}
+      colorScaleTransform={'none'}
+    />
   );
 }
 

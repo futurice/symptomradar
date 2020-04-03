@@ -6,6 +6,7 @@ import Modal from './Modal';
 import PrimaryButton from './PrimaryButton';
 import Map from './map/Map';
 import useModal from './useModal';
+import responseData from './map/citylevel-opendata-3-4-2020.json';
 
 const MapNav = styled.div`
   height: 55px;
@@ -46,31 +47,22 @@ const FilterButton = styled(PrimaryButton)`
 
 const MapView = (props: RouteComponentProps) => {
   const { isShowing, toggle } = useModal();
+  const cities = responseData.map(item => {
+    return item.City;
+  });
 
   return (
     <>
       <MapNav>
-        <Label htmlFor="region">Maakunta</Label>
-        <select name="" id="region">
-          <option value="Ahvenanmaa">Ahvenanmaa</option>
-          <option value="Etelä-Karjala">Etelä-Karjala</option>
-          <option value="Etelä-Pohjanmaa">Etelä-Pohjanmaa</option>
-          <option value="Etelä-Savo">Etelä-Savo</option>
-          <option value="Kainuu">Kainuu</option>
-          <option value="Kanta-Häme">Kanta-Häme</option>
-          <option value="Keski-Pohjanmaa">Keski-Pohjanmaa</option>
-          <option value="Keski-Suomi">Keski-Suomi</option>
-          <option value="Kymenlaakso">Kymenlaakso</option>
-          <option value="Lappi">Lappi</option>
-          <option value="Pirkanmaa">Pirkanmaa</option>
-          <option value="Pohjanmaa">Pohjanmaa</option>
-          <option value="Pohjois-Karjala">Pohjois-Karjala</option>
-          <option value="Pohjois-Pohjanmaa">Pohjois-Pohjanmaa</option>
-          <option value="Pohjois-Savo">Pohjois-Savo</option>
-          <option value="Päijät-Häme">Päijät-Häme</option>
-          <option value="Satakunta">Satakunta</option>
-          <option value="Uusimaa">Uusimaa</option>
-          <option value="Varsinais-Suomi">Varsinais-Suomi</option>
+        <Label htmlFor="city">Kaupunki</Label>
+        <select name="" id="city">
+          {cities.map(city => {
+            return (
+              <option key={city} value={city}>
+                {city}
+              </option>
+            );
+          })}
         </select>
       </MapNav>
       <MapWrapper>

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { RouteComponentProps } from '@reach/router';
 import ModalContent from './ModalContent';
 import Modal from './Modal';
+import Map from './map/Map';
 import useModal from './useModal';
 
 const MapNav = styled.div`
@@ -21,7 +22,7 @@ const MapWrapper = styled.div`
   padding: 24px;
 `;
 
-const Map = (props: RouteComponentProps) => {
+const MapView = (props: RouteComponentProps) => {
   const { isShowing, toggle } = useModal();
 
   return (
@@ -51,6 +52,7 @@ const Map = (props: RouteComponentProps) => {
         </select>
       </MapNav>
       <MapWrapper>
+        <Map></Map>
         <button onClick={toggle}>Show region info</button>
       </MapWrapper>
       <Modal isShowing={isShowing} hide={toggle} modalTitle={'Uusimaa'}>
@@ -60,4 +62,4 @@ const Map = (props: RouteComponentProps) => {
   );
 };
 
-export default Map;
+export default MapView;

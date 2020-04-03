@@ -5,6 +5,7 @@ const ssm = new AWS.SSM(); // note: for local development, you may need to: AWS.
 // Fetches a correctly prefixed secret value from AWS Systems Manager Parameter Store (SSM)
 export function getSecret(name: 'secret-pepper') {
   const fullName = process.env.SSM_SECRETS_PREFIX + name;
+  console.log(`Getting secret "${fullName}"`);
   return ssm
     .getParameters({
       Names: [fullName],

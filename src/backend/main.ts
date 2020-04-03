@@ -13,10 +13,19 @@ const knownPepper = process.env.KNOWN_HASHING_PEPPER || '';
 if (!storageBucket) throw new Error('Storage bucket name missing from environment');
 if (!knownPepper) throw new Error('Hashing pepper missing from environment');
 
+// Due to occasional very high volumes of incoming responses, cache the secret pepper for the lifetime of the Lambda instance
+let cachedSecretPepper: undefined | Promise<string>;
+
 // Saves the given response into our storage bucket
 export function storeResponseInS3(response: FrontendResponseModelT, countryCode: string) {
   return Promise.resolve()
-    .then(() => prepareResponseForStorage(response, countryCode, getSecret('secret-pepper')))
+    .then(() =>
+      prepareResponseForStorage(
+        response,
+        countryCode,
+        (cachedSecretPepper = cachedSecretPepper || getSecret('secret-pepper')),
+      ),
+    )
     .then(r => {
       console.log('About to store response', r);
       return s3

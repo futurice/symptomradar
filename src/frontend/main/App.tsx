@@ -4,6 +4,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import Header from './Header';
 import Map from './Map';
 import About from './About';
+import Survey from './Survey';
 import Privacy from './Privacy';
 
 import RobotoEot from './assets/fonts/roboto-v20-latin-ext_latin-regular.eot';
@@ -86,18 +87,17 @@ const AppContainer = styled.div`
   width: 100%;
 `;
 
-const Main = styled.main``;
-
 export const App = () => (
   <AppContainer>
     <GlobalStyles />
     <Header />
-    <Main>
+    <main>
       <Router>
         <Map path="/" />
         <About path="about" />
         <Privacy path="tietosuojalauseke" />
+        <Survey path="survey" />
       </Router>
-    </Main>
+    </main>
   </AppContainer>
 );

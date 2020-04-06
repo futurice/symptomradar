@@ -8,6 +8,10 @@ import Map from './map/Map';
 import useModal from './useModal';
 import responseData from './map/citylevel-opendata-3-4-2020.json';
 
+interface totalResponseProps {
+  readonly infoVisible: boolean;
+}
+
 const MapNav = styled.div`
   height: 55px;
   display: flex;
@@ -55,16 +59,27 @@ const MapInfo = styled.div`
   padding: 6px 30px 6px 16px;
   border-top: 1px solid #000;
   line-height: 1.25;
+  padding-bottom: 24px;
 
   p {
-    margin: 12px;
+    margin: 12px 0;
   }
 `;
 
-const TotalResponses = styled.div`
+const TotalResponses = styled.div<totalResponseProps>`
   background: #fff;
   position: fixed;
   bottom: 0;
+  padding: 4px;
+  font-size: 14px;
+  font-style: italic;
+  width: 100vw;
+  text-align: left;
+  padding-left: ${props => (props.infoVisible ? '0' : '4px')};
+
+  p {
+    margin: 0;
+  }
 `;
 
 const CloseButton = styled.button`
@@ -114,21 +129,23 @@ const MapView = (props: RouteComponentProps) => {
           <FilterButton type="button" label="Yskää" />
           <FilterButton type="button" label="Kuumetta" />
         </FilterWrapper>
-        {showMapInfo && (
-          <MapInfo>
-            <CloseButton type="button" data-dismiss="modal" aria-label="Close" onClick={() => setShowMapInfo(false)}>
-              <span aria-hidden="true">&times;</span>
-            </CloseButton>
-            <p>
-              Kartta näyttää, millaisia oireita vastaajilla on eri kunnissa. Mukana ovat kunnat, joista on saatu yli 25
-              vastausta.
-            </p>
-            <p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
-          </MapInfo>
-        )}
-        <TotalResponses>
-          <p>Vastauksia yhteensä: {totalReponses.toLocaleString('fi-FI')}</p>
-        </TotalResponses>
+        <MapInfo>
+          {showMapInfo && (
+            <>
+              <CloseButton type="button" data-dismiss="modal" aria-label="Close" onClick={() => setShowMapInfo(false)}>
+                <span aria-hidden="true">&times;</span>
+              </CloseButton>
+              <p>
+                Kartta näyttää, millaisia oireita vastaajilla on eri kunnissa. Mukana ovat kunnat, joista on saatu yli
+                25 vastausta.
+              </p>
+              <p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
+            </>
+          )}
+          <TotalResponses infoVisible={showMapInfo}>
+            <p>Vastauksia yhteensä: {totalReponses.toLocaleString('fi-FI')}</p>
+          </TotalResponses>
+        </MapInfo>
       </MapWrapper>
       <Modal isShowing={isShowing} hide={toggleModal}>
         {/* <ModalContent content={{}} /> */}

@@ -37,6 +37,14 @@ resource "aws_cloudwatch_dashboard" "overview" {
                         {
                             "label": "First result article (https://www.hs.fi/kotimaa/art-2000006458290.html)",
                             "value": "2020-03-30T17:51:00+03:00"
+                        },
+                        {
+                            "label": "IS & MTV joined (https://www.is.fi/kotimaa/art-2000006459145.html & https://www.mtvuutiset.fi/artikkeli/onko-sinulla-koronan-oireita-osallistu-oiretutkaan-ja-auta-selvittamaan-missa-korona-leviaa/7775832)",
+                            "value": "2020-04-01T10:00:00+03:00"
+                        },
+                        {
+                            "label": "Second result articles (https://www.hs.fi/kotimaa/art-2000006463218.html & https://www.is.fi/kotimaa/art-2000006463005.html)",
+                            "value": "2020-04-03T16:00:00+03:00"
                         }
                     ]
                 }

@@ -5,6 +5,8 @@ type ButtonProps = {
   label: string;
   className?: string;
   type: 'submit' | 'button';
+  filterSelection?:string;
+  click?: any;
 };
 
 const Button = styled.button`
@@ -18,9 +20,9 @@ const Button = styled.button`
   border: 1px solid #000;
 `;
 
-const PrimaryButton = ({ type, label, className }: ButtonProps) => {
+const PrimaryButton = ({ type, label, className, filterSelection, click }: ButtonProps) => {
   return (
-    <Button type={type} className={className}>
+    <Button type={type} className={className} onClick={() => { click(filterSelection) }}>
       {label}
     </Button>
   );

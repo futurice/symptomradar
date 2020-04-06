@@ -67,7 +67,7 @@ const Map: React.FunctionComponent<{
     .scaleSqrt()
     .domain([0, d3.max(props.mapShapeData.features, (el: any) => el.properties[props.radiusScaleKey])])
     .range(props.radiusRange);
-
+  console.log(props)
   useEffect(() => {
     let mapSVG = d3.select(mapNode);
     mapSVG.selectAll('.mapG').remove();
@@ -79,7 +79,7 @@ const Map: React.FunctionComponent<{
       .scale(props.mapScale)
       .translate([props.svgWidth / 2, props.svgHeight / 2]);
 
-    // covert map spahe to path
+    // covert map shape to path
     const path = d3.geoPath().projection(projection);
 
     let Zoom = d3
@@ -166,9 +166,6 @@ const Map: React.FunctionComponent<{
   }, [
     props.mapScale,
     props.mapShapeData,
-    rScale,
-    props.defaultRadius,
-    props.radiusScaleKey,
     props.svgWidth,
     props.svgHeight,
   ]);
@@ -240,7 +237,11 @@ const Map: React.FunctionComponent<{
     props.colorScaleTransform,
     props.colorDomain,
     props.colorRange,
-    props.mapShapeData.features,
+    props.mapScale,
+    props.mapShapeData,
+    rScale,
+    props.defaultRadius,
+    props.radiusScaleKey,
     props.svgWidth,
     props.svgHeight,
   ]);

@@ -17,7 +17,6 @@ const H2 = styled.h2`
 `;
 
 const ModalContent = ({ content }: ModalContentProps) => {
-  console.log(content);
   return (
     <>
       <ModalHeader>

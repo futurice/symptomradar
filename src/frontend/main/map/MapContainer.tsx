@@ -12,7 +12,7 @@ const App: React.FunctionComponent<{ mapShapeData: any }> = props => {
   });
 
   return (
-    <div className="App">
+    <div>
       <DorlingCartogram
         mapShapeData={props.mapShapeData}
         svgWidth={screenWidth}

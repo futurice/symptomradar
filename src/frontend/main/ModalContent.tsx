@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-/* Placeholder. Edit, rename or replace as necessary. */
-
 type ModalContentProps = {
   content: any;
 };

@@ -47,6 +47,10 @@ interface mapProperties {
   Population: number;
 }
 
+type FilterButtonProps = {
+  isActive: boolean;
+};
+
 const data: mapProperties[] = require('./assets/data/citylevel-opendata-3-4-2020.json');
 
 const populationData: { City: string; population: number }[] = require('./assets/data/population.json');
@@ -58,10 +62,6 @@ const mapShape: {
 } = require('./assets/data/finland-map-without-aland.json'); //map file
 
 const mapShapeData = topojson.feature(mapShape, mapShape.objects.kuntarajat); // creat a features data for the map
-
-interface totalResponseProps {
-  readonly infoVisible: boolean;
-}
 
 const MapNav = styled.div`
   height: 55px;
@@ -86,7 +86,7 @@ const FilterWrapper = styled.div`
   display: flex;
   max-width: 100vw;
   flex-wrap: nowrap;
-  padding: 0 16px;
+  padding: 3px 16px;
   overflow: scroll;
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
@@ -96,9 +96,13 @@ const FilterWrapper = styled.div`
   }
 `;
 
-const FilterButton = styled(PrimaryButton)`
+const FilterButton = styled(PrimaryButton)<FilterButtonProps>`
   flex: 0 0 auto;
   margin-right: 16px;
+  cursor: pointer;
+  background: ${props => (props.isActive ? '#FFF' : '#595959')};
+  color: ${props => (props.isActive ? '#000' : '#FFF')};
+  border: ${props => (props.isActive ? '1px solid #000' : '1px solid transparent')};
 `;
 
 const MapInfo = styled.div`
@@ -116,15 +120,16 @@ const MapInfo = styled.div`
   }
 `;
 
-const TotalResponses = styled.div<totalResponseProps>`
+const TotalResponses = styled.div`
   background: #fff;
   position: fixed;
   bottom: 0;
   padding: 10px 4px;
+  font-size: 14px;
+  font-style: italic;
   width: 100vw;
   font-weight: bold;
   text-align: left;
-  padding-left: ${props => (props.infoVisible ? '0' : '4px')};
 
   p {
     margin: 0;
@@ -132,7 +137,7 @@ const TotalResponses = styled.div<totalResponseProps>`
 `;
 
 const CloseButton = styled.button`
-  font-size: 1.6rem;
+  font-size: 46px;
   font-weight: 300;
   line-height: 1;
   color: #000;
@@ -140,7 +145,7 @@ const CloseButton = styled.button`
   border: none;
   background-color: transparent;
   position: absolute;
-  top: 14px;
+  top: 9px;
   right: 6px;
   z-index: 1;
 `;
@@ -151,6 +156,7 @@ const MapView = (props: RouteComponentProps) => {
   const [selectedFilter, setSelectedFilter] = useState('corona_suspicion_yes');
   const [mapHeight, setMapHeight] = useState(window.innerHeight - 225);
   const [mapWidth, setMapWidth] = useState(window.innerWidth - 25);
+  const [activeCityData, setActiveCityData] = useState({});
 
   const cities = responseData.map(item => {
     return item.City;
@@ -172,7 +178,7 @@ const MapView = (props: RouteComponentProps) => {
       d.properties.cough_yes = d.properties.responses - d.properties.cough_no;
     } else {
       let indx = populationData.findIndex((el: { City: string; population: number }) => d.properties.name === el.City);
-      if(indx !== -1) {
+      if (indx !== -1) {
         let obj = {
           City: d.properties.name,
           responses: -1,
@@ -217,12 +223,18 @@ const MapView = (props: RouteComponentProps) => {
     <>
       <MapNav>
         <Label htmlFor="city">Kaupunki</Label>
-        <select name="" id="city" onChange={
-          (event:{target:{value:string}}) => {
-            let indx = mapShapeData.features.findIndex((obj:{properties:{City:string}}) => obj.properties.City === event.target.value)
-            console.log(mapShapeData.features[indx])
-          }
-        }>
+        <select
+          name=""
+          id="city"
+          onChange={(event: { target: { value: string } }) => {
+            let indx = mapShapeData.features.findIndex(
+              (obj: { properties: { City: string } }) => obj.properties.City === event.target.value,
+            );
+            setActiveCityData(mapShapeData.features[indx]);
+            toggleModal();
+          }}
+        >
+          <option value="">Valitse kaupunki...</option>
           {cities.map(city => {
             return (
               <option key={city} value={city}>
@@ -241,9 +253,33 @@ const MapView = (props: RouteComponentProps) => {
           popUpOpen={showMapInfo}
         />
         <FilterWrapper>
-          <FilterButton type="button" label="Epäilys koronasta" filterSelection="corona_suspicion_yes" click={(e:string) => { setSelectedFilter(e) }}/>
-          <FilterButton type="button" label="Yskää"  filterSelection="cough_yes" click={(e:string) => { setSelectedFilter(e) }}/>
-          <FilterButton type="button" label="Kuumetta"  filterSelection="fever_yes" click={(e:string) => { setSelectedFilter(e) }}/>
+          <FilterButton
+            type="button"
+            label="Epäilys koronasta"
+            filterSelection="corona_suspicion_yes"
+            isActive={selectedFilter === 'corona_suspicion_yes' ? true : false}
+            click={(e: string) => {
+              setSelectedFilter(e);
+            }}
+          />
+          <FilterButton
+            type="button"
+            label="Yskää"
+            filterSelection="cough_yes"
+            isActive={selectedFilter === 'cough_yes' ? true : false}
+            click={(e: string) => {
+              setSelectedFilter(e);
+            }}
+          />
+          <FilterButton
+            type="button"
+            label="Kuumetta"
+            filterSelection="fever_yes"
+            isActive={selectedFilter === 'fever_yes' ? true : false}
+            click={(e: string) => {
+              setSelectedFilter(e);
+            }}
+          />
         </FilterWrapper>
         <MapInfo>
           {showMapInfo && (
@@ -260,13 +296,13 @@ const MapView = (props: RouteComponentProps) => {
               </div>
             </>
           )}
-          <TotalResponses infoVisible={showMapInfo}>
+          <TotalResponses>
             <p>Vastauksia yhteensä: {totalReponses.toLocaleString('fi-FI')}</p>
           </TotalResponses>
         </MapInfo>
       </MapWrapper>
       <Modal isShowing={isShowing} hide={toggleModal}>
-        {/* <ModalContent content={{}} /> */}
+        <ModalContent content={activeCityData} />
       </Modal>
     </>
   );

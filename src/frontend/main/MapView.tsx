@@ -8,10 +8,6 @@ import Map from './map/Map';
 import useModal from './useModal';
 import responseData from './map/citylevel-opendata-3-4-2020.json';
 
-interface totalResponseProps {
-  readonly infoVisible: boolean;
-}
-
 const MapNav = styled.div`
   height: 55px;
   display: flex;
@@ -66,16 +62,15 @@ const MapInfo = styled.div`
   }
 `;
 
-const TotalResponses = styled.div<totalResponseProps>`
+const TotalResponses = styled.div`
   background: #fff;
   position: fixed;
   bottom: 0;
-  padding: 4px;
+  padding: 4px 4px 4px 0;
   font-size: 14px;
   font-style: italic;
   width: 100vw;
   text-align: left;
-  padding-left: ${props => (props.infoVisible ? '0' : '4px')};
 
   p {
     margin: 0;
@@ -123,7 +118,7 @@ const MapView = (props: RouteComponentProps) => {
         </select>
       </MapNav>
       <MapWrapper>
-        <Map></Map>
+        <Map />
         <FilterWrapper>
           <FilterButton type="button" label="Epäilys koronasta" />
           <FilterButton type="button" label="Yskää" />
@@ -142,7 +137,7 @@ const MapView = (props: RouteComponentProps) => {
               <p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
             </>
           )}
-          <TotalResponses infoVisible={showMapInfo}>
+          <TotalResponses>
             <p>Vastauksia yhteensä: {totalReponses.toLocaleString('fi-FI')}</p>
           </TotalResponses>
         </MapInfo>

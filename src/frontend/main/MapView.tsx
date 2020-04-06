@@ -170,7 +170,7 @@ const MapView = (props: RouteComponentProps) => {
       let indx = populationData.findIndex((el: { City: string; population: number }) => d.properties.name === el.City);
       if(indx !== -1) {
         let obj = {
-          name: d.properties.name,
+          City: d.properties.name,
           responses: -1,
           fever_no: -1,
           fever_yes: -1,
@@ -213,7 +213,12 @@ const MapView = (props: RouteComponentProps) => {
     <>
       <MapNav>
         <Label htmlFor="city">Kaupunki</Label>
-        <select name="" id="city">
+        <select name="" id="city" onChange={
+          (event:{target:{value:string}}) => {
+            let indx = mapShapeData.features.findIndex((obj:{properties:{City:string}}) => obj.properties.City === event.target.value)
+            console.log(mapShapeData.features[indx])
+          }
+        }>
           {cities.map(city => {
             return (
               <option key={city} value={city}>

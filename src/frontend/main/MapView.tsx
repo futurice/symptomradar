@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps } from '@reach/router';
 import ModalContent from './ModalContent';
@@ -46,11 +46,52 @@ const FilterButton = styled(PrimaryButton)`
   margin-right: 16px;
 `;
 
+const MapInfo = styled.div`
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  background: #fff;
+  text-align: left;
+  padding: 6px 30px 6px 16px;
+  border-top: 1px solid #000;
+  line-height: 1.25;
+
+  p {
+    margin: 12px;
+  }
+`;
+
+const TotalResponses = styled.div`
+  background: #fff;
+  position: fixed;
+  bottom: 0;
+`;
+
+const CloseButton = styled.button`
+  font-size: 1.6rem;
+  font-weight: 300;
+  line-height: 1;
+  color: #000;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  top: 14px;
+  right: 6px;
+  z-index: 1;
+`;
+
 const MapView = (props: RouteComponentProps) => {
-  const { isShowing, toggle } = useModal();
+  const { isShowing, toggleModal } = useModal();
+  const [showMapInfo, setShowMapInfo] = useState(true);
+
   const cities = responseData.map(item => {
     return item.City;
   });
+
+  const totalReponses = responseData.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue.responses;
+  }, 0);
 
   return (
     <>
@@ -67,14 +108,29 @@ const MapView = (props: RouteComponentProps) => {
         </select>
       </MapNav>
       <MapWrapper>
-        <Map></Map>
+        {/* <Map></Map> */}
         <FilterWrapper>
           <FilterButton type="button" label="Epäilys koronasta" />
           <FilterButton type="button" label="Yskää" />
           <FilterButton type="button" label="Kuumetta" />
         </FilterWrapper>
+        {showMapInfo && (
+          <MapInfo>
+            <CloseButton type="button" data-dismiss="modal" aria-label="Close" onClick={() => setShowMapInfo(false)}>
+              <span aria-hidden="true">&times;</span>
+            </CloseButton>
+            <p>
+              Kartta näyttää, millaisia oireita vastaajilla on eri kunnissa. Mukana ovat kunnat, joista on saatu yli 25
+              vastausta.
+            </p>
+            <p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
+          </MapInfo>
+        )}
+        <TotalResponses>
+          <p>Vastauksia yhteensä: {totalReponses.toLocaleString('fi-FI')}</p>
+        </TotalResponses>
       </MapWrapper>
-      <Modal isShowing={isShowing} hide={toggle}>
+      <Modal isShowing={isShowing} hide={toggleModal}>
         {/* <ModalContent content={{}} /> */}
       </Modal>
     </>

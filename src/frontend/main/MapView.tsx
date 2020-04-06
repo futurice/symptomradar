@@ -103,17 +103,16 @@ const FilterButton = styled(PrimaryButton)`
 
 const MapInfo = styled.div`
   position: fixed;
-  bottom: 0;
+  bottom: 36px;
   width: 100vw;
-  background: #fff;
+  background: rgba(255,255,255,0.6);
   text-align: left;
-  padding: 6px 30px 6px 16px;
+  padding: 6px 30px 0 20px;
   border-top: 1px solid #000;
   line-height: 1.25;
-  padding-bottom: 24px;
 
   p {
-    margin: 12px 0;
+    margin: 5px 0;
   }
 `;
 
@@ -121,10 +120,9 @@ const TotalResponses = styled.div<totalResponseProps>`
   background: #fff;
   position: fixed;
   bottom: 0;
-  padding: 4px;
-  font-size: 14px;
-  font-style: italic;
+  padding: 10px 4px;
   width: 100vw;
+  font-weight: bold;
   text-align: left;
   padding-left: ${props => (props.infoVisible ? '0' : '4px')};
 
@@ -151,6 +149,8 @@ const MapView = (props: RouteComponentProps) => {
   const { isShowing, toggleModal } = useModal();
   const [showMapInfo, setShowMapInfo] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState('corona_suspicion_yes');
+  const [mapHeight, setMapHeight] = useState(window.innerHeight - 225);
+  const [mapWidth, setMapWidth] = useState(window.innerWidth - 25);
 
   const cities = responseData.map(item => {
     return item.City;
@@ -159,7 +159,11 @@ const MapView = (props: RouteComponentProps) => {
   const totalReponses = responseData.reduce((accumulator, currentValue) => {
     return accumulator + currentValue.responses;
   }, 0);
-
+  
+  window.addEventListener('resize', () => {
+    setMapHeight(window.innerHeight - 225);
+    setMapWidth(window.innerWidth - 25);
+  });
   mapShapeData.features.forEach((d: { properties: mapProperties }) => {
     let index = data.findIndex((el: mapProperties) => d.properties.name === el.City);
     if (index !== -1) {
@@ -232,6 +236,9 @@ const MapView = (props: RouteComponentProps) => {
         <MapContainer 
           mapShapeData={mapShapeData}
           selectedFilter={selectedFilter}
+          mapHeight={mapHeight}
+          mapWidth={mapWidth}
+          popUpOpen={showMapInfo}
         />
         <FilterWrapper>
           <FilterButton type="button" label="Epäilys koronasta" filterSelection="corona_suspicion_yes" click={(e:string) => { setSelectedFilter(e) }}/>
@@ -241,14 +248,16 @@ const MapView = (props: RouteComponentProps) => {
         <MapInfo>
           {showMapInfo && (
             <>
-              <CloseButton type="button" data-dismiss="modal" aria-label="Close" onClick={() => setShowMapInfo(false)}>
-                <span aria-hidden="true">&times;</span>
-              </CloseButton>
-              <p>
-                Kartta näyttää, millaisia oireita vastaajilla on eri kunnissa. Mukana ovat kunnat, joista on saatu yli
-                25 vastausta.
-              </p>
-              <p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
+              <div className='popUp'>
+                <CloseButton type="button" data-dismiss="modal" aria-label="Close" onClick={() => setShowMapInfo(false)}>
+                  <span aria-hidden="true">&times;</span>
+                </CloseButton>
+                <p>
+                  Kartta näyttää, millaisia oireita vastaajilla on eri kunnissa. Mukana ovat kunnat, joista on saatu yli
+                  25 vastausta. 
+                </p>
+                <p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
+              </div>
             </>
           )}
           <TotalResponses infoVisible={showMapInfo}>

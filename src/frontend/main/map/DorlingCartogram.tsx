@@ -58,6 +58,7 @@ const Map: React.FunctionComponent<{
   defaultColor: string;
   radiusRange: [number, number];
   radiusScaleKey: string;
+  popUpOpen:boolean;
 }> = props => {
   const [activeCityData, setActiveCityData] = useState({});
   const { isShowing, toggleModal } = useModal();
@@ -88,8 +89,11 @@ const Map: React.FunctionComponent<{
 
     mapSVG.call(Zoom);
 
+    
+    let mapG = mapSVG.append('g').attr('class','masterG').attr('transform',`translate(0,${0 - 20})`)
+
     //g for adding map
-    let g = mapSVG.append('g').attr('class', 'mapG');
+    let g = mapG.append('g').attr('class', 'mapG');
 
     function zoomed() {
       g.attr('transform', d3.event.transform); // updated for d3 v4
@@ -170,6 +174,11 @@ const Map: React.FunctionComponent<{
   ]);
   useEffect(() => {
     let mapSVG = d3.select(mapNode);
+    
+    if(props.popUpOpen)
+      mapSVG.select('.masterG').attr('transform',`translate(0,${0 - parseFloat(d3.select('.popUp').style('height').slice(0, -2)) - 20})`)
+    else
+      mapSVG.select('.masterG').attr('transform',`translate(0,${0 - 20})`)
     let sortedData: any = props.mapShapeData.features
       .filter((a: { properties: { responses: number } }) => a.properties.responses !== -1)
       .sort((a: any, b: any) => d3.descending(a.properties[props.colorScaleKey], b.properties[props.colorScaleKey]));
@@ -243,6 +252,7 @@ const Map: React.FunctionComponent<{
     props.radiusScaleKey,
     props.svgWidth,
     props.svgHeight,
+    props.popUpOpen
   ]);
   return (
     <div>

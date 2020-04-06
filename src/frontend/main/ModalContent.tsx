@@ -13,18 +13,43 @@ const ModalHeader = styled.div`
 
 const H2 = styled.h2`
   font-size: 21px;
-  margin: 8px 0 24px 0;
+  margin: 0 0 24px 0;
+`;
+
+const H3 = styled.h3`
+  font-weight: bold;
+`;
+
+const Symptoms = styled.div`
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 4px 8px;
+  padding-left: 16px;
+
+  p {
+    margin: 0;
+  }
 `;
 
 const ModalContent = ({ content }: ModalContentProps) => {
+  const responsesTotal = content.properties.responses.toLocaleString('fi-FI');
+  const suspicionTotal = content.properties.corona_suspicion_yes.toLocaleString('fi-FI');
+  const coughTotal = (content.properties.cough_mild + content.properties.cough_intense).toLocaleString('fi-FI');
+  const feverTotal = (content.properties.fever_slight + content.properties.fever_high).toLocaleString('fi-FI');
   return (
     <>
       <ModalHeader>
         <H2>{content.properties.City}</H2>
       </ModalHeader>
-      <p>Vastauksia yhteensä {content.properties.responses}</p>
-      <p>Yskää</p>
-      <p>Kuumetta</p>
+      <H3>Vastauksia yhteensä {responsesTotal}:</H3>
+      <Symptoms>
+        <span>{suspicionTotal}</span>
+        <p>Epäilys koronavirustartunnasta </p>
+        <span>{coughTotal}</span>
+        <p>Yskää</p>
+        <span>{feverTotal}</span>
+        <p>Kuumetta</p>
+      </Symptoms>
     </>
   );
 };

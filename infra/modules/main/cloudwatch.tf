@@ -192,6 +192,19 @@ resource "aws_cloudwatch_dashboard" "overview" {
                     }
                 }
             }
+        },
+        {
+            "type": "log",
+            "x": 0,
+            "y": 18,
+            "width": 24,
+            "height": 6,
+            "properties": {
+                "query": "SOURCE '/aws/lambda/${module.backend_api.function_name}' | filter @message like /error/",
+                "region": "${data.aws_region.current.name}",
+                "title": "Backend API logs matching \"error\"",
+                "view": "table"
+            }
         }
     ]
 }

@@ -118,6 +118,7 @@ module "frontend" {
         ;
       style-src # specifies valid sources for stylesheets
         'self' # allow our CSS bundle
+        'unsafe-inline' # this is needed for our CSS-in-JS solution to work (https://styled-components.com/)
         ;
       style-src-attr # specifies valid sources for inline styles applied to individual DOM elements
         'none' # we don't currently use any -> prohibit them all

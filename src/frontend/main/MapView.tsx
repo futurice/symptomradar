@@ -108,7 +108,7 @@ const MapView = (props: RouteComponentProps) => {
         </select>
       </MapNav>
       <MapWrapper>
-        {/* <Map></Map> */}
+        <Map></Map>
         <FilterWrapper>
           <FilterButton type="button" label="Epäilys koronasta" />
           <FilterButton type="button" label="Yskää" />

@@ -50,8 +50,8 @@ const ModalContent = styled.div`
 `;
 
 const ModalCloseButton = styled.button`
-  font-size: 1.4rem;
-  font-weight: 700;
+  font-size: 1.6rem;
+  font-weight: 300;
   line-height: 1;
   color: #000;
   cursor: pointer;

@@ -33,9 +33,8 @@ const ModalWrapper = styled.div`
 const ModalContent = styled.div`
   z-index: 100;
   background: white;
-  padding: 18px;
+  padding: 32px 18px 52px;
   width: 100%;
-  bottom: 0;
   max-height: 90vh;
   max-width: 90vw;
   overflow: scroll;

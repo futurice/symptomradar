@@ -16,171 +16,167 @@
             {{ page_title }}
           </h1>
           <p>
-            Suomalaiset mediat pyytävät Oiretutka-palvelussa lukijoiltaan tietoa, onko heillä koronavirukseen viittaavia
-            oireita vai ei.
+            {{ start_info_1 }}
           </p>
           <p>
-            Kertomalla tilanteestasi – myös terveenä – voit auttaa mediaa kertomaan paremmin siitä, miten virus leviää.
-            Oiretutkaan tallennettuja tietoja ei voi yhdistää vastaajaan. Vastauksia julkaistaan yhteenvetona ja
-            yksittäisinä vastauksina. Kysely on suunniteltu yhteistyössä Helsingin yliopiston kansanterveystieteen
-            osaston kanssa.
+            {{ start_info_2 }}
           </p>
           <p>
-            Palvelua ei ole tarkoitettu yksittäisen henkilön opastamiseksi terveyteensä liittyen tai ohjaamiseksi
-            terveydenhuoltoon.
+            {{ start_info_3 }}
+            
           </p>
           <p>
             <a href="https://www.oiretutka.fi/tietosuojalauseke.html" target="_blank" rel="noopener noreferrer"
-              >Lue lisää tietosuojasta täältä.</a
+              >{{ privacy_readmore }}</a
             >
           </p>
         </div>
         <button id="start-survey" class="button action-button">{{ start_survey }}</button>
       </div>
       <form id="symptom-questionnaire" class="hidden" novalidate>
-        <button id="collapse-survey" type="button" class="collapse-button">Sulje kysely</button>
+        <button id="collapse-survey" type="button" class="collapse-button">{{ close_survey }}</button>
         <div class="question-group">
-          <h2 id="form-header" class="question-group-title" tabindex="-1">Millaisia oireita sinulla on?</h2>
+          <h2 id="form-header" class="question-group-title" tabindex="-1">{{ what_symptoms_headline }}</h2>
           <fieldset class="input-wrapper">
-            <legend aria-live="assertive">Kuumetta <span class="invalid-value-info hidden" /></legend>
+            <legend aria-live="assertive">{{ fever }} <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <div class="option-wrapper">
                 <input id="fever-no" type="radio" name="fever" value="no" required />
-                <label for="fever-no">ei</label>
+                <label for="fever-no">{{ no }}</label>
               </div>
               <div class="option-wrapper">
                 <input id="fever-slight" type="radio" name="fever" value="slight" required />
-                <label for="fever-slight">alle 38,5 astetta</label>
+                <label for="fever-slight">{{ mild_fever }}</label>
               </div>
               <div class="option-wrapper">
                 <input id="fever-high" type="radio" name="fever" value="high" required />
-                <label for="fever-high">yli 38,5 astetta</label>
+                <label for="fever-high">{{ high_fever }}</label>
               </div>
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend aria-live="assertive">Yskää <span class="invalid-value-info hidden" /></legend>
+            <legend aria-live="assertive">{{ cough }} <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <div class="option-wrapper">
                 <input id="cough-no" type="radio" name="cough" value="no" required />
-                <label for="cough-no">ei</label>
+                <label for="cough-no">{{ no }}</label>
               </div>
               <div class="option-wrapper">
                 <input id="cough-mild" type="radio" name="cough" value="mild" required />
-                <label for="cough-mild">lievää</label>
+                <label for="cough-mild">{{ mild }}</label>
               </div>
               <div class="option-wrapper">
                 <input id="cough-intense" type="radio" name="cough" value="intense" required />
-                <label for="cough-intense">voimakasta</label>
+                <label for="cough-intense">{{ strong }}</label>
               </div>
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend aria-live="assertive">Vaikeuksia hengittää <span class="invalid-value-info hidden" /></legend>
+            <legend aria-live="assertive">{{ breathing }} <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <input id="breathingDifficulties-yes" type="radio" name="breathing_difficulties" value="yes" required />
-              <label for="breathingDifficulties-yes">kyllä</label>
+              <label for="breathingDifficulties-yes">{{ yes }}</label>
               <input id="breathingDifficulties-no" type="radio" name="breathing_difficulties" value="no" required />
-              <label for="breathingDifficulties-no">ei</label>
+              <label for="breathingDifficulties-no">{{ no }}</label>
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend aria-live="assertive">Lihaskipuja <span class="invalid-value-info hidden" /></legend>
+            <legend aria-live="assertive">{{ muscle_pain }} <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <input id="musclePain-yes" type="radio" name="muscle_pain" value="yes" required />
-              <label for="musclePain-yes">kyllä</label>
+              <label for="musclePain-yes">{{ yes }}</label>
               <input id="musclePain-no" type="radio" name="muscle_pain" value="no" required />
-              <label for="musclePain-no">ei</label>
+              <label for="musclePain-no">{{ no }}</label>
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend aria-live="assertive">Päänsärkyä <span class="invalid-value-info hidden" /></legend>
+            <legend aria-live="assertive">{{ headache }} <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <input id="headache-yes" type="radio" name="headache" value="yes" required />
-              <label for="headache-yes">kyllä</label>
+              <label for="headache-yes">{{ yes }}</label>
               <input id="headache-no" type="radio" name="headache" value="no" required />
-              <label for="headache-no">ei</label>
+              <label for="headache-no">{{ no }}</label>
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend aria-live="assertive">Kurkkukipua <span class="invalid-value-info hidden" /></legend>
+            <legend aria-live="assertive"> {{ sore_throat }} <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <input id="soreThroat-yes" type="radio" name="sore_throat" value="yes" required />
-              <label for="soreThroat-yes">kyllä</label>
+              <label for="soreThroat-yes">{{ yes }}</label>
               <input id="soreThroat-no" type="radio" name="sore_throat" value="no" required />
-              <label for="soreThroat-no">ei</label>
+              <label for="soreThroat-no">{{ no }}</label>
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend aria-live="assertive">Nuhaa <span class="invalid-value-info hidden" /></legend>
+            <legend aria-live="assertive">{{ rhinitis }} <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <input id="rhinitis-yes" type="radio" name="rhinitis" value="yes" required />
-              <label for="rhinitis-yes">kyllä</label>
+              <label for="rhinitis-yes">{{ yes }}</label>
               <input id="rhinitis-no" type="radio" name="rhinitis" value="no" required />
-              <label for="rhinitis-no">ei</label>
+              <label for="rhinitis-no">{{ no }}</label>
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
             <legend aria-live="assertive">
-              Vatsaoireita kuten ripulia, pahoinvointia tai vatsakipuja <span class="invalid-value-info hidden" />
+              {{ stomach_issues }} <span class="invalid-value-info hidden" />
             </legend>
             <div class="options">
               <input id="stomachIssues-yes" type="radio" name="stomach_issues" value="yes" required />
-              <label for="stomachIssues-yes">kyllä</label>
+              <label for="stomachIssues-yes">{{ yes }}</label>
               <input id="stomachIssues-no" type="radio" name="stomach_issues" value="no" required />
-              <label for="stomachIssues-no">ei</label>
+              <label for="stomachIssues-no">{{ no }}</label>
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
             <legend aria-live="assertive">
-              Hajuaistin tai makuaistin heikkenemistä <span class="invalid-value-info hidden" />
+              {{ sensory_issues }} <span class="invalid-value-info hidden" />
             </legend>
             <div class="options">
               <input id="sensoryIssues-yes" type="radio" name="sensory_issues" value="yes" required />
-              <label for="sensoryIssues-yes">kyllä</label>
+              <label for="sensoryIssues-yes">{{ yes }}</label>
               <input id="sensoryIssues-no" type="radio" name="sensory_issues" value="no" required />
-              <label for="sensoryIssues-no">ei</label>
+              <label for="sensoryIssues-no">{{ no }}</label>
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
             <legend aria-live="assertive">
-              Oletko ollut yhteydessä terveydenhuoltoon oireittesi takia? <span class="invalid-value-info hidden" />
+             {{ healthcare_contact }} <span class="invalid-value-info hidden" />
             </legend>
             <div class="options">
               <input id="healthcareContact-yes" type="radio" name="healthcare_contact" value="yes" required />
-              <label for="healthcareContact-yes">kyllä</label>
+              <label for="healthcareContact-yes">{{ yes }}</label>
               <input id="healthcareContact-no" type="radio" name="healthcare_contact" value="no" required />
               <label for="healthcareContact-no">en</label>
             </div>
           </fieldset>
         </div>
         <div class="question-group">
-          <h2 class="question-group-title">Terveydentila</h2>
+          <h2 class="question-group-title">{{ general_status }}</h2>
           <fieldset class="input-wrapper">
             <legend aria-live="assertive">
-              Millainen on yleisvointisi? <span class="invalid-value-info hidden" />
+              {{ general_wellbeing }} <span class="invalid-value-info hidden" />
             </legend>
             <div class="options">
               <div class="option-wrapper">
                 <input id="generalWellbeing-fine" type="radio" name="general_wellbeing" value="fine" required />
-                <label for="generalWellbeing-fine">jaksan olla jalkeilla </label>
+                <label for="generalWellbeing-fine">{{ fine }} </label>
               </div>
               <div class="option-wrapper">
                 <input id="generalWellbeing-not ok" type="radio" name="general_wellbeing" value="impaired" required />
                 <label for="generalWellbeing-not ok"
-                  >jaksan olla jonkun verran jalkeilla ja hoitaa välttämättömät kotiaskareet</label
+                  >{{ not_ok }}</label
                 >
               </div>
               <div class="option-wrapper">
                 <input id="generalWellbeing-bad" type="radio" name="general_wellbeing" value="bad" required />
-                <label for="generalWellbeing-bad">en juurikaan jaksa nousta vuoteesta</label>
+                <label for="generalWellbeing-bad">{{ bad }} </label>
               </div>
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
             <label for="duration" class="input-field-label"
-              >Kuinka monta päivää oireesi ovat kestäneet?
-              <span class="optional-field-info">(Voit jättää vastaamatta, jos sinulla ei ole oireita)</span></label
+              >{{ duration }}
+              <span class="optional-field-info">({{ optional_info }})</span></label
             >
             <input
               id="duration"
@@ -197,40 +193,40 @@
           </fieldset>
           <fieldset class="input-wrapper">
             <legend aria-live="assertive">
-              Onko sinulla lääkehoitoa vaativa pitkäaikaissairaus? <span class="invalid-value-info hidden" />
+              {{ longterm_medication }} <span class="invalid-value-info hidden" />
             </legend>
             <div class="options">
               <input id="longtermMedication-yes" type="radio" name="longterm_medication" value="yes" required />
-              <label for="longtermMedication-yes">kyllä</label>
+              <label for="longtermMedication-yes">{{ yes }}</label>
               <input id="longtermMedication-no" type="radio" name="longterm_medication" value="no" required />
-              <label for="longtermMedication-no">ei</label>
+              <label for="longtermMedication-no">{{ no }}</label>
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend aria-live="assertive">Tupakoitko? <span class="invalid-value-info hidden" /></legend>
+            <legend aria-live="assertive">{{ smoking }} <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <input id="smoking-yes" type="radio" name="smoking" value="yes" required />
-              <label for="smoking-yes">kyllä</label>
+              <label for="smoking-yes">{{ yes }}</label>
               <input id="smoking-no" type="radio" name="smoking" value="no" required />
               <label for="smoking-no">en</label>
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
             <legend aria-live="assertive">
-              Epäiletkö, että olet saanut koronavirustartunnan? <span class="invalid-value-info hidden" />
+              {{ corona_suspicion }} <span class="invalid-value-info hidden" />
             </legend>
             <div class="options">
               <input id="coronaSuspicion-yes" type="radio" name="corona_suspicion" value="yes" required />
-              <label for="coronaSuspicion-yes">kyllä</label>
+              <label for="coronaSuspicion-yes">{{ yes }}</label>
               <input id="coronaSuspicion-no" type="radio" name="corona_suspicion" value="no" required />
               <label for="coronaSuspicion-no">en</label>
             </div>
           </fieldset>
         </div>
         <div class="question-group">
-          <h2 class="question-group-title">Yleistiedot</h2>
+          <h2 class="question-group-title">{{ background_questions }}</h2>
           <fieldset class="input-wrapper">
-            <legend aria-live="assertive">Ikä <span class="invalid-value-info hidden" /></legend>
+            <legend aria-live="assertive">{{ age }} <span class="invalid-value-info hidden" /></legend>
             <div class="options flex-wrapper">
               <div class="column">
                 <div class="option-wrapper">
@@ -275,19 +271,19 @@
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend aria-live="assertive">Sukupuoli <span class="invalid-value-info hidden" /></legend>
+            <legend aria-live="assertive">{{ sex }} <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <input id="gender-female" type="radio" name="gender" value="female" required />
-              <label for="gender-female">nainen</label>
+              <label for="gender-female">{{ female }}</label>
               <input id="gender-male" type="radio" name="gender" value="male" required />
-              <label for="gender-male">mies</label>
+              <label for="gender-male">{{ male }}</label>
               <input id="gender-other" type="radio" name="gender" value="other" required />
-              <label for="gender-other">muu</label>
+              <label for="gender-other">{{ other }}</label>
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
             <label for="postalCode" class="input-field-label" aria-live="assertive"
-              >Postinumero <span class="invalid-value-info hidden"
+              >{{ postal_code }} <span class="invalid-value-info hidden"
             /></label>
             <input
               id="postalCode"
@@ -309,29 +305,25 @@
           <h2 class="error-message"></h2>
           <p class="error-instructions"></p>
         </div>
-        <button type="submit" id="submit-survey" class="button action-button">Lähetä</button>
-        <button type="button" id="cancel-survey" class="button cancel-button">Peruuta</button>
+        <button type="submit" id="submit-survey" class="button action-button">{{ send }}</button>
+        <button type="button" id="cancel-survey" class="button cancel-button">{{ clear }}</button>
       </form>
       <div id="submit-success" class="hidden" tabindex="-1">
         <div class="success-message">
-          <h2>Kiitos vastauksistasi.</h2>
+          <h2>{{ thank_you }}</h2>
           <p>
-            Pyydämme, että palaat kertomaan oireistasi kolmen päivän kuluttua. Jos täytät kyselyn uudelleen samalla
-            laitteella 14 vuorokauden kuluessa, vastaukset voidaan yhdistää keskenään, jolloin tiedoista on enemmän
-            hyötyä. Tiedot ovat silti anonyymejä, eikä niitä voi palvelussa yhdistää vastaajaan.
+            {{ end_text_1 }}
             <a href="https://www.oiretutka.fi/tietosuojalauseke.html" target="_blank" rel="noopener noreferrer"
-              >Lue lisää tietosuojasta täältä.</a
+              >{{ privacy_readmore }}</a
             >
           </p>
           <p>
-            Kun vastauksia on kertynyt riittävästi, niitä aletaan tutkia yhteistyössä terveydenhuollon asiantuntijoiden
-            kanssa.
+            {{ end_text_2 }}
           </p>
           <p>
-            Jos sinulla on hengitysvaikeuksia, kova kuume tai et jaksa nousta vuoteesta, ota yhteys terveydenhuoltoon.
-            Jos epäilet sairastuneesi koronaviruksen aiheuttamaan tautiin ja haluat tehdä oirearvion, siirry 
+            {{ end_text_3 }}
             <a href="https://www.omaolo.fi/palvelut/oirearviot/649" target="_blank" rel="noopener noreferrer"
-              >Omaolo.fi-palveluun.</a
+              >{{ end_text_4 }}</a
             >
           </p>
         </div>

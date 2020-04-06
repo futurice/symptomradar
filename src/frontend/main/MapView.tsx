@@ -47,6 +47,10 @@ interface mapProperties {
   Population: number;
 }
 
+type FilterButtonProps = {
+  isActive: boolean;
+};
+
 const data: mapProperties[] = require('./assets/data/citylevel-opendata-3-4-2020.json');
 
 const populationData: { City: string; population: number }[] = require('./assets/data/population.json');
@@ -82,7 +86,7 @@ const FilterWrapper = styled.div`
   display: flex;
   max-width: 100vw;
   flex-wrap: nowrap;
-  padding: 0 16px;
+  padding: 3px 16px;
   overflow: scroll;
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
@@ -92,9 +96,13 @@ const FilterWrapper = styled.div`
   }
 `;
 
-const FilterButton = styled(PrimaryButton)`
+const FilterButton = styled(PrimaryButton)<FilterButtonProps>`
   flex: 0 0 auto;
   margin-right: 16px;
+  cursor: pointer;
+  background: ${props => (props.isActive ? '#FFF' : '#595959')};
+  color: ${props => (props.isActive ? '#000' : '#FFF')};
+  border: ${props => (props.isActive ? '1px solid #000' : '1px solid transparent')};
 `;
 
 const MapInfo = styled.div`
@@ -237,6 +245,7 @@ const MapView = (props: RouteComponentProps) => {
             type="button"
             label="Epäilys koronasta"
             filterSelection="corona_suspicion_yes"
+            isActive={selectedFilter === 'corona_suspicion_yes' ? true : false}
             click={(e: string) => {
               setSelectedFilter(e);
             }}
@@ -245,6 +254,7 @@ const MapView = (props: RouteComponentProps) => {
             type="button"
             label="Yskää"
             filterSelection="cough_yes"
+            isActive={selectedFilter === 'cough_yes' ? true : false}
             click={(e: string) => {
               setSelectedFilter(e);
             }}
@@ -253,6 +263,7 @@ const MapView = (props: RouteComponentProps) => {
             type="button"
             label="Kuumetta"
             filterSelection="fever_yes"
+            isActive={selectedFilter === 'fever_yes' ? true : false}
             click={(e: string) => {
               setSelectedFilter(e);
             }}

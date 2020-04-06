@@ -22,7 +22,7 @@ const H3 = styled.h3`
 
 const Symptoms = styled.div`
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto 1fr;
   grid-gap: 4px 8px;
   padding-left: 16px;
 

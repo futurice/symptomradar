@@ -67,7 +67,6 @@ const Map: React.FunctionComponent<{
     .scaleSqrt()
     .domain([0, d3.max(props.mapShapeData.features, (el: any) => el.properties[props.radiusScaleKey])])
     .range(props.radiusRange);
-  console.log(props)
   useEffect(() => {
     let mapSVG = d3.select(mapNode);
     mapSVG.selectAll('.mapG').remove();

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DorlingCartogram from './DorlingCartogram';
 
-const App: React.FunctionComponent<{ mapShapeData: any }> = props => {
+const App: React.FunctionComponent<{ mapShapeData: any, selectedFilter :string }> = props => {
   const headerHeight = 130;
   const mapSelectHeight = 55;
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -22,7 +22,7 @@ const App: React.FunctionComponent<{ mapShapeData: any }> = props => {
         radiusScaleKey={'Population'}
         defaultRadius={2}
         colorRange={['#bee7fa', '#00bdf2', '#082163']}
-        colorScaleKey={'corona_suspicion_yes'}
+        colorScaleKey={props.selectedFilter}
         defaultColor={'#ccd2d5'}
         colorScaleTransform={'percentResponse'}
       />

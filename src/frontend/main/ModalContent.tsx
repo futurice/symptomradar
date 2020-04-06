@@ -43,11 +43,11 @@ const ModalContent = ({ content }: ModalContentProps) => {
       </ModalHeader>
       <H3>Vastauksia yhteensä {responsesTotal}:</H3>
       <Symptoms>
-        <span>{suspicionTotal}</span>
+        <span>{suspicionTotal} ({(content.properties.corona_suspicion_yes * 100 / content.properties.responses).toFixed(1)}%)</span>
         <p>Epäilys koronavirustartunnasta </p>
-        <span>{coughTotal}</span>
+        <span>{coughTotal} ({((content.properties.cough_mild + content.properties.cough_intense) * 100 / content.properties.responses).toFixed(1)}%)</span>
         <p>Yskää</p>
-        <span>{feverTotal}</span>
+        <span>{feverTotal} ({((content.properties.fever_slight + content.properties.fever_high) * 100 / content.properties.responses).toFixed(1)}%)</span>
         <p>Kuumetta</p>
       </Symptoms>
     </>

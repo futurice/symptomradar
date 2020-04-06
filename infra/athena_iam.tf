@@ -69,3 +69,91 @@ resource "aws_iam_group_policy" "athena_developers" {
 }
 EOF
 }
+
+data "aws_iam_policy_document" "iam_fine_tune" {
+  statement {
+    sid = "AllowViewAccountInfo"
+    actions = [
+      "iam:ListAccountAliases",
+      "iam:GetAccountPasswordPolicy",
+      "iam:GetAccountSummary",
+      "iam:ListUsers",
+      "iam:ListVirtualMFADevices"
+    ]
+    resources = ["*"]
+    effect    = "Allow"
+  }
+  statement {
+    sid = "AllowManageOwnAccount"
+    actions = [
+      "iam:ChangePassword",
+      "iam:GetUser",
+      "iam:CreateAccessKey",
+      "iam:DeleteAccessKey",
+      "iam:ListAccessKeys",
+      "iam:UpdateAccessKey",
+      "iam:CreateLoginProfile",
+      "iam:DeleteLoginProfile",
+      "iam:GetLoginProfile",
+      "iam:UpdateLoginProfile"
+    ]
+    resources = ["arn:aws:iam::*:user/$${aws:username}"]
+    effect    = "Allow"
+  }
+  statement {
+    sid = "AllowManageOwnVirtualMFADevice"
+    actions = [
+      "iam:DeactivateMFADevice",
+      "iam:EnableMFADevice",
+      "iam:ListMFADevices",
+      "iam:ResyncMFADevice"
+    ]
+    resources = [
+      "arn:aws:iam::*:user/$${aws:username}"
+    ]
+    effect = "Allow"
+  }
+  statement {
+    sid = "AllowManageOwnUserMFA"
+    actions = [
+      "iam:CreateVirtualMFADevice",
+      "iam:DeleteVirtualMFADevice"
+    ]
+    resources = [
+      "arn:aws:iam::*:mfa/$${aws:username}"
+    ]
+    effect = "Allow"
+  }
+  statement {
+    sid = "DenyAllExceptListedIfNoMFA"
+    not_actions = [
+      "iam:CreateVirtualMFADevice",
+      "iam:EnableMFADevice",
+      "iam:GetUser",
+      "iam:ListMFADevices",
+      "iam:ListVirtualMFADevices",
+      "iam:ResyncMFADevice",
+      "sts:GetSessionToken"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "BoolIfExists"
+      variable = "aws:MultiFactorAuthPresent"
+      values   = ["false"]
+    }
+    effect = "Deny"
+
+
+  }
+}
+
+resource "aws_iam_policy" "iam_fine_tune" {
+  name   = "${var.name_prefix}-iam-fine-tune"
+  policy = data.aws_iam_policy_document.iam_fine_tune.json
+}
+
+resource "aws_iam_group_policy_attachment" "iam_fine_tune_athena_user" {
+  group      = aws_iam_group.athena_developers.name
+  policy_arn = aws_iam_policy.iam_fine_tune.arn
+}
+

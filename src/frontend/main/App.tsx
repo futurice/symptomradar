@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router } from '@reach/router';
+import { Router, Location } from '@reach/router';
 import styled, { createGlobalStyle } from 'styled-components';
 import Header from './Header';
 import MapView from './MapView';
@@ -90,7 +90,11 @@ const AppContainer = styled.div`
 export const App = () => (
   <AppContainer>
     <GlobalStyles />
-    <Header />
+    <Location>
+      {({ location }) => {
+        return <Header location={location.pathname} />;
+      }}
+    </Location>
     <main>
       <Router>
         <MapView path="/" />

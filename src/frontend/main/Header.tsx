@@ -12,6 +12,14 @@ type LinkProps = {
   icon: (match: { uri: string; path: string } | null) => void;
 };
 
+type HeaderProps = {
+  location: string;
+};
+
+interface headerContainerProps {
+  readonly isFullWidthView: boolean;
+}
+
 interface activeLinkProps {
   readonly isActive: boolean;
 }
@@ -22,7 +30,7 @@ const AppHeader = styled.header`
   height: 130px;
 `;
 
-const HeaderContainer = styled.div`
+const HeaderContainer = styled.div<headerContainerProps>`
   background-color: #fff;
   display: flex;
   flex-direction: column;
@@ -30,6 +38,7 @@ const HeaderContainer = styled.div`
   align-items: stretch;
   max-width: 600px;
   margin: 0 auto;
+  max-width: ${props => (props.isFullWidthView ? '100%' : '600px')};
 `;
 
 const LogoImage = styled.img`
@@ -93,10 +102,10 @@ const LinkItem = ({ to, linkText, icon }: LinkProps) => {
   );
 };
 
-const Header = () => {
+const Header = ({ location }: HeaderProps) => {
   return (
     <AppHeader>
-      <HeaderContainer>
+      <HeaderContainer isFullWidthView={location === '/' ? true : false}>
         <div>
           <LogoImage src={Logo} alt="Oiretutka. Helsingin Sanomat ja Futurice." />
         </div>

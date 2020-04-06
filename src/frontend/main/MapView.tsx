@@ -146,6 +146,7 @@ const MapView = (props: RouteComponentProps) => {
   const { isShowing, toggleModal } = useModal();
   const [showMapInfo, setShowMapInfo] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState('corona_suspicion_yes');
+  const [activeCityData, setActiveCityData] = useState({});
 
   const cities = responseData.map(item => {
     return item.City;
@@ -208,12 +209,18 @@ const MapView = (props: RouteComponentProps) => {
     <>
       <MapNav>
         <Label htmlFor="city">Kaupunki</Label>
-        <select name="" id="city" onChange={
-          (event:{target:{value:string}}) => {
-            let indx = mapShapeData.features.findIndex((obj:{properties:{City:string}}) => obj.properties.City === event.target.value)
-            console.log(mapShapeData.features[indx])
-          }
-        }>
+        <select
+          name=""
+          id="city"
+          onChange={(event: { target: { value: string } }) => {
+            let indx = mapShapeData.features.findIndex(
+              (obj: { properties: { City: string } }) => obj.properties.City === event.target.value,
+            );
+            setActiveCityData(mapShapeData.features[indx]);
+            toggleModal();
+          }}
+        >
+          <option value="">Valitse kaupunki...</option>
           {cities.map(city => {
             return (
               <option key={city} value={city}>
@@ -270,7 +277,7 @@ const MapView = (props: RouteComponentProps) => {
         </MapInfo>
       </MapWrapper>
       <Modal isShowing={isShowing} hide={toggleModal}>
-        {/* <ModalContent content={{}} /> */}
+        <ModalContent content={activeCityData} />
       </Modal>
     </>
   );

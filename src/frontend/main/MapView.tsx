@@ -129,7 +129,7 @@ const TotalResponses = styled.div`
 `;
 
 const CloseButton = styled.button`
-  font-size: 1.6rem;
+  font-size: 46px;
   font-weight: 300;
   line-height: 1;
   color: #000;
@@ -137,7 +137,7 @@ const CloseButton = styled.button`
   border: none;
   background-color: transparent;
   position: absolute;
-  top: 14px;
+  top: 9px;
   right: 6px;
   z-index: 1;
 `;

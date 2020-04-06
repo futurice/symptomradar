@@ -19,12 +19,12 @@ const FilterButton = styled.button`
 `;
 
 const FilterToggle = () => {
-  const { isShowing, toggle } = useModal();
+  const { isShowing, toggleModal } = useModal();
 
   return (
     <>
-      <FilterButton onClick={toggle}>Filter</FilterButton>
-      <Modal isShowing={isShowing} hide={toggle}>
+      <FilterButton onClick={toggleModal}>Filter</FilterButton>
+      <Modal isShowing={isShowing} hide={toggleModal}>
         <Filters />
       </Modal>
     </>

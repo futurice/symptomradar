@@ -60,7 +60,7 @@ const Map: React.FunctionComponent<{
   radiusScaleKey: string;
 }> = props => {
   const [activeCityData, setActiveCityData] = useState({});
-  const { isShowing, toggle } = useModal();
+  const { isShowing, toggleModal } = useModal();
 
   // radius and color scale
   let rScale = d3
@@ -144,9 +144,8 @@ const Map: React.FunctionComponent<{
       })
       .attr('fill', '#fff')
       .on('click', (d: {}) => {
-        console.log(d);
         setActiveCityData(d);
-        toggle();
+        toggleModal();
       });
     let tick: () => void = () => {
       g.selectAll('.cityCircle')
@@ -248,7 +247,7 @@ const Map: React.FunctionComponent<{
   return (
     <div>
       <svg width={props.svgWidth} height={props.svgHeight} ref={node => (mapNode = node)} />
-      <Modal isShowing={isShowing} hide={toggle}>
+      <Modal isShowing={isShowing} hide={toggleModal}>
         <ModalContent content={activeCityData} />
       </Modal>
     </div>

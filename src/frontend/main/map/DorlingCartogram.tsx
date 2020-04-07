@@ -147,6 +147,7 @@ const Map: React.FunctionComponent<{
         return rScale(d.properties[props.radiusScaleKey]);
       })
       .attr('fill', '#fff')
+      .style('cursor','pointer')
       .on('click', (d: {}) => {
         setActiveCityData(d);
         toggleModal();

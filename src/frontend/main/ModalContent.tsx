@@ -44,6 +44,10 @@ const ModalContent = ({ content }: ModalContentProps) => {
     content.properties.fever_slight + content.properties.fever_high !== -2
       ? (content.properties.fever_slight + content.properties.fever_high).toLocaleString('fi-FI')
       : 'ei tietoa';
+  const breathingDifficulties =
+    content.properties.breathing_difficulties_yes !== -1
+      ? (content.properties.breathing_difficulties_yes).toLocaleString('fi-FI')
+      : 'ei tietoa';
   return (
     <>
       <ModalHeader>
@@ -81,6 +85,17 @@ const ModalContent = ({ content }: ModalContentProps) => {
           )
         </span>
         <p>Kuumetta</p>
+        <span>
+          {breathingDifficulties} (
+          {content.properties.breathing_difficulties_yes !== -1
+            ? `${(
+                ((content.properties.breathing_difficulties_yes) * 100) /
+                content.properties.responses
+              ).toFixed(1)}%`
+            : 'ei tietoa'}
+          )
+        </span>
+        <p>Vaikeuksia hengittää</p>
       </Symptoms>
     </>
   );

@@ -273,6 +273,14 @@ const MapView = (props: RouteComponentProps) => {
               setSelectedFilter('fever_yes');
             }}
           />
+          <FilterButton
+            type="button"
+            label="Vaikeuksia hengittää"
+            isActive={selectedFilter === 'breathing_difficulties_yes' ? true : false}
+            handleClick={() => {
+              setSelectedFilter('breathing_difficulties_yes');
+            }}
+          />
         </FilterWrapper>
         <MapInfo>
           {showMapInfo && (

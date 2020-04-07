@@ -54,7 +54,7 @@
     "returning_user_title": "Tervetuloa takaisin Oiretutkaan!",
     "returning_user_text_1": "Tämän laitteen käyttäjä on raportoinut palvelussa aiemmin oireistaan.",
     "returning_user_text_2": "Voit vastata kyselyyn uudelleen ja kertoa tämänhetkisistä oireistasi. Yhdistämme tiedot aiempiin vastauksiin, jolloin tieto on entistä hyödyllisempää. Emme edelleenkään tallenna tietoja niin, että niitä voisi yhdistää tunnistettuun käyttäjään.",
-    "privacy_read_more": "Lue lisää tietosuojasta täältä.",
+    "privacy_read_more": "Lue lisää tietosuojasta täältä",
     "thank_you_help": "Kiitos avustasi!"
   },
   "en": {
@@ -112,7 +112,7 @@
     "returning_user_title": "Welcome back to Oiretutka!",
     "returning_user_text_1": "The user of this device has previously reported symptoms to the service.",
     "returning_user_text_2": "We would appreciate if you could answer the questions again and tell us about your current health situation. To make the information more insightful, we will combine the data provided with the previous answers. We are not storing information able to identify respondents.",
-    "privacy_read_more": "Read more about the privacy policy here (in Finnish).",
+    "privacy_read_more": "Read more about the privacy policy here (in Finnish)",
     "thank_you_help": "Thank you for your help!"
   }
 }

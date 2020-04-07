@@ -61,11 +61,19 @@ exports.origin_response = (event, context, callback) => {
 
   log('aws_reverse_proxy.origin_response.before', response);
 
+  // Add any additional headers:
   response.headers = {
     ...formatHeaders(hstsHeaders),
     ...response.headers,
     ...formatHeaders(addResponseHeaders),
   };
+
+  // Remove headers that have an override value of "" completely:
+  Object.keys(addResponseHeaders).forEach(header => {
+    if (!addResponseHeaders[header]) delete response.headers[header.toLowerCase()];
+  });
+
+  // Override status code if configured:
   response.status = config.override_response_status || response.status;
   response.statusDescription = config.override_response_status_description || response.statusDescription;
 

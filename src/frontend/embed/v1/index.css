@@ -16,6 +16,7 @@ body {
   font-size: 16px;
   line-height: 1.25;
   color: #000000;
+  background-color: #ffffff;
 }
 
 [tabindex='-1']:focus {

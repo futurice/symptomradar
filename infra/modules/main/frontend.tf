@@ -98,6 +98,9 @@ module "frontend" {
         'self' # allow regular images that ship with the UI
         data: # allow small assets which have been inlined by webpack
         ;
+      font-src # specifies valid sources of webfonts
+        'self' # allow loading self-hosted fonts, but not e.g. directly from Google Fonts for privacy reasons
+        ;
       manifest-src # specifies which manifest can be applied to the resource
         'self' # our manifest is always on our own domain
         ;
@@ -115,6 +118,7 @@ module "frontend" {
         ;
       style-src # specifies valid sources for stylesheets
         'self' # allow our CSS bundle
+        'unsafe-inline' # this is needed for our CSS-in-JS solution to work (https://styled-components.com/)
         ;
       style-src-attr # specifies valid sources for inline styles applied to individual DOM elements
         'none' # we don't currently use any -> prohibit them all

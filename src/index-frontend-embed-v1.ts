@@ -3,6 +3,12 @@ import 'normalize.css';
 import './frontend/embed/v1/index.css';
 import $ from 'jquery';
 import { v4 as uuidV4 } from 'uuid';
+import i18next from 'i18next';
+import XHR from 'i18next-xhr-backend';
+// @ts-ignore
+// Quick fix, will look at a better solution later
+// https://stackoverflow.com/questions/41292559/could-not-find-a-declaration-file-for-module-module-name-path-to-module-nam/50516783#50516783
+import jqueryI18next from 'jquery-i18next';
 
 function storageAvailable() {
   try {
@@ -176,6 +182,30 @@ function init() {
     $('#symptom-questionnaire').removeClass('hidden');
     $('#start-survey').addClass('hidden');
   }
+
+  i18next.use(XHR).init(
+    {
+      lng: 'en',
+      debug: true,
+      backend: {
+        loadPath: '/locales/{{lng}}/translation.json',
+      },
+    },
+    function(err, t) {
+      // Initialize translation library
+      jqueryI18next.init(i18next, $, {
+        tName: 't', // --> appends $.t = i18next.t
+        i18nName: 'i18n', // --> appends $.i18n = i18next
+        handleName: 'localize', // --> appends $(selector).localize(opts);
+        selectorAttr: 'data-i18n', // selector for translating elements
+        optionsAttr: 'i18n-options', // data-() attribute that contains options, will load/set if useOptionsAttr = true
+        useOptionsAttr: false, // see optionsAttr
+        parseDefaultValueFromContent: true, // parses default values from content ele.val or ele.text
+      });
+      // Trying to translate element with .container class
+      ($('.container') as any).localize();
+    },
+  );
 
   $('#start-survey').click(function() {
     startSurvey();

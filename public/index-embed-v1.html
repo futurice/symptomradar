@@ -12,12 +12,11 @@
       <div class="container">
         <img id="logo" class="logo" src="./oiretutka-logo-gradient.svg" alt="Oiretutka. Helsingin Sanomat ja Futurice." />
         <div id="form-info" class="form-info">
-          <h1 id="page-title" tabindex="-1">
-            {{ page_title }}
+          <!-- Testing i18n translations with following 2 elements-->
+          <h1 id="page-title" tabindex="-1" data-i18n="page_title">
           </h1>
-          <p>
-            {{ start_info_1 }}
-          </p>
+          <p data-i18n="start_info_1"></p>
+          <!-- Currently doesn't work, debugging gives error "i18next::translator: missingKey en translation <translation_key>" -->
           <p>
             {{ start_info_2 }}
           </p>

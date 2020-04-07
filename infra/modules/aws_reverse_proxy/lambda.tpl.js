@@ -19,10 +19,10 @@ exports.viewer_request = (event, context, callback) => {
 
   log('aws_reverse_proxy.viewer_request.before', request);
 
-  if (config.override_response_status && config.override_response_status_description && config.override_response_body) {
+  if (config.override_response_code && config.override_response_status && config.override_response_body) {
     const response = {
-      status: config.override_response_status,
-      statusDescription: config.override_response_status_description,
+      status: config.override_response_code,
+      statusDescription: config.override_response_status,
       body: config.override_response_body,
       headers: {
         ...formatHeaders(hstsHeaders),
@@ -74,8 +74,8 @@ exports.origin_response = (event, context, callback) => {
   });
 
   // Override status code if configured:
-  response.status = config.override_response_status || response.status;
-  response.statusDescription = config.override_response_status_description || response.statusDescription;
+  response.status = config.override_response_code || response.status;
+  response.statusDescription = config.override_response_status || response.statusDescription;
 
   log('aws_reverse_proxy.origin_response.after', response);
 

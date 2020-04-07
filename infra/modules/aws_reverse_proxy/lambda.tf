@@ -1,13 +1,13 @@
 locals {
   config = {
-    hsts_max_age                         = var.hsts_max_age
-    basic_auth_username                  = var.basic_auth_username
-    basic_auth_password                  = var.basic_auth_password
-    basic_auth_realm                     = var.basic_auth_realm
-    basic_auth_body                      = var.basic_auth_body
-    override_response_status             = var.override_response_status
-    override_response_status_description = var.override_response_status_description
-    override_response_body               = var.override_response_body
+    hsts_max_age             = var.hsts_max_age
+    basic_auth_username      = var.basic_auth_username
+    basic_auth_password      = var.basic_auth_password
+    basic_auth_realm         = var.basic_auth_realm
+    basic_auth_body          = var.basic_auth_body
+    override_response_code   = var.override_response_code
+    override_response_status = var.override_response_status
+    override_response_body   = var.override_response_body
   }
 }
 

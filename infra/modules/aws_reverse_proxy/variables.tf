@@ -65,12 +65,12 @@ variable "origin_custom_port" {
   default     = 0
 }
 
-variable "override_response_status" {
+variable "override_response_code" {
   description = "When non-empty, replace the HTTP status code received from the origin with this; e.g. override a `404` into a `200`"
   default     = ""
 }
 
-variable "override_response_status_description" {
+variable "override_response_status" {
   description = "When non-empty, replace the HTTP status description received from the origin with this; e.g. override a `\"Not Found\"` into a `\"OK\"`"
   default     = ""
 }

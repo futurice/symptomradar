@@ -34,7 +34,7 @@ For good first issues regarding contributing, see [issues labeled with open sour
 
 # Local development environment
 
-This section is still under construction, if you have troubles setting the environment, please contact us (see below section).
+This section is still under construction, if you have trouble setting up the environment, please contact us (see below section).
 
 ## Project structure
 

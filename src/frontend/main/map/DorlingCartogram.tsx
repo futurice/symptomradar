@@ -77,7 +77,7 @@ const Map: React.FunctionComponent<{
       .geoTransverseMercator()
       .rotate([-27, -65, 0])
       .scale(props.mapScale)
-      .translate([props.svgWidth / 2, props.svgHeight / 2]);
+      .translate([props.svgWidth / 2 + 60, props.svgHeight / 2 - 10]);
 
     // covert map shape to path
     const path = d3.geoPath().projection(projection);
@@ -91,6 +91,7 @@ const Map: React.FunctionComponent<{
 
     
     let mapG = mapSVG.append('g').attr('class','masterG').attr('transform',`translate(0,${0 - 20})`)
+
 
     //g for adding map
     let g = mapG.append('g').attr('class', 'mapG');
@@ -138,7 +139,7 @@ const Map: React.FunctionComponent<{
       .data(mapShapeData.features)
       .enter()
       .append('circle')
-      .attr('class', `cityCircle`)
+      .attr('class', 'cityCircle')
       .attr('cx', (d: {}) => path.centroid(d)[0])
       .attr('cy', (d: {}) => path.centroid(d)[1])
       .attr('r', (d: { properties: any }) => {
@@ -166,6 +167,67 @@ const Map: React.FunctionComponent<{
         }),
       )
       .on('tick', tick);
+    
+
+    let keyG = mapG.append('g').attr('class','keyG').attr('transform',`translate(0,${0 - 20})`)
+    let colorKey = [...props.colorRange]
+    colorKey.reverse().push(props.defaultColor)
+    let colorLegend = ['Top 10', '10 - 20','20+', 'Ei tietoa']
+    keyG.selectAll('.keyRect')
+      .data(colorKey.reverse())
+      .enter()
+      .append('rect')
+      .attr('class','keyRect')
+      .attr('x',5)
+      .attr('y',(d:string, i:number) => props.svgHeight - (i * 20) - 60 - (2 * rScale(500000)))
+      .attr('fill',(d:string) => d)
+      .attr('width',16)
+      .attr('height',16)
+    keyG.selectAll('.keyText')
+      .data(colorLegend.reverse())
+      .enter()
+      .append('text')
+      .attr('class','keyText')
+      .attr('x',23)
+      .attr('y',(d:string, i:number) => props.svgHeight - (i * 20) - 60 - (2 * rScale(500000)))
+      .attr('dy',12)
+      .attr('fill','#000')
+      .attr('font-size',12)
+      .text((d:string) => d)
+    let circleKey = [100000,500000]
+    keyG
+      .append('text')
+      .attr('class','keyText')
+      .attr('x',5)
+      .attr('y',(d:string, i:number) => props.svgHeight)
+      .attr('fill','#000')
+      .attr('font-size',10)
+      .text('Ympyrän koko kuvaa väkilukua')
+    keyG.selectAll('.keyCircle')
+      .data(circleKey)
+      .enter()
+      .append('circle')
+      .attr('class','keyCircle')
+      .attr('cx',5 + rScale(circleKey[circleKey.length - 1]))
+      .attr('cy',(d:number) => props.svgHeight - rScale(d) - 15)
+      .attr('stroke','#aaa')
+      .attr('fill','none')
+      .attr('stroke-width',1)
+      .attr('r',(d:number) => rScale(d))
+    keyG.selectAll('.keyCircleText')
+      .data(circleKey)
+      .enter()
+      .append('text')
+      .attr('class','keyCircleText')
+      .attr('x',5 + rScale(circleKey[circleKey.length - 1]))
+      .attr('y',(d:number) => props.svgHeight - (2 * rScale(d)) - 15)
+      .attr('dy',-2)
+      .attr('text-anchor','middle')
+      .attr('fill','#aaa')
+      .attr('font-size',10)
+      .text((d:number) => `${d / 1000}K`)
+    
+  // eslint-disable-next-line
   }, [
     props.mapScale,
     props.mapShapeData,

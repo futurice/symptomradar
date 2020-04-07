@@ -58,7 +58,7 @@ const Map: React.FunctionComponent<{
   defaultColor: string;
   radiusRange: [number, number];
   radiusScaleKey: string;
-  popUpOpen:boolean;
+  popUpOpen: boolean;
 }> = props => {
   const [activeCityData, setActiveCityData] = useState({});
   const { isShowing, toggleModal } = useModal();
@@ -89,9 +89,10 @@ const Map: React.FunctionComponent<{
 
     mapSVG.call(Zoom);
 
-    
-    let mapG = mapSVG.append('g').attr('class','masterG').attr('transform',`translate(0,${0 - 20})`)
-
+    let mapG = mapSVG
+      .append('g')
+      .attr('class', 'masterG')
+      .attr('transform', `translate(0,${0 - 20})`);
 
     //g for adding map
     let g = mapG.append('g').attr('class', 'mapG');
@@ -147,7 +148,7 @@ const Map: React.FunctionComponent<{
         return rScale(d.properties[props.radiusScaleKey]);
       })
       .attr('fill', '#fff')
-      .style('cursor','pointer')
+      .style('cursor', 'pointer')
       .on('click', (d: {}) => {
         setActiveCityData(d);
         toggleModal();
@@ -168,84 +169,98 @@ const Map: React.FunctionComponent<{
         }),
       )
       .on('tick', tick);
-    
 
-    let keyG = mapG.append('g').attr('class','keyG').attr('transform',`translate(0,${0 - 20})`)
-    let colorKey = [...props.colorRange]
-    colorKey.reverse().push(props.defaultColor)
-    let colorLegend = ['Top 10','10-20','20-30','Rest','Ei tietoa']
-    keyG.selectAll('.keyRect')
+    let keyG = mapG
+      .append('g')
+      .attr('class', 'keyG')
+      .attr('transform', `translate(0,${0 - 20})`);
+    let colorKey = [...props.colorRange];
+    colorKey.reverse().push(props.defaultColor);
+    let colorLegend = ['Top 10', '10-20', '20-30', 'Rest', 'Ei tietoa'];
+    keyG
+      .selectAll('.keyRect')
       .data(colorKey.reverse())
       .enter()
       .append('rect')
-      .attr('class','keyRect')
-      .attr('x',5)
-      .attr('y',(d:string, i:number) => props.svgHeight - (i * 20) - 60 - (2 * rScale(500000)))
-      .attr('fill',(d:string) => d)
-      .attr('width',16)
-      .attr('height',16)
-    keyG.selectAll('.keyText')
+      .attr('class', 'keyRect')
+      .attr('x', 5)
+      .attr('y', (d: string, i: number) => props.svgHeight - i * 20 - 60 - 2 * rScale(500000))
+      .attr('fill', (d: string) => d)
+      .attr('width', 16)
+      .attr('height', 16);
+    keyG
+      .selectAll('.keyText')
       .data(colorLegend.reverse())
       .enter()
       .append('text')
-      .attr('class','keyText')
-      .attr('x',23)
-      .attr('y',(d:string, i:number) => props.svgHeight - (i * 20) - 60 - (2 * rScale(500000)))
-      .attr('dy',12)
-      .attr('fill','#000')
-      .attr('font-size',12)
-      .text((d:string) => d)
-    let circleKey = [100000,500000]
+      .attr('class', 'keyText')
+      .attr('x', 23)
+      .attr('y', (d: string, i: number) => props.svgHeight - i * 20 - 60 - 2 * rScale(500000))
+      .attr('dy', 12)
+      .attr('fill', '#000')
+      .attr('font-size', 12)
+      .text((d: string) => d);
+    let circleKey = [100000, 500000];
     keyG
       .append('text')
-      .attr('class','keyText')
-      .attr('x',5)
-      .attr('y',(d:string, i:number) => props.svgHeight)
-      .attr('fill','#000')
-      .attr('font-size',10)
-      .text('Ympyrän koko kuvaa väkilukua')
-    keyG.selectAll('.keyCircle')
+      .attr('class', 'keyText')
+      .attr('x', 5)
+      .attr('y', (d: string, i: number) => props.svgHeight)
+      .attr('fill', '#000')
+      .attr('font-size', 10)
+      .text('Ympyrän koko kuvaa väkilukua');
+    keyG
+      .selectAll('.keyCircle')
       .data(circleKey)
       .enter()
       .append('circle')
-      .attr('class','keyCircle')
-      .attr('cx',5 + rScale(circleKey[circleKey.length - 1]))
-      .attr('cy',(d:number) => props.svgHeight - rScale(d) - 15)
-      .attr('stroke','#aaa')
-      .attr('fill','none')
-      .attr('stroke-width',1)
-      .attr('r',(d:number) => rScale(d))
-    keyG.selectAll('.keyCircleText')
+      .attr('class', 'keyCircle')
+      .attr('cx', 5 + rScale(circleKey[circleKey.length - 1]))
+      .attr('cy', (d: number) => props.svgHeight - rScale(d) - 15)
+      .attr('stroke', '#aaa')
+      .attr('fill', 'none')
+      .attr('stroke-width', 1)
+      .attr('r', (d: number) => rScale(d));
+    keyG
+      .selectAll('.keyCircleText')
       .data(circleKey)
       .enter()
       .append('text')
-      .attr('class','keyCircleText')
-      .attr('x',5 + rScale(circleKey[circleKey.length - 1]))
-      .attr('y',(d:number) => props.svgHeight - (2 * rScale(d)) - 15)
-      .attr('dy',-2)
-      .attr('text-anchor','middle')
-      .attr('fill','#aaa')
-      .attr('font-size',10)
-      .text((d:number) => `${d / 1000}K`)
-    
-  // eslint-disable-next-line
-  }, [
-    props.mapScale,
-    props.mapShapeData,
-    props.svgWidth,
-    props.svgHeight,
-  ]);
+      .attr('class', 'keyCircleText')
+      .attr('x', 5 + rScale(circleKey[circleKey.length - 1]))
+      .attr('y', (d: number) => props.svgHeight - 2 * rScale(d) - 15)
+      .attr('dy', -2)
+      .attr('text-anchor', 'middle')
+      .attr('fill', '#aaa')
+      .attr('font-size', 10)
+      .text((d: number) => `${d / 1000}K`);
+
+    // eslint-disable-next-line
+  }, [props.mapScale, props.mapShapeData, props.svgWidth, props.svgHeight]);
   useEffect(() => {
     let mapSVG = d3.select(mapNode);
-    
-    if(props.popUpOpen)
-      mapSVG.select('.masterG').attr('transform',`translate(0,${0 - parseFloat(d3.select('.popUp').style('height').slice(0, -2)) - 20})`)
-    else
-      mapSVG.select('.masterG').attr('transform',`translate(0,${0 - 20})`)
+
+    if (props.popUpOpen)
+      mapSVG.select('.masterG').attr(
+        'transform',
+        `translate(0,${0 -
+          parseFloat(
+            d3
+              .select('.popUp')
+              .style('height')
+              .slice(0, -2),
+          ) -
+          20})`,
+      );
+    else mapSVG.select('.masterG').attr('transform', `translate(0,${0 - 20})`);
     let sortedData: any = props.mapShapeData.features
       .filter((a: { properties: { responses: number } }) => a.properties.responses !== -1)
       .sort((a: any, b: any) => d3.descending(a.properties[props.colorScaleKey], b.properties[props.colorScaleKey]));
-    let colorDomain = [sortedData[29].properties[props.colorScaleKey], sortedData[19].properties[props.colorScaleKey], sortedData[9].properties[props.colorScaleKey]];
+    let colorDomain = [
+      sortedData[29].properties[props.colorScaleKey],
+      sortedData[19].properties[props.colorScaleKey],
+      sortedData[9].properties[props.colorScaleKey],
+    ];
     switch (props.colorScaleTransform) {
       case 'percentPopulation':
         sortedData = props.mapShapeData.features
@@ -317,7 +332,7 @@ const Map: React.FunctionComponent<{
     props.radiusScaleKey,
     props.svgWidth,
     props.svgHeight,
-    props.popUpOpen
+    props.popUpOpen,
   ]);
   return (
     <div>

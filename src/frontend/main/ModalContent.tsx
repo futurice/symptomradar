@@ -46,7 +46,7 @@ const ModalContent = ({ content }: ModalContentProps) => {
       : 'ei tietoa';
   const breathingDifficulties =
     content.properties.breathing_difficulties_yes !== -1
-      ? (content.properties.breathing_difficulties_yes).toLocaleString('fi-FI')
+      ? content.properties.breathing_difficulties_yes.toLocaleString('fi-FI')
       : 'ei tietoa';
   return (
     <>
@@ -88,10 +88,7 @@ const ModalContent = ({ content }: ModalContentProps) => {
         <span>
           {breathingDifficulties} (
           {content.properties.breathing_difficulties_yes !== -1
-            ? `${(
-                ((content.properties.breathing_difficulties_yes) * 100) /
-                content.properties.responses
-              ).toFixed(1)}%`
+            ? `${((content.properties.breathing_difficulties_yes * 100) / content.properties.responses).toFixed(1)}%`
             : 'ei tietoa'}
           )
         </span>

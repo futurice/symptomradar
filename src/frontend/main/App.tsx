@@ -1,8 +1,8 @@
 import React from 'react';
-import { Router } from '@reach/router';
+import { Router, Location } from '@reach/router';
 import styled, { createGlobalStyle } from 'styled-components';
 import Header from './Header';
-import Map from './Map';
+import MapView from './MapView';
 import About from './About';
 import Survey from './Survey';
 import Privacy from './Privacy';
@@ -90,10 +90,14 @@ const AppContainer = styled.div`
 export const App = () => (
   <AppContainer>
     <GlobalStyles />
-    <Header />
+    <Location>
+      {({ location }) => {
+        return <Header location={location.pathname} />;
+      }}
+    </Location>
     <main>
       <Router>
-        <Map path="/" />
+        <MapView path="/" />
         <About path="about" />
         <Privacy path="tietosuojalauseke" />
         <Survey path="survey" />

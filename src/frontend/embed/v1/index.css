@@ -270,9 +270,12 @@ form .action-button {
 
 /* Form embedded on main site, just the form without iframe paddings */
 .plain #collapse-survey,
-.plain #start-survey,
-.plain .form-info {
+.plain #start-survey {
   margin-left: 16px;
+}
+
+.plain .form-info {
+  margin: 0 16px;
 }
 
 .plain #submit-success,

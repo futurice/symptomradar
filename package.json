@@ -31,6 +31,8 @@
     "ts-node": "NODE_PATH=src ts-node --compiler-options '{\"module\":\"commonjs\"}'"
   },
   "dependencies": {
+    "d3": "^5.15.1",
+    "d3-geo-projection": "^2.8.1",
     "fp-ts": "^2.5.3",
     "iframe-resizer": "^4.2.10",
     "io-ts": "^2.1.2",
@@ -40,6 +42,7 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
     "styled-components": "^5.0.1",
+    "topojson": "^3.0.2",
     "uuid": "^7.0.2"
   },
   "devDependencies": {

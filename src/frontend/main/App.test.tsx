@@ -1,9 +1,8 @@
 import { render } from '@testing-library/react';
 import React from 'react';
-import { AppPlaceholder } from './AppPlaceholder';
+import { App } from './App';
 
-test('renders Sivusto päivittyy pian text', () => {
-  const { getByText } = render(<AppPlaceholder />);
-  const linkElement = getByText(/Sivusto päivittyy pian/i);
-  expect(linkElement).toBeInTheDocument();
+it('renders the map link element', () => {
+  const { getByText } = render(<App />);
+  expect(getByText('Kartta')).toBeInTheDocument();
 });

@@ -22,7 +22,7 @@ resource "aws_s3_bucket" "frontend_code" {
   # Note, though, that when accessing the bucket over its SSL endpoint, the index_document will not be used
   website {
     index_document = "index.html"
-    error_document = "error.html"
+    error_document = "index.html" # for any URL that isn't a static file, route the request to the index file, so it can try to handle it with client-side routing
   }
 
   logging {
@@ -70,6 +70,8 @@ module "frontend" {
   viewer_https_only          = true
   basic_auth_username        = var.frontend_password == "" ? "" : "symptomradar"
   basic_auth_password        = var.frontend_password
+  override_response_code     = 200
+  override_response_status   = "OK"
 
   add_response_headers = {
 

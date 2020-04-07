@@ -79,6 +79,15 @@ module "frontend" {
     X-XSS-Protection          = "1; mode=block"    # stops pages from loading when they detect reflected cross-site scripting (XSS) attacks; besides legacy browsers, superseded by CSP
     Referrer-Policy           = "same-origin"      # a referrer will be sent for same-site origins, but cross-origin requests will send no referrer information
 
+    # Remove some headers which could disclose details about our upstream server
+    # Note that not all headers can be altered by Lambda@Edge: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-requirements-limits.html#lambda-header-restrictions
+    Server                 = "" # "Server" header can't be removed, but this will reset it to "CloudFront"
+    X-Amz-Error-Code       = ""
+    X-Amz-Error-Message    = ""
+    X-Amz-Error-Detail-Key = ""
+    X-Amz-Request-Id       = ""
+    X-Amz-Id-2             = ""
+
     # Add CSP header:
     # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
     Content-Security-Policy = replace(replace(replace(<<-EOT

@@ -107,7 +107,7 @@ const FilterButton = styled(PrimaryButton)<FilterButtonProps>`
 
 const MapInfo = styled.div`
   position: fixed;
-  bottom: 36px;
+  bottom: 34px;
   width: 100vw;
   background: rgba(255, 255, 255, 0.6);
   text-align: left;
@@ -295,7 +295,8 @@ const MapView = (props: RouteComponentProps) => {
                   <CloseIcon />
                 </CloseButton>
                 <p>
-                  Kartta näyttää, millaisia oireita vastaajilla on eri kaupungeissa. Mukana ovat kaupungit, joista on saatu yli 25 vastausta.
+                  Kartta näyttää, millaisia oireita vastaajilla on eri kaupungeissa. Mukana ovat kaupungit, joista on
+                  saatu yli 25 vastausta.
                 </p>
                 <p>Kaupunkien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
               </div>

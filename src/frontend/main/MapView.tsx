@@ -100,7 +100,6 @@ const FilterWrapper = styled.div`
 const FilterButton = styled(PrimaryButton)<FilterButtonProps>`
   flex: 0 0 auto;
   margin-right: 16px;
-  cursor: pointer;
   background: ${props => (props.isActive ? '#FFF' : '#595959')};
   color: ${props => (props.isActive ? '#000' : '#FFF')};
   border: ${props => (props.isActive ? '1px solid #000' : '1px solid transparent')};
@@ -253,28 +252,25 @@ const MapView = (props: RouteComponentProps) => {
           <FilterButton
             type="button"
             label="Epäilys koronasta"
-            filterSelection="corona_suspicion_yes"
             isActive={selectedFilter === 'corona_suspicion_yes' ? true : false}
-            click={(e: string) => {
-              setSelectedFilter(e);
+            handleClick={() => {
+              setSelectedFilter('corona_suspicion_yes');
             }}
           />
           <FilterButton
             type="button"
             label="Yskää"
-            filterSelection="cough_yes"
             isActive={selectedFilter === 'cough_yes' ? true : false}
-            click={(e: string) => {
-              setSelectedFilter(e);
+            handleClick={() => {
+              setSelectedFilter('cough_yes');
             }}
           />
           <FilterButton
             type="button"
             label="Kuumetta"
-            filterSelection="fever_yes"
             isActive={selectedFilter === 'fever_yes' ? true : false}
-            click={(e: string) => {
-              setSelectedFilter(e);
+            handleClick={() => {
+              setSelectedFilter('fever_yes');
             }}
           />
         </FilterWrapper>

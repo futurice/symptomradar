@@ -66,17 +66,17 @@ variable "origin_custom_port" {
 }
 
 variable "override_response_status" {
-  description = "When this and the other `override_response_*` variables are non-empty, skip sending the request to the origin altogether, and instead respond as instructed here"
+  description = "When non-empty, replace the HTTP status code received from the origin with this; e.g. override a `404` into a `200`"
   default     = ""
 }
 
 variable "override_response_status_description" {
-  description = "Same as `override_response_status`"
+  description = "When non-empty, replace the HTTP status description received from the origin with this; e.g. override a `\"Not Found\"` into a `\"OK\"`"
   default     = ""
 }
 
 variable "override_response_body" {
-  description = "Same as `override_response_status`"
+  description = "When this and ALL other `override_response_*` variables are non-empty, skip sending the request to the origin altogether, and instead respond as instructed here"
   default     = ""
 }
 

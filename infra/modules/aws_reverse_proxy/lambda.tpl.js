@@ -66,6 +66,8 @@ exports.viewer_response = (event, context, callback) => {
     ...response.headers,
     ...formatHeaders(addResponseHeaders),
   };
+  response.status = config.override_response_status || response.status;
+  response.statusDescription = config.override_response_status_description || response.statusDescription;
 
   log('aws_reverse_proxy.viewer_response.after', response);
 

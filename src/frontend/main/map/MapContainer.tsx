@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import DorlingCartogram from './DorlingCartogram';
 
 const App: React.FunctionComponent<{ mapShapeData: any, selectedFilter :string, mapHeight:number, mapWidth:number, popUpOpen:boolean }> = props => {

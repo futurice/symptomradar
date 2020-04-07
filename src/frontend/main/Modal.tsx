@@ -29,9 +29,11 @@ const ModalWrapper = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
   outline: 0;
+  pointer-events: none;
 `;
 
 const ModalContent = styled.div`
+  pointer-events: auto;
   z-index: 100;
   background: white;
   padding: 32px 18px 52px;
@@ -64,7 +66,7 @@ const Modal: React.FC<ModalProps> = ({ isShowing, hide, children }) =>
   isShowing
     ? ReactDOM.createPortal(
         <>
-          <ModalOverlay />
+          <ModalOverlay onClick={hide} />
           <ModalWrapper aria-modal aria-hidden tabIndex={-1} role="dialog">
             <ModalContent>
               <ModalCloseButton type="button" data-dismiss="modal" aria-label="Close" onClick={hide}>

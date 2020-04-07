@@ -50,7 +50,12 @@
     "end_text_1": "Pyydämme, että palaat kertomaan oireistasi kolmen päivän kuluttua. Jos täytät kyselyn uudelleen samalla laitteella 14 vuorokauden kuluessa, vastaukset voidaan yhdistää keskenään, jolloin tiedoista on enemmän hyötyä. Tiedot ovat silti anonyymejä, eikä niitä voi palvelussa yhdistää vastaajaan.",
     "end_text_2": "Kun vastauksia on kertynyt riittävästi, niitä aletaan tutkia yhteistyössä terveydenhuollon asiantuntijoiden kanssa.",
     "end_text_3": "Jos sinulla on hengitysvaikeuksia, kova kuume tai et jaksa nousta vuoteesta, ota yhteys terveydenhuoltoon. Jos epäilet sairastuneesi koronaviruksen aiheuttamaan tautiin ja haluat tehdä oirearvion, siirry",
-    "end_text_4": "Omaolo.fi-palveluun."
+    "end_text_4": "Omaolo.fi-palveluun.",
+    "returning_user_title": "Tervetuloa takaisin Oiretutkaan!",
+    "returning_user_text_1": "Tämän laitteen käyttäjä on raportoinut palvelussa aiemmin oireistaan.",
+    "returning_user_text_2": "Voit vastata kyselyyn uudelleen ja kertoa tämänhetkisistä oireistasi. Yhdistämme tiedot aiempiin vastauksiin, jolloin tieto on entistä hyödyllisempää. Emme edelleenkään tallenna tietoja niin, että niitä voisi yhdistää tunnistettuun käyttäjään.",
+    "privacy_read_more": "Lue lisää tietosuojasta täältä",
+    "thank_you_help": "Kiitos avustasi!"
   },
   "en": {
     "lng": "en",
@@ -103,6 +108,11 @@
     "end_text_1": "We kindly request that you report your symptoms via the Oiretutka service again in 3 days' time. By filling in the questionnaire using the same device within 14 days, your responses can be connected to each other, making the information provided even more valuable. Your responses will still remain anonymous, and cannot be traced back to the respondent. You can read more about our Data Protection and Privacy Procedure here.",
     "end_text_2": "Once enough responses have been collected, these will be studied in collaboration with medical experts.",
     "end_text_3": "If you are experiencing difficulties in breathing, a high fever, or cannot get out of bed, please contact your medical health provider. If you suspect that you have contracted the coronavirus and want to check your symptoms, please visit",
-    "end_text_4": "Omaolo.fi service."
+    "end_text_4": "Omaolo.fi service.",
+    "returning_user_title": "Welcome back to Oiretutka!",
+    "returning_user_text_1": "The user of this device has previously reported symptoms to the service.",
+    "returning_user_text_2": "We would appreciate if you could answer the questions again and tell us about your current health situation. To make the information more insightful, we will combine the data provided with the previous answers. We are not storing information able to identify respondents.",
+    "privacy_read_more": "Read more about the privacy policy here (in Finnish)",
+    "thank_you_help": "Thank you for your help!"
   }
 }

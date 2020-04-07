@@ -3,3 +3,6 @@
 
 # for local development, setup mock api endpoint with e.g. https://mockoon.com
 export REACT_APP_API_ENDPOINT="http://localhost:3001/submit-response"
+
+# Check and use required Node version
+~/bin/check-required-node-version || nvm use `~/bin/get-required-node-version`

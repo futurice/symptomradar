@@ -107,12 +107,11 @@ Install NPM dependencies
 
 ```shell
 cd symptomradar
-rm -rf node_modules
 nvm use
 npm i
 ```
 
-(`rm -rf node_modules` is a completely optional step needed only if you have previously attempted to install the project and things went wrong)
+(f you have previously attempted to install the project and things went wrong, add an extra step `rm -rf node_modules` before `nvm use`)
 
 If you have some issues with the packages installation, please try the following:
 

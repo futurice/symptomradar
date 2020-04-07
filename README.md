@@ -40,7 +40,7 @@ This section is still under construction, if you have trouble setting up the env
 
 The project is currently divided into three parts:
 
-- Backend, which that takes care of collecting and storing survey answers with a stong care for privacy and security
+- Backend, which takes care of collecting and storing survey responses with strong care for privacy and security
 - Frontend main app, the main pages of [Oiretutka.fi](https://www.oiretutka.fi)
 - Frontend embed, [the survey form embedded in Helsingin Sanomat](https://www.hs.fi/kotimaa/art-2000006455647.html) and other participating publications
 
@@ -54,7 +54,7 @@ src/
 - backend/
 ```
 
-`<insert some Jarno wisdom here>`
+The backend is compiled from TS to JS and deployed to AWS Lambda.
 
 ### Frontend main app
 
@@ -93,7 +93,7 @@ Project requires Node.js >=12 <13 to be installed; all other dependencies come f
 
 You will need Node and npm (npm comes with Node). We recommend [using a node version manager, nvm](https://github.com/nvm-sh/nvm) to install Node, as it allows automatically switching between node versions across projects.
 
-We recommend also installing [direnv](https://direnv.net/), which helps automatically set environment variables as you switch directories.
+We recommend also installing [direnv](https://direnv.net/), which helps to automatically set environment variables as you switch directories.
 
 ## Development environment setup
 

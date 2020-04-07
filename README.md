@@ -32,7 +32,76 @@ For good first issues regarding contributing, see [issues labeled with open sour
 
 # Local development environment
 
-Please contribute by writing a document about local development environment. See above.
+This section is still under construction, if you have troubles setting the environment, please contact us (see below section).
+
+## Prerequisites
+
+Project requires Node.js >=12 <13 to be installed; all other dependencies come from NPM via package.json.
+
+You will need Node and npm (npm comes with Node). We recommend [using a node version manager, nvm](https://github.com/nvm-sh/nvm) to install Node, as it allows automatically switching between node versions across projects.
+
+We recommend also installing [direnv](https://direnv.net/), which helps automatically set environment variables as you switch directories.
+
+## Development environment setup
+
+Clone the project from GitHub (make sure to clone it from the directory you wish to contain your project)
+
+```shell
+git clone git@github.com:futurice/symptomradar.git
+```
+
+Install NPM dependencies
+
+```shell
+cd symptomradar
+rm -rf node_modules
+nvm use
+npm i
+```
+
+If you have some issues with the packages installation, please try the following:
+
+```shell
+rm -rf node_modules
+nvm use
+npm i --no-optional
+```
+
+## Environment variables
+
+This application uses a number of environment variables to customise the runtime behaviour. The following steps assume that you are using [direnv](https://direnv.net/).
+
+Copy over .envrc.sample into .envrc, at the project root
+
+```shell
+cp .envrc.sample .envrc
+```
+
+To work with the frontend, you shouldn't need any further variable than the ones already provided.
+Follow the instructions inside `.envrc` if you need to set up a mock API endpoint.
+
+Finally, you need to read the variables from `.envrc`:
+
+```shell
+source .envrc
+```
+
+This command will also make sure that you are using the right Node version for this project.
+
+## Available NPM tasks (frontend)
+
+- `frontend-main-start` runs the React application of Oiretutka
+- `frontend-main-build` creates a build for the React application
+- `frontend-embed-v1-start` runs the jQuery embed of Oiretutka
+- `frontend-embed-v1-build` creates a build for the jQuery embed
+
+## Wrap up
+
+For the following times you will work on the project, you will need to
+
+- enter the project folder
+- run `source .env`, which will automatically set up the right node version (assuming you are using nvm)
+- `npm run frontend-main-start` or `npm run frontend-embed-v1-start` according to which part of the project you want to run locally
 
 # Contact
 

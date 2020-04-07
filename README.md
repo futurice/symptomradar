@@ -48,11 +48,15 @@ If you find a security related issue in our service, please contact datadeski@hs
 - Ensure `dev` has deployed the release you're planning to put out
 - [Test that basic data collection works directly](https://dev.oiretutka.fi/embed/v1/) and/or [embedded](https://www.hs.fi/datajournalismi/art-2000006450733.html)
 - Take a peek at the `dev` overview dashboard on CloudWatch and make sure everything looks fine
+- Run `terraform apply` to ensure there's no unapplied changes
+- Release the version pin for `module "env_prod"` in `infra/main.tf` (that is, remove the `?ref=vX.Y` part from the module source string)
+- Run `terraform apply` again, and apply any changes to prod (don't do this without knowing what you're doing, though; it's prod infrastructure!)
 - Consult the "N commits to master since this release" link in [releases](https://github.com/futurice/symptomradar/releases) and write release notes
 - Create the release on GitHub
 - Check that the [related action](https://github.com/futurice/symptomradar/actions?query=workflow%3A%22Deploy+PROD%22) completes successfully
 - [Test that basic data collection works directly](https://www.oiretutka.fi/embed/v1/) and/or [embedded](https://www.hs.fi/kotimaa/art-2000006452379.html)
 - Take a peek at the `prod` overview dashboard on CloudWatch and make sure everything looks fine
+- Set the version pin back to `infra/main.tf`, pointing to the newly created release
 
 # MIT License
 

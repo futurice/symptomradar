@@ -1,3 +1,5 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # Symptomradar (Oiretutka) crowdsources coronavirus symptoms from news media audience
 
 Symptomradar (Oiretutka in Finnish) is a service by software company Futurice and newspaper Helsingin Sanomat to crowdsource coronavirus symptoms from general public.
@@ -155,6 +157,20 @@ For the following times you will work on the project, you will need to
 - enter the project folder
 - run `source .env`, which will automatically set up the right node version (assuming you are using nvm)
 - `npm run frontend-main-start` or `npm run frontend-embed-v1-start` according to which part of the project you want to run locally
+
+## Developing the stand alone (React) app
+
+## Developing the embedded form (with vanilla JS, jQuery and TypeScript)
+
+As said earlier in this document, the crowdsourcing happens by asking questions in an embed that is placed on news media pages or articles.
+
+Performance wise, it didn't seem like a good idea to develop the embedded form with a modern JS framework and have all the users who are opening the news articles download extra data, when the form can be implemented using basic HTML and very light-weight (vanilla) JavaScript and JS libraries (jQuery). The JavaScript is typed with TypeScript.
+
+If you have worked previously with modern JS frameworks, these technologies might feel a bit old-fashioned and foreign. If you haven't used vanilla JavaScript in a while or haven't noticed you know vanilla JS, [read and bookmark this cheatsheet](https://htmldom.dev/), [practice JavaScript interactively online](https://learnjavascript.online/) or just [browse extensive JS documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript). If your jQuery skills are rusty, or you haven't worked with jQuery before, [take a look at jQuery basics](http://jqfundamentals.com/chapter/jquery-basics).
+
+If you haven't worked with TypeScript before, take a look at [the TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/basic-types.html). Mostly TypeScript means that all function parameters and outputs have to be typed. If [the basic types](https://www.typescriptlang.org/docs/handbook/basic-types.html) aren't enough, take a look at [jQuery types](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/682ebb5fcda0d6d68bda36862171cd1f116121b2/types/jquery) too.
+
+Also, as the form is emdedded through an <iframe> element, it's a good idea to read [the ultimate guide to iframes](https://blog.logrocket.com/the-ultimate-guide-to-iframes/), it'll give you more context about how the media sites will use this form.
 
 # Contact
 

@@ -59,7 +59,7 @@ resource "aws_cloudfront_distribution" "this" {
     # https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-edge-delete-replicas.html
     lambda_function_association {
       event_type = "origin-response" # one of [ viewer-request, origin-request, viewer-response, origin-response ]
-      lambda_arn = "${aws_lambda_function.origin_response_temp.arn}:${aws_lambda_function.origin_response_temp.version}"
+      lambda_arn = "${aws_lambda_function.origin_response.arn}:${aws_lambda_function.origin_response.version}"
     }
   }
 

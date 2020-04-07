@@ -42,7 +42,7 @@ The project is currently divided into three parts:
 
 - Backend, which that takes care of collecting and storing survey answers with a stong care for privacy and security
 - Frontend main app, the main pages of [Oiretutka.fi](https://oiretutka.fi)
-- Frontend embed, [the survey form embedded in Helsingin Sanomat](https://www.hs.fi/kotimaa/art-2000006455647.html).
+- Frontend embed, [the survey form embedded in Helsingin Sanomat](https://www.hs.fi/kotimaa/art-2000006455647.html) and other participating publications
 
 ### Backend
 

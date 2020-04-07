@@ -59,6 +59,8 @@ nvm use
 npm i
 ```
 
+(`rm -rf node_modules` is a completely optional step needed only if you have previously attempted to install the project and things went wrong)
+
 If you have some issues with the packages installation, please try the following:
 
 ```shell

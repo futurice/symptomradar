@@ -64,6 +64,22 @@ resource "aws_lambda_function" "viewer_request" {
   tags             = var.tags
 }
 
+resource "aws_lambda_function" "origin_response_temp" {
+  provider = aws.us_east_1 # This alias is needed because ACM is only available in the "us-east-1" region
+
+  filename         = data.archive_file.lambda_zip.output_path
+  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+  function_name    = "${var.name_prefix}-edge-lambda-response-temp"
+  role             = aws_iam_role.this.arn
+  description      = "${var.comment_prefix}${var.site_domain} (response handler)"
+  handler          = "lambda.origin_response"
+  runtime          = "nodejs12.x"
+  publish          = true # because: error creating CloudFront Distribution: InvalidLambdaFunctionAssociation: The function ARN must reference a specific function version. (The ARN must end with the version number.)
+  tags             = var.tags
+}
+
+# TODO: Once the above, new version of this function has been fully rolled out, this old function can be removed.
+# After that, the "-temp" suffix should be removed using the same process.
 resource "aws_lambda_function" "viewer_response" {
   provider = aws.us_east_1 # This alias is needed because ACM is only available in the "us-east-1" region
 

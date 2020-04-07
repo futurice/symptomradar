@@ -56,10 +56,10 @@ exports.viewer_request = (event, context, callback) => {
 };
 
 // Handle outgoing response to the client
-exports.viewer_response = (event, context, callback) => {
+exports.origin_response = (event, context, callback) => {
   const response = event.Records[0].cf.response;
 
-  log('aws_reverse_proxy.viewer_response.before', response);
+  log('aws_reverse_proxy.origin_response.before', response);
 
   response.headers = {
     ...formatHeaders(hstsHeaders),
@@ -69,7 +69,7 @@ exports.viewer_response = (event, context, callback) => {
   response.status = config.override_response_status || response.status;
   response.statusDescription = config.override_response_status_description || response.statusDescription;
 
-  log('aws_reverse_proxy.viewer_response.after', response);
+  log('aws_reverse_proxy.origin_response.after', response);
 
   callback(null, response);
 };

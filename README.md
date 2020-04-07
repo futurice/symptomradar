@@ -18,7 +18,7 @@ Here you can find [the release from Helsingin Sanomat](https://www.hs.fi/kotimaa
 
 We are releasing the results from the survey as open data. Please [read the terms (currently only in Finnish)](https://www.oiretutka.fi/tietosuojalauseke.html).
 
-You can [download an open dataset of some 100k replies in city-level from here].(https://interactive.hs.fi/arkku/files/26431963citylevel-opendata-3-4-2020.csv)
+You can [download an open dataset of some 100k replies in city-level from here](https://interactive.hs.fi/arkku/files/26431963citylevel-opendata-3-4-2020.csv).
 
 # How to contribute
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
+import CloseIcon from './assets/CloseIcon';
 
 type ModalProps = {
   isShowing: boolean;
@@ -49,11 +50,7 @@ const ModalContent = styled.div`
 `;
 
 const ModalCloseButton = styled.button`
-  font-size: 46px;
-  padding: 0 10px;
-  font-weight: 300;
-  line-height: 1;
-  color: #000;
+  padding: 10px;
   cursor: pointer;
   border: none;
   background-color: transparent;
@@ -71,7 +68,7 @@ const Modal: React.FC<ModalProps> = ({ isShowing, hide, children }) =>
           <ModalWrapper aria-modal aria-hidden tabIndex={-1} role="dialog">
             <ModalContent>
               <ModalCloseButton type="button" data-dismiss="modal" aria-label="Close" onClick={hide}>
-                <span aria-hidden="true">&times;</span>
+                <CloseIcon />
               </ModalCloseButton>
               {children}
             </ModalContent>

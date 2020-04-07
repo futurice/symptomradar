@@ -8,6 +8,7 @@ import PrimaryButton from './PrimaryButton';
 import MapContainer from './map/MapContainer';
 import useModal from './useModal';
 import responseData from './assets/data/citylevel-opendata-3-4-2020.json';
+import CloseIcon from './assets/CloseIcon';
 
 interface mapProperties {
   City?: string;
@@ -109,9 +110,9 @@ const MapInfo = styled.div`
   position: fixed;
   bottom: 36px;
   width: 100vw;
-  background: rgba(255,255,255,0.6);
+  background: rgba(255, 255, 255, 0.6);
   text-align: left;
-  padding: 6px 30px 0 20px;
+  padding: 6px 34px 0 20px;
   border-top: 1px solid #000;
   line-height: 1.25;
 
@@ -124,7 +125,7 @@ const TotalResponses = styled.div`
   background: #fff;
   position: fixed;
   bottom: 0;
-  padding: 10px 4px;
+  padding: 10px 0;
   font-size: 14px;
   font-style: italic;
   width: 100vw;
@@ -137,16 +138,12 @@ const TotalResponses = styled.div`
 `;
 
 const CloseButton = styled.button`
-  font-size: 46px;
-  font-weight: 300;
-  line-height: 1;
-  color: #000;
   cursor: pointer;
   border: none;
   background-color: transparent;
   position: absolute;
-  top: 9px;
-  right: 6px;
+  top: 13px;
+  right: 4px;
   z-index: 1;
 `;
 
@@ -165,7 +162,7 @@ const MapView = (props: RouteComponentProps) => {
   const totalReponses = responseData.reduce((accumulator, currentValue) => {
     return accumulator + currentValue.responses;
   }, 0);
-  
+
   window.addEventListener('resize', () => {
     setMapHeight(window.innerHeight - 225);
     setMapWidth(window.innerWidth - 25);
@@ -245,7 +242,7 @@ const MapView = (props: RouteComponentProps) => {
         </select>
       </MapNav>
       <MapWrapper>
-        <MapContainer 
+        <MapContainer
           mapShapeData={mapShapeData}
           selectedFilter={selectedFilter}
           mapHeight={mapHeight}
@@ -284,13 +281,18 @@ const MapView = (props: RouteComponentProps) => {
         <MapInfo>
           {showMapInfo && (
             <>
-              <div className='popUp'>
-                <CloseButton type="button" data-dismiss="modal" aria-label="Close" onClick={() => setShowMapInfo(false)}>
-                  <span aria-hidden="true">&times;</span>
+              <div className="popUp">
+                <CloseButton
+                  type="button"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                  onClick={() => setShowMapInfo(false)}
+                >
+                  <CloseIcon />
                 </CloseButton>
                 <p>
                   Kartta näyttää, millaisia oireita vastaajilla on eri kunnissa. Mukana ovat kunnat, joista on saatu yli
-                  25 vastausta. 
+                  25 vastausta.
                 </p>
                 <p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
               </div>

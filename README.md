@@ -34,6 +34,57 @@ For good first issues regarding contributing, see [issues labeled with open sour
 
 This section is still under construction, if you have troubles setting the environment, please contact us (see below section).
 
+## Project structure
+
+The project is currently divided into three parts:
+
+- Backend, which that takes care of collecting and storing survey answers with a stong care for privacy and security
+- Frontend main app, the main pages of [Oiretutka.fi](https://oiretutka.fi)
+- Frontend embed, [the survey form embedded in Helsingin Sanomat](https://www.hs.fi/kotimaa/art-2000006455647.html).
+
+### Backend
+
+Backend related files can be found in:
+
+```
+index-backend.ts
+src/
+- backend/
+```
+
+`<insert some Jarno wisdom here>`
+
+### Frontend main app
+
+As previously mentioned, the main app consists in the pages of [Oiretutka.fi](https://oiretutka.fi). Related files can be found in:
+
+```
+index-frontend-main.tsx
+src/
+- frontend/
+-- main/
+```
+
+This part has been developed using [React](https://reactjs.org/) and [Typescript](https://www.typescriptlang.org/).
+
+### Frontend embed
+
+Our embed consists in [the survey form embedded in Helsingin Sanomat](https://www.hs.fi/kotimaa/art-2000006455647.html). Related files can be found in:
+
+```
+index-frontend-embed-v1tsx
+src/
+- frontend/
+-- embed/
+--- v1/
+```
+
+The embed has been developed using [jQuery 3.4.1](https://jquery.com/). The embed is also used in the frontend main app.
+
+### Common files
+
+There are files that are shared across the apps, e.g. `fonts.d.ts` and `src/common/`.
+
 ## Prerequisites
 
 Project requires Node.js >=12 <13 to be installed; all other dependencies come from NPM via package.json.

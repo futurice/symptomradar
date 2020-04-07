@@ -173,7 +173,7 @@ const Map: React.FunctionComponent<{
     let keyG = mapG.append('g').attr('class','keyG').attr('transform',`translate(0,${0 - 20})`)
     let colorKey = [...props.colorRange]
     colorKey.reverse().push(props.defaultColor)
-    let colorLegend = ['Yli 30 %','25-30%','20-25%','15-20%','10-15%','Alle 10%', 'Ei tietoa']
+    let colorLegend = ['Top 10','10-20','20-30','Rest','Ei tietoa']
     keyG.selectAll('.keyRect')
       .data(colorKey.reverse())
       .enter()
@@ -245,7 +245,7 @@ const Map: React.FunctionComponent<{
     let sortedData: any = props.mapShapeData.features
       .filter((a: { properties: { responses: number } }) => a.properties.responses !== -1)
       .sort((a: any, b: any) => d3.descending(a.properties[props.colorScaleKey], b.properties[props.colorScaleKey]));
-    let colorDomain = [sortedData[19].properties[props.colorScaleKey], sortedData[9].properties[props.colorScaleKey]];
+    let colorDomain = [sortedData[29].properties[props.colorScaleKey], sortedData[19].properties[props.colorScaleKey], sortedData[9].properties[props.colorScaleKey]];
     switch (props.colorScaleTransform) {
       case 'percentPopulation':
         sortedData = props.mapShapeData.features
@@ -257,6 +257,7 @@ const Map: React.FunctionComponent<{
             ),
           );
         colorDomain = [
+          (sortedData[29].properties[props.colorScaleKey] * 100) / sortedData[29].properties.Population,
           (sortedData[19].properties[props.colorScaleKey] * 100) / sortedData[19].properties.Population,
           (sortedData[9].properties[props.colorScaleKey] * 100) / sortedData[9].properties.Population,
         ];
@@ -271,6 +272,7 @@ const Map: React.FunctionComponent<{
             ),
           );
         colorDomain = [
+          (sortedData[29].properties[props.colorScaleKey] * 100) / sortedData[29].properties.responses,
           (sortedData[19].properties[props.colorScaleKey] * 100) / sortedData[19].properties.responses,
           (sortedData[9].properties[props.colorScaleKey] * 100) / sortedData[9].properties.responses,
         ];

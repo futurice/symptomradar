@@ -70,6 +70,9 @@ resource "aws_iam_group_policy" "athena_developers" {
 EOF
 }
 
+# This policy allows the read-only Athena users to also manage their own passwords, access keys & MFA devices; see:
+# - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_aws_my-sec-creds-self-manage-pass-accesskeys-ssh.html
+# - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_aws_my-sec-creds-self-manage-mfa-only.html
 data "aws_iam_policy_document" "iam_fine_tune" {
   statement {
     sid = "AllowViewAccountInfo"

@@ -12,7 +12,8 @@ const App: React.FunctionComponent<{ mapShapeData: any, selectedFilter :string, 
         radiusRange={[2, (props.mapHeight * 30) / 920]}
         radiusScaleKey={'Population'}
         defaultRadius={2}
-        colorRange={['#bee7fa', '#00bdf2', '#082163']}
+        colorRange={['#fed976', '#feb24c', '#fd8d3c','#fc4e2a','#e31a1c','#b10026']}
+        colorDomain={[10,15,20,25,30]}
         colorScaleKey={props.selectedFilter}
         defaultColor={'#ccd2d5'}
         colorScaleTransform={'percentResponse'}

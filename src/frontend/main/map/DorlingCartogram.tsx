@@ -172,7 +172,7 @@ const Map: React.FunctionComponent<{
     let keyG = mapG.append('g').attr('class','keyG').attr('transform',`translate(0,${0 - 20})`)
     let colorKey = [...props.colorRange]
     colorKey.reverse().push(props.defaultColor)
-    let colorLegend = ['Top 10', '10 - 20','20+', 'Ei tietoa']
+    let colorLegend = ['Yli 30 %','25-30%','20-25%','15-20%','10-15%','Alle 10%', 'Ei tietoa']
     keyG.selectAll('.keyRect')
       .data(colorKey.reverse())
       .enter()

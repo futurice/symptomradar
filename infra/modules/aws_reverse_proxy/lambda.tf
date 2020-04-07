@@ -39,6 +39,17 @@ data "archive_file" "lambda_zip" {
   }
 }
 
+# This resource doesn't actually do anything (as is (kind of) the case with null_resource's anyway).
+# It merely exists to make Terraform plans more informative: because the Lambda@Edge config is baked
+# into the JS template, normally you would just see the opaque source_code_hash changing in the plan.
+# With this, you'll actually see which config/header is being changed.
+resource "null_resource" "cloudfront_lambda_at_edge" {
+  triggers = merge(
+    local.config,
+    { add_response_headers = jsonencode(var.add_response_headers) }
+  )
+}
+
 resource "aws_lambda_function" "viewer_request" {
   provider = aws.us_east_1 # This alias is needed because ACM is only available in the "us-east-1" region
 

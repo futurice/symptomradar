@@ -142,8 +142,6 @@ data "aws_iam_policy_document" "iam_fine_tune" {
       values   = ["false"]
     }
     effect = "Deny"
-
-
   }
 }
 
@@ -156,4 +154,3 @@ resource "aws_iam_group_policy_attachment" "iam_fine_tune_athena_user" {
   group      = aws_iam_group.athena_developers.name
   policy_arn = aws_iam_policy.iam_fine_tune.arn
 }
-

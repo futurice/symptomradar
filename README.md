@@ -41,7 +41,7 @@ This section is still under construction, if you have trouble setting up the env
 The project is currently divided into three parts:
 
 - Backend, which that takes care of collecting and storing survey answers with a stong care for privacy and security
-- Frontend main app, the main pages of [Oiretutka.fi](https://oiretutka.fi)
+- Frontend main app, the main pages of [Oiretutka.fi](https://www.oiretutka.fi)
 - Frontend embed, [the survey form embedded in Helsingin Sanomat](https://www.hs.fi/kotimaa/art-2000006455647.html) and other participating publications
 
 ### Backend
@@ -58,7 +58,7 @@ src/
 
 ### Frontend main app
 
-As previously mentioned, the main app consists in the pages of [Oiretutka.fi](https://oiretutka.fi). Related files can be found in:
+As previously mentioned, the main app consists in the pages of [Oiretutka.fi](https://www.oiretutka.fi). Related files can be found in:
 
 ```
 index-frontend-main.tsx

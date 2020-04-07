@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 type ButtonProps = {
   label: string;
-  className?: string;
   type: 'submit' | 'button';
   handleClick?: any;
 };
@@ -20,9 +19,9 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const PrimaryButton = ({ type, label, className, handleClick }: ButtonProps) => {
+const PrimaryButton = ({ type, label, handleClick }: ButtonProps) => {
   return (
-    <Button type={type} className={className} onClick={handleClick}>
+    <Button type={type} onClick={handleClick}>
       {label}
     </Button>
   );

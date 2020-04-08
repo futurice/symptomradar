@@ -98,6 +98,7 @@ export const App = () => (
     <main>
       <Router>
         <MapView path="/" />
+        <MapView path="/map-embed" />
         <About path="about" />
         <Privacy path="tietosuojalauseke" />
         <Survey path="survey" />

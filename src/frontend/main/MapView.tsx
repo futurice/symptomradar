@@ -147,10 +147,13 @@ const CloseButton = styled.button`
 `;
 
 const MapView = (props: RouteComponentProps) => {
+  const currentPath = props.location!.pathname;
+  const isEmbed = currentPath === '/map-embed';
+  const topPartHeight = isEmbed ? 80 : 225;
   const { isShowing, toggleModal } = useModal();
   const [showMapInfo, setShowMapInfo] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState('corona_suspicion_yes');
-  const [mapHeight, setMapHeight] = useState(window.innerHeight - 225);
+  const [mapHeight, setMapHeight] = useState(window.innerHeight - topPartHeight);
   const [mapWidth, setMapWidth] = useState(window.innerWidth - 25);
   const [activeCityData, setActiveCityData] = useState({});
 

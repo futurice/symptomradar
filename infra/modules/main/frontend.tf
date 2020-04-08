@@ -123,6 +123,10 @@ module "frontend" {
       style-src-attr # specifies valid sources for inline styles applied to individual DOM elements
         'none' # we don't currently use any -> prohibit them all
         ;
+      frame-src # specifies valid sources for nested browsing contexts loading using elements such as <frame> and <iframe>
+        'self' # our standalone site hosts our embed -> allow us to frame ourselves
+        ;
+
 EOT
     , "/#.*/", " "), "/[ \n]+/", " "), " ;", ";") # strip out comments and newlines, and collapse consecutive whitespace so it looks pleasant
 

@@ -236,7 +236,7 @@ const MapView = (props: RouteComponentProps) => {
             toggleModal();
           }}
         >
-          <option value="">Valitse kaupunki...</option>
+          <option value="">Valitse kunta...</option>
           {cities.map((city: string) => {
             return (
               <option key={city} value={city}>
@@ -301,10 +301,10 @@ const MapView = (props: RouteComponentProps) => {
                   <CloseIcon />
                 </CloseButton>
                 <p>
-                  Kartta näyttää, millaisia oireita vastaajilla on eri kaupungeissa. Mukana ovat kaupungit, joista on
-                  saatu yli 25 vastausta.
+                  Kartta näyttää, millaisia oireita vastaajilla on eri kunnissa. Mukana ovat kunnat, joista on saatu yli
+                  25 vastausta.
                 </p>
-                <p>Kaupunkien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
+                <p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
               </div>
             </>
           )}

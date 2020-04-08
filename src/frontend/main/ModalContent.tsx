@@ -66,9 +66,7 @@ const ModalContent = ({ content }: ModalContentProps) => {
               .replace('.', ',')} % väkiluvusta)`
           : null}
       </H3>
-      <P>
-        {responsesTotal !== '< 25' ? 'Verrattuna kaupungin väkilukuun' : null}
-      </P>
+      <P>{responsesTotal !== '< 25' ? 'Verrattuna kunnan väkilukuun' : null}</P>
       <Symptoms>
         <span>{suspicionTotal}</span>
         <span>

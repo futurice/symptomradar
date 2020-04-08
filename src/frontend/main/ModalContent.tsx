@@ -67,7 +67,7 @@ const ModalContent = ({ content }: ModalContentProps) => {
           : null}
       </H3>
       <P>
-        {responsesTotal !== '< 25' ? 'Prosentteina osuus oireista ilmoittaneista verrattuna kunnan väkilukuun' : null}
+        {responsesTotal !== '< 25' ? 'Verrattuna kaupungin väkilukuun' : null}
       </P>
       <Symptoms>
         <span>{suspicionTotal}</span>

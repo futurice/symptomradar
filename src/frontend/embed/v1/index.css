@@ -24,6 +24,22 @@ body {
   box-shadow: none;
 }
 
+header {
+  padding: 24px 24px 10px;
+  border-bottom: 1px solid #000;
+  height: 130px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  max-width: 600px;
+}
+
+#language-selector {
+  margin-bottom: 20px;
+}
+
 main {
   margin: 0 auto;
   padding: 20px 0 40px;

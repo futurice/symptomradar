@@ -31,6 +31,22 @@ function getUrlParameter(parameter: string) {
   }
 }
 
+function currentDisplayLanguage() {
+  var currentPage = window.location.pathname;
+  var lang = currentPage
+    .replace('/index.', '')
+    .replace('.html', '')
+    .toLowerCase();
+  if (lang !== '') {
+    $('#language-selector option[value=' + lang + ']').attr('selected', 'selected');
+  }
+}
+
+function switchLanguage(lang: string) {
+  var redirectPage = 'index.' + lang + '.html';
+  window.location.href = window.location.origin + '/' + redirectPage;
+}
+
 function localStorageIdKey() {
   return 'submitId';
 }
@@ -171,11 +187,24 @@ function init() {
 
   // Embedding only the form
   if (variant === 'plain') {
-    $('#logo, #start-survey, #collapse-survey').addClass('hidden');
+    $('header, #start-survey, #collapse-survey').addClass('hidden');
     $('body').addClass('plain');
     $('#symptom-questionnaire').removeClass('hidden');
     $('#start-survey').addClass('hidden');
   }
+
+  // Show the right language in the selector
+  currentDisplayLanguage();
+  // Switch language
+  $('#language-selector').on('change', function() {
+    var lang =
+      $('#language-selector')
+        .find(':selected')
+        .val() + '' || '';
+    if (lang !== '') {
+      switchLanguage(lang.toLowerCase());
+    }
+  });
 
   $('#start-survey').click(function() {
     startSurvey();

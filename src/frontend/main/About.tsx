@@ -14,9 +14,9 @@ const About = (props: RouteComponentProps) => {
       <h1>Oiretutka kerää tietoa koronaviruksesta</h1>
       <p>
         Oiretutka on Helsingin Sanomien ja teknologiayhtiö Futuricen kehittämä hanke, jonka tarkoituksena on kerätä
-        suomalaisilta tietoja heidän kokemistaan oireista. Myös muita suomalaisia medioita osallistuu tiedonkeruuseen.
+        suomalaisilta tietoja heidän kokemistaan oireista ja kertoa niistä lukijoille. Myös muita suomalaisia medioita osallistuu tiedonkeruuseen.
         Tiedon avulla on tarkoitus ymmärtää paremmin, miten koronavirus mahdollisesti leviää Suomessa. Hanke tehdään
-        avoimen lähdekoodin periaatteella.
+        avoimen lähdekoodin periaatteella. <Link to="https://github.com/futurice/symptomradar">Sivuston lähdekoodi löytyy täältä.</Link>
       </p>
       <p>
         Tiedot ovat kerätty kyselylomakkeen avulla. Tällä sivustolla näytämme kyselyn tuloksia.{' '}

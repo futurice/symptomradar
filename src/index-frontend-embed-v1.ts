@@ -47,9 +47,8 @@ function currentDisplayLanguage() {
   }
 }
 
-function switchLanguage(lang: string) {
-  var redirectPage = 'index.' + lang + '.html';
-  window.location.href = window.location.origin + '/' + redirectPage;
+function switchLanguage(pageRedirect: string) {
+  window.location.href = pageRedirect;
 }
 
 function localStorageIdKey() {
@@ -202,13 +201,11 @@ function init() {
   currentDisplayLanguage();
   // Switch language
   $('#language-selector').on('change', function() {
-    var lang =
+    var pageRedirect =
       $('#language-selector')
         .find(':selected')
-        .val() + '' || '';
-    if (lang !== '') {
-      switchLanguage(lang.toLowerCase());
-    }
+        .attr('data-address') + '' || '';
+    switchLanguage(pageRedirect);
   });
 
   $('#start-survey').click(function() {

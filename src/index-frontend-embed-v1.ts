@@ -34,7 +34,7 @@ function getUrlParameter(parameter: string) {
 function currentDisplayLanguage() {
   var currentPage = window.location.pathname;
   var lang =
-    currentPage === '/'
+    currentPage === '/embed/v1/'
       ? ''
       : currentPage
           .substring(currentPage.length - 7)

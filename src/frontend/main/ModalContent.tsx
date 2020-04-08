@@ -16,13 +16,13 @@ const H2 = styled.h2`
 
 const H3 = styled.h3`
   font-weight: bold;
-  margin-bottom:0;
+  margin-bottom: 0;
 `;
 
 const P = styled.p`
   font-style: italic;
-  font-size:16px;
-  margin-top:0;
+  font-size: 16px;
+  margin-top: 0;
 `;
 
 const Symptoms = styled.div`
@@ -59,20 +59,18 @@ const ModalContent = ({ content }: ModalContentProps) => {
         <H2>{content.properties.City}</H2>
       </ModalHeader>
       <H3>Vastauksia yhteensä: {responsesTotal}</H3>
-      <P>{responsesTotal !== '< 25' ? 'Prosentteina osuus oireista ilmoittaneista verrattuna kunnan väkilukuun' : null}</P>
+      <P>
+        {responsesTotal !== '< 25' ? 'Prosentteina osuus oireista ilmoittaneista verrattuna kunnan väkilukuun' : null}
+      </P>
       <Symptoms>
-        <span>
-          {suspicionTotal} 
-        </span>
+        <span>{suspicionTotal}</span>
         <span>
           {content.properties.corona_suspicion_yes !== -1
             ? `${((content.properties.corona_suspicion_yes * 100) / content.properties.Population).toFixed(2)}%`
             : null}
         </span>
         <p>Epäilys koronavirustartunnasta </p>
-        <span>
-          {coughTotal}
-        </span>
+        <span>{coughTotal}</span>
         <span>
           {content.properties.cough_mild + content.properties.cough_intense !== -2
             ? `${(
@@ -82,9 +80,7 @@ const ModalContent = ({ content }: ModalContentProps) => {
             : null}
         </span>
         <p>Yskää</p>
-        <span>
-          {feverTotal}
-        </span>
+        <span>{feverTotal}</span>
         <span>
           {content.properties.fever_slight + content.properties.fever_high !== -2
             ? `${(
@@ -94,9 +90,7 @@ const ModalContent = ({ content }: ModalContentProps) => {
             : null}
         </span>
         <p>Kuumetta</p>
-        <span>
-          {breathingDifficulties}
-        </span>
+        <span>{breathingDifficulties}</span>
         <span>
           {content.properties.breathing_difficulties_yes !== -1
             ? `${((content.properties.breathing_difficulties_yes * 100) / content.properties.Population).toFixed(2)}%`

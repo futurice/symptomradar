@@ -33,12 +33,17 @@ function getUrlParameter(parameter: string) {
 
 function currentDisplayLanguage() {
   var currentPage = window.location.pathname;
-  var lang = currentPage
-    .replace('/index.', '')
-    .replace('.html', '')
-    .toLowerCase();
+  var lang =
+    currentPage === '/'
+      ? ''
+      : currentPage
+          .substring(currentPage.length - 7)
+          .replace('.html', '')
+          .toLowerCase();
   if (lang !== '') {
     $('#language-selector option[value=' + lang + ']').attr('selected', 'selected');
+  } else {
+    $('#language-selector option[value=fi]').attr('selected', 'selected');
   }
 }
 

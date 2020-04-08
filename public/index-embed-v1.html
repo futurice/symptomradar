@@ -8,14 +8,22 @@
 
   <body>
     <noscript>{{ no_js }}</noscript>
-    <main>
-      <div class="container">
-        <img
+    <header>
+      <img
           id="logo"
           class="logo"
           src="%PUBLIC_URL%/oiretutka-logo-gradient.svg"
           alt="Oiretutka. Helsingin Sanomat ja Futurice."
         />
+      <div>
+        <select id="language-selector">
+          <option value="fi">FI</option>
+          <option value="en">EN</option>
+        </select>
+      </div>
+    </header>
+    <main>
+      <div class="container">
         <div id="form-info" class="form-info">
           <h1 id="page-title" tabindex="-1">
             {{ page_title }}

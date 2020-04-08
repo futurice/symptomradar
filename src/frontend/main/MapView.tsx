@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps } from '@reach/router';
 import * as topojson from 'topojson';
+import * as d3 from 'd3';
 import ModalContent from './ModalContent';
 import Modal from './Modal';
 import PrimaryButton from './PrimaryButton';
 import MapContainer from './map/MapContainer';
 import useModal from './useModal';
-import responseData from './assets/data/citylevel-opendata-3-4-2020.json';
+import responseData from './assets/data/citylevel-opendata-8-4-2020.json';
 import CloseIcon from './assets/CloseIcon';
 
 interface mapProperties {
-  City?: string;
+  city?: string;
   name?: string;
   responses: number;
   fever_no: number;
@@ -45,16 +46,16 @@ interface mapProperties {
   smoking_yes: number;
   corona_suspicion_no: number;
   corona_suspicion_yes: number;
-  Population: number;
+  population: number;
 }
 
 type FilterButtonProps = {
   isActive: boolean;
 };
 
-const data: mapProperties[] = require('./assets/data/citylevel-opendata-3-4-2020.json');
+const data: mapProperties[] = require('./assets/data/citylevel-opendata-8-4-2020.json');
 
-const populationData: { City: string; population: number }[] = require('./assets/data/population.json');
+const populationData: { city: string; population: number }[] = require('./assets/data/population.json');
 
 const mapShape: {
   type: string;
@@ -154,9 +155,14 @@ const MapView = (props: RouteComponentProps) => {
   const [mapWidth, setMapWidth] = useState(window.innerWidth - 25);
   const [activeCityData, setActiveCityData] = useState({});
 
-  const cities = responseData.map(item => {
-    return item.City;
-  });
+  const cities: string[] = topojson
+    .feature(mapShape, mapShape.objects.kuntarajat)
+    .features.sort((x: { properties: mapProperties }, y: { properties: mapProperties }) =>
+      d3.ascending(x.properties.name, y.properties.name),
+    )
+    .map((item: { properties: mapProperties }) => {
+      return item.properties.name;
+    });
 
   const totalReponses = responseData.reduce((accumulator, currentValue) => {
     return accumulator + currentValue.responses;
@@ -167,16 +173,16 @@ const MapView = (props: RouteComponentProps) => {
     setMapWidth(window.innerWidth - 25);
   });
   mapShapeData.features.forEach((d: { properties: mapProperties }) => {
-    let index = data.findIndex((el: mapProperties) => d.properties.name === el.City);
+    let index = data.findIndex((el: mapProperties) => d.properties.name === el.city);
     if (index !== -1) {
       d.properties = data[index];
       d.properties.fever_yes = d.properties.responses - d.properties.fever_no;
       d.properties.cough_yes = d.properties.responses - d.properties.cough_no;
     } else {
-      let indx = populationData.findIndex((el: { City: string; population: number }) => d.properties.name === el.City);
+      let indx = populationData.findIndex((el: { city: string; population: number }) => d.properties.name === el.city);
       if (indx !== -1) {
         let obj = {
-          City: d.properties.name,
+          city: d.properties.name,
           responses: -1,
           fever_no: -1,
           fever_yes: -1,
@@ -209,7 +215,7 @@ const MapView = (props: RouteComponentProps) => {
           smoking_yes: -1,
           corona_suspicion_no: -1,
           corona_suspicion_yes: -1,
-          Population: populationData[indx].population,
+          population: populationData[indx].population,
         };
         d.properties = obj;
       }
@@ -224,14 +230,14 @@ const MapView = (props: RouteComponentProps) => {
           id="city"
           onChange={(event: { target: { value: string } }) => {
             let indx = mapShapeData.features.findIndex(
-              (obj: { properties: { City: string } }) => obj.properties.City === event.target.value,
+              (obj: { properties: { city: string } }) => obj.properties.city === event.target.value,
             );
             setActiveCityData(mapShapeData.features[indx]);
             toggleModal();
           }}
         >
           <option value="">Valitse kaupunki...</option>
-          {cities.map(city => {
+          {cities.map((city: string) => {
             return (
               <option key={city} value={city}>
                 {city}

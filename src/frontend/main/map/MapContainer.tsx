@@ -16,7 +16,7 @@ const App: React.FunctionComponent<{
         svgHeight={props.mapHeight}
         mapScale={(props.mapHeight * 4750) / 920}
         radiusRange={[2, (props.mapHeight * 30) / 920]}
-        radiusScaleKey={'Population'}
+        radiusScaleKey={'population'}
         defaultRadius={2}
         colorRange={['#fce1a4', '#f08f6e', '#d12959', '#6e005f']}
         colorScaleKey={props.selectedFilter}

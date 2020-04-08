@@ -1,13 +1,14 @@
 locals {
   config = {
-    hsts_max_age                         = var.hsts_max_age
-    basic_auth_username                  = var.basic_auth_username
-    basic_auth_password                  = var.basic_auth_password
-    basic_auth_realm                     = var.basic_auth_realm
-    basic_auth_body                      = var.basic_auth_body
-    override_response_status             = var.override_response_status
-    override_response_status_description = var.override_response_status_description
-    override_response_body               = var.override_response_body
+    hsts_max_age             = var.hsts_max_age
+    basic_auth_username      = var.basic_auth_username
+    basic_auth_password      = var.basic_auth_password
+    basic_auth_realm         = var.basic_auth_realm
+    basic_auth_body          = var.basic_auth_body
+    override_response_code   = var.override_response_code
+    override_response_status = var.override_response_status
+    override_response_body   = var.override_response_body
+    override_only_on_code    = var.override_only_on_code
   }
 }
 
@@ -39,6 +40,17 @@ data "archive_file" "lambda_zip" {
   }
 }
 
+# This resource doesn't actually do anything (as is (kind of) the case with null_resource's anyway).
+# It merely exists to make Terraform plans more informative: because the Lambda@Edge config is baked
+# into the JS template, normally you would just see the opaque source_code_hash changing in the plan.
+# With this, you'll actually see which config/header is being changed.
+resource "null_resource" "cloudfront_lambda_at_edge" {
+  triggers = merge(
+    local.config,
+    { add_response_headers = jsonencode(var.add_response_headers) }
+  )
+}
+
 resource "aws_lambda_function" "viewer_request" {
   provider = aws.us_east_1 # This alias is needed because ACM is only available in the "us-east-1" region
 
@@ -53,7 +65,7 @@ resource "aws_lambda_function" "viewer_request" {
   tags             = var.tags
 }
 
-resource "aws_lambda_function" "viewer_response" {
+resource "aws_lambda_function" "origin_response" {
   provider = aws.us_east_1 # This alias is needed because ACM is only available in the "us-east-1" region
 
   filename         = data.archive_file.lambda_zip.output_path
@@ -61,7 +73,7 @@ resource "aws_lambda_function" "viewer_response" {
   function_name    = "${var.name_prefix}-edge-lambda-response"
   role             = aws_iam_role.this.arn
   description      = "${var.comment_prefix}${var.site_domain} (response handler)"
-  handler          = "lambda.viewer_response"
+  handler          = "lambda.origin_response"
   runtime          = "nodejs12.x"
   publish          = true # because: error creating CloudFront Distribution: InvalidLambdaFunctionAssociation: The function ARN must reference a specific function version. (The ARN must end with the version number.)
   tags             = var.tags

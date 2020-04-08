@@ -20,3 +20,7 @@ provider "archive" {
 provider "template" {
   version = "~> 2.1"
 }
+
+provider "null" {
+  version = "~> 2.1"
+}

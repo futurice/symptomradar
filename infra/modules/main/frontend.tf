@@ -22,7 +22,7 @@ resource "aws_s3_bucket" "frontend_code" {
   # Note, though, that when accessing the bucket over its SSL endpoint, the index_document will not be used
   website {
     index_document = "index.html"
-    error_document = "error.html"
+    error_document = "index.html" # for any URL that isn't a static file, route the request to the index file, so it can try to handle it with client-side routing
   }
 
   logging {
@@ -70,6 +70,9 @@ module "frontend" {
   viewer_https_only          = true
   basic_auth_username        = var.frontend_password == "" ? "" : "symptomradar"
   basic_auth_password        = var.frontend_password
+  override_response_code     = 200
+  override_response_status   = "OK"
+  override_only_on_code      = "404"
 
   add_response_headers = {
 
@@ -78,6 +81,15 @@ module "frontend" {
     X-Content-Type-Options    = "nosniff"          # the MIME types advertised in the Content-Type headers should ALWAYS be followed; this allows to opt-out of MIME type sniffing
     X-XSS-Protection          = "1; mode=block"    # stops pages from loading when they detect reflected cross-site scripting (XSS) attacks; besides legacy browsers, superseded by CSP
     Referrer-Policy           = "same-origin"      # a referrer will be sent for same-site origins, but cross-origin requests will send no referrer information
+
+    # Remove some headers which could disclose details about our upstream server
+    # Note that not all headers can be altered by Lambda@Edge: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-requirements-limits.html#lambda-header-restrictions
+    Server                 = "" # "Server" header can't be removed, but this will reset it to "CloudFront"
+    X-Amz-Error-Code       = ""
+    X-Amz-Error-Message    = ""
+    X-Amz-Error-Detail-Key = ""
+    X-Amz-Request-Id       = ""
+    X-Amz-Id-2             = ""
 
     # Add CSP header:
     # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy

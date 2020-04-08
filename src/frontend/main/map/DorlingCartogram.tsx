@@ -8,7 +8,7 @@ import useModal from '../useModal';
 let mapNode!: SVGSVGElement | null;
 
 interface mapProperties {
-  City?: string;
+  city?: string;
   name?: string;
   responses: number;
   fever_no: number;
@@ -40,7 +40,7 @@ interface mapProperties {
   smoking_yes: number;
   corona_suspicion_no: number;
   corona_suspicion_yes: number;
-  Population: number;
+  population: number;
 }
 
 const mapSimplified: any = require('./finland-map-simplified.json');
@@ -108,13 +108,13 @@ const Map: React.FunctionComponent<{
     mapShapeData.features.forEach((d: { properties: any; fx?: number; fy?: number; x?: number; y?: number }) => {
       d.x = path.centroid(d)[0];
       d.y = path.centroid(d)[1];
-      if (d.properties.City === 'Helsinki') {
+      if (d.properties.city === 'Helsinki') {
         d.fx = path.centroid(d)[0];
         d.fy = path.centroid(d)[1];
       }
-      if (d.properties.City === 'Vantaa') {
+      if (d.properties.city === 'Vantaa') {
         let indexHelsinkiShape = mapShapeData.features.findIndex(
-          (el: { properties: { City: string } }) => el.properties.City === 'Helsinki',
+          (el: { properties: { city: string } }) => el.properties.city === 'Helsinki',
         );
         let rHelsinki = rScale(mapShapeData.features[indexHelsinkiShape].properties[props.radiusScaleKey]);
         let rVantaa = rScale(d.properties[props.radiusScaleKey]);
@@ -282,14 +282,14 @@ const Map: React.FunctionComponent<{
           .filter((a: { properties: { responses: number } }) => a.properties.responses !== -1)
           .sort((a: any, b: any) =>
             d3.descending(
-              (a.properties[props.colorScaleKey] * 100) / a.properties.Population,
-              (b.properties[props.colorScaleKey] * 100) / b.properties.Population,
+              (a.properties[props.colorScaleKey] * 100) / a.properties.population,
+              (b.properties[props.colorScaleKey] * 100) / b.properties.population,
             ),
           );
         colorDomain = [
-          (sortedData[29].properties[props.colorScaleKey] * 100) / sortedData[29].properties.Population,
-          (sortedData[19].properties[props.colorScaleKey] * 100) / sortedData[19].properties.Population,
-          (sortedData[9].properties[props.colorScaleKey] * 100) / sortedData[9].properties.Population,
+          (sortedData[29].properties[props.colorScaleKey] * 100) / sortedData[29].properties.population,
+          (sortedData[19].properties[props.colorScaleKey] * 100) / sortedData[19].properties.population,
+          (sortedData[9].properties[props.colorScaleKey] * 100) / sortedData[9].properties.population,
         ];
         break;
       case 'percentResponse':
@@ -327,7 +327,7 @@ const Map: React.FunctionComponent<{
         if (d.properties[props.colorScaleKey] === -1) return props.defaultColor;
         switch (props.colorScaleTransform) {
           case 'percentPopulation':
-            return colorScale((d.properties[props.colorScaleKey] * 100) / d.properties.Population);
+            return colorScale((d.properties[props.colorScaleKey] * 100) / d.properties.population);
           case 'percentResponse':
             return colorScale((d.properties[props.colorScaleKey] * 100) / d.properties.responses);
           default:

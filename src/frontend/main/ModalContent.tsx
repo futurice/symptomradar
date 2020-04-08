@@ -56,17 +56,24 @@ const ModalContent = ({ content }: ModalContentProps) => {
   return (
     <>
       <ModalHeader>
-        <H2>{content.properties.City}</H2>
+        <H2>{content.properties.city}</H2>
       </ModalHeader>
-      <H3>Vastauksia yhteensä: {responsesTotal}</H3>
-      <P>
-        {responsesTotal !== '< 25' ? 'Prosentteina osuus oireista ilmoittaneista verrattuna kunnan väkilukuun' : null}
-      </P>
+      <H3>
+        Vastauksia yhteensä: {responsesTotal}{' '}
+        {responsesTotal !== '< 25'
+          ? `(${((content.properties.responses * 100) / content.properties.population)
+              .toFixed(2)
+              .replace('.', ',')} % väkiluvusta)`
+          : null}
+      </H3>
+      <P>{responsesTotal !== '< 25' ? 'Verrattuna kunnan väkilukuun' : null}</P>
       <Symptoms>
         <span>{suspicionTotal}</span>
         <span>
           {content.properties.corona_suspicion_yes !== -1
-            ? `${((content.properties.corona_suspicion_yes * 100) / content.properties.Population).toFixed(2)}%`
+            ? `${((content.properties.corona_suspicion_yes * 100) / content.properties.population)
+                .toFixed(2)
+                .replace('.', ',')} %`
             : null}
         </span>
         <p>Epäilys koronavirustartunnasta </p>
@@ -75,8 +82,10 @@ const ModalContent = ({ content }: ModalContentProps) => {
           {content.properties.cough_mild + content.properties.cough_intense !== -2
             ? `${(
                 ((content.properties.cough_mild + content.properties.cough_intense) * 100) /
-                content.properties.Population
-              ).toFixed(2)}%`
+                content.properties.population
+              )
+                .toFixed(2)
+                .replace('.', ',')} %`
             : null}
         </span>
         <p>Yskää</p>
@@ -85,15 +94,19 @@ const ModalContent = ({ content }: ModalContentProps) => {
           {content.properties.fever_slight + content.properties.fever_high !== -2
             ? `${(
                 ((content.properties.fever_slight + content.properties.fever_high) * 100) /
-                content.properties.Population
-              ).toFixed(2)}%`
+                content.properties.population
+              )
+                .toFixed(2)
+                .replace('.', ',')} %`
             : null}
         </span>
         <p>Kuumetta</p>
         <span>{breathingDifficulties}</span>
         <span>
           {content.properties.breathing_difficulties_yes !== -1
-            ? `${((content.properties.breathing_difficulties_yes * 100) / content.properties.Population).toFixed(2)}%`
+            ? `${((content.properties.breathing_difficulties_yes * 100) / content.properties.population)
+                .toFixed(2)
+                .replace('.', ',')} %`
             : null}
         </span>
         <p>Vaikeuksia hengittää</p>

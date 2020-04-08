@@ -1,1246 +1,1246 @@
 [
   {
-    "City": "Akaa",
+    "city": "Akaa",
     "population": 16475
   },
   {
-    "City": "Alajärvi",
+    "city": "Alajärvi",
     "population": 9562
   },
   {
-    "City": "Alavieska",
+    "city": "Alavieska",
     "population": 2519
   },
   {
-    "City": "Alavus",
+    "city": "Alavus",
     "population": 11468
   },
   {
-    "City": "Asikkala",
+    "city": "Asikkala",
     "population": 8083
   },
   {
-    "City": "Askola",
+    "city": "Askola",
     "population": 4943
   },
   {
-    "City": "Aura",
+    "city": "Aura",
     "population": 3941
   },
   {
-    "City": "Brändö",
+    "city": "Brändö",
     "population": 445
   },
   {
-    "City": "Eckerö",
+    "city": "Eckerö",
     "population": 952
   },
   {
-    "City": "Enonkoski",
+    "city": "Enonkoski",
     "population": 1361
   },
   {
-    "City": "Enontekiö",
+    "city": "Enontekiö",
     "population": 1838
   },
   {
-    "City": "Espoo",
+    "city": "Espoo",
     "population": 289731
   },
   {
-    "City": "Eura",
+    "city": "Eura",
     "population": 11632
   },
   {
-    "City": "Eurajoki",
+    "city": "Eurajoki",
     "population": 9402
   },
   {
-    "City": "Evijärvi",
+    "city": "Evijärvi",
     "population": 2425
   },
   {
-    "City": "Finström",
+    "city": "Finström",
     "population": 2593
   },
   {
-    "City": "Forssa",
+    "city": "Forssa",
     "population": 16901
   },
   {
-    "City": "Föglö",
+    "city": "Föglö",
     "population": 531
   },
   {
-    "City": "Geta",
+    "city": "Geta",
     "population": 496
   },
   {
-    "City": "Haapajärvi",
+    "city": "Haapajärvi",
     "population": 7010
   },
   {
-    "City": "Haapavesi",
+    "city": "Haapavesi",
     "population": 6758
   },
   {
-    "City": "Hailuoto",
+    "city": "Hailuoto",
     "population": 959
   },
   {
-    "City": "Halsua",
+    "city": "Halsua",
     "population": 1127
   },
   {
-    "City": "Hamina",
+    "city": "Hamina",
     "population": 20111
   },
   {
-    "City": "Hammarland",
+    "city": "Hammarland",
     "population": 1583
   },
   {
-    "City": "Hankasalmi",
+    "city": "Hankasalmi",
     "population": 4875
   },
   {
-    "City": "Hanko",
+    "city": "Hanko",
     "population": 8199
   },
   {
-    "City": "Harjavalta",
+    "city": "Harjavalta",
     "population": 6931
   },
   {
-    "City": "Hartola",
+    "city": "Hartola",
     "population": 2697
   },
   {
-    "City": "Hattula",
+    "city": "Hattula",
     "population": 9422
   },
   {
-    "City": "Hausjärvi",
+    "city": "Hausjärvi",
     "population": 8260
   },
   {
-    "City": "Heinola",
+    "city": "Heinola",
     "population": 18667
   },
   {
-    "City": "Heinävesi",
+    "city": "Heinävesi",
     "population": 3254
   },
   {
-    "City": "Helsinki",
+    "city": "Helsinki",
     "population": 653835
   },
   {
-    "City": "Hirvensalmi",
+    "city": "Hirvensalmi",
     "population": 2136
   },
   {
-    "City": "Hollola",
+    "city": "Hollola",
     "population": 23410
   },
   {
-    "City": "Honkajoki",
+    "city": "Honkajoki",
     "population": 1620
   },
   {
-    "City": "Huittinen",
+    "city": "Huittinen",
     "population": 10044
   },
   {
-    "City": "Humppila",
+    "city": "Humppila",
     "population": 2184
   },
   {
-    "City": "Hyrynsalmi",
+    "city": "Hyrynsalmi",
     "population": 2271
   },
   {
-    "City": "Hyvinkää",
+    "city": "Hyvinkää",
     "population": 46470
   },
   {
-    "City": "Hämeenkyrö",
+    "city": "Hämeenkyrö",
     "population": 10404
   },
   {
-    "City": "Hämeenlinna",
+    "city": "Hämeenlinna",
     "population": 67633
   },
   {
-    "City": "Ii",
+    "city": "Ii",
     "population": 9844
   },
   {
-    "City": "Iisalmi",
+    "city": "Iisalmi",
     "population": 21368
   },
   {
-    "City": "Iitti",
+    "city": "Iitti",
     "population": 6711
   },
   {
-    "City": "Ikaalinen",
+    "city": "Ikaalinen",
     "population": 6942
   },
   {
-    "City": "Ilmajoki",
+    "city": "Ilmajoki",
     "population": 12269
   },
   {
-    "City": "Ilomantsi",
+    "city": "Ilomantsi",
     "population": 4857
   },
   {
-    "City": "Imatra",
+    "city": "Imatra",
     "population": 26508
   },
   {
-    "City": "Inari",
+    "city": "Inari",
     "population": 6907
   },
   {
-    "City": "Inkoo",
+    "city": "Inkoo",
     "population": 5386
   },
   {
-    "City": "Isojoki",
+    "city": "Isojoki",
     "population": 1951
   },
   {
-    "City": "Isokyrö",
+    "city": "Isokyrö",
     "population": 4522
   },
   {
-    "City": "Janakkala",
+    "city": "Janakkala",
     "population": 16413
   },
   {
-    "City": "Joensuu",
+    "city": "Joensuu",
     "population": 76850
   },
   {
-    "City": "Jokioinen",
+    "city": "Jokioinen",
     "population": 5133
   },
   {
-    "City": "Jomala",
+    "city": "Jomala",
     "population": 5233
   },
   {
-    "City": "Joroinen",
+    "city": "Joroinen",
     "population": 4767
   },
   {
-    "City": "Joutsa",
+    "city": "Joutsa",
     "population": 4377
   },
   {
-    "City": "Juuka",
+    "city": "Juuka",
     "population": 4606
   },
   {
-    "City": "Juupajoki",
+    "city": "Juupajoki",
     "population": 1844
   },
   {
-    "City": "Juva",
+    "city": "Juva",
     "population": 6116
   },
   {
-    "City": "Jyväskylä",
+    "city": "Jyväskylä",
     "population": 142400
   },
   {
-    "City": "Jämijärvi",
+    "city": "Jämijärvi",
     "population": 1739
   },
   {
-    "City": "Jämsä",
+    "city": "Jämsä",
     "population": 20182
   },
   {
-    "City": "Järvenpää",
+    "city": "Järvenpää",
     "population": 43711
   },
   {
-    "City": "Kaarina",
+    "city": "Kaarina",
     "population": 33937
   },
   {
-    "City": "Kaavi",
+    "city": "Kaavi",
     "population": 2893
   },
   {
-    "City": "Kajaani",
+    "city": "Kajaani",
     "population": 36709
   },
   {
-    "City": "Kalajoki",
+    "city": "Kalajoki",
     "population": 12373
   },
   {
-    "City": "Kangasala",
+    "city": "Kangasala",
     "population": 31868
   },
   {
-    "City": "Kangasniemi",
+    "city": "Kangasniemi",
     "population": 5356
   },
   {
-    "City": "Kankaanpää",
+    "city": "Kankaanpää",
     "population": 11286
   },
   {
-    "City": "Kannonkoski",
+    "city": "Kannonkoski",
     "population": 1339
   },
   {
-    "City": "Kannus",
+    "city": "Kannus",
     "population": 5464
   },
   {
-    "City": "Karijoki",
+    "city": "Karijoki",
     "population": 1245
   },
   {
-    "City": "Karkkila",
+    "city": "Karkkila",
     "population": 8714
   },
   {
-    "City": "Karstula",
+    "city": "Karstula",
     "population": 3949
   },
   {
-    "City": "Karvia",
+    "city": "Karvia",
     "population": 2342
   },
   {
-    "City": "Kaskinen",
+    "city": "Kaskinen",
     "population": 1246
   },
   {
-    "City": "Kauhajoki",
+    "city": "Kauhajoki",
     "population": 13184
   },
   {
-    "City": "Kauhava",
+    "city": "Kauhava",
     "population": 15726
   },
   {
-    "City": "Kauniainen",
+    "city": "Kauniainen",
     "population": 9797
   },
   {
-    "City": "Kaustinen",
+    "city": "Kaustinen",
     "population": 4261
   },
   {
-    "City": "Keitele",
+    "city": "Keitele",
     "population": 2202
   },
   {
-    "City": "Kemi",
+    "city": "Kemi",
     "population": 20707
   },
   {
-    "City": "Kemijärvi",
+    "city": "Kemijärvi",
     "population": 7274
   },
   {
-    "City": "Keminmaa",
+    "city": "Keminmaa",
     "population": 8079
   },
   {
-    "City": "Kemiönsaari",
+    "city": "Kemiönsaari",
     "population": 6640
   },
   {
-    "City": "Kempele",
+    "city": "Kempele",
     "population": 18355
   },
   {
-    "City": "Kerava",
+    "city": "Kerava",
     "population": 36756
   },
   {
-    "City": "Keuruu",
+    "city": "Keuruu",
     "population": 9605
   },
   {
-    "City": "Kihniö",
+    "city": "Kihniö",
     "population": 1865
   },
   {
-    "City": "Kinnula",
+    "city": "Kinnula",
     "population": 1620
   },
   {
-    "City": "Kirkkonummi",
+    "city": "Kirkkonummi",
     "population": 39586
   },
   {
-    "City": "Kitee",
+    "city": "Kitee",
     "population": 10136
   },
   {
-    "City": "Kittilä",
+    "city": "Kittilä",
     "population": 6453
   },
   {
-    "City": "Kiuruvesi",
+    "city": "Kiuruvesi",
     "population": 7998
   },
   {
-    "City": "Kivijärvi",
+    "city": "Kivijärvi",
     "population": 1096
   },
   {
-    "City": "Kokemäki",
+    "city": "Kokemäki",
     "population": 7103
   },
   {
-    "City": "Kokkola",
+    "city": "Kokkola",
     "population": 47681
   },
   {
-    "City": "Kolari",
+    "city": "Kolari",
     "population": 3846
   },
   {
-    "City": "Konnevesi",
+    "city": "Konnevesi",
     "population": 2627
   },
   {
-    "City": "Kontiolahti",
+    "city": "Kontiolahti",
     "population": 14821
   },
   {
-    "City": "Korsnäs",
+    "city": "Korsnäs",
     "population": 2077
   },
   {
-    "City": "Koski Tl",
+    "city": "Koski Tl",
     "population": 2308
   },
   {
-    "City": "Kotka",
+    "city": "Kotka",
     "population": 52126
   },
   {
-    "City": "Kouvola",
+    "city": "Kouvola",
     "population": 82113
   },
   {
-    "City": "Kristiinankaupunki",
+    "city": "Kristiinankaupunki",
     "population": 6486
   },
   {
-    "City": "Kruunupyy",
+    "city": "Kruunupyy",
     "population": 6428
   },
   {
-    "City": "Kuhmo",
+    "city": "Kuhmo",
     "population": 8190
   },
   {
-    "City": "Kuhmoinen",
+    "city": "Kuhmoinen",
     "population": 2206
   },
   {
-    "City": "Kumlinge",
+    "city": "Kumlinge",
     "population": 314
   },
   {
-    "City": "Kuopio",
+    "city": "Kuopio",
     "population": 119282
   },
   {
-    "City": "Kuortane",
+    "city": "Kuortane",
     "population": 3551
   },
   {
-    "City": "Kurikka",
+    "city": "Kurikka",
     "population": 20678
   },
   {
-    "City": "Kustavi",
+    "city": "Kustavi",
     "population": 949
   },
   {
-    "City": "Kuusamo",
+    "city": "Kuusamo",
     "population": 15134
   },
   {
-    "City": "Kyyjärvi",
+    "city": "Kyyjärvi",
     "population": 1313
   },
   {
-    "City": "Kärkölä",
+    "city": "Kärkölä",
     "population": 4368
   },
   {
-    "City": "Kärsämäki",
+    "city": "Kärsämäki",
     "population": 2576
   },
   {
-    "City": "Kökar",
+    "city": "Kökar",
     "population": 232
   },
   {
-    "City": "Lahti",
+    "city": "Lahti",
     "population": 119823
   },
   {
-    "City": "Laihia",
+    "city": "Laihia",
     "population": 8017
   },
   {
-    "City": "Laitila",
+    "city": "Laitila",
     "population": 8588
   },
   {
-    "City": "Lapinjärvi",
+    "city": "Lapinjärvi",
     "population": 2606
   },
   {
-    "City": "Lapinlahti",
+    "city": "Lapinlahti",
     "population": 9485
   },
   {
-    "City": "Lappajärvi",
+    "city": "Lappajärvi",
     "population": 2996
   },
   {
-    "City": "Lappeenranta",
+    "city": "Lappeenranta",
     "population": 72634
   },
   {
-    "City": "Lapua",
+    "city": "Lapua",
     "population": 14278
   },
   {
-    "City": "Laukaa",
+    "city": "Laukaa",
     "population": 18903
   },
   {
-    "City": "Lemi",
+    "city": "Lemi",
     "population": 2971
   },
   {
-    "City": "Lemland",
+    "city": "Lemland",
     "population": 2053
   },
   {
-    "City": "Lempäälä",
+    "city": "Lempäälä",
     "population": 23523
   },
   {
-    "City": "Leppävirta",
+    "city": "Leppävirta",
     "population": 9454
   },
   {
-    "City": "Lestijärvi",
+    "city": "Lestijärvi",
     "population": 719
   },
   {
-    "City": "Lieksa",
+    "city": "Lieksa",
     "population": 10884
   },
   {
-    "City": "Lieto",
+    "city": "Lieto",
     "population": 19994
   },
   {
-    "City": "Liminka",
+    "city": "Liminka",
     "population": 10191
   },
   {
-    "City": "Liperi",
+    "city": "Liperi",
     "population": 12084
   },
   {
-    "City": "Lohja",
+    "city": "Lohja",
     "population": 45965
   },
   {
-    "City": "Loimaa",
+    "city": "Loimaa",
     "population": 15875
   },
   {
-    "City": "Loppi",
+    "city": "Loppi",
     "population": 7828
   },
   {
-    "City": "Loviisa",
+    "city": "Loviisa",
     "population": 14772
   },
   {
-    "City": "Luhanka",
+    "city": "Luhanka",
     "population": 690
   },
   {
-    "City": "Lumijoki",
+    "city": "Lumijoki",
     "population": 2020
   },
   {
-    "City": "Lumparland",
+    "city": "Lumparland",
     "population": 366
   },
   {
-    "City": "Luoto",
+    "city": "Luoto",
     "population": 5417
   },
   {
-    "City": "Luumäki",
+    "city": "Luumäki",
     "population": 4636
   },
   {
-    "City": "Maalahti",
+    "city": "Maalahti",
     "population": 5475
   },
   {
-    "City": "Maarianhamina - Mariehamn",
+    "city": "Maarianhamina - Mariehamn",
     "population": 11679
   },
   {
-    "City": "Marttila",
+    "city": "Marttila",
     "population": 2013
   },
   {
-    "City": "Masku",
+    "city": "Masku",
     "population": 9534
   },
   {
-    "City": "Merijärvi",
+    "city": "Merijärvi",
     "population": 1089
   },
   {
-    "City": "Merikarvia",
+    "city": "Merikarvia",
     "population": 3067
   },
   {
-    "City": "Miehikkälä",
+    "city": "Miehikkälä",
     "population": 1857
   },
   {
-    "City": "Mikkeli",
+    "city": "Mikkeli",
     "population": 53134
   },
   {
-    "City": "Muhos",
+    "city": "Muhos",
     "population": 8908
   },
   {
-    "City": "Multia",
+    "city": "Multia",
     "population": 1566
   },
   {
-    "City": "Muonio",
+    "city": "Muonio",
     "population": 2308
   },
   {
-    "City": "Mustasaari",
+    "city": "Mustasaari",
     "population": 19448
   },
   {
-    "City": "Muurame",
+    "city": "Muurame",
     "population": 10164
   },
   {
-    "City": "Mynämäki",
+    "city": "Mynämäki",
     "population": 7654
   },
   {
-    "City": "Myrskylä",
+    "city": "Myrskylä",
     "population": 1882
   },
   {
-    "City": "Mäntsälä",
+    "city": "Mäntsälä",
     "population": 20721
   },
   {
-    "City": "Mänttä-Vilppula",
+    "city": "Mänttä-Vilppula",
     "population": 9855
   },
   {
-    "City": "Mäntyharju",
+    "city": "Mäntyharju",
     "population": 5791
   },
   {
-    "City": "Naantali",
+    "city": "Naantali",
     "population": 19314
   },
   {
-    "City": "Nakkila",
+    "city": "Nakkila",
     "population": 5329
   },
   {
-    "City": "Nivala",
+    "city": "Nivala",
     "population": 10639
   },
   {
-    "City": "Nokia",
+    "city": "Nokia",
     "population": 33929
   },
   {
-    "City": "Nousiainen",
+    "city": "Nousiainen",
     "population": 4715
   },
   {
-    "City": "Nurmes",
+    "city": "Nurmes",
     "population": 9552
   },
   {
-    "City": "Nurmijärvi",
+    "city": "Nurmijärvi",
     "population": 42993
   },
   {
-    "City": "Närpiö",
+    "city": "Närpiö",
     "population": 9479
   },
   {
-    "City": "Orimattila",
+    "city": "Orimattila",
     "population": 16003
   },
   {
-    "City": "Oripää",
+    "city": "Oripää",
     "population": 1329
   },
   {
-    "City": "Orivesi",
+    "city": "Orivesi",
     "population": 9158
   },
   {
-    "City": "Oulainen",
+    "city": "Oulainen",
     "population": 7288
   },
   {
-    "City": "Oulu",
+    "city": "Oulu",
     "population": 205489
   },
   {
-    "City": "Outokumpu",
+    "city": "Outokumpu",
     "population": 6688
   },
   {
-    "City": "Padasjoki",
+    "city": "Padasjoki",
     "population": 2896
   },
   {
-    "City": "Paimio",
+    "city": "Paimio",
     "population": 10850
   },
   {
-    "City": "Paltamo",
+    "city": "Paltamo",
     "population": 3273
   },
   {
-    "City": "Parainen",
+    "city": "Parainen",
     "population": 15132
   },
   {
-    "City": "Parikkala",
+    "city": "Parikkala",
     "population": 4734
   },
   {
-    "City": "Parkano",
+    "city": "Parkano",
     "population": 6404
   },
   {
-    "City": "Pedersören kunta",
+    "city": "Pedersören kunta",
     "population": 11081
   },
   {
-    "City": "Pelkosenniemi",
+    "city": "Pelkosenniemi",
     "population": 939
   },
   {
-    "City": "Pello",
+    "city": "Pello",
     "population": 3373
   },
   {
-    "City": "Perho",
+    "city": "Perho",
     "population": 2759
   },
   {
-    "City": "Pertunmaa",
+    "city": "Pertunmaa",
     "population": 1690
   },
   {
-    "City": "Petäjävesi",
+    "city": "Petäjävesi",
     "population": 3841
   },
   {
-    "City": "Pieksämäki",
+    "city": "Pieksämäki",
     "population": 17682
   },
   {
-    "City": "Pielavesi",
+    "city": "Pielavesi",
     "population": 4391
   },
   {
-    "City": "Pietarsaari",
+    "city": "Pietarsaari",
     "population": 19208
   },
   {
-    "City": "Pihtipudas",
+    "city": "Pihtipudas",
     "population": 4032
   },
   {
-    "City": "Pirkkala",
+    "city": "Pirkkala",
     "population": 19623
   },
   {
-    "City": "Polvijärvi",
+    "city": "Polvijärvi",
     "population": 4246
   },
   {
-    "City": "Pomarkku",
+    "city": "Pomarkku",
     "population": 2089
   },
   {
-    "City": "Pori",
+    "city": "Pori",
     "population": 83934
   },
   {
-    "City": "Pornainen",
+    "city": "Pornainen",
     "population": 5035
   },
   {
-    "City": "Porvoo",
+    "city": "Porvoo",
     "population": 50380
   },
   {
-    "City": "Posio",
+    "city": "Posio",
     "population": 3183
   },
   {
-    "City": "Pudasjärvi",
+    "city": "Pudasjärvi",
     "population": 7873
   },
   {
-    "City": "Pukkila",
+    "city": "Pukkila",
     "population": 1860
   },
   {
-    "City": "Punkalaidun",
+    "city": "Punkalaidun",
     "population": 2828
   },
   {
-    "City": "Puolanka",
+    "city": "Puolanka",
     "population": 2528
   },
   {
-    "City": "Puumala",
+    "city": "Puumala",
     "population": 2151
   },
   {
-    "City": "Pyhtää",
+    "city": "Pyhtää",
     "population": 5140
   },
   {
-    "City": "Pyhäjoki",
+    "city": "Pyhäjoki",
     "population": 3077
   },
   {
-    "City": "Pyhäjärvi",
+    "city": "Pyhäjärvi",
     "population": 5131
   },
   {
-    "City": "Pyhäntä",
+    "city": "Pyhäntä",
     "population": 1578
   },
   {
-    "City": "Pyhäranta",
+    "city": "Pyhäranta",
     "population": 2004
   },
   {
-    "City": "Pälkäne",
+    "city": "Pälkäne",
     "population": 6435
   },
   {
-    "City": "Pöytyä",
+    "city": "Pöytyä",
     "population": 8276
   },
   {
-    "City": "Raahe",
+    "city": "Raahe",
     "population": 24679
   },
   {
-    "City": "Raasepori",
+    "city": "Raasepori",
     "population": 27536
   },
   {
-    "City": "Raisio",
+    "city": "Raisio",
     "population": 24056
   },
   {
-    "City": "Rantasalmi",
+    "city": "Rantasalmi",
     "population": 3431
   },
   {
-    "City": "Ranua",
+    "city": "Ranua",
     "population": 3783
   },
   {
-    "City": "Rauma",
+    "city": "Rauma",
     "population": 39205
   },
   {
-    "City": "Rautalampi",
+    "city": "Rautalampi",
     "population": 3121
   },
   {
-    "City": "Rautavaara",
+    "city": "Rautavaara",
     "population": 1602
   },
   {
-    "City": "Rautjärvi",
+    "city": "Rautjärvi",
     "population": 3226
   },
   {
-    "City": "Reisjärvi",
+    "city": "Reisjärvi",
     "population": 2718
   },
   {
-    "City": "Riihimäki",
+    "city": "Riihimäki",
     "population": 28793
   },
   {
-    "City": "Ristijärvi",
+    "city": "Ristijärvi",
     "population": 1272
   },
   {
-    "City": "Rovaniemi",
+    "city": "Rovaniemi",
     "population": 63042
   },
   {
-    "City": "Ruokolahti",
+    "city": "Ruokolahti",
     "population": 4994
   },
   {
-    "City": "Ruovesi",
+    "city": "Ruovesi",
     "population": 4283
   },
   {
-    "City": "Rusko",
+    "city": "Rusko",
     "population": 6327
   },
   {
-    "City": "Rääkkylä",
+    "city": "Rääkkylä",
     "population": 2126
   },
   {
-    "City": "Saarijärvi",
+    "city": "Saarijärvi",
     "population": 9309
   },
   {
-    "City": "Salla",
+    "city": "Salla",
     "population": 3400
   },
   {
-    "City": "Salo",
+    "city": "Salo",
     "population": 51833
   },
   {
-    "City": "Saltvik",
+    "city": "Saltvik",
     "population": 1849
   },
   {
-    "City": "Sastamala",
+    "city": "Sastamala",
     "population": 24277
   },
   {
-    "City": "Sauvo",
+    "city": "Sauvo",
     "population": 2945
   },
   {
-    "City": "Savitaipale",
+    "city": "Savitaipale",
     "population": 3383
   },
   {
-    "City": "Savonlinna",
+    "city": "Savonlinna",
     "population": 32974
   },
   {
-    "City": "Savukoski",
+    "city": "Savukoski",
     "population": 1005
   },
   {
-    "City": "Seinäjoki",
+    "city": "Seinäjoki",
     "population": 63781
   },
   {
-    "City": "Sievi",
+    "city": "Sievi",
     "population": 4910
   },
   {
-    "City": "Siikainen",
+    "city": "Siikainen",
     "population": 1437
   },
   {
-    "City": "Siikajoki",
+    "city": "Siikajoki",
     "population": 5145
   },
   {
-    "City": "Siikalatva",
+    "city": "Siikalatva",
     "population": 5231
   },
   {
-    "City": "Siilinjärvi",
+    "city": "Siilinjärvi",
     "population": 21423
   },
   {
-    "City": "Simo",
+    "city": "Simo",
     "population": 2988
   },
   {
-    "City": "Sipoo",
+    "city": "Sipoo",
     "population": 21170
   },
   {
-    "City": "Siuntio",
+    "city": "Siuntio",
     "population": 6145
   },
   {
-    "City": "Sodankylä",
+    "city": "Sodankylä",
     "population": 8303
   },
   {
-    "City": "Soini",
+    "city": "Soini",
     "population": 2052
   },
   {
-    "City": "Somero",
+    "city": "Somero",
     "population": 8711
   },
   {
-    "City": "Sonkajärvi",
+    "city": "Sonkajärvi",
     "population": 3897
   },
   {
-    "City": "Sotkamo",
+    "city": "Sotkamo",
     "population": 10336
   },
   {
-    "City": "Sottunga",
+    "city": "Sottunga",
     "population": 88
   },
   {
-    "City": "Sulkava",
+    "city": "Sulkava",
     "population": 2492
   },
   {
-    "City": "Sund",
+    "city": "Sund",
     "population": 1023
   },
   {
-    "City": "Suomussalmi",
+    "city": "Suomussalmi",
     "population": 7727
   },
   {
-    "City": "Suonenjoki",
+    "city": "Suonenjoki",
     "population": 7064
   },
   {
-    "City": "Sysmä",
+    "city": "Sysmä",
     "population": 3657
   },
   {
-    "City": "Säkylä",
+    "city": "Säkylä",
     "population": 6721
   },
   {
-    "City": "Taipalsaari",
+    "city": "Taipalsaari",
     "population": 4671
   },
   {
-    "City": "Taivalkoski",
+    "city": "Taivalkoski",
     "population": 3976
   },
   {
-    "City": "Taivassalo",
+    "city": "Taivassalo",
     "population": 1639
   },
   {
-    "City": "Tammela",
+    "city": "Tammela",
     "population": 6015
   },
   {
-    "City": "Tampere",
+    "city": "Tampere",
     "population": 238140
   },
   {
-    "City": "Tervo",
+    "city": "Tervo",
     "population": 1520
   },
   {
-    "City": "Tervola",
+    "city": "Tervola",
     "population": 3001
   },
   {
-    "City": "Teuva",
+    "city": "Teuva",
     "population": 5076
   },
   {
-    "City": "Tohmajärvi",
+    "city": "Tohmajärvi",
     "population": 4361
   },
   {
-    "City": "Toholampi",
+    "city": "Toholampi",
     "population": 3033
   },
   {
-    "City": "Toivakka",
+    "city": "Toivakka",
     "population": 2388
   },
   {
-    "City": "Tornio",
+    "city": "Tornio",
     "population": 21602
   },
   {
-    "City": "Turku",
+    "city": "Turku",
     "population": 192962
   },
   {
-    "City": "Tuusniemi",
+    "city": "Tuusniemi",
     "population": 2477
   },
   {
-    "City": "Tuusula",
+    "city": "Tuusula",
     "population": 38599
   },
   {
-    "City": "Tyrnävä",
+    "city": "Tyrnävä",
     "population": 6637
   },
   {
-    "City": "Ulvila",
+    "city": "Ulvila",
     "population": 12871
   },
   {
-    "City": "Urjala",
+    "city": "Urjala",
     "population": 4688
   },
   {
-    "City": "Utajärvi",
+    "city": "Utajärvi",
     "population": 2676
   },
   {
-    "City": "Utsjoki",
+    "city": "Utsjoki",
     "population": 1212
   },
   {
-    "City": "Uurainen",
+    "city": "Uurainen",
     "population": 3681
   },
   {
-    "City": "Uusikaarlepyy",
+    "city": "Uusikaarlepyy",
     "population": 7464
   },
   {
-    "City": "Uusikaupunki",
+    "city": "Uusikaupunki",
     "population": 15522
   },
   {
-    "City": "Vaala",
+    "city": "Vaala",
     "population": 2792
   },
   {
-    "City": "Vaasa",
+    "city": "Vaasa",
     "population": 67636
   },
   {
-    "City": "Valkeakoski",
+    "city": "Valkeakoski",
     "population": 20972
   },
   {
-    "City": "Valtimo",
+    "city": "Valtimo",
     "population": 2140
   },
   {
-    "City": "Vantaa",
+    "city": "Vantaa",
     "population": 233775
   },
   {
-    "City": "Varkaus",
+    "city": "Varkaus",
     "population": 20466
   },
   {
-    "City": "Vehmaa",
+    "city": "Vehmaa",
     "population": 2293
   },
   {
-    "City": "Vesanto",
+    "city": "Vesanto",
     "population": 2014
   },
   {
-    "City": "Vesilahti",
+    "city": "Vesilahti",
     "population": 4355
   },
   {
-    "City": "Veteli",
+    "city": "Veteli",
     "population": 3114
   },
   {
-    "City": "Vieremä",
+    "city": "Vieremä",
     "population": 3579
   },
   {
-    "City": "Vihti",
+    "city": "Vihti",
     "population": 29158
   },
   {
-    "City": "Viitasaari",
+    "city": "Viitasaari",
     "population": 6176
   },
   {
-    "City": "Vimpeli",
+    "city": "Vimpeli",
     "population": 2827
   },
   {
-    "City": "Virolahti",
+    "city": "Virolahti",
     "population": 3109
   },
   {
-    "City": "Virrat",
+    "city": "Virrat",
     "population": 6544
   },
   {
-    "City": "Vårdö",
+    "city": "Vårdö",
     "population": 447
   },
   {
-    "City": "Vöyri",
+    "city": "Vöyri",
     "population": 6461
   },
   {
-    "City": "Ylitornio",
+    "city": "Ylitornio",
     "population": 3918
   },
   {
-    "City": "Ylivieska",
+    "city": "Ylivieska",
     "population": 15255
   },
   {
-    "City": "Ylöjärvi",
+    "city": "Ylöjärvi",
     "population": 33254
   },
   {
-    "City": "Ypäjä",
+    "city": "Ypäjä",
     "population": 2343
   },
   {
-    "City": "Ähtäri",
+    "city": "Ähtäri",
     "population": 5616
   },
   {
-    "City": "Äänekoski",
+    "city": "Äänekoski",
     "population": 18765
   }
 ]

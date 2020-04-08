@@ -41,7 +41,7 @@ const ModalContent = styled.div`
   width: 100%;
   max-height: 90vh;
   max-width: 90vw;
-  overflow: scroll;
+  overflow: auto;
   position: absolute;
   top: 50%;
   left: 50%;

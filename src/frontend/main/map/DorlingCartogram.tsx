@@ -71,6 +71,7 @@ const Map: React.FunctionComponent<{
   useEffect(() => {
     let mapSVG = d3.select(mapNode);
     mapSVG.selectAll('.mapG').remove();
+    mapSVG.selectAll('.keyG').remove();
 
     // projection for the map shape
     const projection = d3
@@ -92,7 +93,7 @@ const Map: React.FunctionComponent<{
     let mapG = mapSVG
       .append('g')
       .attr('class', 'masterG')
-      .attr('transform', `translate(0,${0 - 20})`);
+      .attr('transform', `translate(0,-20)`);
 
     //g for adding map
     let g = mapG.append('g').attr('class', 'mapG');
@@ -173,10 +174,24 @@ const Map: React.FunctionComponent<{
     let keyG = mapG
       .append('g')
       .attr('class', 'keyG')
-      .attr('transform', `translate(0,${0 - 20})`);
+      .attr('transform', `translate(0,-20)`);
     let colorKey = [...props.colorRange];
     colorKey.reverse().push(props.defaultColor);
-    let colorLegend = ['Top 10', '10-20', '20-30', 'Rest', 'Ei tietoa'];
+    let colorLegend = ['Ylin 10', '10-20', '20-30', 'Muut', 'Ei tietoa'];
+    keyG
+      .append('text')
+      .attr('x', 5)
+      .attr('y', props.svgHeight - 55 - 2 * rScale(500000))
+      .attr('fill', '#000')
+      .attr('font-size', 10)
+      .text('Väri kertoo, missä oireita');
+    keyG
+      .append('text')
+      .attr('x', 5)
+      .attr('y', props.svgHeight - 42 - 2 * rScale(500000))
+      .attr('fill', '#000')
+      .attr('font-size', 10)
+      .text('on raportoitu eniten');
     keyG
       .selectAll('.keyRect')
       .data(colorKey.reverse())
@@ -184,7 +199,7 @@ const Map: React.FunctionComponent<{
       .append('rect')
       .attr('class', 'keyRect')
       .attr('x', 5)
-      .attr('y', (d: string, i: number) => props.svgHeight - i * 20 - 60 - 2 * rScale(500000))
+      .attr('y', (d: string, i: number) => props.svgHeight - i * 20 - 85 - 2 * rScale(500000))
       .attr('fill', (d: string) => d)
       .attr('width', 16)
       .attr('height', 16);
@@ -195,7 +210,7 @@ const Map: React.FunctionComponent<{
       .append('text')
       .attr('class', 'keyText')
       .attr('x', 23)
-      .attr('y', (d: string, i: number) => props.svgHeight - i * 20 - 60 - 2 * rScale(500000))
+      .attr('y', (d: string, i: number) => props.svgHeight - i * 20 - 85 - 2 * rScale(500000))
       .attr('dy', 12)
       .attr('fill', '#000')
       .attr('font-size', 12)
@@ -205,7 +220,7 @@ const Map: React.FunctionComponent<{
       .append('text')
       .attr('class', 'keyText')
       .attr('x', 5)
-      .attr('y', (d: string, i: number) => props.svgHeight)
+      .attr('y', props.svgHeight)
       .attr('fill', '#000')
       .attr('font-size', 10)
       .text('Ympyrän koko kuvaa väkilukua');
@@ -252,7 +267,7 @@ const Map: React.FunctionComponent<{
           ) -
           20})`,
       );
-    else mapSVG.select('.masterG').attr('transform', `translate(0,${0 - 20})`);
+    else mapSVG.select('.masterG').attr('transform', `translate(0,-20)`);
     let sortedData: any = props.mapShapeData.features
       .filter((a: { properties: { responses: number } }) => a.properties.responses !== -1)
       .sort((a: any, b: any) => d3.descending(a.properties[props.colorScaleKey], b.properties[props.colorScaleKey]));

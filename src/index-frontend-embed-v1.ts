@@ -48,7 +48,7 @@ function currentDisplayLanguage() {
 }
 
 function switchLanguage(pageRedirect: string) {
-  window.location.href = pageRedirect;
+  window.location.href = '/embed/v1' + pageRedirect;
 }
 
 function localStorageIdKey() {

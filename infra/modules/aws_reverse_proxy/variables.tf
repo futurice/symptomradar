@@ -80,6 +80,12 @@ variable "override_response_body" {
   default     = ""
 }
 
+variable "override_only_on_code" {
+  description = "When non-empty, limits when `override_response_*` variables take effect; for example, setting this to `\"404\"` allows you to turn origin 404's into 200's, while still passing a 302 redirect through to the client (JS-style regex allowed)"
+  type        = string
+  default     = ""
+}
+
 variable "basic_auth_username" {
   description = "When non-empty, require this username with HTTP Basic Auth"
   default     = ""

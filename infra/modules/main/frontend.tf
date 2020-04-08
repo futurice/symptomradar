@@ -72,6 +72,7 @@ module "frontend" {
   basic_auth_password        = var.frontend_password
   override_response_code     = 200
   override_response_status   = "OK"
+  override_only_on_code      = "404"
 
   add_response_headers = {
 

@@ -8,6 +8,7 @@ locals {
     override_response_code   = var.override_response_code
     override_response_status = var.override_response_status
     override_response_body   = var.override_response_body
+    override_only_on_code    = var.override_only_on_code
   }
 }
 

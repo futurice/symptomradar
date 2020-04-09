@@ -8,13 +8,14 @@ import useModal from '../useModal';
 let mapNode!: SVGSVGElement | null;
 
 interface mapProperties {
-  city?: string;
-  name?: string;
+  city: string;
   responses: number;
   fever_no: number;
+  fever_yes: number;
   fever_slight: number;
   fever_high: number;
   cough_no: number;
+  cough_yes: number;
   cough_mild: number;
   cough_intense: number;
   cough_fine: number;
@@ -41,15 +42,15 @@ interface mapProperties {
   corona_suspicion_no: number;
   corona_suspicion_yes: number;
   population: number;
+  x: number;
+  y: number;
 }
 
 const mapSimplified: any = require('./finland-map-simplified.json');
 
 const Map: React.FunctionComponent<{
   defaultRadius: number;
-  svgWidth: number;
-  svgHeight: number;
-  mapShapeData: { features: { properties: mapProperties }[] };
+  mapShapeData:  mapProperties[];
   mapScale: number;
   colorRange: string[];
   colorDomain?: number[];
@@ -66,7 +67,7 @@ const Map: React.FunctionComponent<{
   // radius and color scale
   let rScale = d3
     .scaleSqrt()
-    .domain([0, d3.max(props.mapShapeData.features, (el: any) => el.properties[props.radiusScaleKey])])
+    .domain([0, d3.max(props.mapShapeData, (el: any) => el[props.radiusScaleKey])])
     .range(props.radiusRange);
   useEffect(() => {
     let mapSVG = d3.select(mapNode);
@@ -78,7 +79,7 @@ const Map: React.FunctionComponent<{
       .geoTransverseMercator()
       .rotate([-27, -65, 0])
       .scale(props.mapScale)
-      .translate([props.svgWidth / 2 + 60, props.svgHeight / 2 - 10]);
+      .translate([2023 / 2 + 60, 900 / 2 - 10]);
 
     // covert map shape to path
     const path = d3.geoPath().projection(projection);
@@ -93,7 +94,7 @@ const Map: React.FunctionComponent<{
     let mapG = mapSVG
       .append('g')
       .attr('class', 'masterG')
-      .attr('transform', `translate(0,-20)`);
+      .attr('transform', `translate(0,-30)`);
 
     //g for adding map
     let g = mapG.append('g').attr('class', 'mapG');
@@ -102,30 +103,7 @@ const Map: React.FunctionComponent<{
       g.attr('transform', d3.event.transform); // updated for d3 v4
     }
 
-    let mapShapeData: { features: { properties: any }[] } = JSON.parse(JSON.stringify(props.mapShapeData)); // cloning the json
 
-    //fixing Helsinki and Vantaa circle and also giving the center of each circle so they dont animate weirdly
-    mapShapeData.features.forEach((d: { properties: any; fx?: number; fy?: number; x?: number; y?: number }) => {
-      d.x = path.centroid(d)[0];
-      d.y = path.centroid(d)[1];
-      if (d.properties.city === 'Helsinki') {
-        d.fx = path.centroid(d)[0];
-        d.fy = path.centroid(d)[1];
-      }
-      if (d.properties.city === 'Vantaa') {
-        let indexHelsinkiShape = mapShapeData.features.findIndex(
-          (el: { properties: { city: string } }) => el.properties.city === 'Helsinki',
-        );
-        let rHelsinki = rScale(mapShapeData.features[indexHelsinkiShape].properties[props.radiusScaleKey]);
-        let rVantaa = rScale(d.properties[props.radiusScaleKey]);
-        d.fx =
-          path.centroid(mapShapeData.features[indexHelsinkiShape])[0] +
-          (rHelsinki + rVantaa + 2) * Math.cos((45 * Math.PI) / 180);
-        d.fy =
-          path.centroid(mapShapeData.features[indexHelsinkiShape])[1] -
-          (rHelsinki + rVantaa + 2) * Math.sin((45 * Math.PI) / 180);
-      }
-    });
     g.append('path')
       .datum(
         topojson.merge(
@@ -138,74 +116,41 @@ const Map: React.FunctionComponent<{
       .attr('stroke-width', 1.5)
       .attr('stroke', '#ccd2d5');
     g.selectAll(`.cityCircle`)
-      .data(mapShapeData.features)
+      .data(props.mapShapeData)
       .enter()
       .append('circle')
       .attr('class', 'cityCircle')
-      .attr('cx', (d: {}) => path.centroid(d)[0])
-      .attr('cy', (d: {}) => path.centroid(d)[1])
-      .attr('r', (d: { properties: any }) => {
-        if (d.properties[props.radiusScaleKey] === -1) return props.defaultRadius;
-        return rScale(d.properties[props.radiusScaleKey]);
+      .attr('cx', (d:mapProperties) => d.x)
+      .attr('cy', (d:mapProperties) => d.y)
+      .attr('r', (d:any) => {
+        if (d[props.radiusScaleKey] === -1) return props.defaultRadius;
+        return rScale(d[props.radiusScaleKey]);
       })
       .attr('fill', '#fff')
       .style('cursor', 'pointer')
-      .on('click', (d: {}) => {
+      .on('click', (d:mapProperties) => {
         setActiveCityData(d);
         toggleModal();
       });
-    let tick: () => void = () => {
-      g.selectAll('.cityCircle')
-        .attr('cx', (d: { x: number }) => d.x)
-        .attr('cy', (d: { y: number }) => d.y);
-    };
-    d3.forceSimulation(mapShapeData.features)
-      .force(
-        'x',
-        d3
-          .forceX((d: {}) => path.centroid(d)[0])
-          .strength((d: { properties: { population: number } }) => {
-            if (d.properties.population > 100000) return 10;
-            return 1;
-          }),
-      )
-      .force(
-        'y',
-        d3
-          .forceY((d: {}) => path.centroid(d)[1])
-          .strength((d: { properties: { population: number } }) => {
-            if (d.properties.population > 100000) return 20;
-            return 10;
-          }),
-      )
-      .force(
-        'collide',
-        d3.forceCollide((d: { properties: any }) => {
-          if (d.properties[props.radiusScaleKey] === -1) return props.defaultRadius + 1;
-          return rScale(d.properties[props.radiusScaleKey]) + 1;
-        }),
-      )
-      .alpha(0.1)
-      .on('tick', tick);
 
     let keyG = mapG
       .append('g')
       .attr('class', 'keyG')
-      .attr('transform', `translate(0,-20)`);
+      .attr('transform', `translate(0,-30)`);
     let colorKey = [...props.colorRange];
     colorKey.reverse().push(props.defaultColor);
     let colorLegend = ['Ylin 10', '10-20', '20-30', 'Muut', 'Ei tietoa'];
     keyG
       .append('text')
       .attr('x', 5)
-      .attr('y', props.svgHeight - 55 - 2 * rScale(500000))
+      .attr('y', 900 - 55 - 2 * rScale(500000))
       .attr('fill', '#000')
       .attr('font-size', 10)
       .text('Väri kertoo, missä oireita');
     keyG
       .append('text')
       .attr('x', 5)
-      .attr('y', props.svgHeight - 42 - 2 * rScale(500000))
+      .attr('y', 900 - 42 - 2 * rScale(500000))
       .attr('fill', '#000')
       .attr('font-size', 10)
       .text('on raportoitu eniten');
@@ -216,7 +161,7 @@ const Map: React.FunctionComponent<{
       .append('rect')
       .attr('class', 'keyRect')
       .attr('x', 5)
-      .attr('y', (d: string, i: number) => props.svgHeight - i * 20 - 85 - 2 * rScale(500000))
+      .attr('y', (d: string, i: number) => 900 - i * 20 - 85 - 2 * rScale(500000))
       .attr('fill', (d: string) => d)
       .attr('width', 16)
       .attr('height', 16);
@@ -227,7 +172,7 @@ const Map: React.FunctionComponent<{
       .append('text')
       .attr('class', 'keyText')
       .attr('x', 23)
-      .attr('y', (d: string, i: number) => props.svgHeight - i * 20 - 85 - 2 * rScale(500000))
+      .attr('y', (d: string, i: number) => 900 - i * 20 - 85 - 2 * rScale(500000))
       .attr('dy', 12)
       .attr('fill', '#000')
       .attr('font-size', 12)
@@ -237,7 +182,7 @@ const Map: React.FunctionComponent<{
       .append('text')
       .attr('class', 'keyText')
       .attr('x', 5)
-      .attr('y', props.svgHeight)
+      .attr('y', 900)
       .attr('fill', '#000')
       .attr('font-size', 10)
       .text('Ympyrän koko kuvaa väkilukua');
@@ -248,7 +193,7 @@ const Map: React.FunctionComponent<{
       .append('circle')
       .attr('class', 'keyCircle')
       .attr('cx', 5 + rScale(circleKey[circleKey.length - 1]))
-      .attr('cy', (d: number) => props.svgHeight - rScale(d) - 15)
+      .attr('cy', (d: number) => 900 - rScale(d) - 15)
       .attr('stroke', '#aaa')
       .attr('fill', 'none')
       .attr('stroke-width', 1)
@@ -260,7 +205,7 @@ const Map: React.FunctionComponent<{
       .append('text')
       .attr('class', 'keyCircleText')
       .attr('x', 5 + rScale(circleKey[circleKey.length - 1]))
-      .attr('y', (d: number) => props.svgHeight - 2 * rScale(d) - 15)
+      .attr('y', (d: number) => 900 - 2 * rScale(d) - 15)
       .attr('dy', -2)
       .attr('text-anchor', 'middle')
       .attr('fill', '#aaa')
@@ -268,7 +213,7 @@ const Map: React.FunctionComponent<{
       .text((d: number) => `${d / 1000}K`);
 
     // eslint-disable-next-line
-  }, [props.mapScale, props.mapShapeData, props.svgWidth, props.svgHeight]);
+  }, [props.mapScale, props.mapShapeData, 900]);
   useEffect(() => {
     let mapSVG = d3.select(mapNode);
 
@@ -282,46 +227,46 @@ const Map: React.FunctionComponent<{
               .style('height')
               .slice(0, -2),
           ) -
-          20})`,
+          30})`,
       );
-    else mapSVG.select('.masterG').attr('transform', `translate(0,-20)`);
-    let sortedData: any = props.mapShapeData.features
-      .filter((a: { properties: { responses: number } }) => a.properties.responses !== -1)
-      .sort((a: any, b: any) => d3.descending(a.properties[props.colorScaleKey], b.properties[props.colorScaleKey]));
+    else mapSVG.select('.masterG').attr('transform', `translate(0,-30)`);
+    let sortedData: any = props.mapShapeData
+      .filter((a:mapProperties) => a.responses !== -1)
+      .sort((a: any, b: any) => d3.descending(a[props.colorScaleKey], b[props.colorScaleKey]));
     let colorDomain = [
-      sortedData[29].properties[props.colorScaleKey],
-      sortedData[19].properties[props.colorScaleKey],
-      sortedData[9].properties[props.colorScaleKey],
+      sortedData[29][props.colorScaleKey],
+      sortedData[19][props.colorScaleKey],
+      sortedData[9][props.colorScaleKey],
     ];
     switch (props.colorScaleTransform) {
       case 'percentPopulation':
-        sortedData = props.mapShapeData.features
-          .filter((a: { properties: { responses: number } }) => a.properties.responses !== -1)
+        sortedData = props.mapShapeData
+          .filter((a:mapProperties) => a.responses !== -1)
           .sort((a: any, b: any) =>
             d3.descending(
-              (a.properties[props.colorScaleKey] * 100) / a.properties.population,
-              (b.properties[props.colorScaleKey] * 100) / b.properties.population,
+              (a[props.colorScaleKey] * 100) / a.population,
+              (b[props.colorScaleKey] * 100) / b.population,
             ),
           );
         colorDomain = [
-          (sortedData[29].properties[props.colorScaleKey] * 100) / sortedData[29].properties.population,
-          (sortedData[19].properties[props.colorScaleKey] * 100) / sortedData[19].properties.population,
-          (sortedData[9].properties[props.colorScaleKey] * 100) / sortedData[9].properties.population,
+          (sortedData[29][props.colorScaleKey] * 100) / sortedData[29].population,
+          (sortedData[19][props.colorScaleKey] * 100) / sortedData[19].population,
+          (sortedData[9][props.colorScaleKey] * 100) / sortedData[9].population,
         ];
         break;
       case 'percentResponse':
-        sortedData = props.mapShapeData.features
-          .filter((a: { properties: { responses: number } }) => a.properties.responses !== -1)
+        sortedData = props.mapShapeData
+          .filter((a:mapProperties) => a.responses !== -1)
           .sort((a: any, b: any) =>
             d3.descending(
-              (a.properties[props.colorScaleKey] * 100) / a.properties.responses,
-              (b.properties[props.colorScaleKey] * 100) / b.properties.responses,
+              (a[props.colorScaleKey] * 100) / a.responses,
+              (b[props.colorScaleKey] * 100) / b.responses,
             ),
           );
         colorDomain = [
-          (sortedData[29].properties[props.colorScaleKey] * 100) / sortedData[29].properties.responses,
-          (sortedData[19].properties[props.colorScaleKey] * 100) / sortedData[19].properties.responses,
-          (sortedData[9].properties[props.colorScaleKey] * 100) / sortedData[9].properties.responses,
+          (sortedData[29][props.colorScaleKey] * 100) / sortedData[29].responses,
+          (sortedData[19][props.colorScaleKey] * 100) / sortedData[19].responses,
+          (sortedData[9][props.colorScaleKey] * 100) / sortedData[9].responses,
         ];
         break;
       default:
@@ -340,15 +285,15 @@ const Map: React.FunctionComponent<{
       .selectAll('.cityCircle')
       .transition()
       .duration(250)
-      .attr('fill', (d: { properties: any }) => {
-        if (d.properties[props.colorScaleKey] === -1) return props.defaultColor;
+      .attr('fill', (d: any) => {
+        if (d[props.colorScaleKey] === -1) return props.defaultColor;
         switch (props.colorScaleTransform) {
           case 'percentPopulation':
-            return colorScale((d.properties[props.colorScaleKey] * 100) / d.properties.population);
+            return colorScale((d[props.colorScaleKey] * 100) / d.population);
           case 'percentResponse':
-            return colorScale((d.properties[props.colorScaleKey] * 100) / d.properties.responses);
+            return colorScale((d[props.colorScaleKey] * 100) / d.responses);
           default:
-            return colorScale(d.properties[props.colorScaleKey]);
+            return colorScale(d[props.colorScaleKey]);
         }
       });
   }, [
@@ -362,13 +307,11 @@ const Map: React.FunctionComponent<{
     rScale,
     props.defaultRadius,
     props.radiusScaleKey,
-    props.svgWidth,
-    props.svgHeight,
     props.popUpOpen,
   ]);
   return (
-    <div>
-      <svg width={props.svgWidth} height={props.svgHeight} ref={node => (mapNode = node)} />
+    <div style={{height:'calc(100vh - 225px)', width:'calc(100vW)'}}>
+      <svg width='100%' height='100%' ref={node => (mapNode = node)} viewBox={`0 0 1920 860`} preserveAspectRatio="xMidYMid meet"/>
       <Modal isShowing={isShowing} hide={toggleModal}>
         <ModalContent content={activeCityData} />
       </Modal>

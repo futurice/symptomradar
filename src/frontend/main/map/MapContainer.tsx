@@ -8,14 +8,13 @@ const App: React.FunctionComponent<{
   mapWidth: number;
   popUpOpen: boolean;
 }> = props => {
+  console.log(props.mapWidth)
   return (
     <div>
       <DorlingCartogram
         mapShapeData={props.mapShapeData}
-        svgWidth={props.mapWidth}
-        svgHeight={props.mapHeight}
-        mapScale={(props.mapHeight * 4750) / 920}
-        radiusRange={[1, (props.mapHeight * 30) / 920]}
+        mapScale={4500}
+        radiusRange={[1, 30]}
         radiusScaleKey={'population'}
         defaultRadius={1}
         colorRange={['#fce1a4', '#f08f6e', '#d12959', '#6e005f']}

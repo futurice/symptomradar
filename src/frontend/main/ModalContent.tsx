@@ -36,32 +36,32 @@ const Symptoms = styled.div`
 
 const ModalContent = ({ content }: ModalContentProps) => {
   const responsesTotal =
-    content.properties.responses !== -1 ? content.properties.responses.toLocaleString('fi-FI') : '< 25';
+    content.responses !== -1 ? content.responses.toLocaleString('fi-FI') : '< 25';
   const suspicionTotal =
-    content.properties.corona_suspicion_yes !== -1
-      ? content.properties.corona_suspicion_yes.toLocaleString('fi-FI')
+    content.corona_suspicion_yes !== -1
+      ? content.corona_suspicion_yes.toLocaleString('fi-FI')
       : 'ei tietoa';
   const coughTotal =
-    content.properties.cough_mild + content.properties.cough_intense !== -2
-      ? (content.properties.cough_mild + content.properties.cough_intense).toLocaleString('fi-FI')
+    content.cough_mild + content.cough_intense !== -2
+      ? (content.cough_mild + content.cough_intense).toLocaleString('fi-FI')
       : 'ei tietoa';
   const feverTotal =
-    content.properties.fever_slight + content.properties.fever_high !== -2
-      ? (content.properties.fever_slight + content.properties.fever_high).toLocaleString('fi-FI')
+    content.fever_slight + content.fever_high !== -2
+      ? (content.fever_slight + content.fever_high).toLocaleString('fi-FI')
       : 'ei tietoa';
   const breathingDifficulties =
-    content.properties.breathing_difficulties_yes !== -1
-      ? content.properties.breathing_difficulties_yes.toLocaleString('fi-FI')
+    content.breathing_difficulties_yes !== -1
+      ? content.breathing_difficulties_yes.toLocaleString('fi-FI')
       : 'ei tietoa';
   return (
     <>
       <ModalHeader>
-        <H2>{content.properties.city}</H2>
+        <H2>{content.city}</H2>
       </ModalHeader>
       <H3>
         Vastauksia yhteensä: {responsesTotal}{' '}
         {responsesTotal !== '< 25'
-          ? `(${((content.properties.responses * 100) / content.properties.population)
+          ? `(${((content.responses * 100) / content.population)
               .toFixed(2)
               .replace('.', ',')} % väkiluvusta)`
           : null}
@@ -70,8 +70,8 @@ const ModalContent = ({ content }: ModalContentProps) => {
       <Symptoms>
         <span>{suspicionTotal}</span>
         <span>
-          {content.properties.corona_suspicion_yes !== -1
-            ? `${((content.properties.corona_suspicion_yes * 100) / content.properties.population)
+          {content.corona_suspicion_yes !== -1
+            ? `${((content.corona_suspicion_yes * 100) / content.population)
                 .toFixed(2)
                 .replace('.', ',')} %`
             : null}
@@ -79,10 +79,10 @@ const ModalContent = ({ content }: ModalContentProps) => {
         <p>Epäilys koronavirustartunnasta </p>
         <span>{coughTotal}</span>
         <span>
-          {content.properties.cough_mild + content.properties.cough_intense !== -2
+          {content.cough_mild + content.cough_intense !== -2
             ? `${(
-                ((content.properties.cough_mild + content.properties.cough_intense) * 100) /
-                content.properties.population
+                ((content.cough_mild + content.cough_intense) * 100) /
+                content.population
               )
                 .toFixed(2)
                 .replace('.', ',')} %`
@@ -91,10 +91,10 @@ const ModalContent = ({ content }: ModalContentProps) => {
         <p>Yskää</p>
         <span>{feverTotal}</span>
         <span>
-          {content.properties.fever_slight + content.properties.fever_high !== -2
+          {content.fever_slight + content.fever_high !== -2
             ? `${(
-                ((content.properties.fever_slight + content.properties.fever_high) * 100) /
-                content.properties.population
+                ((content.fever_slight + content.fever_high) * 100) /
+                content.population
               )
                 .toFixed(2)
                 .replace('.', ',')} %`
@@ -103,8 +103,8 @@ const ModalContent = ({ content }: ModalContentProps) => {
         <p>Kuumetta</p>
         <span>{breathingDifficulties}</span>
         <span>
-          {content.properties.breathing_difficulties_yes !== -1
-            ? `${((content.properties.breathing_difficulties_yes * 100) / content.properties.population)
+          {content.breathing_difficulties_yes !== -1
+            ? `${((content.breathing_difficulties_yes * 100) / content.population)
                 .toFixed(2)
                 .replace('.', ',')} %`
             : null}

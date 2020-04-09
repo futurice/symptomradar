@@ -10,6 +10,10 @@ variable "backend_domain" {
   description = "Full domain name under which the backend should be made available on the Internet"
 }
 
+variable "open_data_domain" {
+  description = "Full domain name under which the open datasets should be made available on the Internet"
+}
+
 variable "known_hashing_pepper" {
   description = "To preserve privacy, participant_id's are hashed before storage; this controls the public part of the pepper"
 }
@@ -40,9 +44,10 @@ variable "backend_cors_allow_any" {
 }
 
 locals {
-  tags_backend  = merge(var.tags, { Component = "backend" })
-  tags_frontend = merge(var.tags, { Component = "frontend" })
-  tags_storage  = merge(var.tags, { Component = "storage" })
+  tags_backend   = merge(var.tags, { Component = "backend" })
+  tags_frontend  = merge(var.tags, { Component = "frontend" })
+  tags_storage   = merge(var.tags, { Component = "storage" })
+  tags_open_data = merge(var.tags, { Component = "open-data" })
 }
 
 data "aws_caller_identity" "current" {}

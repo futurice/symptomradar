@@ -1,9 +1,3 @@
-# This is used to allow access to our S3 bucket from CloudFront, and nowhere else
-resource "random_string" "s3_read_password" {
-  length  = 32
-  special = false
-}
-
 # Create the S3 bucket in which the static content for the site should be hosted
 resource "aws_s3_bucket" "frontend_code" {
   bucket = "${var.name_prefix}-frontend-code"

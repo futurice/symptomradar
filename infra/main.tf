@@ -13,6 +13,7 @@ module "env_dev" {
   tags                   = merge(var.tags, { Environment = "dev" })
   frontend_domain        = "dev.oiretutka.fi"
   backend_domain         = "api.dev.oiretutka.fi"
+  open_data_domain       = "data.dev.oiretutka.fi"
   known_hashing_pepper   = "D4GxgVVh0XQCrVb7FiyCal5ZgnRVkiVf"
   ssm_secrets_prefix     = "/symptomradar/dev/"
   s3_logs_bucket         = aws_s3_bucket.s3_logs.id

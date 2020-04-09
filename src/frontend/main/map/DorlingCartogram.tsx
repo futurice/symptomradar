@@ -160,8 +160,14 @@ const Map: React.FunctionComponent<{
         .attr('cy', (d: { y: number }) => d.y);
     };
     d3.forceSimulation(mapShapeData.features)
-      .force('x', d3.forceX((d: {}) => path.centroid(d)[0]).strength(1))
-      .force('y', d3.forceY((d: {}) => path.centroid(d)[1]).strength(1))
+      .force('x', d3.forceX((d: {}) => path.centroid(d)[0]).strength((d: {properties:{population:number}}) => {
+        if (d.properties.population > 100000) return 10
+        return 1
+      }))
+      .force('y', d3.forceY((d: {}) => path.centroid(d)[1]).strength((d: {properties:{population:number}}) => {
+        if (d.properties.population > 100000) return 20
+        return 10
+      }))
       .force(
         'collide',
         d3.forceCollide((d: { properties: any }) => {
@@ -169,6 +175,7 @@ const Map: React.FunctionComponent<{
           return rScale(d.properties[props.radiusScaleKey]) + 1;
         }),
       )
+      .alpha(0.1)
       .on('tick', tick);
 
     let keyG = mapG

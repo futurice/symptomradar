@@ -119,7 +119,7 @@ const MapInfo = styled.div`
 const TotalResponses = styled.div`
   background: #fff;
   position: fixed;
-  bottom: 20px;
+  bottom: 0px;
   padding: 10px 0;
   font-size: 14px;
   font-style: italic;
@@ -156,7 +156,6 @@ const MapView = (props: RouteComponentProps) => {
   const [showMapInfo, setShowMapInfo] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState('corona_suspicion_yes');
   const [mapHeight, setMapHeight] = useState(window.innerHeight - topPartHeight);
-  const [mapWidth, setMapWidth] = useState(window.innerWidth - 25);
   const [activeCityData, setActiveCityData] = useState({});
 
   const cities: string[] = cartogramData
@@ -172,8 +171,7 @@ const MapView = (props: RouteComponentProps) => {
   }, 0);
 
   window.addEventListener('resize', () => {
-    setMapHeight(window.innerHeight - 250);
-    setMapWidth(window.innerWidth - 25);
+    setMapHeight(window.innerHeight - topPartHeight);
   });
   let dataForMap:mapProperties[] = cartogramData.map((d: mapProperties) => {
     let index = data.findIndex((el: mapProperties) => d.city === el.city);
@@ -259,10 +257,10 @@ const MapView = (props: RouteComponentProps) => {
           name=""
           id="city"
           onChange={(event: { target: { value: string } }) => {
-            let indx = cartogramData.findIndex(
+            let indx = dataForMap.findIndex(
               (obj: {  city: string } ) => obj.city === event.target.value,
             );
-            setActiveCityData(cartogramData[indx]);
+            setActiveCityData(dataForMap[indx]);
             toggleModal();
           }}
         >
@@ -281,7 +279,6 @@ const MapView = (props: RouteComponentProps) => {
           mapShapeData={dataForMap}
           selectedFilter={selectedFilter}
           mapHeight={mapHeight}
-          mapWidth={mapWidth}
           popUpOpen={showMapInfo}
         />
         <FilterWrapper>

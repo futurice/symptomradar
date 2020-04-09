@@ -6,6 +6,7 @@ import ModalContent from '../ModalContent';
 import useModal from '../useModal';
 
 let mapNode!: SVGSVGElement | null;
+let keyNode!: SVGSVGElement | null;
 
 interface mapProperties {
   city: string;
@@ -60,6 +61,7 @@ const Map: React.FunctionComponent<{
   radiusRange: [number, number];
   radiusScaleKey: string;
   popUpOpen: boolean;
+  mapHeight:number;
 }> = props => {
   const [activeCityData, setActiveCityData] = useState({});
   const { isShowing, toggleModal } = useModal();
@@ -71,8 +73,9 @@ const Map: React.FunctionComponent<{
     .range(props.radiusRange);
   useEffect(() => {
     let mapSVG = d3.select(mapNode);
+    let keySVG = d3.select(keyNode);
     mapSVG.selectAll('.mapG').remove();
-    mapSVG.selectAll('.keyG').remove();
+    keySVG.selectAll('.keyG').remove();
 
     // projection for the map shape
     const projection = d3
@@ -94,7 +97,7 @@ const Map: React.FunctionComponent<{
     let mapG = mapSVG
       .append('g')
       .attr('class', 'masterG')
-      .attr('transform', `translate(0,-30)`);
+      .attr('transform', `translate(0,-10)`);
 
     //g for adding map
     let g = mapG.append('g').attr('class', 'mapG');
@@ -133,24 +136,23 @@ const Map: React.FunctionComponent<{
         toggleModal();
       });
 
-    let keyG = mapG
+    let keyG = keySVG
       .append('g')
-      .attr('class', 'keyG')
-      .attr('transform', `translate(0,-30)`);
+      .attr('class', 'keyG');
     let colorKey = [...props.colorRange];
     colorKey.reverse().push(props.defaultColor);
-    let colorLegend = ['Ylin 10', '10-20', '20-30', 'Muut', 'Ei tietoa'];
+    let colorLegend = ['Ylin 10', '10-20', '20-10', 'Muut', 'Ei tietoa'];
     keyG
       .append('text')
       .attr('x', 5)
-      .attr('y', 900 - 55 - 2 * rScale(500000))
+      .attr('y', 200 - 55)
       .attr('fill', '#000')
       .attr('font-size', 10)
       .text('Väri kertoo, missä oireita');
     keyG
       .append('text')
       .attr('x', 5)
-      .attr('y', 900 - 42 - 2 * rScale(500000))
+      .attr('y', 200 - 42)
       .attr('fill', '#000')
       .attr('font-size', 10)
       .text('on raportoitu eniten');
@@ -161,7 +163,7 @@ const Map: React.FunctionComponent<{
       .append('rect')
       .attr('class', 'keyRect')
       .attr('x', 5)
-      .attr('y', (d: string, i: number) => 900 - i * 20 - 85 - 2 * rScale(500000))
+      .attr('y', (d: string, i: number) => 200 - i * 20 - 85)
       .attr('fill', (d: string) => d)
       .attr('width', 16)
       .attr('height', 16);
@@ -172,64 +174,24 @@ const Map: React.FunctionComponent<{
       .append('text')
       .attr('class', 'keyText')
       .attr('x', 23)
-      .attr('y', (d: string, i: number) => 900 - i * 20 - 85 - 2 * rScale(500000))
+      .attr('y', (d: string, i: number) => 200 - i * 20 - 85)
       .attr('dy', 12)
       .attr('fill', '#000')
       .attr('font-size', 12)
       .text((d: string) => d);
-    let circleKey = [100000, 500000];
     keyG
       .append('text')
       .attr('class', 'keyText')
       .attr('x', 5)
-      .attr('y', 900)
+      .attr('y', 180)
       .attr('fill', '#000')
       .attr('font-size', 10)
       .text('Ympyrän koko kuvaa väkilukua');
-    keyG
-      .selectAll('.keyCircle')
-      .data(circleKey)
-      .enter()
-      .append('circle')
-      .attr('class', 'keyCircle')
-      .attr('cx', 5 + rScale(circleKey[circleKey.length - 1]))
-      .attr('cy', (d: number) => 900 - rScale(d) - 15)
-      .attr('stroke', '#aaa')
-      .attr('fill', 'none')
-      .attr('stroke-width', 1)
-      .attr('r', (d: number) => rScale(d));
-    keyG
-      .selectAll('.keyCircleText')
-      .data(circleKey)
-      .enter()
-      .append('text')
-      .attr('class', 'keyCircleText')
-      .attr('x', 5 + rScale(circleKey[circleKey.length - 1]))
-      .attr('y', (d: number) => 900 - 2 * rScale(d) - 15)
-      .attr('dy', -2)
-      .attr('text-anchor', 'middle')
-      .attr('fill', '#aaa')
-      .attr('font-size', 10)
-      .text((d: number) => `${d / 1000}K`);
 
     // eslint-disable-next-line
-  }, [props.mapScale, props.mapShapeData, 900]);
+  }, []);
   useEffect(() => {
     let mapSVG = d3.select(mapNode);
-
-    if (props.popUpOpen)
-      mapSVG.select('.masterG').attr(
-        'transform',
-        `translate(0,${0 -
-          parseFloat(
-            d3
-              .select('.popUp')
-              .style('height')
-              .slice(0, -2),
-          ) -
-          30})`,
-      );
-    else mapSVG.select('.masterG').attr('transform', `translate(0,-30)`);
     let sortedData: any = props.mapShapeData
       .filter((a:mapProperties) => a.responses !== -1)
       .sort((a: any, b: any) => d3.descending(a[props.colorScaleKey], b[props.colorScaleKey]));
@@ -302,16 +264,44 @@ const Map: React.FunctionComponent<{
     props.colorScaleTransform,
     props.colorDomain,
     props.colorRange,
-    props.mapScale,
     props.mapShapeData,
-    rScale,
-    props.defaultRadius,
-    props.radiusScaleKey,
-    props.popUpOpen,
   ]);
+
+  useEffect(() => {
+    let mapSVG = d3.select(mapNode);    
+    if (props.popUpOpen) {
+      mapSVG.select('.masterG').attr(
+        'transform',
+        `translate(0,${0 -
+          parseFloat(
+            d3
+              .select('.popUp')
+              .style('height')
+              .slice(0, -2),
+          ) -
+          10})`,
+      );
+      d3.select(keyNode).style('bottom', () => {
+        return `${
+          parseFloat(
+            d3
+              .select('.popUp')
+              .style('height')
+              .slice(0, -2),
+          ) +
+          40}px`        
+      })
+    }
+    else {
+      mapSVG.select('.masterG').attr('transform', `translate(0,-10)`);
+      d3.select(keyNode).style('bottom', '40px')
+    }
+  },[props.popUpOpen])
+  let yOffset = window.innerWidth > props.mapHeight ? 10 : props.popUpOpen ? 90 : 30;
   return (
-    <div style={{height:'calc(100vh - 225px)', width:'calc(100vW)'}}>
-      <svg width='100%' height='100%' ref={node => (mapNode = node)} viewBox={`0 0 1920 860`} preserveAspectRatio="xMidYMid meet"/>
+    <div style={{height:`${props.mapHeight}px`, width:'calc(100vW)'}}>
+      <svg width='100%' height='100%' ref={node => (mapNode = node)} viewBox={`650 ${yOffset} 600 850`} preserveAspectRatio="xMidYMid meet"/>
+      <svg width='150px' height='200px' style={{bottom:'125px', left:'20px', position:'fixed'}} ref={node => (keyNode = node)} />
       <Modal isShowing={isShowing} hide={toggleModal}>
         <ModalContent content={activeCityData} />
       </Modal>

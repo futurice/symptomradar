@@ -35,6 +35,7 @@ const Symptoms = styled.div`
 `;
 
 const ModalContent = ({ content }: ModalContentProps) => {
+  console.log(content)
   const responsesTotal =
     content.responses !== -1 ? content.responses.toLocaleString('fi-FI') : '< 25';
   const suspicionTotal =

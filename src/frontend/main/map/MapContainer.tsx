@@ -5,15 +5,14 @@ const App: React.FunctionComponent<{
   mapShapeData: any;
   selectedFilter: string;
   mapHeight: number;
-  mapWidth: number;
   popUpOpen: boolean;
 }> = props => {
-  console.log(props.mapWidth)
   return (
     <div>
       <DorlingCartogram
         mapShapeData={props.mapShapeData}
         mapScale={4500}
+        mapHeight={props.mapHeight}
         radiusRange={[1, 30]}
         radiusScaleKey={'population'}
         defaultRadius={1}

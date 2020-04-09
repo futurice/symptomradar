@@ -49,6 +49,3 @@ locals {
   tags_storage   = merge(var.tags, { Component = "storage" })
   tags_open_data = merge(var.tags, { Component = "open-data" })
 }
-
-data "aws_caller_identity" "current" {}
-data "aws_region" "current" {}

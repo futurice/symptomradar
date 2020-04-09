@@ -82,13 +82,13 @@ const Modal: React.FC<ModalProps> = ({ isShowing, hide, children }) =>
     ? ReactDOM.createPortal(
         <>
           <ModalOverlay onClick={hide} />
-          <ModalWrapper aria-modal aria-hidden tabIndex={-1} role="dialog">
+          <ModalWrapper aria-modal tabIndex={-1} role="dialog">
             <ModalContent>
-              <ModalCloseButton type="button" data-dismiss="modal" aria-label="Close" onClick={hide}>
+              <ModalCloseButton type="button" data-dismiss="modal" aria-label="Sulje" onClick={hide}>
                 <CloseIcon />
               </ModalCloseButton>
               {children}
-              <CloseButton type="button" data-dismiss="modal" aria-label="Close" label="Sulje" handleClick={hide} />
+              <CloseButton type="button" data-dismiss="modal" aria-label="Sulje" label="Sulje" handleClick={hide} />
             </ModalContent>
           </ModalWrapper>
         </>,

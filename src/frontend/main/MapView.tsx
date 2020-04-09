@@ -306,7 +306,7 @@ const MapView = (props: RouteComponentProps) => {
                 <CloseButton
                   type="button"
                   data-dismiss="modal"
-                  aria-label="Close"
+                  aria-label="Sulje"
                   onClick={() => setShowMapInfo(false)}
                 >
                   <CloseIcon />

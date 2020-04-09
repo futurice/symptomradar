@@ -301,7 +301,7 @@ const Map: React.FunctionComponent<{
   return (
     <div style={{height:`${props.mapHeight}px`, width:'calc(100vW)'}}>
       <svg width='100%' height='100%' ref={node => (mapNode = node)} viewBox={`650 ${yOffset} 600 850`} preserveAspectRatio="xMidYMid meet"/>
-      <svg width='150px' height='200px' style={{bottom:'125px', left:'20px', position:'fixed'}} ref={node => (keyNode = node)} />
+      <svg width='150px' height='200px' style={{bottom:'125px', left:'10px', position:'fixed'}} ref={node => (keyNode = node)} />
       <Modal isShowing={isShowing} hide={toggleModal}>
         <ModalContent content={activeCityData} />
       </Modal>

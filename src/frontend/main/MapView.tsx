@@ -67,10 +67,20 @@ const mapShapeData = topojson.feature(mapShape, mapShape.objects.kuntarajat); //
 
 const MapNav = styled.div`
   height: 55px;
-  display: flex;
-  align-items: center;
   padding: 0 16px;
   border-bottom: 1px solid #000000;
+`;
+
+const Container = styled.div`
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+`;
+
+const MapNavContent = styled(Container)`
+  height: 100%;
+  display: flex;
+  align-items: center;
 `;
 
 const Label = styled.label`
@@ -96,6 +106,10 @@ const FilterWrapper = styled.div`
   &::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
   }
+
+  @media (min-width: 624px) {
+    padding-left: 0;
+  }
 `;
 
 const FilterButton = styled(PrimaryButton)<FilterButtonProps>`
@@ -114,7 +128,6 @@ const MapInfo = styled.div`
   width: 100vw;
   background: rgba(255, 255, 255, 0.6);
   text-align: left;
-  padding: 6px 34px 0 20px;
   border-top: 1px solid #000;
   line-height: 1.25;
 
@@ -123,11 +136,19 @@ const MapInfo = styled.div`
   }
 `;
 
+const MapInfoContent = styled(Container)`
+  padding: 6px 34px 0 16px;
+
+  @media (min-width: 624px) {
+    padding-left: 0;
+  }
+`;
+
 const TotalResponses = styled.div`
   background: #fff;
   position: fixed;
   bottom: 0;
-  padding: 10px 0;
+  padding: 10px 0 10px 16px;
   font-size: 14px;
   font-style: italic;
   width: 100vw;
@@ -136,6 +157,10 @@ const TotalResponses = styled.div`
 
   p {
     margin: 0;
+  }
+
+  @media (min-width: 624px) {
+    padding-left: 0;
   }
 `;
 
@@ -235,28 +260,31 @@ const MapView = (props: RouteComponentProps) => {
   return (
     <>
       <MapNav>
-        <Label htmlFor="city">Kaupunki</Label>
-        <select
-          name=""
-          id="city"
-          onChange={(event: { target: { value: string } }) => {
-            let indx = mapShapeData.features.findIndex(
-              (obj: { properties: { city: string } }) => obj.properties.city === event.target.value,
-            );
-            setActiveCityData(mapShapeData.features[indx]);
-            toggleModal();
-          }}
-        >
-          <option value="">Valitse kunta...</option>
-          {cities.map((city: string) => {
-            return (
-              <option key={city} value={city}>
-                {city}
-              </option>
-            );
-          })}
-        </select>
+        <MapNavContent>
+          <Label htmlFor="city">Kaupunki</Label>
+          <select
+            name=""
+            id="city"
+            onChange={(event: { target: { value: string } }) => {
+              let indx = mapShapeData.features.findIndex(
+                (obj: { properties: { city: string } }) => obj.properties.city === event.target.value,
+              );
+              setActiveCityData(mapShapeData.features[indx]);
+              toggleModal();
+            }}
+          >
+            <option value="">Valitse kunta...</option>
+            {cities.map((city: string) => {
+              return (
+                <option key={city} value={city}>
+                  {city}
+                </option>
+              );
+            })}
+          </select>
+        </MapNavContent>
       </MapNav>
+
       <MapWrapper>
         <MapContainer
           mapShapeData={mapShapeData}
@@ -265,44 +293,46 @@ const MapView = (props: RouteComponentProps) => {
           mapWidth={mapWidth}
           popUpOpen={showMapInfo}
         />
-        <FilterWrapper>
-          <FilterButton
-            type="button"
-            label="Epäilys koronasta"
-            isActive={selectedFilter === 'corona_suspicion_yes' ? true : false}
-            handleClick={() => {
-              setSelectedFilter('corona_suspicion_yes');
-            }}
-          />
-          <FilterButton
-            type="button"
-            label="Yskää"
-            isActive={selectedFilter === 'cough_yes' ? true : false}
-            handleClick={() => {
-              setSelectedFilter('cough_yes');
-            }}
-          />
-          <FilterButton
-            type="button"
-            label="Kuumetta"
-            isActive={selectedFilter === 'fever_yes' ? true : false}
-            handleClick={() => {
-              setSelectedFilter('fever_yes');
-            }}
-          />
-          <FilterButton
-            type="button"
-            label="Vaikeuksia hengittää"
-            isActive={selectedFilter === 'breathing_difficulties_yes' ? true : false}
-            handleClick={() => {
-              setSelectedFilter('breathing_difficulties_yes');
-            }}
-          />
-        </FilterWrapper>
+        <Container>
+          <FilterWrapper>
+            <FilterButton
+              type="button"
+              label="Epäilys koronasta"
+              isActive={selectedFilter === 'corona_suspicion_yes' ? true : false}
+              handleClick={() => {
+                setSelectedFilter('corona_suspicion_yes');
+              }}
+            />
+            <FilterButton
+              type="button"
+              label="Yskää"
+              isActive={selectedFilter === 'cough_yes' ? true : false}
+              handleClick={() => {
+                setSelectedFilter('cough_yes');
+              }}
+            />
+            <FilterButton
+              type="button"
+              label="Kuumetta"
+              isActive={selectedFilter === 'fever_yes' ? true : false}
+              handleClick={() => {
+                setSelectedFilter('fever_yes');
+              }}
+            />
+            <FilterButton
+              type="button"
+              label="Vaikeuksia hengittää"
+              isActive={selectedFilter === 'breathing_difficulties_yes' ? true : false}
+              handleClick={() => {
+                setSelectedFilter('breathing_difficulties_yes');
+              }}
+            />
+          </FilterWrapper>
+        </Container>
         <MapInfo>
           {showMapInfo && (
             <>
-              <div className="popUp">
+              <MapInfoContent className="popUp">
                 <CloseButton
                   type="button"
                   data-dismiss="modal"
@@ -316,11 +346,13 @@ const MapView = (props: RouteComponentProps) => {
                   25 vastausta.
                 </p>
                 <p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
-              </div>
+              </MapInfoContent>
             </>
           )}
           <TotalResponses>
-            <p>Vastauksia yhteensä: {totalReponses.toLocaleString('fi-FI')}</p>
+            <Container>
+              <p>Vastauksia yhteensä: {totalReponses.toLocaleString('fi-FI')}</p>
+            </Container>
           </TotalResponses>
         </MapInfo>
       </MapWrapper>

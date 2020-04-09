@@ -235,7 +235,7 @@ const MapView = (props: RouteComponentProps) => {
   return (
     <>
       <MapNav>
-        <Label htmlFor="city">Kaupunki</Label>
+        <Label htmlFor="city">Kunta</Label>
         <select
           name=""
           id="city"

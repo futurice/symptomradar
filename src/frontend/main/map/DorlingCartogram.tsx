@@ -51,7 +51,7 @@ const mapSimplified: any = require('./finland-map-simplified.json');
 
 const Map: React.FunctionComponent<{
   defaultRadius: number;
-  mapShapeData:  mapProperties[];
+  mapShapeData: mapProperties[];
   mapScale: number;
   colorRange: string[];
   colorDomain?: number[];
@@ -61,7 +61,7 @@ const Map: React.FunctionComponent<{
   radiusRange: [number, number];
   radiusScaleKey: string;
   popUpOpen: boolean;
-  mapHeight:number;
+  mapHeight: number;
 }> = props => {
   const [activeCityData, setActiveCityData] = useState({});
   const { isShowing, toggleModal } = useModal();
@@ -106,7 +106,6 @@ const Map: React.FunctionComponent<{
       g.attr('transform', d3.event.transform); // updated for d3 v4
     }
 
-
     g.append('path')
       .datum(
         topojson.merge(
@@ -123,22 +122,20 @@ const Map: React.FunctionComponent<{
       .enter()
       .append('circle')
       .attr('class', 'cityCircle')
-      .attr('cx', (d:mapProperties) => d.x)
-      .attr('cy', (d:mapProperties) => d.y)
-      .attr('r', (d:any) => {
+      .attr('cx', (d: mapProperties) => d.x)
+      .attr('cy', (d: mapProperties) => d.y)
+      .attr('r', (d: any) => {
         if (d[props.radiusScaleKey] === -1) return props.defaultRadius;
         return rScale(d[props.radiusScaleKey]);
       })
       .attr('fill', '#fff')
       .style('cursor', 'pointer')
-      .on('click', (d:mapProperties) => {
+      .on('click', (d: mapProperties) => {
         setActiveCityData(d);
         toggleModal();
       });
 
-    let keyG = keySVG
-      .append('g')
-      .attr('class', 'keyG');
+    let keyG = keySVG.append('g').attr('class', 'keyG');
     let colorKey = [...props.colorRange];
     colorKey.reverse().push(props.defaultColor);
     let colorLegend = ['Ylin 10', '10-20', '20-10', 'Muut', 'Ei tietoa'];
@@ -193,7 +190,7 @@ const Map: React.FunctionComponent<{
   useEffect(() => {
     let mapSVG = d3.select(mapNode);
     let sortedData: any = props.mapShapeData
-      .filter((a:mapProperties) => a.responses !== -1)
+      .filter((a: mapProperties) => a.responses !== -1)
       .sort((a: any, b: any) => d3.descending(a[props.colorScaleKey], b[props.colorScaleKey]));
     let colorDomain = [
       sortedData[29][props.colorScaleKey],
@@ -203,12 +200,9 @@ const Map: React.FunctionComponent<{
     switch (props.colorScaleTransform) {
       case 'percentPopulation':
         sortedData = props.mapShapeData
-          .filter((a:mapProperties) => a.responses !== -1)
+          .filter((a: mapProperties) => a.responses !== -1)
           .sort((a: any, b: any) =>
-            d3.descending(
-              (a[props.colorScaleKey] * 100) / a.population,
-              (b[props.colorScaleKey] * 100) / b.population,
-            ),
+            d3.descending((a[props.colorScaleKey] * 100) / a.population, (b[props.colorScaleKey] * 100) / b.population),
           );
         colorDomain = [
           (sortedData[29][props.colorScaleKey] * 100) / sortedData[29].population,
@@ -218,12 +212,9 @@ const Map: React.FunctionComponent<{
         break;
       case 'percentResponse':
         sortedData = props.mapShapeData
-          .filter((a:mapProperties) => a.responses !== -1)
+          .filter((a: mapProperties) => a.responses !== -1)
           .sort((a: any, b: any) =>
-            d3.descending(
-              (a[props.colorScaleKey] * 100) / a.responses,
-              (b[props.colorScaleKey] * 100) / b.responses,
-            ),
+            d3.descending((a[props.colorScaleKey] * 100) / a.responses, (b[props.colorScaleKey] * 100) / b.responses),
           );
         colorDomain = [
           (sortedData[29][props.colorScaleKey] * 100) / sortedData[29].responses,
@@ -268,7 +259,7 @@ const Map: React.FunctionComponent<{
   ]);
 
   useEffect(() => {
-    let mapSVG = d3.select(mapNode);    
+    let mapSVG = d3.select(mapNode);
     if (props.popUpOpen) {
       mapSVG.select('.masterG').attr(
         'transform',
@@ -282,26 +273,34 @@ const Map: React.FunctionComponent<{
           10})`,
       );
       d3.select(keyNode).style('bottom', () => {
-        return `${
-          parseFloat(
-            d3
-              .select('.popUp')
-              .style('height')
-              .slice(0, -2),
-          ) +
-          40}px`        
-      })
-    }
-    else {
+        return `${parseFloat(
+          d3
+            .select('.popUp')
+            .style('height')
+            .slice(0, -2),
+        ) + 40}px`;
+      });
+    } else {
       mapSVG.select('.masterG').attr('transform', `translate(0,-10)`);
-      d3.select(keyNode).style('bottom', '40px')
+      d3.select(keyNode).style('bottom', '40px');
     }
-  },[props.popUpOpen])
+  }, [props.popUpOpen]);
   let yOffset = window.innerWidth > props.mapHeight ? 10 : props.popUpOpen ? 90 : 30;
   return (
-    <div style={{height:`${props.mapHeight}px`, width:'calc(100vW)'}}>
-      <svg width='100%' height='100%' ref={node => (mapNode = node)} viewBox={`650 ${yOffset} 600 850`} preserveAspectRatio="xMidYMid meet"/>
-      <svg width='150px' height='200px' style={{bottom:'125px', left:'10px', position:'fixed'}} ref={node => (keyNode = node)} />
+    <div style={{ height: `${props.mapHeight}px`, width: 'calc(100vW)' }}>
+      <svg
+        width="100%"
+        height="100%"
+        ref={node => (mapNode = node)}
+        viewBox={`650 ${yOffset} 600 850`}
+        preserveAspectRatio="xMidYMid meet"
+      />
+      <svg
+        width="150px"
+        height="200px"
+        style={{ bottom: '125px', left: '10px', position: 'fixed' }}
+        ref={node => (keyNode = node)}
+      />
       <Modal isShowing={isShowing} hide={toggleModal}>
         <ModalContent content={activeCityData} />
       </Modal>

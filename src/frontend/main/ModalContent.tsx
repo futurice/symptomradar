@@ -35,13 +35,9 @@ const Symptoms = styled.div`
 `;
 
 const ModalContent = ({ content }: ModalContentProps) => {
-  console.log(content)
-  const responsesTotal =
-    content.responses !== -1 ? content.responses.toLocaleString('fi-FI') : '< 25';
+  const responsesTotal = content.responses !== -1 ? content.responses.toLocaleString('fi-FI') : '< 25';
   const suspicionTotal =
-    content.corona_suspicion_yes !== -1
-      ? content.corona_suspicion_yes.toLocaleString('fi-FI')
-      : 'ei tietoa';
+    content.corona_suspicion_yes !== -1 ? content.corona_suspicion_yes.toLocaleString('fi-FI') : 'ei tietoa';
   const coughTotal =
     content.cough_mild + content.cough_intense !== -2
       ? (content.cough_mild + content.cough_intense).toLocaleString('fi-FI')
@@ -62,9 +58,7 @@ const ModalContent = ({ content }: ModalContentProps) => {
       <H3>
         Vastauksia yhteensä: {responsesTotal}{' '}
         {responsesTotal !== '< 25'
-          ? `(${((content.responses * 100) / content.population)
-              .toFixed(2)
-              .replace('.', ',')} % väkiluvusta)`
+          ? `(${((content.responses * 100) / content.population).toFixed(2).replace('.', ',')} % väkiluvusta)`
           : null}
       </H3>
       <P>{responsesTotal !== '< 25' ? 'Verrattuna kunnan väkilukuun' : null}</P>
@@ -72,19 +66,14 @@ const ModalContent = ({ content }: ModalContentProps) => {
         <span>{suspicionTotal}</span>
         <span>
           {content.corona_suspicion_yes !== -1
-            ? `${((content.corona_suspicion_yes * 100) / content.population)
-                .toFixed(2)
-                .replace('.', ',')} %`
+            ? `${((content.corona_suspicion_yes * 100) / content.population).toFixed(2).replace('.', ',')} %`
             : null}
         </span>
         <p>Epäilys koronavirustartunnasta </p>
         <span>{coughTotal}</span>
         <span>
           {content.cough_mild + content.cough_intense !== -2
-            ? `${(
-                ((content.cough_mild + content.cough_intense) * 100) /
-                content.population
-              )
+            ? `${(((content.cough_mild + content.cough_intense) * 100) / content.population)
                 .toFixed(2)
                 .replace('.', ',')} %`
             : null}
@@ -93,10 +82,7 @@ const ModalContent = ({ content }: ModalContentProps) => {
         <span>{feverTotal}</span>
         <span>
           {content.fever_slight + content.fever_high !== -2
-            ? `${(
-                ((content.fever_slight + content.fever_high) * 100) /
-                content.population
-              )
+            ? `${(((content.fever_slight + content.fever_high) * 100) / content.population)
                 .toFixed(2)
                 .replace('.', ',')} %`
             : null}
@@ -105,9 +91,7 @@ const ModalContent = ({ content }: ModalContentProps) => {
         <span>{breathingDifficulties}</span>
         <span>
           {content.breathing_difficulties_yes !== -1
-            ? `${((content.breathing_difficulties_yes * 100) / content.population)
-                .toFixed(2)
-                .replace('.', ',')} %`
+            ? `${((content.breathing_difficulties_yes * 100) / content.population).toFixed(2).replace('.', ',')} %`
             : null}
         </span>
         <p>Vaikeuksia hengittää</p>

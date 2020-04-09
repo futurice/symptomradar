@@ -72,7 +72,7 @@ const Label = styled.label`
 const MapWrapper = styled.div`
   text-align: center;
   position: relative;
-  height:calc(100vh - 185px)
+  height: calc(100vh - 185px);
 `;
 
 const FilterWrapper = styled.div`
@@ -159,9 +159,7 @@ const MapView = (props: RouteComponentProps) => {
   const [activeCityData, setActiveCityData] = useState({});
 
   const cities: string[] = cartogramData
-    .sort((x:mapProperties, y:mapProperties) =>
-      d3.ascending(x.city, y.city),
-    )
+    .sort((x: mapProperties, y: mapProperties) => d3.ascending(x.city, y.city))
     .map((item: mapProperties) => {
       return item.city;
     });
@@ -173,9 +171,9 @@ const MapView = (props: RouteComponentProps) => {
   window.addEventListener('resize', () => {
     setMapHeight(window.innerHeight - topPartHeight);
   });
-  let dataForMap:mapProperties[] = cartogramData.map((d: mapProperties) => {
+  let dataForMap: mapProperties[] = cartogramData.map((d: mapProperties) => {
     let index = data.findIndex((el: mapProperties) => d.city === el.city);
-    let obj:mapProperties = {
+    let obj: mapProperties = {
       city: d.city,
       responses: -1,
       fever_no: -1,
@@ -210,44 +208,44 @@ const MapView = (props: RouteComponentProps) => {
       corona_suspicion_no: -1,
       corona_suspicion_yes: -1,
       population: d.population,
-      x:d.x,
-      y:d.y
+      x: d.x,
+      y: d.y,
     };
     if (index !== -1) {
-      obj.responses =  data[index].responses;
-      obj.fever_no =  data[index].fever_no;
-      obj.fever_yes =  data[index].responses - data[index].fever_no;
-      obj.fever_slight =  data[index].fever_slight;
-      obj.fever_high =  data[index].fever_high;
-      obj.cough_no =  data[index].cough_no;
-      obj.cough_yes =  data[index].responses - data[index].cough_no;
-      obj.cough_mild =  data[index].cough_mild;
-      obj.cough_intense =  data[index].cough_intense;
-      obj.cough_fine =  data[index].cough_fine;
-      obj.cough_impaired =  data[index].cough_impaired;
-      obj.cough_bad =  data[index].cough_bad;
-      obj.breathing_difficulties_no =  data[index].breathing_difficulties_no;
-      obj.breathing_difficulties_yes =  data[index].breathing_difficulties_yes;
-      obj.muscle_pain_no =  data[index].muscle_pain_no;
-      obj.muscle_pain_yes =  data[index].muscle_pain_yes;
-      obj.headache_no =  data[index].headache_no;
-      obj.headache_yes =  data[index].headache_yes;
-      obj.sore_throat_no =  data[index].sore_throat_no;
-      obj.sore_throat_yes =  data[index].sore_throat_yes;
-      obj.rhinitis_no =  data[index].rhinitis_no;
-      obj.rhinitis_yes =  data[index].rhinitis_yes;
-      obj.stomach_issues_no =  data[index].stomach_issues_no;
-      obj.stomach_issues_yes =  data[index].stomach_issues_yes;
-      obj.sensory_issues_no =  data[index].sensory_issues_no;
-      obj.sensory_issues_yes =  data[index].sensory_issues_yes;
-      obj.longterm_medication_no =  data[index].longterm_medication_no;
-      obj.longterm_medication_yes =  data[index].longterm_medication_yes;
-      obj.smoking_no =  data[index].smoking_no;
-      obj.smoking_yes =  data[index].smoking_yes;
-      obj.corona_suspicion_no =  data[index].corona_suspicion_no;
-      obj.corona_suspicion_yes =  data[index].corona_suspicion_yes;
+      obj.responses = data[index].responses;
+      obj.fever_no = data[index].fever_no;
+      obj.fever_yes = data[index].responses - data[index].fever_no;
+      obj.fever_slight = data[index].fever_slight;
+      obj.fever_high = data[index].fever_high;
+      obj.cough_no = data[index].cough_no;
+      obj.cough_yes = data[index].responses - data[index].cough_no;
+      obj.cough_mild = data[index].cough_mild;
+      obj.cough_intense = data[index].cough_intense;
+      obj.cough_fine = data[index].cough_fine;
+      obj.cough_impaired = data[index].cough_impaired;
+      obj.cough_bad = data[index].cough_bad;
+      obj.breathing_difficulties_no = data[index].breathing_difficulties_no;
+      obj.breathing_difficulties_yes = data[index].breathing_difficulties_yes;
+      obj.muscle_pain_no = data[index].muscle_pain_no;
+      obj.muscle_pain_yes = data[index].muscle_pain_yes;
+      obj.headache_no = data[index].headache_no;
+      obj.headache_yes = data[index].headache_yes;
+      obj.sore_throat_no = data[index].sore_throat_no;
+      obj.sore_throat_yes = data[index].sore_throat_yes;
+      obj.rhinitis_no = data[index].rhinitis_no;
+      obj.rhinitis_yes = data[index].rhinitis_yes;
+      obj.stomach_issues_no = data[index].stomach_issues_no;
+      obj.stomach_issues_yes = data[index].stomach_issues_yes;
+      obj.sensory_issues_no = data[index].sensory_issues_no;
+      obj.sensory_issues_yes = data[index].sensory_issues_yes;
+      obj.longterm_medication_no = data[index].longterm_medication_no;
+      obj.longterm_medication_yes = data[index].longterm_medication_yes;
+      obj.smoking_no = data[index].smoking_no;
+      obj.smoking_yes = data[index].smoking_yes;
+      obj.corona_suspicion_no = data[index].corona_suspicion_no;
+      obj.corona_suspicion_yes = data[index].corona_suspicion_yes;
     }
-    return obj
+    return obj;
   });
   return (
     <>
@@ -257,9 +255,7 @@ const MapView = (props: RouteComponentProps) => {
           name=""
           id="city"
           onChange={(event: { target: { value: string } }) => {
-            let indx = dataForMap.findIndex(
-              (obj: {  city: string } ) => obj.city === event.target.value,
-            );
+            let indx = dataForMap.findIndex((obj: { city: string }) => obj.city === event.target.value);
             setActiveCityData(dataForMap[indx]);
             toggleModal();
           }}

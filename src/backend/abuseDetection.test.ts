@@ -1,4 +1,4 @@
-import { performAbuseDetection } from './abuseDetection';
+import { performAbuseDetection, createDynamoDbClient } from './abuseDetection';
 
 // Available as event.requestContext.identity.sourceIp in the Lambda request handler
 const sourceIp = '87.92.62.179';
@@ -40,3 +40,31 @@ describe('performAbuseDetection()', () => {
     ).then(res => expect(res).toEqual({ seen_ip_24h: 0, seen_ua_24h: 0, seen_ff_24h: 0 }));
   });
 });
+
+describe('createMockDynamoDbClient()', () => {
+  it('increments keys', () => {
+    const client = createMockDynamoDbClient();
+    return Promise.all(['key-01', 'key-01', 'key-03', 'key-04'].map(client.incrementKey)).then(res =>
+      expect(res).toEqual([1, 2, 1, 1]),
+    );
+  });
+
+  it('gets values', () => {
+    const client = createMockDynamoDbClient();
+    return Promise.all(['key-01', 'key-01', 'key-03', 'key-04'].map(client.incrementKey))
+      .then(() => client.getValues(['key-01', 'key-02', 'key-03', 'key-04']))
+      .then(res => expect(res).toEqual([2, 0, 1, 1]));
+  });
+});
+
+export function createMockDynamoDbClient(): ReturnType<typeof createDynamoDbClient> {
+  const storage: { [key: string]: number | undefined } = {};
+  return {
+    incrementKey(key: string) {
+      return Promise.resolve((storage[key] = (storage[key] || 0) + 1));
+    },
+    getValues(keys: string[]) {
+      return Promise.resolve(keys.map(key => storage[key] || 0));
+    },
+  };
+}

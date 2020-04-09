@@ -1,7 +1,8 @@
 {
   "meta": {
-    "description": "TODO",
-    "generated": "TODO"
+    "description": "Population and response count per each city in Finland, where the response count was higher than 25. All the form inputs are coded in city level. Population data from Tilastokeskus. This data is released for journalistic and scientific purposes.",
+    "generated": "2020-04-08T09:00:00.000Z",
+    "link": "https://data.dev.oiretutka.fi/city_level_general_results.json"
   },
   "data": [
     {

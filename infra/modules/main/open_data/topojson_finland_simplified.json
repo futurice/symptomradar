@@ -1,7 +1,8 @@
 {
   "meta": {
-    "description": "TODO",
-    "generated": "TODO"
+    "description": "Topography used to render the outline of the map of Finland. Based on the open data at https://github.com/lucified/finland-municipalities-topojson, with some post-processing applied.",
+    "generated": "2020-04-08T09:00:00.000Z",
+    "link": "https://data.dev.oiretutka.fi/topojson_finland_simplified.json"
   },
   "data": {
     "type": "Topology",

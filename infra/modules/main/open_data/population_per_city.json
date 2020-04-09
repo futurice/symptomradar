@@ -1,7 +1,8 @@
 {
   "meta": {
-    "description": "TODO",
-    "generated": "TODO"
+    "description": "Population per each city in Finland in the end of 2019. Source is Tilastokeskus.",
+    "generated": "2020-04-08T09:00:00.000Z",
+    "link": "https://data.dev.oiretutka.fi/population_per_city.json"
   },
   "data": [
     {

@@ -42,8 +42,8 @@ const HeaderContainer = styled.div<headerContainerProps>`
 `;
 
 const LogoImage = styled.img`
-  height: 55px;
-  width: auto;
+  height: auto;
+  width: 154px;
 `;
 
 const Nav = styled.nav`

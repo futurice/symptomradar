@@ -100,7 +100,9 @@ const FilterWrapper = styled.div`
 
 const FilterButton = styled(PrimaryButton)<FilterButtonProps>`
   flex: 0 0 auto;
-  margin-right: 16px;
+  margin-right: 8px;
+  padding: 8px 16px;
+  height: 35px;
   background: ${props => (props.isActive ? '#FFF' : '#595959')};
   color: ${props => (props.isActive ? '#000' : '#FFF')};
   border: ${props => (props.isActive ? '1px solid #000' : '1px solid transparent')};
@@ -142,9 +144,15 @@ const CloseButton = styled.button`
   border: none;
   background-color: transparent;
   position: absolute;
-  top: 13px;
-  right: 4px;
+  top: 0;
+  right: 0;
   z-index: 1;
+  padding: 16px;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
 `;
 
 const MapView = (props: RouteComponentProps) => {
@@ -298,7 +306,7 @@ const MapView = (props: RouteComponentProps) => {
                 <CloseButton
                   type="button"
                   data-dismiss="modal"
-                  aria-label="Close"
+                  aria-label="Sulje"
                   onClick={() => setShowMapInfo(false)}
                 >
                   <CloseIcon />

@@ -137,14 +137,17 @@ function startSurvey() {
   $('#start-survey').addClass('hidden');
   setTimeout(function() {
     $('#form-header').focus();
-
-    // attach onchange and onblur handler to each input for dynamic validation
-    $('#symptom-questionnaire input:required')
-      .blur(event => {
-        markInvalidInput((event as JQuery.BlurEvent<HTMLInputElement>).target);
-      })
-      .change(inputChanged);
+    initValidation();
   }, 500);
+}
+
+function initValidation() {
+  // attach onchange and onblur handler to each input for dynamic validation
+  $('#symptom-questionnaire input:required')
+    .blur(event => {
+      markInvalidInput((event as JQuery.BlurEvent<HTMLInputElement>).target);
+    })
+    .change(inputChanged);
 }
 
 function hideSurvey() {
@@ -195,6 +198,7 @@ function init() {
     $('body').addClass('plain');
     $('#symptom-questionnaire').removeClass('hidden');
     $('#start-survey').addClass('hidden');
+    initValidation();
   }
 
   // Show the right language in the selector

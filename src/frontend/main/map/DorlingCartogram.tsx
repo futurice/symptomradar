@@ -138,7 +138,7 @@ const Map: React.FunctionComponent<{
     let keyG = keySVG.append('g').attr('class', 'keyG');
     let colorKey = [...props.colorRange];
     colorKey.reverse().push(props.defaultColor);
-    let colorLegend = ['Ylin 10', '10-20', '20-10', 'Muut', 'Ei tietoa'];
+    let colorLegend = ['Ylin 10', '10-20', '20-30', 'Muut', 'Ei tietoa'];
     keyG
       .append('text')
       .attr('x', 5)

@@ -144,9 +144,15 @@ const CloseButton = styled.button`
   border: none;
   background-color: transparent;
   position: absolute;
-  top: 13px;
-  right: 4px;
+  top: 0;
+  right: 0;
   z-index: 1;
+  padding: 16px;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
 `;
 
 const MapView = (props: RouteComponentProps) => {

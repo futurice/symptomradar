@@ -37,7 +37,7 @@ const ModalContent = styled.div`
   pointer-events: auto;
   z-index: 100;
   background: white;
-  padding: 32px 18px 24px;
+  padding: 24px 18px 24px;
   width: 100%;
   max-height: 90vh;
   max-width: 90vw;
@@ -53,14 +53,19 @@ const ModalContent = styled.div`
 `;
 
 const ModalCloseButton = styled.button`
-  padding: 10px;
+  padding: 16px;
   cursor: pointer;
   border: none;
   background-color: transparent;
   position: absolute;
-  right: 12px;
-  top: 22px;
+  right: 8px;
+  top: 12px;
   z-index: 1;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
 `;
 
 const CloseButton = styled(PrimaryButton)`

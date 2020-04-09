@@ -33,13 +33,16 @@ function getUrlParameter(parameter: string) {
 
 function currentDisplayLanguage() {
   var currentPage = window.location.pathname;
+  console.log('currentPage is ', currentPage);
   var lang =
-    currentPage === '/embed/v1/'
+    currentPage === '/embed/v1' || currentPage === '/embed/v1/'
       ? ''
       : currentPage
           .substring(currentPage.length - 7)
           .replace('.html', '')
           .toLowerCase();
+
+  console.log('lang is ', lang);
   if (lang !== '') {
     $('#language-selector option[value=' + lang + ']').attr('selected', 'selected');
   } else {
@@ -48,6 +51,7 @@ function currentDisplayLanguage() {
 }
 
 function switchLanguage(pageRedirect: string) {
+  console.log('pageRedirect is ', pageRedirect);
   window.location.href = '/embed/v1' + pageRedirect;
 }
 

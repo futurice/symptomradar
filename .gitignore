@@ -2,6 +2,8 @@
 # depending on which CRA-based frontend we're currently running/building
 /src/index.tsx
 /public/index.html
+/public/index.en.html
+/public/index.fi.html
 
 .history
 .terraform

@@ -21,7 +21,7 @@
     "\n==================== FRONTEND ====================": "",
     "frontend-main-start": "npm run lint-node && npm run set-frontend main && BROWSER=none react-scripts start",
     "frontend-main-build": "npm run lint-node && npm run set-frontend main && react-scripts build",
-    "frontend-embed-v1-start": "npm run lint-node && npm run set-frontend embed-v1 && BROWSER=none react-scripts start",
+    "frontend-embed-v1-start": "npm run lint-node && npm run set-frontend embed-v1 && PUBLIC_URL=\"http://localhost:3000/embed/v1/\" react-scripts start",
     "frontend-embed-v1-build": "npm run lint-node && npm run set-frontend embed-v1 && react-scripts build",
     "\n==================== BACKEND ====================": "",
     "backend-build": "npm run lint-node && rm -rf build && tsc --project tsconfig-backend.json",

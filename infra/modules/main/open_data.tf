@@ -116,17 +116,17 @@ locals {
     },
     "data": {
       "city_level_general_results": {
-        "description": "Population and response count per each city in Finland, where the response count was higher than 25.",
+        "description": "Population and response count per each city in Finland, where the response count was higher than 25. All the form inputs are coded in city level. Population data from Tilastokeskus. This data is released for journalistic and scientific purposes.",
         "generated": "2020-04-08T09:00:00.000Z",
         "link": "https://${var.open_data_domain}/city_level_general_results.json"
       },
       "low_population_postal_codes": {
-        "description": "Mapping of postal code areas with too low a population to their nearest neighbor with high enough population. This is used before storing answers, to ensure privacy is preserved for participants from postal code areas with low population.",
+        "description": "Mapping of postal code areas with too low a population to their nearest neighbor with high enough population. This is used before storing answers, to ensure privacy is preserved for participants from postal code areas with low population. Population data from Tilastokeskus.",
         "generated": "2020-04-08T09:00:00.000Z",
         "link": "https://${var.open_data_domain}/low_population_postal_codes.json"
       },
       "population_per_city": {
-        "description": "Population per each city in Finland",
+        "description": "Population per each city in Finland in the end of 2019. Source is Tilastokeskus.",
         "generated": "2020-04-08T09:00:00.000Z",
         "link": "https://${var.open_data_domain}/population_per_city.json"
       },

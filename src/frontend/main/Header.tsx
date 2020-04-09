@@ -42,8 +42,8 @@ const HeaderContainer = styled.div<headerContainerProps>`
 `;
 
 const LogoImage = styled.img`
-  height: 55px;
-  width: auto;
+  height: auto;
+  width: 154px;
 `;
 
 const Nav = styled.nav`
@@ -103,30 +103,35 @@ const LinkItem = ({ to, linkText, icon }: LinkProps) => {
 };
 
 const Header = ({ location }: HeaderProps) => {
-  return (
-    <AppHeader>
-      <HeaderContainer isFullWidthView={location === '/' ? true : false}>
-        <div>
-          <LogoImage src={Logo} alt="Oiretutka. Helsingin Sanomat ja Futurice." />
-        </div>
-        <Nav>
-          <LinkContainer>
-            <LinkItem
-              to="/"
-              linkText="Kartta"
-              icon={(match: { uri: string; path: string } | null) => <MapIcon fillColor={match ? '#000' : '#0047FF'} />}
-            />
-            <LinkItem
-              to="survey"
-              linkText="Kyselylomake"
-              icon={match => <SurveyIcon fillColor={match ? '#000' : '#0047FF'} />}
-            />
-            <LinkItem to="about" linkText="Info" icon={match => <AboutIcon fillColor={match ? '#000' : '#0047FF'} />} />
-          </LinkContainer>
-        </Nav>
-      </HeaderContainer>
-    </AppHeader>
-  );
+  const isEmbedView = location === '/map-embed';
+  if (!isEmbedView) {
+    return (
+      <AppHeader>
+        <HeaderContainer isFullWidthView={location === '/' ? true : false}>
+          <div>
+            <LogoImage src={Logo} alt="Oiretutka. Helsingin Sanomat ja Futurice." />
+          </div>
+          <Nav>
+            <LinkContainer>
+              <LinkItem to="/" linkText="Kartta" icon={match => <MapIcon fillColor={match ? '#000' : '#0047FF'} />} />
+              <LinkItem
+                to="survey"
+                linkText="Kyselylomake"
+                icon={match => <SurveyIcon fillColor={match ? '#000' : '#0047FF'} />}
+              />
+              <LinkItem
+                to="about"
+                linkText="Info"
+                icon={match => <AboutIcon fillColor={match ? '#000' : '#0047FF'} />}
+              />
+            </LinkContainer>
+          </Nav>
+        </HeaderContainer>
+      </AppHeader>
+    );
+  } else {
+    return null;
+  }
 };
 
 export default Header;

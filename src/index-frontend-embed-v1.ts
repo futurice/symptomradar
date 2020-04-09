@@ -31,6 +31,26 @@ function getUrlParameter(parameter: string) {
   }
 }
 
+function currentDisplayLanguage() {
+  var currentPage = window.location.pathname;
+  var lang =
+    currentPage === '/embed/v1/'
+      ? ''
+      : currentPage
+          .substring(currentPage.length - 7)
+          .replace('.html', '')
+          .toLowerCase();
+  if (lang !== '') {
+    $('#language-selector option[value=' + lang + ']').attr('selected', 'selected');
+  } else {
+    $('#language-selector option[value=fi]').attr('selected', 'selected');
+  }
+}
+
+function switchLanguage(pageRedirect: string) {
+  window.location.href = '/embed/v1' + pageRedirect;
+}
+
 function localStorageIdKey() {
   return 'submitId';
 }
@@ -117,14 +137,17 @@ function startSurvey() {
   $('#start-survey').addClass('hidden');
   setTimeout(function() {
     $('#form-header').focus();
-
-    // attach onchange and onblur handler to each input for dynamic validation
-    $('#symptom-questionnaire input:required')
-      .blur(event => {
-        markInvalidInput((event as JQuery.BlurEvent<HTMLInputElement>).target);
-      })
-      .change(inputChanged);
+    initValidation();
   }, 500);
+}
+
+function initValidation() {
+  // attach onchange and onblur handler to each input for dynamic validation
+  $('#symptom-questionnaire input:required')
+    .blur(event => {
+      markInvalidInput((event as JQuery.BlurEvent<HTMLInputElement>).target);
+    })
+    .change(inputChanged);
 }
 
 function hideSurvey() {
@@ -171,11 +194,23 @@ function init() {
 
   // Embedding only the form
   if (variant === 'plain') {
-    $('#logo, #start-survey, #collapse-survey').addClass('hidden');
+    $('header, #start-survey, #collapse-survey').addClass('hidden');
     $('body').addClass('plain');
     $('#symptom-questionnaire').removeClass('hidden');
     $('#start-survey').addClass('hidden');
+    initValidation();
   }
+
+  // Show the right language in the selector
+  currentDisplayLanguage();
+  // Switch language
+  $('#language-selector').on('change', function() {
+    var pageRedirect =
+      $('#language-selector')
+        .find(':selected')
+        .attr('data-address') + '' || '';
+    switchLanguage(pageRedirect);
+  });
 
   $('#start-survey').click(function() {
     startSurvey();

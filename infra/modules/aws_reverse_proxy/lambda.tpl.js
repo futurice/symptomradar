@@ -19,10 +19,10 @@ exports.viewer_request = (event, context, callback) => {
 
   log('aws_reverse_proxy.viewer_request.before', request);
 
-  if (config.override_response_status && config.override_response_status_description && config.override_response_body) {
+  if (config.override_response_code && config.override_response_status && config.override_response_body) {
     const response = {
-      status: config.override_response_status,
-      statusDescription: config.override_response_status_description,
+      status: config.override_response_code,
+      statusDescription: config.override_response_status,
       body: config.override_response_body,
       headers: {
         ...formatHeaders(hstsHeaders),
@@ -56,18 +56,30 @@ exports.viewer_request = (event, context, callback) => {
 };
 
 // Handle outgoing response to the client
-exports.viewer_response = (event, context, callback) => {
+exports.origin_response = (event, context, callback) => {
   const response = event.Records[0].cf.response;
 
-  log('aws_reverse_proxy.viewer_response.before', response);
+  log('aws_reverse_proxy.origin_response.before', response);
 
+  // Add any additional headers:
   response.headers = {
     ...formatHeaders(hstsHeaders),
     ...response.headers,
     ...formatHeaders(addResponseHeaders),
   };
 
-  log('aws_reverse_proxy.viewer_response.after', response);
+  // Remove headers that have an override value of "" completely:
+  Object.keys(addResponseHeaders).forEach(header => {
+    if (!addResponseHeaders[header]) delete response.headers[header.toLowerCase()];
+  });
+
+  // Override status code (if so configured):
+  if (!config.override_only_on_code || new RegExp(config.override_only_on_code).test(response.status)) {
+    response.status = config.override_response_code || response.status;
+    response.statusDescription = config.override_response_status || response.statusDescription;
+  }
+
+  log('aws_reverse_proxy.origin_response.after', response);
 
   callback(null, response);
 };

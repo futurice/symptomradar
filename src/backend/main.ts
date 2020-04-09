@@ -56,7 +56,7 @@ export function prepareResponseForStorage(
       timestamp: new Date(timestamp()) // for security, don't trust browser clock, as it may be wrong or fraudulent
         .toISOString()
         .replace(/:..\..*/, ':00.000Z'), // to preserve privacy, intentionally reduce precision of the timestamp
-      app_version: 'v1.3', // TODO: This should be set by the deploy process, not hard-coded!
+      app_version: 'v2.1', // TODO: This should be set by the deploy process, not hard-coded!
       country_code: countryCode,
       postal_code: mapPostalCode(response).postal_code, // to protect the privacy of participants from very small postal code areas, they are merged into larger ones, based on known population data
       duration: response.duration === null ? null : parseInt(response.duration),

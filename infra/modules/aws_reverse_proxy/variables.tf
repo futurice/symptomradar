@@ -65,18 +65,24 @@ variable "origin_custom_port" {
   default     = 0
 }
 
-variable "override_response_status" {
-  description = "When this and the other `override_response_*` variables are non-empty, skip sending the request to the origin altogether, and instead respond as instructed here"
+variable "override_response_code" {
+  description = "When non-empty, replace the HTTP status code received from the origin with this; e.g. override a `404` into a `200`"
   default     = ""
 }
 
-variable "override_response_status_description" {
-  description = "Same as `override_response_status`"
+variable "override_response_status" {
+  description = "When non-empty, replace the HTTP status description received from the origin with this; e.g. override a `\"Not Found\"` into a `\"OK\"`"
   default     = ""
 }
 
 variable "override_response_body" {
-  description = "Same as `override_response_status`"
+  description = "When this and ALL other `override_response_*` variables are non-empty, skip sending the request to the origin altogether, and instead respond as instructed here"
+  default     = ""
+}
+
+variable "override_only_on_code" {
+  description = "When non-empty, limits when `override_response_*` variables take effect; for example, setting this to `\"404\"` allows you to turn origin 404's into 200's, while still passing a 302 redirect through to the client (JS-style regex allowed)"
+  type        = string
   default     = ""
 }
 

@@ -286,7 +286,7 @@ const Map: React.FunctionComponent<{
       mapSVG.select('.masterG').attr('transform', `translate(0,-10)`);
       d3.select(keyNode).style('bottom', '40px');
     }
-  }, [props.popUpOpen]);
+  }, [props.popUpOpen, props.mapHeight]);
   let yOffset = window.innerWidth > props.mapHeight ? 10 : props.popUpOpen ? 90 : 30;
   return (
     <div style={{ height: `${props.mapHeight}px`, width: 'calc(100vW)' }}>

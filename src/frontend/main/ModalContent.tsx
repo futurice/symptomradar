@@ -28,9 +28,10 @@ const P = styled.p`
 const Symptoms = styled.div`
   display: grid;
   grid-template-columns: auto 50px 1fr;
-  grid-gap: 4px 5px;
+  grid-gap: 4px 10px;
   p {
     margin: 0;
+    hyphens: manual;
   }
 
   @media (min-width: 350px) {
@@ -80,7 +81,7 @@ const ModalContent = ({ content }: ModalContentProps) => {
                 .replace('.', ',')} %`
             : null}
         </span>
-        <p>Epäilys koronavirustartunnasta </p>
+        <p>Epäilys koronavirus&shy;tartunnasta </p>
         <span>{coughTotal}</span>
         <span>
           {content.properties.cough_mild + content.properties.cough_intense !== -2

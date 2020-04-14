@@ -6,6 +6,7 @@ type ButtonProps = {
   className?: string;
   type: 'submit' | 'button';
   handleClick?: any;
+  isActive?: boolean;
 };
 
 const Button = styled.button`
@@ -20,9 +21,9 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const PrimaryButton = ({ type, label, className, handleClick }: ButtonProps) => {
+const PrimaryButton = ({ type, label, className, handleClick, isActive }: ButtonProps) => {
   return (
-    <Button type={type} className={className} onClick={handleClick}>
+    <Button type={type} className={className} onClick={handleClick} aria-pressed={isActive}>
       {label}
     </Button>
   );

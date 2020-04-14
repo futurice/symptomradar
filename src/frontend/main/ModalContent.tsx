@@ -27,10 +27,15 @@ const P = styled.p`
 
 const Symptoms = styled.div`
   display: grid;
-  grid-template-columns: auto auto 1fr;
-  grid-gap: 4px 20px;
+  grid-template-columns: auto 50px 1fr;
+  grid-gap: 4px 10px;
   p {
     margin: 0;
+    hyphens: manual;
+  }
+
+  @media (min-width: 350px) {
+    grid-gap: 4px 20px;
   }
 `;
 
@@ -69,7 +74,7 @@ const ModalContent = ({ content }: ModalContentProps) => {
             ? `${((content.corona_suspicion_yes * 100) / content.population).toFixed(2).replace('.', ',')} %`
             : null}
         </span>
-        <p>Epäilys koronavirustartunnasta </p>
+        <p>Epäilys koronavirus&shy;tartunnasta </p>
         <span>{coughTotal}</span>
         <span>
           {content.cough_mild + content.cough_intense !== -2

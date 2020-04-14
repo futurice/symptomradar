@@ -82,7 +82,7 @@ describe('getTimeRange()', () => {
   });
 });
 
-export function createMockDynamoDbClient(): DynamoDBClient {
+export function createMockDynamoDbClient(): DynamoDBClient & { _storage: { [key: string]: number | undefined } } {
   const storage: { [key: string]: number | undefined } = {};
   return {
     incrementKey(key: string) {
@@ -91,5 +91,6 @@ export function createMockDynamoDbClient(): DynamoDBClient {
     getValues(keys: string[]) {
       return Promise.resolve(keys.map(key => storage[key] || 0));
     },
+    _storage: storage,
   };
 }

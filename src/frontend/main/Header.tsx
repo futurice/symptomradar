@@ -16,21 +16,17 @@ type HeaderProps = {
   location: string;
 };
 
-interface headerContainerProps {
-  readonly isFullWidthView: boolean;
-}
-
 interface activeLinkProps {
   readonly isActive: boolean;
 }
 
 const AppHeader = styled.header`
-  padding: 24px 24px 10px;
+  padding: 24px 16px 10px 16px;
   border-bottom: 1px solid #000;
   height: 130px;
 `;
 
-const HeaderContainer = styled.div<headerContainerProps>`
+const HeaderContainer = styled.div`
   background-color: #fff;
   display: flex;
   flex-direction: column;
@@ -38,7 +34,6 @@ const HeaderContainer = styled.div<headerContainerProps>`
   align-items: stretch;
   max-width: 600px;
   margin: 0 auto;
-  max-width: ${props => (props.isFullWidthView ? '100%' : '600px')};
 `;
 
 const LogoImage = styled.img`
@@ -107,7 +102,7 @@ const Header = ({ location }: HeaderProps) => {
   if (!isEmbedView) {
     return (
       <AppHeader>
-        <HeaderContainer isFullWidthView={location === '/' ? true : false}>
+        <HeaderContainer>
           <div>
             <LogoImage src={Logo} alt="Oiretutka. Helsingin Sanomat ja Futurice." />
           </div>

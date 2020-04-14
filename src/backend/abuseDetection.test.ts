@@ -1,4 +1,4 @@
-import { performAbuseDetection, createDynamoDbClient } from './abuseDetection';
+import { performAbuseDetection, createDynamoDbClient, getStorageKey } from './abuseDetection';
 
 // Available as event.requestContext.identity.sourceIp in the Lambda request handler
 const sourceIp = '87.92.62.179';
@@ -54,6 +54,18 @@ describe('createMockDynamoDbClient()', () => {
     return Promise.all(['key-01', 'key-01', 'key-03', 'key-04'].map(client.incrementKey))
       .then(() => client.getValues(['key-01', 'key-02', 'key-03', 'key-04']))
       .then(res => expect(res).toEqual([2, 0, 1, 1]));
+  });
+});
+
+describe('getStorageKey()', () => {
+  it('works', () => {
+    expect(
+      getStorageKey(
+        'source-ip',
+        '87.92.62.179',
+        1586857707869, // 2020-04-14T09:48:27.869Z
+      ),
+    ).toEqual('2020-04-14T09Z/source-ip/87.92.62.179');
   });
 });
 

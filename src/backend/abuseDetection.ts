@@ -77,3 +77,9 @@ function unwrapNumber(attrValue?: { N?: string }): number {
   if (Number.isFinite(num)) return num;
   throw new Error(`Unexpected number value from DynamoDB: "${attrValue?.N}"`);
 }
+
+// Returns the key under which this key/value pair should be tracked in DynamoDB
+export function getStorageKey(propertyName: string, propertyValue: string, ts: number) {
+  const hour = new Date(ts).toISOString().replace(/:.*Z/, 'Z'); // to preserve privacy, intentionally reduce precision of the timestamp
+  return `${hour}/${propertyName}/${propertyValue}`;
+}

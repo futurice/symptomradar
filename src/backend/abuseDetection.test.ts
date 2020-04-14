@@ -1,4 +1,5 @@
-import { performAbuseDetection, createDynamoDbClient, getStorageKey } from './abuseDetection';
+import { performAbuseDetection, createDynamoDbClient, getStorageKey, getTimeRange } from './abuseDetection';
+import { first, last } from 'lodash';
 
 // Available as event.requestContext.identity.sourceIp in the Lambda request handler
 const sourceIp = '87.92.62.179';
@@ -66,6 +67,18 @@ describe('getStorageKey()', () => {
         1586857707869, // 2020-04-14T09:48:27.869Z
       ),
     ).toEqual('2020-04-14T09Z/source-ip/87.92.62.179');
+  });
+});
+
+describe('getTimeRange()', () => {
+  it('has the correct number of items', () => {
+    expect(getTimeRange(1586857707869).length).toEqual(24);
+  });
+
+  it('has the correct start and end timestamps', () => {
+    const range = getTimeRange(1586857707869).map(ts => new Date(ts).toISOString());
+    expect(first(range)).toEqual('2020-04-13T10:48:27.869Z');
+    expect(last(range)).toEqual('2020-04-14T09:48:27.869Z');
   });
 });
 

@@ -1,4 +1,8 @@
 import * as AWS from 'aws-sdk';
+import { range } from 'lodash';
+
+const TIME_RANGE_HOURS = 24;
+const HOUR_IN_MS = 60 * 60 * 1000;
 
 type AbuseScore = {
   seen_ip_24h: number;
@@ -82,4 +86,13 @@ function unwrapNumber(attrValue?: { N?: string }): number {
 export function getStorageKey(propertyName: string, propertyValue: string, ts: number) {
   const hour = new Date(ts).toISOString().replace(/:.*Z/, 'Z'); // to preserve privacy, intentionally reduce precision of the timestamp
   return `${hour}/${propertyName}/${propertyValue}`;
+}
+
+// Returns the timestamps, 1 hour apart, that cover the whole time range over which we perform abuse detection
+export function getTimeRange(
+  ts: number,
+  // Allow overriding defaults in test code:
+  timeRangeHours = TIME_RANGE_HOURS,
+) {
+  return range(ts - (timeRangeHours - 1) * HOUR_IN_MS, ts + 1, HOUR_IN_MS);
 }

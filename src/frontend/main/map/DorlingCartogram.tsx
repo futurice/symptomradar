@@ -272,8 +272,7 @@ const Map: React.FunctionComponent<{
           ) -
           10})`,
       );
-      if(props.mapHeight <  345)
-        d3.select(keyNode).style('bottom', '40px');
+      if (props.mapHeight < 345) d3.select(keyNode).style('bottom', '40px');
       else
         d3.select(keyNode).style('bottom', () => {
           return `${parseFloat(

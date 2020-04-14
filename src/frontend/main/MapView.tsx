@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps } from '@reach/router';
-import * as topojson from 'topojson';
 import * as d3 from 'd3';
 import ModalContent from './ModalContent';
 import Modal from './Modal';
@@ -12,15 +11,14 @@ import responseData from './assets/data/citylevel-opendata-8-4-2020.json';
 import CloseIcon from './assets/CloseIcon';
 
 interface mapProperties {
-  city?: string;
-  name?: string;
+  city: string;
   responses: number;
   fever_no: number;
-  fever_yes?: number;
+  fever_yes: number;
   fever_slight: number;
   fever_high: number;
   cough_no: number;
-  cough_yes?: number;
+  cough_yes: number;
   cough_mild: number;
   cough_intense: number;
   cough_fine: number;
@@ -47,6 +45,8 @@ interface mapProperties {
   corona_suspicion_no: number;
   corona_suspicion_yes: number;
   population: number;
+  x: number;
+  y: number;
 }
 
 type FilterButtonProps = {
@@ -55,15 +55,7 @@ type FilterButtonProps = {
 
 const data: mapProperties[] = require('./assets/data/citylevel-opendata-8-4-2020.json');
 
-const populationData: { city: string; population: number }[] = require('./assets/data/population.json');
-
-const mapShape: {
-  type: string;
-  transform: { scale: [number, number]; translate: [number, number] };
-  objects: { kuntarajat: { geometries: { properties: { code: string; name: string } }[] } };
-} = require('./assets/data/finland-map-without-aland.json'); //map file
-
-const mapShapeData = topojson.feature(mapShape, mapShape.objects.kuntarajat); // creat a features data for the map
+const cartogramData: mapProperties[] = require('./assets/data/cartogram-coordinates.json');
 
 const MapNav = styled.div`
   height: 55px;
@@ -80,6 +72,7 @@ const Label = styled.label`
 const MapWrapper = styled.div`
   text-align: center;
   position: relative;
+  height: calc(100vh - 185px);
 `;
 
 const FilterWrapper = styled.div`
@@ -126,7 +119,7 @@ const MapInfo = styled.div`
 const TotalResponses = styled.div`
   background: #fff;
   position: fixed;
-  bottom: 0;
+  bottom: 0px;
   padding: 10px 0;
   font-size: 14px;
   font-style: italic;
@@ -163,16 +156,12 @@ const MapView = (props: RouteComponentProps) => {
   const [showMapInfo, setShowMapInfo] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState('corona_suspicion_yes');
   const [mapHeight, setMapHeight] = useState(window.innerHeight - topPartHeight);
-  const [mapWidth, setMapWidth] = useState(window.innerWidth - 25);
   const [activeCityData, setActiveCityData] = useState({});
 
-  const cities: string[] = topojson
-    .feature(mapShape, mapShape.objects.kuntarajat)
-    .features.sort((x: { properties: mapProperties }, y: { properties: mapProperties }) =>
-      d3.ascending(x.properties.name, y.properties.name),
-    )
-    .map((item: { properties: mapProperties }) => {
-      return item.properties.name;
+  const cities: string[] = cartogramData
+    .sort((x: mapProperties, y: mapProperties) => d3.ascending(x.city, y.city))
+    .map((item: mapProperties) => {
+      return item.city;
     });
 
   const totalReponses = responseData.reduce((accumulator, currentValue) => {
@@ -180,57 +169,83 @@ const MapView = (props: RouteComponentProps) => {
   }, 0);
 
   window.addEventListener('resize', () => {
-    setMapHeight(window.innerHeight - 225);
-    setMapWidth(window.innerWidth - 25);
+    setMapHeight(window.innerHeight - topPartHeight);
   });
-  mapShapeData.features.forEach((d: { properties: mapProperties }) => {
-    let index = data.findIndex((el: mapProperties) => d.properties.name === el.city);
+  let dataForMap: mapProperties[] = cartogramData.map((d: mapProperties) => {
+    let index = data.findIndex((el: mapProperties) => d.city === el.city);
+    let obj: mapProperties = {
+      city: d.city,
+      responses: -1,
+      fever_no: -1,
+      fever_yes: -1,
+      fever_slight: -1,
+      fever_high: -1,
+      cough_no: -1,
+      cough_yes: -1,
+      cough_mild: -1,
+      cough_intense: -1,
+      cough_fine: -1,
+      cough_impaired: -1,
+      cough_bad: -1,
+      breathing_difficulties_no: -1,
+      breathing_difficulties_yes: -1,
+      muscle_pain_no: -1,
+      muscle_pain_yes: -1,
+      headache_no: -1,
+      headache_yes: -1,
+      sore_throat_no: -1,
+      sore_throat_yes: -1,
+      rhinitis_no: -1,
+      rhinitis_yes: -1,
+      stomach_issues_no: -1,
+      stomach_issues_yes: -1,
+      sensory_issues_no: -1,
+      sensory_issues_yes: -1,
+      longterm_medication_no: -1,
+      longterm_medication_yes: -1,
+      smoking_no: -1,
+      smoking_yes: -1,
+      corona_suspicion_no: -1,
+      corona_suspicion_yes: -1,
+      population: d.population,
+      x: d.x,
+      y: d.y,
+    };
     if (index !== -1) {
-      d.properties = data[index];
-      d.properties.fever_yes = d.properties.responses - d.properties.fever_no;
-      d.properties.cough_yes = d.properties.responses - d.properties.cough_no;
-    } else {
-      let indx = populationData.findIndex((el: { city: string; population: number }) => d.properties.name === el.city);
-      if (indx !== -1) {
-        let obj = {
-          city: d.properties.name,
-          responses: -1,
-          fever_no: -1,
-          fever_yes: -1,
-          fever_slight: -1,
-          fever_high: -1,
-          cough_no: -1,
-          cough_yes: -1,
-          cough_mild: -1,
-          cough_intense: -1,
-          cough_fine: -1,
-          cough_impaired: -1,
-          cough_bad: -1,
-          breathing_difficulties_no: -1,
-          breathing_difficulties_yes: -1,
-          muscle_pain_no: -1,
-          muscle_pain_yes: -1,
-          headache_no: -1,
-          headache_yes: -1,
-          sore_throat_no: -1,
-          sore_throat_yes: -1,
-          rhinitis_no: -1,
-          rhinitis_yes: -1,
-          stomach_issues_no: -1,
-          stomach_issues_yes: -1,
-          sensory_issues_no: -1,
-          sensory_issues_yes: -1,
-          longterm_medication_no: -1,
-          longterm_medication_yes: -1,
-          smoking_no: -1,
-          smoking_yes: -1,
-          corona_suspicion_no: -1,
-          corona_suspicion_yes: -1,
-          population: populationData[indx].population,
-        };
-        d.properties = obj;
-      }
+      obj.responses = data[index].responses;
+      obj.fever_no = data[index].fever_no;
+      obj.fever_yes = data[index].responses - data[index].fever_no;
+      obj.fever_slight = data[index].fever_slight;
+      obj.fever_high = data[index].fever_high;
+      obj.cough_no = data[index].cough_no;
+      obj.cough_yes = data[index].responses - data[index].cough_no;
+      obj.cough_mild = data[index].cough_mild;
+      obj.cough_intense = data[index].cough_intense;
+      obj.cough_fine = data[index].cough_fine;
+      obj.cough_impaired = data[index].cough_impaired;
+      obj.cough_bad = data[index].cough_bad;
+      obj.breathing_difficulties_no = data[index].breathing_difficulties_no;
+      obj.breathing_difficulties_yes = data[index].breathing_difficulties_yes;
+      obj.muscle_pain_no = data[index].muscle_pain_no;
+      obj.muscle_pain_yes = data[index].muscle_pain_yes;
+      obj.headache_no = data[index].headache_no;
+      obj.headache_yes = data[index].headache_yes;
+      obj.sore_throat_no = data[index].sore_throat_no;
+      obj.sore_throat_yes = data[index].sore_throat_yes;
+      obj.rhinitis_no = data[index].rhinitis_no;
+      obj.rhinitis_yes = data[index].rhinitis_yes;
+      obj.stomach_issues_no = data[index].stomach_issues_no;
+      obj.stomach_issues_yes = data[index].stomach_issues_yes;
+      obj.sensory_issues_no = data[index].sensory_issues_no;
+      obj.sensory_issues_yes = data[index].sensory_issues_yes;
+      obj.longterm_medication_no = data[index].longterm_medication_no;
+      obj.longterm_medication_yes = data[index].longterm_medication_yes;
+      obj.smoking_no = data[index].smoking_no;
+      obj.smoking_yes = data[index].smoking_yes;
+      obj.corona_suspicion_no = data[index].corona_suspicion_no;
+      obj.corona_suspicion_yes = data[index].corona_suspicion_yes;
     }
+    return obj;
   });
   return (
     <>
@@ -240,10 +255,8 @@ const MapView = (props: RouteComponentProps) => {
           name=""
           id="city"
           onChange={(event: { target: { value: string } }) => {
-            let indx = mapShapeData.features.findIndex(
-              (obj: { properties: { city: string } }) => obj.properties.city === event.target.value,
-            );
-            setActiveCityData(mapShapeData.features[indx]);
+            let indx = dataForMap.findIndex((obj: { city: string }) => obj.city === event.target.value);
+            setActiveCityData(dataForMap[indx]);
             toggleModal();
           }}
         >
@@ -259,10 +272,9 @@ const MapView = (props: RouteComponentProps) => {
       </MapNav>
       <MapWrapper>
         <MapContainer
-          mapShapeData={mapShapeData}
+          mapShapeData={dataForMap}
           selectedFilter={selectedFilter}
           mapHeight={mapHeight}
-          mapWidth={mapWidth}
           popUpOpen={showMapInfo}
         />
         <FilterWrapper>

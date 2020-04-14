@@ -1,5 +1,6 @@
 import * as AWS from 'aws-sdk';
 import { dropRight, flatMap, range } from 'lodash';
+import { nonNullable } from '../common/types';
 
 const TIME_RANGE_HOURS = 24;
 const HOUR_IN_MS = 60 * 60 * 1000;
@@ -22,16 +23,23 @@ export function performAbuseDetection(
   // Allow overriding defaults in test code:
   timestamp = Date.now,
   timeRangeHours = TIME_RANGE_HOURS,
-): Promise<AbuseScore> {
-  return Promise.resolve().then(() => {
-    const ts = timestamp();
-    const range = getTimeRange(ts, timeRangeHours);
-    const keysToGet = flatMap(fingerprintKeys, key => range.map(ts => getStorageKey(key, fingerprint[key], ts)));
+) {
+  const ts = timestamp();
+  const range = getTimeRange(ts, timeRangeHours);
+  const keysToGet = flatMap(fingerprintKeys, key => range.map(ts => getStorageKey(key, fingerprint[key], ts)));
+  const keysToIncrement = fingerprintKeys
+    .map(key => (fingerprint[key] ? getStorageKey(key, fingerprint[key], ts) : undefined))
+    .filter(nonNullable);
+  const keys = flatMap(fingerprintKeys, key => range.map(() => key));
+  const readPromise = Promise.resolve().then(() => {
     return dynamoDb.getValues(keysToGet).then(res => {
-      const keys = flatMap(fingerprintKeys, key => range.map(() => key));
       return res.reduce((memo, next, i) => ({ ...memo, [keys[i]]: memo[keys[i]] + next }), { ...emptyScore });
     });
   });
+  const writePromise = readPromise.then(() => {
+    return Promise.all(keysToIncrement.map(dynamoDb.incrementKey));
+  });
+  return { readPromise, writePromise };
 }
 
 // Creates a specialized DynamoDB API wrapper for reading/writing abuse detection related data

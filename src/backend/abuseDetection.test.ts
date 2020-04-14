@@ -12,8 +12,7 @@ const sourceIp = '87.92.62.179';
 
 // Available as event.headers in the Lambda request handler
 const headers = {
-  Accept:
-    'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+  Accept: 'text/html...signed-exchange;v=b3;q=0.9',
   'Accept-Encoding': 'gzip, deflate, br',
   'Accept-Language': 'en-US,en;q=0.9,fi;q=0.8',
   'CloudFront-Forwarded-Proto': 'https',
@@ -27,8 +26,7 @@ const headers = {
   'sec-fetch-site': 'none',
   'sec-fetch-user': '?1',
   'upgrade-insecure-requests': '1',
-  'User-Agent':
-    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36',
+  'User-Agent': 'Mozilla/5.0...Safari/537.36',
   Via: '2.0 7ddb2b9bba2e00f11b5de58d7aa1249c.cloudfront.net (CloudFront)',
   'X-Amz-Cf-Id': 'W06KV_M9t3WpFFvbR8Uy65yG5IKoNivgEa2Mvj4hespoqRIuXIdAOA==',
   'X-Amzn-Trace-Id': 'Root=1-5e8f1ea1-57f325cca78ac88b553f9d7d',
@@ -40,7 +38,7 @@ const headers = {
 describe('performAbuseDetection()', () => {
   it('works for the first request', () => {
     const dynamoDb = createMockDynamoDbClient();
-    return performAbuseDetection(
+    const { readPromise, writePromise } = performAbuseDetection(
       dynamoDb,
       {
         source_ip: sourceIp,
@@ -49,9 +47,23 @@ describe('performAbuseDetection()', () => {
       },
       () => 1585649303678, // i.e. "2020-03-31T10:08:23.678Z"
       3,
-    ).then(res => {
-      expect(res).toEqual({ source_ip: 0, user_agent: 0, forwarded_for: 0 });
-    });
+    );
+    return Promise.resolve()
+      .then(() => readPromise)
+      .then(res =>
+        expect(res).toEqual(
+          // This is the score for this request
+          { source_ip: 0, user_agent: 0, forwarded_for: 0 },
+        ),
+      )
+      .then(() => writePromise)
+      .then(() =>
+        expect(dynamoDb._storage).toEqual({
+          // This is the state in storage after processing this request
+          '2020-03-31T10Z/source_ip/87.92.62.179': 1,
+          '2020-03-31T10Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
+        }),
+      );
   });
 });
 

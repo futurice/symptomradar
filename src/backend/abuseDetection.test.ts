@@ -1,5 +1,5 @@
-import { performAbuseDetection, createDynamoDbClient, getStorageKey, getTimeRange } from './abuseDetection';
 import { first, last } from 'lodash';
+import { DynamoDBClient, getStorageKey, getTimeRange, performAbuseDetection } from './abuseDetection';
 
 // Available as event.requestContext.identity.sourceIp in the Lambda request handler
 const sourceIp = '87.92.62.179';
@@ -82,7 +82,7 @@ describe('getTimeRange()', () => {
   });
 });
 
-export function createMockDynamoDbClient(): ReturnType<typeof createDynamoDbClient> {
+export function createMockDynamoDbClient(): DynamoDBClient {
   const storage: { [key: string]: number | undefined } = {};
   return {
     incrementKey(key: string) {

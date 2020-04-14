@@ -74,6 +74,7 @@ export function createDynamoDbClient(tableName: string, ttlSeconds: number) {
     },
   };
 }
+export type DynamoDBClient = ReturnType<typeof createDynamoDbClient>;
 
 // See interface AttributeValue in DynamoDB
 function unwrapNumber(attrValue?: { N?: string }): number {

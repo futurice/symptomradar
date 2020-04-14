@@ -27,10 +27,14 @@ const P = styled.p`
 
 const Symptoms = styled.div`
   display: grid;
-  grid-template-columns: auto auto 1fr;
-  grid-gap: 4px 20px;
+  grid-template-columns: auto 50px 1fr;
+  grid-gap: 4px 5px;
   p {
     margin: 0;
+  }
+
+  @media (min-width: 350px) {
+    grid-gap: 4px 20px;
   }
 `;
 

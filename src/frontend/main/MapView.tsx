@@ -66,7 +66,6 @@ const MapNav = styled.div`
 const Container = styled.div`
   max-width: 600px;
   margin: 0 auto;
-  position: relative;
 `;
 
 const MapNavContent = styled(Container)`
@@ -131,6 +130,7 @@ const MapInfo = styled.div`
 
 const MapInfoContent = styled(Container)`
   padding: 6px 34px 0 16px;
+  position: relative;
 
   @media (min-width: 624px) {
     padding-left: 0;

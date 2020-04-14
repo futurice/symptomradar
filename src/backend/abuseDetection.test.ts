@@ -38,13 +38,20 @@ const headers = {
 };
 
 describe('performAbuseDetection()', () => {
-  it('works', () => {
+  it('works for the first request', () => {
+    const dynamoDb = createMockDynamoDbClient();
     return performAbuseDetection(
-      sourceIp,
-      headers,
-      Promise.resolve('fake-secret-pepper'),
+      dynamoDb,
+      {
+        source_ip: sourceIp,
+        user_agent: headers['User-Agent'],
+        forwarded_for: normalizeForwardedFor(headers['X-Forwarded-For']),
+      },
       () => 1585649303678, // i.e. "2020-03-31T10:08:23.678Z"
-    ).then(res => expect(res).toEqual({ seen_ip_24h: 0, seen_ua_24h: 0, seen_ff_24h: 0 }));
+      3,
+    ).then(res => {
+      expect(res).toEqual({ source_ip: 0, user_agent: 0, forwarded_for: 0 });
+    });
   });
 });
 

@@ -4,25 +4,33 @@ import { dropRight, flatMap, range } from 'lodash';
 const TIME_RANGE_HOURS = 24;
 const HOUR_IN_MS = 60 * 60 * 1000;
 
+type AbuseFingerprint = {
+  source_ip: string;
+  user_agent: string;
+  forwarded_for: string;
+};
 type AbuseScore = {
-  seen_ip_24h: number;
-  seen_ua_24h: number;
-  seen_ff_24h: number;
+  [key in keyof AbuseFingerprint]: number;
 };
 
-type Headers = { [name: string]: string };
+const emptyScore: AbuseScore = { source_ip: 0, user_agent: 0, forwarded_for: 0 };
+const fingerprintKeys = (Object.keys(emptyScore) as any) as Array<keyof AbuseFingerprint>;
 
 export function performAbuseDetection(
-  sourceIp: string,
-  headers: Headers,
-  secretPepper: Promise<string>,
-  // Allow overriding non-deterministic parts in test code:
+  dynamoDb: DynamoDBClient,
+  fingerprint: AbuseFingerprint,
+  // Allow overriding defaults in test code:
   timestamp = Date.now,
+  timeRangeHours = TIME_RANGE_HOURS,
 ): Promise<AbuseScore> {
-  return Promise.resolve({
-    seen_ip_24h: 0,
-    seen_ua_24h: 0,
-    seen_ff_24h: 0,
+  return Promise.resolve().then(() => {
+    const ts = timestamp();
+    const range = getTimeRange(ts, timeRangeHours);
+    const keysToGet = flatMap(fingerprintKeys, key => range.map(ts => getStorageKey(key, fingerprint[key], ts)));
+    return dynamoDb.getValues(keysToGet).then(res => {
+      const keys = flatMap(fingerprintKeys, key => range.map(() => key));
+      return res.reduce((memo, next, i) => ({ ...memo, [keys[i]]: memo[keys[i]] + next }), { ...emptyScore });
+    });
   });
 }
 

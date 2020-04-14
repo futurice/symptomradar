@@ -25,7 +25,7 @@ const incomingResponseSample: FrontendResponseModelT = {
 };
 const persistedResponseSample: BackendResponseModelT = {
   age_group: '20',
-  app_version: 'v2.1',
+  app_version: 'v2.2',
   breathing_difficulties: 'no',
   corona_suspicion: 'no',
   cough: 'mild',

@@ -1,5 +1,5 @@
 import * as AWS from 'aws-sdk';
-import { range } from 'lodash';
+import { dropRight, flatMap, range } from 'lodash';
 
 const TIME_RANGE_HOURS = 24;
 const HOUR_IN_MS = 60 * 60 * 1000;
@@ -96,4 +96,12 @@ export function getTimeRange(
   timeRangeHours = TIME_RANGE_HOURS,
 ) {
   return range(ts - (timeRangeHours - 1) * HOUR_IN_MS, ts + 1, HOUR_IN_MS);
+}
+
+// Drops the last 2 items in a standard-formatted 'X-Forwarded-For' header; in our use case, those are:
+// 1) The "real" IP of the client, which we get via other means
+// 2) The CloudFront edge node via which the request was routed
+// What we're instead interested in is whether there's something IN ADDITION to those in this header
+export function normalizeForwardedFor(value?: string) {
+  return dropRight((value || '').split(', '), 2).join(', ');
 }

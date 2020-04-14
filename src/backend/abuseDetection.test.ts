@@ -1,5 +1,11 @@
 import { first, last } from 'lodash';
-import { DynamoDBClient, getStorageKey, getTimeRange, performAbuseDetection } from './abuseDetection';
+import {
+  DynamoDBClient,
+  getStorageKey,
+  getTimeRange,
+  normalizeForwardedFor,
+  performAbuseDetection,
+} from './abuseDetection';
 
 // Available as event.requestContext.identity.sourceIp in the Lambda request handler
 const sourceIp = '87.92.62.179';
@@ -79,6 +85,22 @@ describe('getTimeRange()', () => {
     const range = getTimeRange(1586857707869).map(ts => new Date(ts).toISOString());
     expect(first(range)).toEqual('2020-04-13T10:48:27.869Z');
     expect(last(range)).toEqual('2020-04-14T09:48:27.869Z');
+  });
+});
+
+describe('normalizeForwardedFor()', () => {
+  it('works when omitted', () => {
+    expect(normalizeForwardedFor()).toEqual('');
+  });
+
+  it('works without additional proxies', () => {
+    expect(normalizeForwardedFor('87.92.62.179, 52.46.36.85')).toEqual('');
+  });
+
+  it('works with additional proxies', () => {
+    expect(normalizeForwardedFor('50.50.50.50, 12.12.12.12, 87.92.62.179, 52.46.36.172')).toEqual(
+      '50.50.50.50, 12.12.12.12',
+    );
   });
 });
 

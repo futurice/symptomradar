@@ -272,14 +272,17 @@ const Map: React.FunctionComponent<{
           ) -
           10})`,
       );
-      d3.select(keyNode).style('bottom', () => {
-        return `${parseFloat(
-          d3
-            .select('.popUp')
-            .style('height')
-            .slice(0, -2),
-        ) + 40}px`;
-      });
+      if(props.mapHeight <  345)
+        d3.select(keyNode).style('bottom', '40px');
+      else
+        d3.select(keyNode).style('bottom', () => {
+          return `${parseFloat(
+            d3
+              .select('.popUp')
+              .style('height')
+              .slice(0, -2),
+          ) + 40}px`;
+        });
     } else {
       mapSVG.select('.masterG').attr('transform', `translate(0,-10)`);
       d3.select(keyNode).style('bottom', '40px');

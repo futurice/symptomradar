@@ -102,7 +102,7 @@ export const App = () => {
       res => setData(res.data),
       () => setData('ERROR'),
     );
-  }, []);
+  }, [dataEndpoint]);
 
   return (
     <AppContainer>

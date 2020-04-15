@@ -21,9 +21,9 @@ interface mapProperties {
   cough_yes: number;
   cough_mild: number;
   cough_intense: number;
-  cough_fine: number;
-  cough_impaired: number;
-  cough_bad: number;
+  general_wellbeing_fine: number;
+  general_wellbeing_impaired: number;
+  general_wellbeing_bad: number;
   breathing_difficulties_no: number;
   breathing_difficulties_yes: number;
   muscle_pain_no: number;
@@ -209,9 +209,9 @@ const MapView = (props: RouteComponentProps) => {
       cough_yes: -1,
       cough_mild: -1,
       cough_intense: -1,
-      cough_fine: -1,
-      cough_impaired: -1,
-      cough_bad: -1,
+      general_wellbeing_fine: -1,
+      general_wellbeing_impaired: -1,
+      general_wellbeing_bad: -1,
       breathing_difficulties_no: -1,
       breathing_difficulties_yes: -1,
       muscle_pain_no: -1,
@@ -246,9 +246,9 @@ const MapView = (props: RouteComponentProps) => {
       obj.cough_yes = data[index].responses - data[index].cough_no;
       obj.cough_mild = data[index].cough_mild;
       obj.cough_intense = data[index].cough_intense;
-      obj.cough_fine = data[index].cough_fine;
-      obj.cough_impaired = data[index].cough_impaired;
-      obj.cough_bad = data[index].cough_bad;
+      obj.general_wellbeing_fine = data[index].general_wellbeing_fine;
+      obj.general_wellbeing_impaired = data[index].general_wellbeing_impaired;
+      obj.general_wellbeing_bad = data[index].general_wellbeing_bad;
       obj.breathing_difficulties_no = data[index].breathing_difficulties_no;
       obj.breathing_difficulties_yes = data[index].breathing_difficulties_yes;
       obj.muscle_pain_no = data[index].muscle_pain_no;

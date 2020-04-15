@@ -1,9 +1,9 @@
 import * as AWS from 'aws-sdk';
 import { dropRight, flatMap, range } from 'lodash';
+import { HOUR_IN_MS } from '../common/time';
 import { nonNullable } from '../common/types';
 
 const TIME_RANGE_HOURS = 24;
-const HOUR_IN_MS = 60 * 60 * 1000;
 
 type AbuseFingerprint = {
   source_ip: string;

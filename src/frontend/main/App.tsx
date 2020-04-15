@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router, Location } from '@reach/router';
-import styled, { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import Header from './Header';
 import MapView from './MapView';
 import About from './About';
@@ -17,6 +17,13 @@ import Roboto700Svg from './assets/fonts/roboto-v20-latin-ext_latin-700.svg';
 import Roboto700Ttf from './assets/fonts/roboto-v20-latin-ext_latin-700.ttf';
 import Roboto700Woff from './assets/fonts/roboto-v20-latin-ext_latin-700.woff';
 import Roboto700Woff2 from './assets/fonts/roboto-v20-latin-ext_latin-700.woff2';
+
+const theme = {
+  grey: '#757575',
+  white: '#FFFFFF',
+  black: '#000000',
+  blue: '#0047FF',
+};
 
 const GlobalStyles = createGlobalStyle`
 
@@ -89,20 +96,22 @@ const AppContainer = styled.div`
 
 export const App = () => (
   <AppContainer>
-    <GlobalStyles />
-    <Location>
-      {({ location }) => {
-        return <Header location={location.pathname} />;
-      }}
-    </Location>
-    <main>
-      <Router>
-        <MapView path="/" />
-        <MapView path="/map-embed" />
-        <About path="about" />
-        <Privacy path="tietosuojalauseke" />
-        <Survey path="survey" />
-      </Router>
-    </main>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <Location>
+        {({ location }) => {
+          return <Header location={location.pathname} />;
+        }}
+      </Location>
+      <main>
+        <Router>
+          <MapView path="/" />
+          <MapView path="/map-embed" />
+          <About path="about" />
+          <Privacy path="tietosuojalauseke" />
+          <Survey path="survey" />
+        </Router>
+      </main>
+    </ThemeProvider>
   </AppContainer>
 );

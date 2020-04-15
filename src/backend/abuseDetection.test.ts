@@ -59,6 +59,11 @@ describe('performAbuseDetection()', () => {
     source_ip: '123.123.123.123',
   };
 
+  const sampleReq3 = {
+    ...sampleReq1,
+    forwarded_for: normalizeForwardedFor('50.50.50.50, 12.12.12.12, 87.92.62.179, 52.46.36.172'),
+  };
+
   it('works for the first request', () => {
     const dynamoDb = createMockDynamoDbClient();
     return Promise.resolve()
@@ -212,6 +217,62 @@ describe('performAbuseDetection()', () => {
           '2020-03-31T13Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
           '2020-03-31T14Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
           '2020-03-31T15Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
+        }),
+      );
+  });
+
+  it('works for requests with X-Forwarded-For', () => {
+    const dynamoDb = createMockDynamoDbClient();
+    return Promise.resolve()
+      .then(() => request(dynamoDb, sampleReq3))
+      .then(() => request(dynamoDb, sampleReq3, MINUTE_IN_MS * 1))
+      .then(() => request(dynamoDb, sampleReq3, MINUTE_IN_MS * 2))
+      .then(score =>
+        expect(score).toEqual({
+          source_ip: 2,
+          user_agent: 2,
+          forwarded_for: 2,
+        }),
+      )
+      .then(() =>
+        expect(dynamoDb._storage).toEqual({
+          '2020-03-31T10Z/source_ip/87.92.62.179': 3,
+          '2020-03-31T10Z/user_agent/Mozilla/5.0...Safari/537.36': 3,
+          '2020-03-31T10Z/forwarded_for/50.50.50.50, 12.12.12.12': 3,
+        }),
+      );
+  });
+
+  it('works for requests with varying X-Forwarded-For', () => {
+    const dynamoDb = createMockDynamoDbClient();
+    const clientBehindProxy = (ip: string) => ({
+      ...sampleReq3,
+      forwarded_for: normalizeForwardedFor(`${ip}, 87.92.62.179, 52.46.36.172`),
+      user_agent: `FakeBrowser/${ip}`,
+    });
+    return Promise.resolve()
+      .then(() => request(dynamoDb, clientBehindProxy('1.1.1.1'), MINUTE_IN_MS * 0))
+      .then(() => request(dynamoDb, clientBehindProxy('2.2.2.2'), MINUTE_IN_MS * 1))
+      .then(() => request(dynamoDb, clientBehindProxy('2.2.2.2'), MINUTE_IN_MS * 2))
+      .then(() => request(dynamoDb, clientBehindProxy('3.3.3.3'), MINUTE_IN_MS * 3))
+      .then(() => request(dynamoDb, clientBehindProxy('3.3.3.3'), MINUTE_IN_MS * 4))
+      .then(() => request(dynamoDb, clientBehindProxy('3.3.3.3'), MINUTE_IN_MS * 5))
+      .then(score =>
+        expect(score).toEqual({
+          source_ip: 5, // all requests came from the same "real" IP
+          user_agent: 2, // last 3 had the same UA
+          forwarded_for: 2, // and the same FF
+        }),
+      )
+      .then(() =>
+        expect(dynamoDb._storage).toEqual({
+          '2020-03-31T10Z/forwarded_for/1.1.1.1': 1,
+          '2020-03-31T10Z/forwarded_for/2.2.2.2': 2,
+          '2020-03-31T10Z/forwarded_for/3.3.3.3': 3,
+          '2020-03-31T10Z/source_ip/87.92.62.179': 6,
+          '2020-03-31T10Z/user_agent/FakeBrowser/1.1.1.1': 1,
+          '2020-03-31T10Z/user_agent/FakeBrowser/2.2.2.2': 2,
+          '2020-03-31T10Z/user_agent/FakeBrowser/3.3.3.3': 3,
         }),
       );
   });

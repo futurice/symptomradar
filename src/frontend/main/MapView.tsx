@@ -7,7 +7,7 @@ import Modal from './Modal';
 import PrimaryButton from './PrimaryButton';
 import MapContainer from './map/MapContainer';
 import useModal from './useModal';
-import responseData from './assets/data/citylevel-opendata-8-4-2020.json';
+import responseData from './assets/data/citylevel-opendata-15-4-2020.json';
 import CloseIcon from './assets/CloseIcon';
 
 interface mapProperties {
@@ -53,7 +53,7 @@ type FilterButtonProps = {
   isActive: boolean;
 };
 
-const data: mapProperties[] = require('./assets/data/citylevel-opendata-8-4-2020.json');
+const data: mapProperties[] = require('./assets/data/citylevel-opendata-15-4-2020.json');
 
 const cartogramData: mapProperties[] = require('./assets/data/cartogram-coordinates.json');
 

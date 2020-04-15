@@ -19,9 +19,9 @@ interface mapProperties {
   cough_yes: number;
   cough_mild: number;
   cough_intense: number;
-  cough_fine: number;
-  cough_impaired: number;
-  cough_bad: number;
+  general_wellbeing_fine: number;
+  general_wellbeing_impaired: number;
+  general_wellbeing_bad: number;
   breathing_difficulties_no: number;
   breathing_difficulties_yes: number;
   muscle_pain_no: number;

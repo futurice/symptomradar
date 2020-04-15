@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Router, Location } from '@reach/router';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
+import axios from 'axios';
 import Header from './Header';
 import MapView from './MapView';
 import About from './About';
@@ -94,24 +95,43 @@ const AppContainer = styled.div`
   width: 100%;
 `;
 
-export const App = () => (
-  <AppContainer>
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <Location>
-        {({ location }) => {
-          return <Header location={location.pathname} />;
-        }}
-      </Location>
-      <main>
-        <Router>
-          <MapView path="/" />
-          <MapView path="/map-embed" />
-          <About path="about" />
-          <Privacy path="tietosuojalauseke" />
-          <Survey path="survey" />
-        </Router>
-      </main>
-    </ThemeProvider>
-  </AppContainer>
-);
+const Container = styled.div`
+  text-align: center;
+  margin: 24px 0;
+`;
+
+export const App = () => {
+  const [data, setData] = useState<'FETCHING' | 'ERROR' | object>('FETCHING');
+  const dataEndpoint = process.env.REACT_APP_DATA_ENDPOINT;
+
+  useEffect(() => {
+    axios(`${dataEndpoint}city_level_general_results.json`).then(
+      res => setData(res.data),
+      () => setData('ERROR'),
+    );
+  }, [dataEndpoint]);
+
+  return (
+    <AppContainer>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <Location>
+          {({ location }) => {
+            return <Header location={location.pathname} />;
+          }}
+        </Location>
+        <main>
+          {data === 'FETCHING' && <Container>Loading...</Container>}
+          {data === 'ERROR' && <Container>Error loading data</Container>}
+          <Router>
+            {typeof data === 'object' && <MapView path="/" responseData={data} />}
+            {typeof data === 'object' && <MapView path="/map-embed" responseData={data} />}
+            <About path="about" />
+            <Privacy path="tietosuojalauseke" />
+            <Survey path="survey" />
+          </Router>
+        </main>
+      </ThemeProvider>
+    </AppContainer>
+  );
+};

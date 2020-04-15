@@ -1,4 +1,4 @@
-import { first, last } from 'lodash';
+import { first, identity, last } from 'lodash';
 import { HOUR_IN_MS, MINUTE_IN_MS } from '../common/time';
 import {
   AbuseFingerprint,
@@ -42,6 +42,7 @@ describe('performAbuseDetection()', () => {
     const { readPromise, writePromise } = performAbuseDetection(
       dynamoDb,
       fingerprint,
+      identity, // by default, don't hash anything in the test suite
       () => 1585649303678 + time, // i.e. "2020-03-31T10:08:23.678Z"
       3, // only operate on 3 hours' range for the test suite
     );

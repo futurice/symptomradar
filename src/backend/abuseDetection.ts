@@ -1,5 +1,5 @@
 import * as AWS from 'aws-sdk';
-import { dropRight, flatMap, range } from 'lodash';
+import { dropRight, flatMap, mapValues, range } from 'lodash';
 import { HOUR_IN_MS } from '../common/time';
 import { nonNullable } from '../common/types';
 
@@ -24,15 +24,17 @@ const fingerprintKeys = (Object.keys(emptyScore) as any) as Array<keyof AbuseFin
 export function performAbuseDetection(
   dynamoDb: DynamoDBClient,
   fingerprint: AbuseFingerprint,
+  hashFunction: (input: string) => string,
   // Allow overriding defaults in test code:
   timestamp = Date.now,
   timeRangeHours = TIME_RANGE_HOURS,
 ) {
   const now = timestamp();
   const timeRange = getTimeRange(now, timeRangeHours);
-  const keysToGet = flatMap(fingerprintKeys, key => timeRange.map(ts => getStorageKey(key, fingerprint[key], ts)));
+  const fp = mapValues(fingerprint, v => (v ? hashFunction(v) : '')); // to preserve privacy, put all values (e.g. IP, UA) through a one-way hash function before doing anything with them (keep empty strings as empty, though, since they warrant special treatment later)
+  const keysToGet = flatMap(fingerprintKeys, key => timeRange.map(ts => getStorageKey(key, fp[key], ts)));
   const keysToIncrement = fingerprintKeys
-    .map(key => (fingerprint[key] ? getStorageKey(key, fingerprint[key], now) : null))
+    .map(key => (fp[key] ? getStorageKey(key, fp[key], now) : null))
     .filter(nonNullable);
   const resultKeys = flatMap(fingerprintKeys, key => timeRange.map(() => key)); // e.g. [ 'source_ip', 'source_ip', 'source_ip', 'user_agent', 'user_agent', 'user_agent', ...
   const tallyAbuseScore = (obj: AbuseScore, key: keyof AbuseScore, num: number) => ({ ...obj, [key]: obj[key] + num });

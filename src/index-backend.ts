@@ -1,7 +1,7 @@
 import { APIGatewayProxyHandler, Handler } from 'aws-lambda';
 import { v4 as uuidV4 } from 'uuid';
+import { prepareResponseForStorage, storeDataDumpsToS3, storeResponse } from './backend/main';
 import { assertIs, FrontendResponseModel, FrontendResponseModelT } from './common/model';
-import { storeResponseInS3, prepareResponseForStorage, storeDataDumpsToS3 } from './backend/main';
 
 export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
   console.log(`Incoming request: ${event.httpMethod} ${event.path}`); // to preserve privacy, don't log any headers, etc
@@ -12,7 +12,7 @@ export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
     return Promise.resolve()
       .then(() => JSON.parse(event.body || '') as unknown)
       .then(assertIs(FrontendResponseModel))
-      .then(res => storeResponseInS3(res, countryCode))
+      .then(res => storeResponse(res, countryCode))
       .then(() => response(200, { success: true }))
       .catch(err => response(500, { error: true }, err));
   }

@@ -23,7 +23,7 @@ const athenaExpress = new AthenaExpress({ aws: AWS, s3: `s3://${athenaResultsBuc
 let cachedSecretPepper: undefined | Promise<string>;
 
 // Saves the given response into our storage bucket
-export function storeResponseInS3(response: FrontendResponseModelT, countryCode: string) {
+export function storeResponse(response: FrontendResponseModelT, countryCode: string) {
   return Promise.resolve()
     .then(() =>
       prepareResponseForStorage(

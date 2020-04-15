@@ -79,7 +79,7 @@ export function getStorageKey(response: BackendResponseModelT): string {
 }
 
 // @example hash("whatever", "secret") => "K/FwCDUHL3iVb9JAMBdSEurw4rWuO/iJmcIWCn2B++s="
-function hash(input: string, pepper: string) {
+export function hash(input: string, pepper: string) {
   if (!pepper) throw new Error(`No pepper provided for hashing; while possible, this is likely a configuration error`);
   return createHash('sha256')
     .update(input + pepper)

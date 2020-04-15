@@ -7,8 +7,11 @@ import Modal from './Modal';
 import PrimaryButton from './PrimaryButton';
 import MapContainer from './map/MapContainer';
 import useModal from './useModal';
-import responseData from './assets/data/citylevel-opendata-15-4-2020.json';
 import CloseIcon from './assets/CloseIcon';
+
+interface MapViewProps extends RouteComponentProps {
+  responseData: any;
+}
 
 interface mapProperties {
   city: string;
@@ -53,8 +56,6 @@ type FilterButtonProps = {
   isActive: boolean;
 };
 
-const data: mapProperties[] = require('./assets/data/citylevel-opendata-15-4-2020.json');
-
 const cartogramData: mapProperties[] = require('./assets/data/cartogram-coordinates.json');
 
 const MapNav = styled.div`
@@ -66,6 +67,10 @@ const MapNav = styled.div`
 const Container = styled.div`
   max-width: 600px;
   margin: 0 auto;
+`;
+
+const Loading = styled.div`
+  text-align: center;
 `;
 
 const MapNavContent = styled(Container)`
@@ -173,7 +178,7 @@ const CloseButton = styled.button`
   }
 `;
 
-const MapView = (props: RouteComponentProps) => {
+const MapView = (props: MapViewProps) => {
   const currentPath = props.location!.pathname;
   const isEmbed = currentPath === '/map-embed';
   const topPartHeight = isEmbed ? 80 : 225;
@@ -182,6 +187,7 @@ const MapView = (props: RouteComponentProps) => {
   const [selectedFilter, setSelectedFilter] = useState('corona_suspicion_yes');
   const [mapHeight, setMapHeight] = useState(window.innerHeight - topPartHeight);
   const [activeCityData, setActiveCityData] = useState({});
+  const data = props.responseData.data;
 
   const cities: string[] = cartogramData
     .sort((x: mapProperties, y: mapProperties) => d3.ascending(x.city, y.city))
@@ -189,7 +195,14 @@ const MapView = (props: RouteComponentProps) => {
       return item.city;
     });
 
-  const totalReponses = responseData.reduce((accumulator, currentValue) => {
+  if (!data) {
+    return (
+      <Loading>
+        <p>Loading...</p>
+      </Loading>
+    );
+  }
+  const totalResponses = data.reduce((accumulator: number, currentValue: any) => {
     return accumulator + currentValue.responses;
   }, 0);
 
@@ -363,7 +376,7 @@ const MapView = (props: RouteComponentProps) => {
           )}
           <TotalResponses>
             <Container>
-              <p>Vastauksia yhteensä: {totalReponses.toLocaleString('fi-FI')}</p>
+              <p>Vastauksia yhteensä: {totalResponses.toLocaleString('fi-FI')}</p>
             </Container>
           </TotalResponses>
         </MapInfo>

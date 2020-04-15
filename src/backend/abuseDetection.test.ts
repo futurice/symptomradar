@@ -1,4 +1,5 @@
 import { first, last } from 'lodash';
+import { HOUR_IN_MS, MINUTE_IN_MS } from '../common/time';
 import {
   AbuseFingerprint,
   DynamoDBClient,
@@ -53,6 +54,11 @@ describe('performAbuseDetection()', () => {
     forwarded_for: normalizeForwardedFor(headers['X-Forwarded-For']),
   };
 
+  const sampleReq2 = {
+    ...sampleReq1,
+    source_ip: '123.123.123.123',
+  };
+
   it('works for the first request', () => {
     const dynamoDb = createMockDynamoDbClient();
     return Promise.resolve()
@@ -68,6 +74,144 @@ describe('performAbuseDetection()', () => {
         expect(dynamoDb._storage).toEqual({
           '2020-03-31T10Z/source_ip/87.92.62.179': 1,
           '2020-03-31T10Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
+        }),
+      );
+  });
+
+  it('works for subsequent requests', () => {
+    const dynamoDb = createMockDynamoDbClient();
+    return Promise.resolve()
+      .then(() => request(dynamoDb, sampleReq1))
+      .then(() => request(dynamoDb, sampleReq1, MINUTE_IN_MS))
+      .then(() => request(dynamoDb, sampleReq1, MINUTE_IN_MS * 10))
+      .then(score =>
+        expect(score).toEqual({
+          source_ip: 2,
+          user_agent: 2,
+          forwarded_for: 0,
+        }),
+      )
+      .then(() =>
+        expect(dynamoDb._storage).toEqual({
+          '2020-03-31T10Z/source_ip/87.92.62.179': 3,
+          '2020-03-31T10Z/user_agent/Mozilla/5.0...Safari/537.36': 3,
+        }),
+      );
+  });
+
+  it('works for mixed requests', () => {
+    const dynamoDb = createMockDynamoDbClient();
+    return Promise.resolve()
+      .then(() => request(dynamoDb, sampleReq1))
+      .then(() => request(dynamoDb, sampleReq2))
+      .then(() => request(dynamoDb, sampleReq1, MINUTE_IN_MS))
+      .then(() => request(dynamoDb, sampleReq2, MINUTE_IN_MS * 2))
+      .then(() => request(dynamoDb, sampleReq1, MINUTE_IN_MS * 10))
+      .then(score =>
+        expect(score).toEqual({
+          source_ip: 2,
+          user_agent: 4, // all requests have had the same UA, even if they had a different IP
+          forwarded_for: 0,
+        }),
+      )
+      .then(() =>
+        expect(dynamoDb._storage).toEqual({
+          '2020-03-31T10Z/source_ip/87.92.62.179': 3,
+          '2020-03-31T10Z/source_ip/123.123.123.123': 2,
+          '2020-03-31T10Z/user_agent/Mozilla/5.0...Safari/537.36': 5,
+        }),
+      );
+  });
+
+  it('works for requests spread over multiple hours', () => {
+    const dynamoDb = createMockDynamoDbClient();
+    return Promise.resolve()
+      .then(() => request(dynamoDb, sampleReq1))
+      .then(() => request(dynamoDb, sampleReq1, HOUR_IN_MS))
+      .then(() => request(dynamoDb, sampleReq1, HOUR_IN_MS * 2))
+      .then(score =>
+        expect(score).toEqual({
+          source_ip: 2,
+          user_agent: 2,
+          forwarded_for: 0,
+        }),
+      )
+      .then(() =>
+        expect(dynamoDb._storage).toEqual({
+          '2020-03-31T10Z/source_ip/87.92.62.179': 1,
+          '2020-03-31T11Z/source_ip/87.92.62.179': 1,
+          '2020-03-31T12Z/source_ip/87.92.62.179': 1,
+          '2020-03-31T10Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
+          '2020-03-31T11Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
+          '2020-03-31T12Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
+        }),
+      );
+  });
+
+  it('works for requests going over the time range', () => {
+    const dynamoDb = createMockDynamoDbClient();
+    return Promise.resolve()
+      .then(() => request(dynamoDb, sampleReq1, HOUR_IN_MS * 0)) // by the time we expect(), this will be too told to be counted!
+      .then(() => request(dynamoDb, sampleReq1, HOUR_IN_MS * 1)) // ^ ditto
+      .then(() => request(dynamoDb, sampleReq1, HOUR_IN_MS * 2)) // ^ ditto
+      .then(() => request(dynamoDb, sampleReq1, HOUR_IN_MS * 3))
+      .then(() => request(dynamoDb, sampleReq1, HOUR_IN_MS * 4))
+      .then(() => request(dynamoDb, sampleReq1, HOUR_IN_MS * 5))
+      .then(score =>
+        expect(score).toEqual({
+          source_ip: 2,
+          user_agent: 2,
+          forwarded_for: 0,
+        }),
+      )
+      .then(() =>
+        expect(dynamoDb._storage).toEqual({
+          '2020-03-31T10Z/source_ip/87.92.62.179': 1,
+          '2020-03-31T11Z/source_ip/87.92.62.179': 1,
+          '2020-03-31T12Z/source_ip/87.92.62.179': 1,
+          '2020-03-31T13Z/source_ip/87.92.62.179': 1,
+          '2020-03-31T14Z/source_ip/87.92.62.179': 1,
+          '2020-03-31T15Z/source_ip/87.92.62.179': 1,
+          '2020-03-31T10Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
+          '2020-03-31T11Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
+          '2020-03-31T12Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
+          '2020-03-31T13Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
+          '2020-03-31T14Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
+          '2020-03-31T15Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
+        }),
+      );
+  });
+
+  it('works for mixed requests going over the time range', () => {
+    const dynamoDb = createMockDynamoDbClient();
+    return Promise.resolve()
+      .then(() => request(dynamoDb, sampleReq1, HOUR_IN_MS * 0)) // by the time we expect(), this will be too told to be counted!
+      .then(() => request(dynamoDb, sampleReq2, HOUR_IN_MS * 1)) // ^ ditto
+      .then(() => request(dynamoDb, sampleReq1, HOUR_IN_MS * 2)) // ^ ditto
+      .then(() => request(dynamoDb, sampleReq2, HOUR_IN_MS * 3))
+      .then(() => request(dynamoDb, sampleReq1, HOUR_IN_MS * 4))
+      .then(() => request(dynamoDb, sampleReq2, HOUR_IN_MS * 5))
+      .then(score =>
+        expect(score).toEqual({
+          source_ip: 1, // only once from this distinct IP
+          user_agent: 2, // but twice with this UA
+          forwarded_for: 0,
+        }),
+      )
+      .then(() =>
+        expect(dynamoDb._storage).toEqual({
+          '2020-03-31T10Z/source_ip/87.92.62.179': 1,
+          '2020-03-31T11Z/source_ip/123.123.123.123': 1,
+          '2020-03-31T12Z/source_ip/87.92.62.179': 1,
+          '2020-03-31T13Z/source_ip/123.123.123.123': 1,
+          '2020-03-31T14Z/source_ip/87.92.62.179': 1,
+          '2020-03-31T15Z/source_ip/123.123.123.123': 1,
+          '2020-03-31T10Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
+          '2020-03-31T11Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
+          '2020-03-31T12Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
+          '2020-03-31T13Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
+          '2020-03-31T14Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
+          '2020-03-31T15Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
         }),
       );
   });

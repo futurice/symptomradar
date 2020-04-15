@@ -10,11 +10,11 @@
     <noscript>{{ no_js }}</noscript>
     <header>
       <img
-          id="logo"
-          class="logo"
-          src="%PUBLIC_URL%/oiretutka-logo-gradient.svg"
-          alt="Oiretutka. Helsingin Sanomat ja Futurice."
-        />
+        id="logo"
+        class="logo"
+        src="%PUBLIC_URL%/oiretutka-logo-gradient.svg"
+        alt="Oiretutka. Helsingin Sanomat ja Futurice."
+      />
       <div>
         <select id="language-selector">
           <option value="fi" data-address="/">Suomi</option>
@@ -36,7 +36,6 @@
           </p>
           <p>
             {{ start_info_3 }}
-            
           </p>
           <p>
             <a href="https://www.oiretutka.fi/tietosuojalauseke.html" target="_blank" rel="noopener noreferrer"
@@ -127,7 +126,7 @@
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend aria-live="assertive"> {{ sore_throat }} <span class="invalid-value-info hidden" /></legend>
+            <legend aria-live="assertive">{{ sore_throat }} <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <input id="soreThroat-yes" type="radio" name="sore_throat" value="yes" required />
               <label for="soreThroat-yes">{{ yes }}</label>
@@ -145,9 +144,7 @@
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend aria-live="assertive">
-              {{ stomach_issues }} <span class="invalid-value-info hidden" />
-            </legend>
+            <legend aria-live="assertive">{{ stomach_issues }} <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <input id="stomachIssues-yes" type="radio" name="stomach_issues" value="yes" required />
               <label for="stomachIssues-yes">{{ yes }}</label>
@@ -156,9 +153,7 @@
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend aria-live="assertive">
-              {{ sensory_issues }} <span class="invalid-value-info hidden" />
-            </legend>
+            <legend aria-live="assertive">{{ sensory_issues }} <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <input id="sensoryIssues-yes" type="radio" name="sensory_issues" value="yes" required />
               <label for="sensoryIssues-yes">{{ yes }}</label>
@@ -167,9 +162,7 @@
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend aria-live="assertive">
-             {{ healthcare_contact }} <span class="invalid-value-info hidden" />
-            </legend>
+            <legend aria-live="assertive">{{ healthcare_contact }} <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <input id="healthcareContact-yes" type="radio" name="healthcare_contact" value="yes" required />
               <label for="healthcareContact-yes">{{ yes }}</label>
@@ -181,9 +174,7 @@
         <div class="question-group">
           <h2 class="question-group-title">{{ general_status }}</h2>
           <fieldset class="input-wrapper">
-            <legend aria-live="assertive">
-              {{ general_wellbeing }} <span class="invalid-value-info hidden" />
-            </legend>
+            <legend aria-live="assertive">{{ general_wellbeing }} <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <div class="option-wrapper">
                 <input id="generalWellbeing-fine" type="radio" name="general_wellbeing" value="fine" required />
@@ -191,9 +182,7 @@
               </div>
               <div class="option-wrapper">
                 <input id="generalWellbeing-not ok" type="radio" name="general_wellbeing" value="impaired" required />
-                <label for="generalWellbeing-not ok"
-                  >{{ not_ok }}</label
-                >
+                <label for="generalWellbeing-not ok">{{ not_ok }}</label>
               </div>
               <div class="option-wrapper">
                 <input id="generalWellbeing-bad" type="radio" name="general_wellbeing" value="bad" required />
@@ -203,8 +192,7 @@
           </fieldset>
           <fieldset class="input-wrapper">
             <label for="duration" class="input-field-label"
-              >{{ duration }}
-              <span class="optional-field-info">({{ optional_info }})</span></label
+              >{{ duration }} <span class="optional-field-info">({{ optional_info }})</span></label
             >
             <input
               id="duration"
@@ -220,9 +208,7 @@
             />
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend aria-live="assertive">
-              {{ longterm_medication }} <span class="invalid-value-info hidden" />
-            </legend>
+            <legend aria-live="assertive">{{ longterm_medication }} <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <input id="longtermMedication-yes" type="radio" name="longterm_medication" value="yes" required />
               <label for="longtermMedication-yes">{{ yes }}</label>
@@ -240,9 +226,7 @@
             </div>
           </fieldset>
           <fieldset class="input-wrapper">
-            <legend aria-live="assertive">
-              {{ corona_suspicion }} <span class="invalid-value-info hidden" />
-            </legend>
+            <legend aria-live="assertive">{{ corona_suspicion }} <span class="invalid-value-info hidden" /></legend>
             <div class="options">
               <input id="coronaSuspicion-yes" type="radio" name="corona_suspicion" value="yes" required />
               <label for="coronaSuspicion-yes">{{ yes }}</label>

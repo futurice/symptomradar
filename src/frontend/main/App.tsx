@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Router, Location } from '@reach/router';
 import styled, { createGlobalStyle } from 'styled-components';
+import axios from 'axios';
 import Header from './Header';
 import MapView from './MapView';
 import About from './About';
@@ -87,22 +88,34 @@ const AppContainer = styled.div`
   width: 100%;
 `;
 
-export const App = () => (
-  <AppContainer>
-    <GlobalStyles />
-    <Location>
-      {({ location }) => {
-        return <Header location={location.pathname} />;
-      }}
-    </Location>
-    <main>
-      <Router>
-        <MapView path="/" />
-        <MapView path="/map-embed" />
-        <About path="about" />
-        <Privacy path="tietosuojalauseke" />
-        <Survey path="survey" />
-      </Router>
-    </main>
-  </AppContainer>
-);
+export const App = () => {
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios('https://data.oiretutka.fi/city_level_general_results.json');
+      setData(result.data);
+    };
+    fetchData();
+  }, []);
+
+  return (
+    <AppContainer>
+      <GlobalStyles />
+      <Location>
+        {({ location }) => {
+          return <Header location={location.pathname} />;
+        }}
+      </Location>
+      <main>
+        <Router>
+          <MapView path="/" responseData={data} />
+          <MapView path="/map-embed" responseData={data} />
+          <About path="about" />
+          <Privacy path="tietosuojalauseke" />
+          <Survey path="survey" />
+        </Router>
+      </main>
+    </AppContainer>
+  );
+};

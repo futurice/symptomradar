@@ -5,12 +5,12 @@ import { nonNullable } from '../common/types';
 
 const TIME_RANGE_HOURS = 24;
 
-type AbuseFingerprint = {
+export type AbuseFingerprint = {
   source_ip: string;
   user_agent: string;
   forwarded_for: string;
 };
-type AbuseScore = {
+export type AbuseScore = {
   [key in keyof AbuseFingerprint]: number;
 };
 

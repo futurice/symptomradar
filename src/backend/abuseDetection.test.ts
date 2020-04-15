@@ -1,5 +1,6 @@
 import { first, last } from 'lodash';
 import {
+  AbuseFingerprint,
   DynamoDBClient,
   getStorageKey,
   getTimeRange,
@@ -36,30 +37,35 @@ const headers = {
 };
 
 describe('performAbuseDetection()', () => {
-  it('works for the first request', () => {
-    const dynamoDb = createMockDynamoDbClient();
+  function request(dynamoDb: DynamoDBClient, fingerprint: AbuseFingerprint, time = 0) {
     const { readPromise, writePromise } = performAbuseDetection(
       dynamoDb,
-      {
-        source_ip: sourceIp,
-        user_agent: headers['User-Agent'],
-        forwarded_for: normalizeForwardedFor(headers['X-Forwarded-For']),
-      },
-      () => 1585649303678, // i.e. "2020-03-31T10:08:23.678Z"
-      3,
+      fingerprint,
+      () => 1585649303678 + time, // i.e. "2020-03-31T10:08:23.678Z"
+      3, // only operate on 3 hours' range for the test suite
     );
+    return Promise.all([readPromise, writePromise]).then(([readResult]) => readResult);
+  }
+
+  const sampleReq1 = {
+    source_ip: sourceIp,
+    user_agent: headers['User-Agent'],
+    forwarded_for: normalizeForwardedFor(headers['X-Forwarded-For']),
+  };
+
+  it('works for the first request', () => {
+    const dynamoDb = createMockDynamoDbClient();
     return Promise.resolve()
-      .then(() => readPromise)
-      .then(res =>
-        expect(res).toEqual(
-          // This is the score for this request
-          { source_ip: 0, user_agent: 0, forwarded_for: 0 },
-        ),
+      .then(() => request(dynamoDb, sampleReq1))
+      .then(score =>
+        expect(score).toEqual({
+          source_ip: 0,
+          user_agent: 0,
+          forwarded_for: 0,
+        }),
       )
-      .then(() => writePromise)
       .then(() =>
         expect(dynamoDb._storage).toEqual({
-          // This is the state in storage after processing this request
           '2020-03-31T10Z/source_ip/87.92.62.179': 1,
           '2020-03-31T10Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
         }),

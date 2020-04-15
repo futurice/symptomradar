@@ -17,6 +17,10 @@ export type AbuseScore = {
 const emptyScore: AbuseScore = { source_ip: 0, user_agent: 0, forwarded_for: 0 };
 const fingerprintKeys = (Object.keys(emptyScore) as any) as Array<keyof AbuseFingerprint>;
 
+// Reads & updates DynamoDB to keep track of our abuse detection metrics.
+// Promises the "abuse score" for the given fingerprint (i.e. request).
+// The read/write Promises are returned separately, so that client requests can be serviced immediately after reading the current abuse score finishes.
+// Thus the client doesn't need to wait for the writes to finish; those can happen after the client's already gotten its response.
 export function performAbuseDetection(
   dynamoDb: DynamoDBClient,
   fingerprint: AbuseFingerprint,
@@ -24,21 +28,23 @@ export function performAbuseDetection(
   timestamp = Date.now,
   timeRangeHours = TIME_RANGE_HOURS,
 ) {
-  const ts = timestamp();
-  const range = getTimeRange(ts, timeRangeHours);
-  const keysToGet = flatMap(fingerprintKeys, key => range.map(ts => getStorageKey(key, fingerprint[key], ts)));
+  const now = timestamp();
+  const timeRange = getTimeRange(now, timeRangeHours);
+  const keysToGet = flatMap(fingerprintKeys, key => timeRange.map(ts => getStorageKey(key, fingerprint[key], ts)));
   const keysToIncrement = fingerprintKeys
-    .map(key => (fingerprint[key] ? getStorageKey(key, fingerprint[key], ts) : undefined))
+    .map(key => (fingerprint[key] ? getStorageKey(key, fingerprint[key], now) : null))
     .filter(nonNullable);
-  const keys = flatMap(fingerprintKeys, key => range.map(() => key));
-  const readPromise = Promise.resolve().then(() => {
-    return dynamoDb.getValues(keysToGet).then(res => {
-      return res.reduce((memo, next, i) => ({ ...memo, [keys[i]]: memo[keys[i]] + next }), { ...emptyScore });
-    });
-  });
-  const writePromise = readPromise.then(() => {
-    return Promise.all(keysToIncrement.map(dynamoDb.incrementKey));
-  });
+  const resultKeys = flatMap(fingerprintKeys, key => timeRange.map(() => key)); // e.g. [ 'source_ip', 'source_ip', 'source_ip', 'user_agent', 'user_agent', 'user_agent', ...
+  const tallyAbuseScore = (obj: AbuseScore, key: keyof AbuseScore, num: number) => ({ ...obj, [key]: obj[key] + num });
+  const readPromise = dynamoDb.getValues(keysToGet).then(res =>
+    res.reduce(
+      (memo, next, i) => tallyAbuseScore(memo, resultKeys[i], next), // correlate each result with its corresponding fingerprint key (from resultKeys) and increment the relevant field in the score object
+      { ...emptyScore }, // start with an empty score
+    ),
+  );
+  const writePromise = readPromise.then(
+    () => Promise.all(keysToIncrement.map(dynamoDb.incrementKey)), // after we're done reading, ask DynamoDB to increment the relevant keys
+  );
   return { readPromise, writePromise };
 }
 

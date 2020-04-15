@@ -88,15 +88,20 @@ const AppContainer = styled.div`
   width: 100%;
 `;
 
+const Container = styled.div`
+  text-align: center;
+  margin: 24px 0;
+`;
+
 export const App = () => {
-  const [data, setData] = useState({});
+  const [data, setData] = useState<'FETCHING' | 'ERROR' | object>('FETCHING');
+  const dataEndpoint = process.env.REACT_APP_DATA_ENDPOINT;
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios('https://data.oiretutka.fi/city_level_general_results.json');
-      setData(result.data);
-    };
-    fetchData();
+    axios(`${dataEndpoint}city_level_general_results.json`).then(
+      res => setData(res.data),
+      () => setData('ERROR'),
+    );
   }, []);
 
   return (
@@ -108,9 +113,11 @@ export const App = () => {
         }}
       </Location>
       <main>
+        {data === 'FETCHING' && <Container>Loading...</Container>}
+        {data === 'ERROR' && <Container>Error loading data</Container>}
         <Router>
-          <MapView path="/" responseData={data} />
-          <MapView path="/map-embed" responseData={data} />
+          {typeof data === 'object' && <MapView path="/" responseData={data} />}
+          {typeof data === 'object' && <MapView path="/map-embed" responseData={data} />}
           <About path="about" />
           <Privacy path="tietosuojalauseke" />
           <Survey path="survey" />

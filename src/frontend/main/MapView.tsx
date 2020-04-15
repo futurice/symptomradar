@@ -69,10 +69,6 @@ const Container = styled.div`
   margin: 0 auto;
 `;
 
-const Loading = styled.div`
-  text-align: center;
-`;
-
 const MapNavContent = styled(Container)`
   height: 100%;
   display: flex;
@@ -195,13 +191,6 @@ const MapView = (props: MapViewProps) => {
       return item.city;
     });
 
-  if (!data) {
-    return (
-      <Loading>
-        <p>Loading...</p>
-      </Loading>
-    );
-  }
   const totalResponses = data.reduce((accumulator: number, currentValue: any) => {
     return accumulator + currentValue.responses;
   }, 0);

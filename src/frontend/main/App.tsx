@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Router, Location } from '@reach/router';
-import styled, { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import axios from 'axios';
 import Header from './Header';
 import MapView from './MapView';
@@ -18,6 +18,13 @@ import Roboto700Svg from './assets/fonts/roboto-v20-latin-ext_latin-700.svg';
 import Roboto700Ttf from './assets/fonts/roboto-v20-latin-ext_latin-700.ttf';
 import Roboto700Woff from './assets/fonts/roboto-v20-latin-ext_latin-700.woff';
 import Roboto700Woff2 from './assets/fonts/roboto-v20-latin-ext_latin-700.woff2';
+
+const theme = {
+  grey: '#757575',
+  white: '#FFFFFF',
+  black: '#000000',
+  blue: '#0047FF',
+};
 
 const GlobalStyles = createGlobalStyle`
 
@@ -106,23 +113,25 @@ export const App = () => {
 
   return (
     <AppContainer>
-      <GlobalStyles />
-      <Location>
-        {({ location }) => {
-          return <Header location={location.pathname} />;
-        }}
-      </Location>
-      <main>
-        {data === 'FETCHING' && <Container>Loading...</Container>}
-        {data === 'ERROR' && <Container>Error loading data</Container>}
-        <Router>
-          {typeof data === 'object' && <MapView path="/" responseData={data} />}
-          {typeof data === 'object' && <MapView path="/map-embed" responseData={data} />}
-          <About path="about" />
-          <Privacy path="tietosuojalauseke" />
-          <Survey path="survey" />
-        </Router>
-      </main>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <Location>
+          {({ location }) => {
+            return <Header location={location.pathname} />;
+          }}
+        </Location>
+        <main>
+          {data === 'FETCHING' && <Container>Loading...</Container>}
+          {data === 'ERROR' && <Container>Error loading data</Container>}
+          <Router>
+            {typeof data === 'object' && <MapView path="/" responseData={data} />}
+            {typeof data === 'object' && <MapView path="/map-embed" responseData={data} />}
+            <About path="about" />
+            <Privacy path="tietosuojalauseke" />
+            <Survey path="survey" />
+          </Router>
+        </main>
+      </ThemeProvider>
     </AppContainer>
   );
 };

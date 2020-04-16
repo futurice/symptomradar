@@ -61,7 +61,7 @@ const cartogramData: mapProperties[] = require('./assets/data/cartogram-coordina
 const MapNav = styled.div`
   height: 55px;
   padding: 0 16px;
-  border-bottom: 1px solid #000000;
+  border-bottom: 1px solid ${props => props.theme.black};
 `;
 
 const Container = styled.div`
@@ -110,18 +110,18 @@ const FilterButton = styled(PrimaryButton)<FilterButtonProps>`
   margin-right: 8px;
   padding: 8px 16px;
   height: 35px;
-  background: ${props => (props.isActive ? '#FFF' : '#595959')};
-  color: ${props => (props.isActive ? '#000' : '#FFF')};
-  border: ${props => (props.isActive ? '1px solid #000' : '1px solid transparent')};
+  background: ${props => (props.isActive ? props.theme.white : props.theme.grey)};
+  color: ${props => (props.isActive ? props.theme.black : props.theme.white)};
+  border: ${props => (props.isActive ? `1px solid ${props.theme.black}` : '1px solid transparent')};
 `;
 
 const MapInfo = styled.div`
   position: fixed;
   bottom: 34px;
   width: 100vw;
-  background: rgba(255, 255, 255, 0.6);
+  background: ${props => props.theme.white};
   text-align: left;
-  border-top: 1px solid #000;
+  border-top: 1px solid ${props => props.theme.black};
   line-height: 1.25;
 
   p {
@@ -139,7 +139,7 @@ const MapInfoContent = styled(Container)`
 `;
 
 const TotalResponses = styled.div`
-  background: #fff;
+  background: ${props => props.theme.white};
   position: fixed;
   bottom: 0px;
   padding: 10px 0 10px 16px;

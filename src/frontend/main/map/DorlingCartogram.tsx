@@ -270,7 +270,7 @@ const Map: React.FunctionComponent<{
               .style('height')
               .slice(0, -2),
           ) -
-          10})`,
+          50})`,
       );
       if (props.mapHeight < 345) d3.select(keyNode).style('bottom', '40px');
       else

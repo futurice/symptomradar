@@ -69,10 +69,11 @@ const response = (statusCode: number, body?: object, logError?: Error) => {
       'Cache-Control': 'no-store,must-revalidate',
       // Configure CORS to only allow submissions from our own UI:
       'Access-Control-Allow-Origin': process.env.CORS_ALLOW_ORIGIN || '',
-      'Access-Control-Allow-Methods': 'POST,OPTIONS,GET,PUT,PATCH,DELETE',
+      'Access-Control-Allow-Methods': 'POST,GET,PUT,PATCH,DELETE',
       'Access-Control-Allow-Headers':
-        'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range',
+        'Authorization,DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range', // IMPORTANT: "*" is a valid value ONLY without "Access-Control-Allow-Credentials: true"
       'Access-Control-Expose-Headers': 'Content-Length,Content-Range',
+      'Access-Control-Allow-Credentials': 'true',
       // Enforce HTTPS-only connections when possible:
       'Strict-Transport-Security': 'max-age=31557600; preload', // i.e. one year in seconds
     },

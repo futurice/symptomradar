@@ -98,13 +98,16 @@ const AppContainer = styled.div`
 export const App = () => {
   const [data, setData] = useState<'FETCHING' | 'ERROR' | object>('FETCHING');
   const dataEndpoint = process.env.REACT_APP_DATA_ENDPOINT;
+  const [username, password] = (process.env.REACT_APP_DATA_AUTH || '').split(':');
 
   useEffect(() => {
-    axios(`${dataEndpoint}city_level_general_results.json`).then(
+    axios(`${dataEndpoint}city_level_general_results.json`, {
+      auth: { username, password },
+    }).then(
       res => setData(res.data),
       () => setData('ERROR'),
     );
-  }, [dataEndpoint]);
+  }, [dataEndpoint, username, password]);
 
   return (
     <AppContainer>

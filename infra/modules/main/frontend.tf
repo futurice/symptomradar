@@ -96,6 +96,7 @@ module "frontend" {
         ;
       connect-src # restricts the URLs which can be loaded using script interfaces (e.g. XHR, WebSocket)
         ${var.backend_domain} # allow connecting to the backend for this environment (but not others!)
+        ${var.open_data_domain} # allow connecting to the open data site for this environment (but not others!)
         ;
       form-action # restricts the URLs which can be used as the target of a form submission
         'none' # for better or worse, all our forms are JavaScript-only -> we can prohibit all normal form submission

@@ -4,7 +4,7 @@
 const config = ${config};
 const addResponseHeaders = ${add_response_headers};
 const validCredentials = config.basic_auth_username + ':' + config.basic_auth_password;
-const validAuthHeader = 'Basic ' + new Buffer(validCredentials).toString('base64');
+const validAuthHeader = 'Basic ' + Buffer.from(validCredentials).toString('base64');
 const hstsHeaders =
   config.hsts_max_age && config.viewer_https_only
     ? { 'Strict-Transport-Security': 'max-age=' + config.hsts_max_age + '; preload' }

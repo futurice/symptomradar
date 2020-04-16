@@ -107,7 +107,7 @@ variable "basic_auth_body" {
 }
 
 variable "lambda_logging_enabled" {
-  description = "When true, writes information about incoming requests to the Lambda function's CloudWatch group"
+  description = "When true, writes information about incoming requests to the Lambda function's CloudWatch group; IMPORTANT: Lambda@Edge will log to CloudWatch on the nearest region of the POP processing the request, NOT necessarily your own region."
   default     = false
 }
 

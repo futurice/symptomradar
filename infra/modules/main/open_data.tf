@@ -13,6 +13,14 @@ resource "aws_s3_bucket" "open_data" {
     target_bucket = var.s3_logs_bucket
     target_prefix = "${var.name_prefix}-open-data/"
   }
+
+  # Enable CORS on the bucket.
+  # This alone is not enough; see below for additional CORS config on CloudFront.
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["GET"]
+    allowed_origins = ["*"]
+  }
 }
 
 # This is used to allow access to our S3 bucket from CloudFront, and nowhere else
@@ -70,11 +78,13 @@ module "open_data_site" {
     X-Amz-Request-Id       = ""
     X-Amz-Id-2             = ""
 
-    # Because this is an open data site meant for public consumption, set a liberal CORS policy:
-    Access-Control-Allow-Origin   = "*"
-    Access-Control-Allow-Methods  = "OPTIONS,GET"
-    Access-Control-Allow-Headers  = "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range"
-    Access-Control-Expose-Headers = "Content-Length,Content-Range"
+    # Because this is an open data site meant for public consumption, set a liberal CORS policy.
+    # Note that this alone isn't enough: the upstream S3 bucket also needs to be CORS-aware, so it can serve OPTIONS requests correctly.
+    Access-Control-Allow-Origin      = "*"
+    Access-Control-Allow-Methods     = "GET"
+    Access-Control-Allow-Headers     = "Authorization,DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range"
+    Access-Control-Expose-Headers    = "Content-Length,Content-Range"
+    Access-Control-Allow-Credentials = "true" # the site may be password-protected
   }
 }
 

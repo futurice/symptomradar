@@ -99,7 +99,7 @@ export async function storeTotalResponsesToS3() {
       // TODO: Configure this
       Bucket: 'symptomradar-dev-open-data',
       Key: 'total_responses.json',
-      Body: JSON.stringify(data),
+      Body: JSON.stringify(data, null, 2),
     })
     .promise();
 }

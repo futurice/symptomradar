@@ -63,9 +63,9 @@
     "no_js": "This page requires javascript to work.",
     "page_title": "Let us know if you are experiencing symptoms or not, and help us determine how COVID-19 spreads.",
     "start_info_1": "Finnish media providers are requesting information from their readers to let them know if they are currently experiencing any potential coronavirus symptoms via the Oiretutka service.",
-    "start_info_2": "By sharing anonymous information about your situation- even if you are currently feeling completely healthy- you can help the media to cover the spread of the virus more effectively and accurately. Any responses provided via the Oiretutka service questionnaire are totally anonymous, and cannot be traced back to the respondent. The replies will be published both in a compiled format, as well as as standalone replies.The questionnaire has been created in collaboration with the department of Public Health Research at Helsinki University.",
+    "start_info_2": "By sharing anonymous information about your situation - even if you are currently feeling completely healthy - you can help the media to cover the spread of the virus more effectively and accurately. Any responses provided via the Oiretutka service questionnaire are totally anonymous, and cannot be traced back to the respondent. The replies will be published both in a compiled format, as well as as standalone replies. The questionnaire has been created in collaboration with the department of Public Health Research at Helsinki University.",
     "start_info_3": "This service is not meant to be used as an aid to self-diagnose symptoms, or as a guide to seek medical aid.",
-    "privacy_readmore": "Read more about the privacy policy (in Finnish)",
+    "privacy_readmore": "Read more about the privacy policy here (in Finnish)",
     "start_survey": "Start",
     "close_survey": "Close the form",
     "what_symptoms_headline": "What kinds of symptoms are you experiencing?",
@@ -111,8 +111,8 @@
     "end_text_3": "If you are experiencing difficulties in breathing, a high fever, or cannot get out of bed, please contact your medical health provider. If you suspect that you have contracted the coronavirus and want to check your symptoms, please visit",
     "end_text_4": "Omaolo.fi service.",
     "returning_user_title": "Welcome back to Oiretutka!",
-    "returning_user_text_1": "The user of this device has previously reported symptoms to the service.",
-    "returning_user_text_2": "We would appreciate if you could answer the questions again and tell us about your current health situation. To make the information more insightful, we will combine the data provided with the previous answers. We are not storing information able to identify respondents.",
+    "returning_user_text_1": "The user of this device has previously reported their symptoms in this service.",
+    "returning_user_text_2": "You can respond to the questionnaire again and fill us in about your current symptoms. We will connect the data to your earlier responses, which will make the information even more useful. We will still not store any data in such a way that it could be connected back to the identified user.",
     "thank_you_help": "Thank you for your help!"
   }
 }

@@ -7,8 +7,11 @@ import Modal from './Modal';
 import PrimaryButton from './PrimaryButton';
 import MapContainer from './map/MapContainer';
 import useModal from './useModal';
-import responseData from './assets/data/citylevel-opendata-8-4-2020.json';
 import CloseIcon from './assets/CloseIcon';
+
+interface MapViewProps extends RouteComponentProps {
+  responseData: any;
+}
 
 interface mapProperties {
   city: string;
@@ -21,9 +24,9 @@ interface mapProperties {
   cough_yes: number;
   cough_mild: number;
   cough_intense: number;
-  cough_fine: number;
-  cough_impaired: number;
-  cough_bad: number;
+  general_wellbeing_fine: number;
+  general_wellbeing_impaired: number;
+  general_wellbeing_bad: number;
   breathing_difficulties_no: number;
   breathing_difficulties_yes: number;
   muscle_pain_no: number;
@@ -53,14 +56,12 @@ type FilterButtonProps = {
   isActive: boolean;
 };
 
-const data: mapProperties[] = require('./assets/data/citylevel-opendata-8-4-2020.json');
-
 const cartogramData: mapProperties[] = require('./assets/data/cartogram-coordinates.json');
 
 const MapNav = styled.div`
   height: 55px;
   padding: 0 16px;
-  border-bottom: 1px solid #000000;
+  border-bottom: 1px solid ${props => props.theme.black};
 `;
 
 const Container = styled.div`
@@ -109,18 +110,18 @@ const FilterButton = styled(PrimaryButton)<FilterButtonProps>`
   margin-right: 8px;
   padding: 8px 16px;
   height: 35px;
-  background: ${props => (props.isActive ? '#FFF' : '#595959')};
-  color: ${props => (props.isActive ? '#000' : '#FFF')};
-  border: ${props => (props.isActive ? '1px solid #000' : '1px solid transparent')};
+  background: ${props => (props.isActive ? props.theme.white : props.theme.grey)};
+  color: ${props => (props.isActive ? props.theme.black : props.theme.white)};
+  border: ${props => (props.isActive ? `1px solid ${props.theme.black}` : '1px solid transparent')};
 `;
 
 const MapInfo = styled.div`
   position: fixed;
   bottom: 34px;
   width: 100vw;
-  background: rgba(255, 255, 255, 0.6);
+  background: ${props => props.theme.white};
   text-align: left;
-  border-top: 1px solid #000;
+  border-top: 1px solid ${props => props.theme.black};
   line-height: 1.25;
 
   p {
@@ -138,7 +139,7 @@ const MapInfoContent = styled(Container)`
 `;
 
 const TotalResponses = styled.div`
-  background: #fff;
+  background: ${props => props.theme.white};
   position: fixed;
   bottom: 0px;
   padding: 10px 0 10px 16px;
@@ -173,7 +174,7 @@ const CloseButton = styled.button`
   }
 `;
 
-const MapView = (props: RouteComponentProps) => {
+const MapView = (props: MapViewProps) => {
   const currentPath = props.location!.pathname;
   const isEmbed = currentPath === '/map-embed';
   const topPartHeight = isEmbed ? 80 : 225;
@@ -182,6 +183,7 @@ const MapView = (props: RouteComponentProps) => {
   const [selectedFilter, setSelectedFilter] = useState('corona_suspicion_yes');
   const [mapHeight, setMapHeight] = useState(window.innerHeight - topPartHeight);
   const [activeCityData, setActiveCityData] = useState({});
+  const data = props.responseData.data;
 
   const cities: string[] = cartogramData
     .sort((x: mapProperties, y: mapProperties) => d3.ascending(x.city, y.city))
@@ -189,7 +191,7 @@ const MapView = (props: RouteComponentProps) => {
       return item.city;
     });
 
-  const totalReponses = responseData.reduce((accumulator, currentValue) => {
+  const totalResponses = data.reduce((accumulator: number, currentValue: any) => {
     return accumulator + currentValue.responses;
   }, 0);
 
@@ -209,9 +211,9 @@ const MapView = (props: RouteComponentProps) => {
       cough_yes: -1,
       cough_mild: -1,
       cough_intense: -1,
-      cough_fine: -1,
-      cough_impaired: -1,
-      cough_bad: -1,
+      general_wellbeing_fine: -1,
+      general_wellbeing_impaired: -1,
+      general_wellbeing_bad: -1,
       breathing_difficulties_no: -1,
       breathing_difficulties_yes: -1,
       muscle_pain_no: -1,
@@ -246,9 +248,9 @@ const MapView = (props: RouteComponentProps) => {
       obj.cough_yes = data[index].responses - data[index].cough_no;
       obj.cough_mild = data[index].cough_mild;
       obj.cough_intense = data[index].cough_intense;
-      obj.cough_fine = data[index].cough_fine;
-      obj.cough_impaired = data[index].cough_impaired;
-      obj.cough_bad = data[index].cough_bad;
+      obj.general_wellbeing_fine = data[index].general_wellbeing_fine;
+      obj.general_wellbeing_impaired = data[index].general_wellbeing_impaired;
+      obj.general_wellbeing_bad = data[index].general_wellbeing_bad;
       obj.breathing_difficulties_no = data[index].breathing_difficulties_no;
       obj.breathing_difficulties_yes = data[index].breathing_difficulties_yes;
       obj.muscle_pain_no = data[index].muscle_pain_no;
@@ -363,7 +365,7 @@ const MapView = (props: RouteComponentProps) => {
           )}
           <TotalResponses>
             <Container>
-              <p>Vastauksia yhteensä: {totalReponses.toLocaleString('fi-FI')}</p>
+              <p>Vastauksia yhteensä: {totalResponses.toLocaleString('fi-FI')}</p>
             </Container>
           </TotalResponses>
         </MapInfo>

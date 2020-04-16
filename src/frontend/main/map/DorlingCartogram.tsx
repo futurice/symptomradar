@@ -19,9 +19,9 @@ interface mapProperties {
   cough_yes: number;
   cough_mild: number;
   cough_intense: number;
-  cough_fine: number;
-  cough_impaired: number;
-  cough_bad: number;
+  general_wellbeing_fine: number;
+  general_wellbeing_impaired: number;
+  general_wellbeing_bad: number;
   breathing_difficulties_no: number;
   breathing_difficulties_yes: number;
   muscle_pain_no: number;
@@ -270,7 +270,7 @@ const Map: React.FunctionComponent<{
               .style('height')
               .slice(0, -2),
           ) -
-          10})`,
+          50})`,
       );
       if (props.mapHeight < 345) d3.select(keyNode).style('bottom', '40px');
       else

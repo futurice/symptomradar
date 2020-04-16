@@ -13,6 +13,7 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_DEFAULT_REGION: eu-west-1
   REACT_APP_API_ENDPOINT: https://api.dev.oiretutka.fi/
+  REACT_APP_DATA_ENDPOINT: https://data.dev.oiretutka.fi/
 
 jobs:
   deploy_dev:

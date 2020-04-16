@@ -22,12 +22,12 @@ interface activeLinkProps {
 
 const AppHeader = styled.header`
   padding: 24px 16px 10px 16px;
-  border-bottom: 1px solid #000;
+  background-color: ${props => props.theme.white};
+  border-bottom: 1px solid ${props => props.theme.black};
   height: 130px;
 `;
 
 const HeaderContainer = styled.div`
-  background-color: #fff;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -75,7 +75,7 @@ const RouterLink = styled(Link)`
 const LinkText = styled.span<activeLinkProps>`
   margin-left: 4px;
   font-weight: bold;
-  color: ${props => (props.isActive ? '#000' : '#0047FF')};
+  color: ${props => (props.isActive ? props.theme.black : props.theme.blue)};
   text-decoration: ${props => (props.isActive ? 'none' : 'underline')};
   flex: 0 0 auto;
 

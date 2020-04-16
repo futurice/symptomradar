@@ -12,12 +12,12 @@ type ButtonProps = {
 const Button = styled.button`
   height: 50px;
   padding: 5px 25px;
-  background: #fff;
+  background: ${props => props.theme.white};
   border-radius: 100px;
   font-weight: bold;
   font-size: 16px;
-  color: #000;
-  border: 1px solid #000;
+  color: ${props => props.theme.black};
+  border: 1px solid ${props => props.theme.black};
   cursor: pointer;
 `;
 

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Router, Location } from '@reach/router';
-import styled, { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
+import axios from 'axios';
 import Header from './Header';
 import MapView from './MapView';
 import About from './About';
@@ -17,6 +18,13 @@ import Roboto700Svg from './assets/fonts/roboto-v20-latin-ext_latin-700.svg';
 import Roboto700Ttf from './assets/fonts/roboto-v20-latin-ext_latin-700.ttf';
 import Roboto700Woff from './assets/fonts/roboto-v20-latin-ext_latin-700.woff';
 import Roboto700Woff2 from './assets/fonts/roboto-v20-latin-ext_latin-700.woff2';
+
+const theme = {
+  grey: '#757575',
+  white: '#FFFFFF',
+  black: '#000000',
+  blue: '#0047FF',
+};
 
 const GlobalStyles = createGlobalStyle`
 
@@ -87,22 +95,43 @@ const AppContainer = styled.div`
   width: 100%;
 `;
 
-export const App = () => (
-  <AppContainer>
-    <GlobalStyles />
-    <Location>
-      {({ location }) => {
-        return <Header location={location.pathname} />;
-      }}
-    </Location>
-    <main>
-      <Router>
-        <MapView path="/" />
-        <MapView path="/map-embed" />
-        <About path="about" />
-        <Privacy path="tietosuojalauseke" />
-        <Survey path="survey" />
-      </Router>
-    </main>
-  </AppContainer>
-);
+const Container = styled.div`
+  text-align: center;
+  margin: 24px 0;
+`;
+
+export const App = () => {
+  const [data, setData] = useState<'FETCHING' | 'ERROR' | object>('FETCHING');
+  const dataEndpoint = process.env.REACT_APP_DATA_ENDPOINT;
+
+  useEffect(() => {
+    axios(`${dataEndpoint}city_level_general_results.json`).then(
+      res => setData(res.data),
+      () => setData('ERROR'),
+    );
+  }, [dataEndpoint]);
+
+  return (
+    <AppContainer>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <Location>
+          {({ location }) => {
+            return <Header location={location.pathname} />;
+          }}
+        </Location>
+        <main>
+          {data === 'FETCHING' && <Container>Loading...</Container>}
+          {data === 'ERROR' && <Container>Error loading data</Container>}
+          <Router>
+            {typeof data === 'object' && <MapView path="/" responseData={data} />}
+            {typeof data === 'object' && <MapView path="/map-embed" responseData={data} />}
+            <About path="about" />
+            <Privacy path="tietosuojalauseke" />
+            <Survey path="survey" />
+          </Router>
+        </main>
+      </ThemeProvider>
+    </AppContainer>
+  );
+};

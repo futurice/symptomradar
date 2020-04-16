@@ -16,7 +16,7 @@ const ModalOverlay = styled.div`
   z-index: 1040;
   width: 100vw;
   height: 100vh;
-  background-color: #000;
+  background-color: ${props => props.theme.black};
   opacity: 0.5;
 `;
 
@@ -72,8 +72,8 @@ const CloseButton = styled(PrimaryButton)`
   display: block;
   margin: 40px auto 0 auto;
   min-width: 212px;
-  background: #595959;
-  color: #fff;
+  background: ${props => props.theme.grey};
+  color: ${props => props.theme.white};
   border: none;
 `;
 

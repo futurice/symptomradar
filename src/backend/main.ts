@@ -1,4 +1,5 @@
 import * as AWS from 'aws-sdk';
+import AthenaExpress from 'athena-express';
 import { createHash } from 'crypto';
 import { v4 as uuidV4 } from 'uuid';
 import { assertIs, BackendResponseModel, BackendResponseModelT, FrontendResponseModelT } from '../common/model';
@@ -8,6 +9,9 @@ import { getSecret } from './secrets';
 const s3: AWS.S3 = new AWS.S3({ apiVersion: '2006-03-01' });
 const storageBucket = process.env.BUCKET_NAME_STORAGE || '';
 const knownPepper = process.env.KNOWN_HASHING_PEPPER || '';
+
+// FIXME: Do not hardcode s3 bucket
+const athenaExpress = new AthenaExpress({ aws: AWS, s3: 's3://symptomradar-dev-storage-results' });
 
 // Crash and burn immediately (instead of at first request) for invalid configuration
 if (!storageBucket) throw new Error('Storage bucket name missing from environment');
@@ -78,4 +82,24 @@ function hash(input: string, pepper: string) {
   return createHash('sha256')
     .update(input + pepper)
     .digest('base64');
+}
+
+export async function storeTotalResponsesToS3() {
+  const queryResult = await athenaExpress.query({
+    sql: 'SELECT COUNT(*) as total_responses FROM responses',
+    // TODO: Configure this
+    db: 'symptomradar_dev_storage',
+  });
+
+  // TODO: Add model for this
+  const data = queryResult.Items[0];
+
+  await s3
+    .putObject({
+      // TODO: Configure this
+      Bucket: 'symptomradar-dev-open-data',
+      Key: 'total_responses.json',
+      Body: JSON.stringify(data),
+    })
+    .promise();
 }

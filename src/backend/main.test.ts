@@ -1,5 +1,6 @@
 import { FrontendResponseModelT, BackendResponseModelT } from '../common/model';
 import { prepareResponseForStorage, getStorageKey } from './main';
+import { createMockDynamoDbClient } from './abuseDetection.test';
 
 const cannedUuid = '5fa8764a-7337-11ea-96ca-d38ac3d1909b';
 const incomingResponseSample: FrontendResponseModelT = {
@@ -54,6 +55,12 @@ describe('prepareResponseForStorage()', () => {
     return prepareResponseForStorage(
       incomingResponseSample,
       'FI',
+      createMockDynamoDbClient(),
+      {
+        source_ip: '1.1.1.1',
+        user_agent: 'Mozilla/5.0...Safari/537.36',
+        forwarded_for: '',
+      },
       Promise.resolve('fake-secret-pepper'),
       () => cannedUuid,
       () => 1585649303678, // i.e. "2020-03-31T10:08:23.678Z"

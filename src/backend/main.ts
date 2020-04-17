@@ -1,8 +1,9 @@
-import * as AWS from 'aws-sdk';
 import AthenaExpress from 'athena-express';
+import * as AWS from 'aws-sdk';
 import { createHash } from 'crypto';
 import { v4 as uuidV4 } from 'uuid';
 import { assertIs, BackendResponseModel, BackendResponseModelT, FrontendResponseModelT } from '../common/model';
+import { AbuseFingerprint, DynamoDBClient, performAbuseDetection } from './abuseDetection';
 import { mapPostalCode } from './postalCode';
 import { getSecret } from './secrets';
 import { totalResponsesQuery, postalCodeLevelDataQuery } from './queries';
@@ -23,12 +24,19 @@ const athenaExpress = new AthenaExpress({ aws: AWS, s3: `s3://${athenaResultsBuc
 let cachedSecretPepper: undefined | Promise<string>;
 
 // Saves the given response into our storage bucket
-export function storeResponse(response: FrontendResponseModelT, countryCode: string) {
+export function storeResponse(
+  response: FrontendResponseModelT,
+  countryCode: string,
+  dynamoDb: DynamoDBClient,
+  fingerprint: AbuseFingerprint,
+) {
   return Promise.resolve()
     .then(() =>
       prepareResponseForStorage(
         response,
         countryCode,
+        dynamoDb,
+        fingerprint,
         (cachedSecretPepper = cachedSecretPepper || getSecret('secret-pepper')),
       ),
     )
@@ -50,26 +58,31 @@ export function storeResponse(response: FrontendResponseModelT, countryCode: str
 export function prepareResponseForStorage(
   response: FrontendResponseModelT,
   countryCode: string,
+  dynamoDb: DynamoDBClient,
+  fingerprint: AbuseFingerprint,
   secretPepper: Promise<string>,
   // Allow overriding non-deterministic parts in test code:
   uuid: () => string = uuidV4,
   timestamp = Date.now,
 ): Promise<BackendResponseModelT> {
-  return Promise.resolve(secretPepper).then(secretPepper => {
-    const meta = {
-      response_id: uuid(),
-      participant_id: hash(hash(response.participant_id, knownPepper), secretPepper), // to preserve privacy, hash the participant_id before storing it, so after opening up the dataset, malicious actors can't submit more responses that pretend to belong to a previous participant
-      timestamp: new Date(timestamp()) // for security, don't trust browser clock, as it may be wrong or fraudulent
-        .toISOString()
-        .replace(/:..\..*/, ':00.000Z'), // to preserve privacy, intentionally reduce precision of the timestamp
-      app_version: 'v2.2', // TODO: This should be set by the deploy process, not hard-coded!
-      country_code: countryCode,
-      postal_code: mapPostalCode(response).postal_code, // to protect the privacy of participants from very small postal code areas, they are merged into larger ones, based on known population data
-      duration: response.duration === null ? null : parseInt(response.duration),
-    };
-    const model: BackendResponseModelT = { ...meta, ...response, ...meta }; // the double "...meta" is just for vanity: we want the meta-fields to appear first in the JSON representation
-    return assertIs(BackendResponseModel)(model); // ensure we still pass runtime validations as well
-  });
+  return Promise.resolve(secretPepper).then(secretPepper =>
+    performAbuseDetection(dynamoDb, fingerprint, val => hash(val, secretPepper)).readPromise.then(abuseScore => {
+      console.log('Abuse score', { abuseScore });
+      const meta = {
+        response_id: uuid(),
+        participant_id: hash(hash(response.participant_id, knownPepper), secretPepper), // to preserve privacy, hash the participant_id before storing it, so after opening up the dataset, malicious actors can't submit more responses that pretend to belong to a previous participant
+        timestamp: new Date(timestamp()) // for security, don't trust browser clock, as it may be wrong or fraudulent
+          .toISOString()
+          .replace(/:..\..*/, ':00.000Z'), // to preserve privacy, intentionally reduce precision of the timestamp
+        app_version: 'v2.2', // TODO: This should be set by the deploy process, not hard-coded!
+        country_code: countryCode,
+        postal_code: mapPostalCode(response).postal_code, // to protect the privacy of participants from very small postal code areas, they are merged into larger ones, based on known population data
+        duration: response.duration === null ? null : parseInt(response.duration),
+      };
+      const model: BackendResponseModelT = { ...meta, ...response, ...meta }; // the double "...meta" is just for vanity: we want the meta-fields to appear first in the JSON representation
+      return assertIs(BackendResponseModel)(model); // ensure we still pass runtime validations as well
+    }),
+  );
 }
 
 // Produces the key under which this response should be stored in S3

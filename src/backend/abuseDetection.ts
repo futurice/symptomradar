@@ -51,7 +51,10 @@ export function performAbuseDetection(
 }
 
 // Creates a specialized DynamoDB API wrapper for reading/writing abuse detection related data
-export function createDynamoDbClient(tableName: string, ttlSeconds: number) {
+export function createDynamoDbClient(
+  tableName: string,
+  ttlSeconds = TIME_RANGE_HOURS * 60 * 60, // by default, expire each key 24 h after its last write
+) {
   var ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' }); // note: for local development, you may need to: AWS.config.update({ region: 'eu-west-1' });
   return {
     // Increments the integer value at given key.

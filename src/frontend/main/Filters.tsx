@@ -50,7 +50,7 @@ const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
   };
   return (
     <div>
-      <H2>Rajaa tuloksia</H2>
+      <H2>Rajaa vastauksia</H2>
       <H3>Oireet</H3>
       <TagGroup>
         <Tag
@@ -87,7 +87,7 @@ const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
         ></Tag>
       </TagGroup>
       <ButtonWrapper>
-        <ActionButton type="button" label="Rajaa tuloksia" handleClick={applyFilters} />
+        <ActionButton type="button" label="Rajaa vastauksia" handleClick={applyFilters} />
       </ButtonWrapper>
     </div>
   );

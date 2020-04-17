@@ -304,7 +304,7 @@ const Map: React.FunctionComponent<{
         ref={node => (keyNode = node)}
       />
       <Modal isShowing={isShowing} hide={toggleModal}>
-        <ModalContent content={activeCityData} />
+        <ModalContent content={activeCityData} hide={toggleModal} />
       </Modal>
     </div>
   );

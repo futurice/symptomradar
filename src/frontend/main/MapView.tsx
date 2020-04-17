@@ -371,7 +371,7 @@ const MapView = (props: MapViewProps) => {
         </MapInfo>
       </MapWrapper>
       <Modal isShowing={isShowing} hide={toggleModal}>
-        <ModalContent content={activeCityData} />
+        <ModalContent content={activeCityData} hide={toggleModal} />
       </Modal>
     </>
   );

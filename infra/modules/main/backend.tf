@@ -51,6 +51,7 @@ module "backend_worker" {
     ATHENA_DB_NAME             = aws_athena_database.storage.name
     BUCKET_NAME_OPEN_DATA      = aws_s3_bucket.open_data.id
     KNOWN_HASHING_PEPPER       = var.known_hashing_pepper
+    DOMAIN_NAME_OPEN_DATA      = var.open_data_domain
   }
 }
 

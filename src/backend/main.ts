@@ -90,6 +90,8 @@ export async function storeTotalResponsesToS3() {
   if (!db) throw new Error('Athena DB name missing from environment');
   const bucket = process.env.BUCKET_NAME_OPEN_DATA;
   if (!bucket) throw new Error('Open data bucket name missing from environment');
+  const domain = process.env.DOMAIN_NAME_OPEN_DATA;
+  if (!domain) throw new Error('Open data domain name missing from environment');
 
   const queryResult = await athenaExpress.query({
     sql: 'SELECT COUNT(*) as total_responses FROM responses',
@@ -103,7 +105,19 @@ export async function storeTotalResponsesToS3() {
     .putObject({
       Bucket: bucket,
       Key: 'total_responses.json',
-      Body: JSON.stringify(data, null, 2),
+      Body: JSON.stringify(
+        {
+          meta: {
+            description:
+              'Total number of responses collected by the system thus far. This is the raw number before any filtering or abuse detection has been performed.',
+            generated: new Date().toISOString(),
+            link: `https://${domain}/total_responses.json`,
+          },
+          data,
+        },
+        null,
+        2,
+      ),
       ContentType: 'application/json',
       CacheControl: 'max-age=15',
     })

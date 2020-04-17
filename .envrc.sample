@@ -4,5 +4,9 @@
 # for local development, setup mock api endpoint with e.g. https://mockoon.com
 export REACT_APP_API_ENDPOINT="http://localhost:3001/submit-response"
 
+# allow fetching data from the open data site dev version
+export REACT_APP_DATA_ENDPOINT=https://data.dev.oiretutka.fi/
+export REACT_APP_DATA_AUTH=symptomradar:SECRET
+
 # Check and use required Node version
 ~/bin/check-required-node-version || nvm use `~/bin/get-required-node-version`

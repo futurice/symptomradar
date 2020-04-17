@@ -61,13 +61,13 @@ const GlobalStyles = createGlobalStyle`
   *, *:before, *:after {
     box-sizing: inherit;
   }
-  
+
   body {
     font-family: 'Roboto', Arial, sans-serif;
     line-height: 1.5;
     font-size: 16px;
   }
-  
+
   h1 {
     font-size: 21px;
     line-height: 1.25;
@@ -95,21 +95,19 @@ const AppContainer = styled.div`
   width: 100%;
 `;
 
-const Container = styled.div`
-  text-align: center;
-  margin: 24px 0;
-`;
-
 export const App = () => {
   const [data, setData] = useState<'FETCHING' | 'ERROR' | object>('FETCHING');
   const dataEndpoint = process.env.REACT_APP_DATA_ENDPOINT;
+  const [username, password] = (process.env.REACT_APP_DATA_AUTH || '').split(':');
 
   useEffect(() => {
-    axios(`${dataEndpoint}city_level_general_results.json`).then(
+    axios(`${dataEndpoint}city_level_general_results.json`, {
+      auth: { username, password },
+    }).then(
       res => setData(res.data),
       () => setData('ERROR'),
     );
-  }, [dataEndpoint]);
+  }, [dataEndpoint, username, password]);
 
   return (
     <AppContainer>
@@ -121,11 +119,9 @@ export const App = () => {
           }}
         </Location>
         <main>
-          {data === 'FETCHING' && <Container>Loading...</Container>}
-          {data === 'ERROR' && <Container>Error loading data</Container>}
           <Router>
-            {typeof data === 'object' && <MapView path="/" responseData={data} />}
-            {typeof data === 'object' && <MapView path="/map-embed" responseData={data} />}
+            {<MapView path="/" responseData={data} />}
+            {<MapView path="/map-embed" responseData={data} />}
             <About path="about" />
             <Privacy path="tietosuojalauseke" />
             <Survey path="survey" />

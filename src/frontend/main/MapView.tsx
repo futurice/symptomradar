@@ -67,6 +67,11 @@ const Container = styled.div`
   margin: 0 auto;
 `;
 
+const MessageContainer = styled.div`
+  text-align: center;
+  margin: 24px 0;
+`;
+
 const MapNavContent = styled(Container)`
   height: 100%;
   display: flex;
@@ -173,6 +178,14 @@ const MapView = (props: MapViewProps) => {
   const [activeCityData, setActiveCityData] = useState({});
   const data = props.responseData.data;
 
+  if (props.responseData === 'FETCHING') {
+    return <MessageContainer>Loading...</MessageContainer>;
+  }
+
+  if (props.responseData === 'ERROR') {
+    return <MessageContainer>Error loading data</MessageContainer>;
+  }
+
   const cities: string[] = cartogramData
     .sort((x: mapProperties, y: mapProperties) => d3.ascending(x.city, y.city))
     .map((item: mapProperties) => {
@@ -274,6 +287,7 @@ const MapView = (props: MapViewProps) => {
     }
     return obj;
   });
+
   return (
     <>
       <MapNav>

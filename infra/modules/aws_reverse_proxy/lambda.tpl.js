@@ -4,7 +4,7 @@
 const config = ${config};
 const addResponseHeaders = ${add_response_headers};
 const validCredentials = config.basic_auth_username + ':' + config.basic_auth_password;
-const validAuthHeader = 'Basic ' + new Buffer(validCredentials).toString('base64');
+const validAuthHeader = 'Basic ' + Buffer.from(validCredentials).toString('base64');
 const hstsHeaders =
   config.hsts_max_age && config.viewer_https_only
     ? { 'Strict-Transport-Security': 'max-age=' + config.hsts_max_age + '; preload' }
@@ -33,7 +33,8 @@ exports.viewer_request = (event, context, callback) => {
     log('aws_reverse_proxy.viewer_request.after', response);
   } else if (
     (config.basic_auth_username || config.basic_auth_password) &&
-    (typeof headers.authorization == 'undefined' || headers.authorization[0].value != validAuthHeader)
+    (typeof headers.authorization == 'undefined' || headers.authorization[0].value != validAuthHeader) &&
+    !(request.method === 'OPTIONS' && getHeader(headers, 'access-control-request-method')) // as per the CORS spec, pre-flight requests are sent without credentials (https://stackoverflow.com/a/15734032) -> always allow them
   ) {
     const response = {
       status: '401',
@@ -100,4 +101,9 @@ function formatHeaders(headers) {
         }),
       {},
     );
+}
+
+// Reads a header value (very safely) from the CloudFront-formatted headers object
+function getHeader(headers, key) {
+  return headers[key] && headers[key][0] && headers[key][0].value || '';
 }

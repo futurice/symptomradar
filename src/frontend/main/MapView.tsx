@@ -101,13 +101,11 @@ const FilterWrapper = styled.div`
   }
 `;
 
-const FilterButton = styled(PrimaryButton)`
-  flex: 0 0 auto;
-  margin-right: 8px;
-  padding: 8px 16px;
+const ActiveFilter = styled(PrimaryButton)`
   background: ${props => props.theme.grey};
   color: ${props => props.theme.white};
   border: none;
+  pointer-events: none;
 `;
 
 const MapInfo = styled.div`

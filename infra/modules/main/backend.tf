@@ -25,10 +25,11 @@ module "backend_api" {
   api_gateway_cloudwatch_metrics = true
 
   function_env_vars = {
-    BUCKET_NAME_STORAGE  = aws_s3_bucket.storage.id
-    CORS_ALLOW_ORIGIN    = var.backend_cors_allow_any ? "*" : "https://${var.frontend_domain}"
-    KNOWN_HASHING_PEPPER = var.known_hashing_pepper
-    SSM_SECRETS_PREFIX   = var.ssm_secrets_prefix
+    BUCKET_NAME_STORAGE        = aws_s3_bucket.storage.id
+    BUCKET_NAME_ATHENA_RESULTS = aws_s3_bucket.storage_results.id
+    CORS_ALLOW_ORIGIN          = var.backend_cors_allow_any ? "*" : "https://${var.frontend_domain}"
+    KNOWN_HASHING_PEPPER       = var.known_hashing_pepper
+    SSM_SECRETS_PREFIX         = var.ssm_secrets_prefix
   }
 }
 
@@ -45,7 +46,11 @@ module "backend_worker" {
   lambda_logging_enabled = true
 
   function_env_vars = {
-    BUCKET_NAME_STORAGE = aws_s3_bucket.storage.id
+    BUCKET_NAME_STORAGE        = aws_s3_bucket.storage.id
+    BUCKET_NAME_ATHENA_RESULTS = aws_s3_bucket.storage_results.id
+    ATHENA_DB_NAME             = aws_athena_database.storage.name
+    BUCKET_NAME_OPEN_DATA      = aws_s3_bucket.open_data.id
+    KNOWN_HASHING_PEPPER       = var.known_hashing_pepper
   }
 }
 

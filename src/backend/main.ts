@@ -8,14 +8,15 @@ import { getSecret } from './secrets';
 
 const s3: AWS.S3 = new AWS.S3({ apiVersion: '2006-03-01' });
 const storageBucket = process.env.BUCKET_NAME_STORAGE || '';
+const athenaResultsBucket = process.env.BUCKET_NAME_ATHENA_RESULTS || '';
 const knownPepper = process.env.KNOWN_HASHING_PEPPER || '';
-
-// FIXME: Do not hardcode s3 bucket
-const athenaExpress = new AthenaExpress({ aws: AWS, s3: 's3://symptomradar-dev-storage-results' });
 
 // Crash and burn immediately (instead of at first request) for invalid configuration
 if (!storageBucket) throw new Error('Storage bucket name missing from environment');
+if (!athenaResultsBucket) throw new Error('Athena results bucket name missing from environment');
 if (!knownPepper) throw new Error('Hashing pepper missing from environment');
+
+const athenaExpress = new AthenaExpress({ aws: AWS, s3: `s3://${athenaResultsBucket}` });
 
 // Due to occasional very high volumes of incoming responses, cache the secret pepper for the lifetime of the Lambda instance
 let cachedSecretPepper: undefined | Promise<string>;
@@ -85,10 +86,14 @@ function hash(input: string, pepper: string) {
 }
 
 export async function storeTotalResponsesToS3() {
+  const db = process.env.ATHENA_DB_NAME;
+  if (!db) throw new Error('Athena DB name missing from environment');
+  const bucket = process.env.BUCKET_NAME_OPEN_DATA;
+  if (!bucket) throw new Error('Open data bucket name missing from environment');
+
   const queryResult = await athenaExpress.query({
     sql: 'SELECT COUNT(*) as total_responses FROM responses',
-    // TODO: Configure this
-    db: 'symptomradar_dev_storage',
+    db,
   });
 
   // TODO: Add model for this
@@ -96,8 +101,7 @@ export async function storeTotalResponsesToS3() {
 
   await s3
     .putObject({
-      // TODO: Configure this
-      Bucket: 'symptomradar-dev-open-data',
+      Bucket: bucket,
       Key: 'total_responses.json',
       Body: JSON.stringify(data, null, 2),
     })

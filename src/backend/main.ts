@@ -104,6 +104,8 @@ export async function storeTotalResponsesToS3() {
       Bucket: bucket,
       Key: 'total_responses.json',
       Body: JSON.stringify(data, null, 2),
+      ContentType: 'application/json',
+      CacheControl: 'max-age=15',
     })
     .promise();
 }

@@ -45,6 +45,18 @@ resource "aws_cloudwatch_dashboard" "overview" {
                         {
                             "label": "Second result articles (https://www.hs.fi/kotimaa/art-2000006463218.html & https://www.is.fi/kotimaa/art-2000006463005.html)",
                             "value": "2020-04-03T16:00:00+03:00"
+                        },
+                        {
+                            "label": "Result articles (https://www.hs.fi/kotimaa/art-2000006469295.html & https://www.mtvuutiset.fi/artikkeli/nain-koronaoireet-leviavat-suomessa-paivita-omat-tietosi-karttaan-ja-katso-miten-kotikunnassasi-oireillaan/7784938 & https://www.is.fi/kotimaa/art-2000006469373.html)",
+                            "value": "2020-04-09T10:00:00+03:00"
+                        },
+                        {
+                            "label": "YLE joined (https://yle.fi/uutiset/3-11298005)",
+                            "value": "2020-04-14T15:45:00+03:00"
+                        },
+                        {
+                            "label": "Result articles (https://www.hs.fi/kotimaa/art-2000006476476.html & https://www.is.fi/kotimaa/art-2000006476603.html)",
+                            "value": "2020-04-16T14:00:00+03:00"
                         }
                     ]
                 }

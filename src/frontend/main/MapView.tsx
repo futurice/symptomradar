@@ -4,10 +4,12 @@ import { RouteComponentProps } from '@reach/router';
 import * as d3 from 'd3';
 import ModalContent from './ModalContent';
 import Modal from './Modal';
+import FilterToggle from './FilterToggle';
 import PrimaryButton from './PrimaryButton';
 import MapContainer from './map/MapContainer';
 import useModal from './useModal';
 import CloseIcon from './assets/CloseIcon';
+import { FILTERS } from './constants';
 
 interface MapViewProps extends RouteComponentProps {
   responseData: any;
@@ -52,10 +54,6 @@ interface mapProperties {
   y: number;
 }
 
-type FilterButtonProps = {
-  isActive: boolean;
-};
-
 const cartogramData: mapProperties[] = require('./assets/data/cartogram-coordinates.json');
 
 const MapNav = styled.div`
@@ -88,31 +86,21 @@ const MapWrapper = styled.div`
 const FilterWrapper = styled.div`
   position: absolute;
   top: 10px;
-  display: flex;
-  max-width: 100vw;
-  flex-wrap: nowrap;
   padding: 3px 16px;
-  overflow: scroll;
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-  scrollbar-width: none; /* Firefox */
-
-  &::-webkit-scrollbar {
-    display: none; /* Safari and Chrome */
-  }
+  display: flex;
 
   @media (min-width: 624px) {
     padding-left: 0;
   }
 `;
 
-const FilterButton = styled(PrimaryButton)<FilterButtonProps>`
+const FilterButton = styled(PrimaryButton)`
   flex: 0 0 auto;
   margin-right: 8px;
   padding: 8px 16px;
-  height: 35px;
-  background: ${props => (props.isActive ? props.theme.white : props.theme.grey)};
-  color: ${props => (props.isActive ? props.theme.black : props.theme.white)};
-  border: ${props => (props.isActive ? `1px solid ${props.theme.black}` : '1px solid transparent')};
+  background: ${props => props.theme.grey};
+  color: ${props => props.theme.white};
+  border: none;
 `;
 
 const MapInfo = styled.div`
@@ -190,6 +178,18 @@ const MapView = (props: MapViewProps) => {
     .map((item: mapProperties) => {
       return item.city;
     });
+
+  const handleFilterChange = (filterName: string) => {
+    setSelectedFilter(filterName);
+  };
+
+  const getKeyByValue = (object: any, value: any) => {
+    return Object.keys(object).find(key => object[key] === value);
+  };
+
+  const selectedKey = getKeyByValue(FILTERS, selectedFilter);
+
+  console.log(selectedKey);
 
   const totalResponses = data.reduce((accumulator: number, currentValue: any) => {
     return accumulator + currentValue.responses;
@@ -309,38 +309,8 @@ const MapView = (props: MapViewProps) => {
         />
         <Container>
           <FilterWrapper>
-            <FilterButton
-              type="button"
-              label="Epäilys koronasta"
-              isActive={selectedFilter === 'corona_suspicion_yes' ? true : false}
-              handleClick={() => {
-                setSelectedFilter('corona_suspicion_yes');
-              }}
-            />
-            <FilterButton
-              type="button"
-              label="Yskää"
-              isActive={selectedFilter === 'cough_yes' ? true : false}
-              handleClick={() => {
-                setSelectedFilter('cough_yes');
-              }}
-            />
-            <FilterButton
-              type="button"
-              label="Kuumetta"
-              isActive={selectedFilter === 'fever_yes' ? true : false}
-              handleClick={() => {
-                setSelectedFilter('fever_yes');
-              }}
-            />
-            <FilterButton
-              type="button"
-              label="Vaikeuksia hengittää"
-              isActive={selectedFilter === 'breathing_difficulties_yes' ? true : false}
-              handleClick={() => {
-                setSelectedFilter('breathing_difficulties_yes');
-              }}
-            />
+            <FilterToggle selectedFilter={selectedFilter} handleFilterChange={handleFilterChange} />
+            <FilterButton type="button" label={FILTERS['coronaSuspicion'].label} />
           </FilterWrapper>
         </Container>
         <MapInfo>

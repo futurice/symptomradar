@@ -1,31 +1,47 @@
 import React from 'react';
 import styled from 'styled-components';
 import Modal from './Modal';
-/* TODO add the icon if this component needed later */
-
-// import filterIcon from './assets/filter-icon.svg';
+import FilterIcon from './assets/FilterIcon';
+import PrimaryButton from './PrimaryButton';
 import Filters from './Filters';
 import useModal from './useModal';
 
-const FilterButton = styled.button`
+type FilterToggleProps = {
+  selectedFilter: string;
+  handleFilterChange: (filterName: string) => void;
+};
+
+const FilterButton = styled(PrimaryButton)`
   font-size: 16px;
   font-weight: bold;
-  border: none;
-  background-color: transparent;
-  position: relative;
-  padding: 5px 5px 5px 25px;
-  background-repeat: no-repeat;
-  background-position: center left;
+  background: ${props => props.theme.white};
+  height: 35px;
+  padding: 5px 16px;
+  border-radius: 100px;
+  color: ${props => props.theme.black};
+  border: 1px solid ${props => props.theme.black};
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  margin-right: 8px;
+
+  svg {
+    padding-right: 4px;
+    height: 18px;
+  }
 `;
 
-const FilterToggle = () => {
+const FilterToggle = ({ selectedFilter, handleFilterChange }: FilterToggleProps) => {
   const { isShowing, toggleModal } = useModal();
+  console.log(selectedFilter);
 
   return (
     <>
-      <FilterButton onClick={toggleModal}>Filter</FilterButton>
+      <FilterButton type="button" handleClick={toggleModal} label="Rajaa">
+        <FilterIcon />
+      </FilterButton>
       <Modal isShowing={isShowing} hide={toggleModal}>
-        <Filters />
+        <Filters selectedFilter={selectedFilter} hide={toggleModal} handleFilterChange={handleFilterChange} />
       </Modal>
     </>
   );

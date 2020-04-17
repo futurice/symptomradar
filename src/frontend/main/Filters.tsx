@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import PrimaryButton from './PrimaryButton';
+import { FILTERS } from './constants';
+
+type FilterProps = {
+  hide: () => void;
+  selectedFilter: string;
+  handleFilterChange: (filterName: string) => void;
+};
 
 const H3 = styled.h3`
   font-size: 16px;
@@ -8,53 +15,81 @@ const H3 = styled.h3`
 `;
 
 const TagGroup = styled.div`
-  display: flex;
-  flex-wrap: wrap;
   margin-bottom: 10px;
+  padding-left: 16px;
 `;
 
-const Tag = styled.div`
-  background-color: #ffb7b7;
-  padding: 5px 25px;
-  margin: 5px;
-  height: 50px;
-  border-radius: 100px;
-  font-weight: bold;
-  font-size: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const Tag = styled(PrimaryButton)`
+  margin: 0 8px 16px 0;
+  background: ${props => (props.isActive ? props.theme.grey : props.theme.white)};
+  color: ${props => (props.isActive ? props.theme.white : props.theme.black)};
+  border: ${props => (props.isActive ? '1px solid transparent' : `1px solid ${props.theme.black}`)};
 `;
 
-const BlueTag = styled(Tag)`
-  background-color: #b7e5ff;
+const H2 = styled.h2`
+  font-size: 21px;
+  margin: 0 0 24px 0;
 `;
 
 const ButtonWrapper = styled.div`
   margin-top: 35px;
 `;
 
-const Filters = () => {
+const ActionButton = styled(PrimaryButton)`
+  display: block;
+  margin: 40px auto 0 auto;
+  min-width: 135px;
+`;
+
+const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
+  console.log(selectedFilter);
+  const [activeFilter, setActiveFilter] = useState(selectedFilter);
+  // console.log(activeFilter);
+
+  const applyFilters = () => {
+    handleFilterChange(activeFilter);
+    hide();
+  };
   return (
     <div>
-      <H3>Symptoms</H3>
+      <H2>Rajaa tuloksia</H2>
+      <H3>Oireet</H3>
       <TagGroup>
-        <Tag>Fever</Tag>
-        <Tag>Coughing</Tag>
-        <Tag>Fatigue</Tag>
-        <Tag>Muscle pain</Tag>
-        <Tag>Shortness of breath</Tag>
-      </TagGroup>
-      <H3>Age</H3>
-      <TagGroup>
-        <BlueTag>4-20</BlueTag>
-        <BlueTag>20-25</BlueTag>
-        <BlueTag>25-40</BlueTag>
-        <BlueTag>40-60</BlueTag>
-        <BlueTag>Over 60</BlueTag>
+        <Tag
+          type="button"
+          label={FILTERS.coronaSuspicion.label}
+          isActive={activeFilter === FILTERS.coronaSuspicion.id ? true : false}
+          handleClick={() => {
+            setActiveFilter(FILTERS.coronaSuspicion.id);
+          }}
+        ></Tag>
+        <Tag
+          type="button"
+          label={FILTERS.cough.label}
+          isActive={activeFilter === FILTERS.cough.id ? true : false}
+          handleClick={() => {
+            setActiveFilter(FILTERS.cough.id);
+          }}
+        ></Tag>
+        <Tag
+          type="button"
+          label={FILTERS.fever.label}
+          isActive={activeFilter === FILTERS.fever.id ? true : false}
+          handleClick={() => {
+            setActiveFilter(FILTERS.fever.id);
+          }}
+        ></Tag>
+        <Tag
+          type="button"
+          label={FILTERS.breathingDifficulties.label}
+          isActive={activeFilter === FILTERS.breathingDifficulties.id ? true : false}
+          handleClick={() => {
+            setActiveFilter(FILTERS.breathingDifficulties.id);
+          }}
+        ></Tag>
       </TagGroup>
       <ButtonWrapper>
-        <PrimaryButton type="button" label={'Apply filters'} />
+        <ActionButton type="button" label="Rajaa tuloksia" handleClick={applyFilters} />
       </ButtonWrapper>
     </div>
   );

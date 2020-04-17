@@ -64,7 +64,7 @@ resource "aws_iam_policy" "backend_api" {
 {
   "Version": "2012-10-17",
   "Statement": [
-   {
+    {
       "Action": [
         "s3:*"
       ],
@@ -90,4 +90,70 @@ EOF
 resource "aws_iam_role_policy_attachment" "backend_api" {
   role       = module.backend_api.function_role
   policy_arn = aws_iam_policy.backend_api.arn
+}
+
+# Attach the required extra permissions to the backend worker function
+resource "aws_iam_policy" "backend_worker" {
+  name = "${var.name_prefix}-backend-worker-extras"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ReadOnlyAccessToResultsStorage",
+      "Action": [
+        "s3:ListBucket",
+        "s3:GetObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::${aws_s3_bucket.storage.id}",
+        "arn:aws:s3:::${aws_s3_bucket.storage.id}/*"
+      ],
+      "Effect": "Allow"
+    },
+    {
+      "Sid": "ReadWriteAccessToAthenaResultsAndOutputBucket",
+      "Action": [
+        "s3:*"
+      ],
+      "Resource": [
+        "arn:aws:s3:::${aws_s3_bucket.open_data.id}",
+        "arn:aws:s3:::${aws_s3_bucket.open_data.id}/*",
+        "arn:aws:s3:::${aws_s3_bucket.storage_results.id}",
+        "arn:aws:s3:::${aws_s3_bucket.storage_results.id}/*"
+      ],
+      "Effect": "Allow"
+    },
+    {
+      "Sid": "AllowQueryingAthena",
+      "Action": [
+        "athena:*"
+      ],
+      "Resource": [
+        "arn:aws:athena:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:workgroup/primary"
+      ],
+      "Effect": "Allow"
+    },
+    {
+      "Sid": "AllowUsingGlue",
+      "Action": [
+        "glue:*"
+      ],
+      "Resource": [
+        "arn:aws:glue:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:catalog",
+        "arn:aws:glue:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:database/${aws_athena_database.storage.name}",
+        "arn:aws:glue:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:table/${aws_athena_database.storage.name}/responses"
+      ],
+      "Effect": "Allow"
+    }
+  ]
+}
+EOF
+}
+
+# Attach the required extra permissions to the backend worker function
+resource "aws_iam_role_policy_attachment" "backend_worker" {
+  role       = module.backend_worker.function_role
+  policy_arn = aws_iam_policy.backend_worker.arn
 }

@@ -63,6 +63,7 @@ resource "aws_iam_policy" "backend_api" {
   "Version": "2012-10-17",
   "Statement": [
     {
+      "Sid": "ReadWriteAccessToResultsStorage",
       "Action": [
         "s3:*"
       ],
@@ -73,6 +74,7 @@ resource "aws_iam_policy" "backend_api" {
       "Effect": "Allow"
     },
     {
+      "Sid": "ReadOnlyAccessToSecrets",
       "Effect": "Allow",
       "Action": [
         "ssm:GetParameters"

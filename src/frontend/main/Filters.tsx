@@ -5,9 +5,11 @@ import { FILTERS } from './constants';
 
 type FilterProps = {
   hide: () => void;
-  selectedFilter: string;
-  handleFilterChange: (filterName: string) => void;
+  selectedFilter: keyof typeof FILTERS;
+  handleFilterChange: (filterName: keyof typeof FILTERS) => void;
 };
+
+type FilterKey = keyof typeof FILTERS;
 
 const H3 = styled.h3`
   font-size: 16px;
@@ -58,7 +60,7 @@ const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
           label={FILTERS.corona_suspicion_yes.label}
           isActive={activeFilter === FILTERS.corona_suspicion_yes.id ? true : false}
           handleClick={() => {
-            setActiveFilter(FILTERS.corona_suspicion_yes.id);
+            setActiveFilter(FILTERS.corona_suspicion_yes.id as FilterKey);
           }}
         ></Tag>
         <Tag
@@ -66,7 +68,7 @@ const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
           label={FILTERS.cough_yes.label}
           isActive={activeFilter === FILTERS.cough_yes.id ? true : false}
           handleClick={() => {
-            setActiveFilter(FILTERS.cough_yes.id);
+            setActiveFilter(FILTERS.cough_yes.id as FilterKey);
           }}
         ></Tag>
         <Tag
@@ -74,7 +76,7 @@ const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
           label={FILTERS.fever_yes.label}
           isActive={activeFilter === FILTERS.fever_yes.id ? true : false}
           handleClick={() => {
-            setActiveFilter(FILTERS.fever_yes.id);
+            setActiveFilter(FILTERS.fever_yes.id as FilterKey);
           }}
         ></Tag>
         <Tag
@@ -82,7 +84,7 @@ const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
           label={FILTERS.breathing_difficulties_yes.label}
           isActive={activeFilter === FILTERS.breathing_difficulties_yes.id ? true : false}
           handleClick={() => {
-            setActiveFilter(FILTERS.breathing_difficulties_yes.id);
+            setActiveFilter(FILTERS.breathing_difficulties_yes.id as FilterKey);
           }}
         ></Tag>
       </TagGroup>

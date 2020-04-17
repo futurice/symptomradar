@@ -5,10 +5,11 @@ import FilterIcon from './assets/FilterIcon';
 import PrimaryButton from './PrimaryButton';
 import Filters from './Filters';
 import useModal from './useModal';
+import { FILTERS } from './constants';
 
 type FilterToggleProps = {
-  selectedFilter: string;
-  handleFilterChange: (filterName: string) => void;
+  selectedFilter: keyof typeof FILTERS;
+  handleFilterChange: (filterName: keyof typeof FILTERS) => void;
 };
 
 const FilterButton = styled(PrimaryButton)`

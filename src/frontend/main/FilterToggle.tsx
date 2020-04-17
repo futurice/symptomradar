@@ -33,7 +33,6 @@ const FilterButton = styled(PrimaryButton)`
 
 const FilterToggle = ({ selectedFilter, handleFilterChange }: FilterToggleProps) => {
   const { isShowing, toggleModal } = useModal();
-  console.log(selectedFilter);
 
   return (
     <>

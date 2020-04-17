@@ -42,9 +42,7 @@ const ActionButton = styled(PrimaryButton)`
 `;
 
 const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
-  console.log(selectedFilter);
   const [activeFilter, setActiveFilter] = useState(selectedFilter);
-  // console.log(activeFilter);
 
   const applyFilters = () => {
     handleFilterChange(activeFilter);
@@ -57,34 +55,34 @@ const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
       <TagGroup>
         <Tag
           type="button"
-          label={FILTERS.coronaSuspicion.label}
-          isActive={activeFilter === FILTERS.coronaSuspicion.id ? true : false}
+          label={FILTERS.corona_suspicion_yes.label}
+          isActive={activeFilter === FILTERS.corona_suspicion_yes.id ? true : false}
           handleClick={() => {
-            setActiveFilter(FILTERS.coronaSuspicion.id);
+            setActiveFilter(FILTERS.corona_suspicion_yes.id);
           }}
         ></Tag>
         <Tag
           type="button"
-          label={FILTERS.cough.label}
-          isActive={activeFilter === FILTERS.cough.id ? true : false}
+          label={FILTERS.cough_yes.label}
+          isActive={activeFilter === FILTERS.cough_yes.id ? true : false}
           handleClick={() => {
-            setActiveFilter(FILTERS.cough.id);
+            setActiveFilter(FILTERS.cough_yes.id);
           }}
         ></Tag>
         <Tag
           type="button"
-          label={FILTERS.fever.label}
-          isActive={activeFilter === FILTERS.fever.id ? true : false}
+          label={FILTERS.fever_yes.label}
+          isActive={activeFilter === FILTERS.fever_yes.id ? true : false}
           handleClick={() => {
-            setActiveFilter(FILTERS.fever.id);
+            setActiveFilter(FILTERS.fever_yes.id);
           }}
         ></Tag>
         <Tag
           type="button"
-          label={FILTERS.breathingDifficulties.label}
-          isActive={activeFilter === FILTERS.breathingDifficulties.id ? true : false}
+          label={FILTERS.breathing_difficulties_yes.label}
+          isActive={activeFilter === FILTERS.breathing_difficulties_yes.id ? true : false}
           handleClick={() => {
-            setActiveFilter(FILTERS.breathingDifficulties.id);
+            setActiveFilter(FILTERS.breathing_difficulties_yes.id);
           }}
         ></Tag>
       </TagGroup>

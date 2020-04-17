@@ -11,6 +11,8 @@ import useModal from './useModal';
 import CloseIcon from './assets/CloseIcon';
 import { FILTERS } from './constants';
 
+type FilterKey = keyof typeof FILTERS;
+
 interface MapViewProps extends RouteComponentProps {
   responseData: any;
 }
@@ -173,7 +175,7 @@ const MapView = (props: MapViewProps) => {
   const topPartHeight = isEmbed ? 80 : 225;
   const { isShowing, toggleModal } = useModal();
   const [showMapInfo, setShowMapInfo] = useState(true);
-  const [selectedFilter, setSelectedFilter] = useState('corona_suspicion_yes');
+  const [selectedFilter, setSelectedFilter] = useState<FilterKey>('corona_suspicion_yes');
   const [mapHeight, setMapHeight] = useState(window.innerHeight - topPartHeight);
   const [activeCityData, setActiveCityData] = useState({});
   const data = props.responseData.data;
@@ -193,16 +195,8 @@ const MapView = (props: MapViewProps) => {
     });
 
   const handleFilterChange = (filterName: string) => {
-    setSelectedFilter(filterName);
+    setSelectedFilter(filterName as FilterKey);
   };
-
-  const getKeyByValue = (object: any, value: any) => {
-    return Object.keys(object).find(key => object[key] === value);
-  };
-
-  const selectedKey = getKeyByValue(FILTERS, selectedFilter);
-
-  console.log(selectedKey);
 
   const totalResponses = data.reduce((accumulator: number, currentValue: any) => {
     return accumulator + currentValue.responses;
@@ -324,7 +318,7 @@ const MapView = (props: MapViewProps) => {
         <Container>
           <FilterWrapper>
             <FilterToggle selectedFilter={selectedFilter} handleFilterChange={handleFilterChange} />
-            <FilterButton type="button" label={FILTERS['coronaSuspicion'].label} />
+            <ActiveFilter type="button" label={FILTERS[selectedFilter].label}></ActiveFilter>
           </FilterWrapper>
         </Container>
         <MapInfo>

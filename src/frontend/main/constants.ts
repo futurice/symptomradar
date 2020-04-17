@@ -1,6 +1,6 @@
 export const FILTERS = {
-  coronaSuspicion: { label: 'Epäilys koronasta', id: 'corona_suspicion_yes' },
-  cough: { label: 'Yskää', id: 'cough_yes' },
-  fever: { label: 'Kuumetta', id: 'fever_yes' },
-  breathingDifficulties: { label: 'Vaikeuksia hengittää', id: 'breathing_difficulties_yes' },
+  corona_suspicion_yes: { label: 'Epäilys koronasta', id: 'corona_suspicion_yes' },
+  cough_yes: { label: 'Yskää', id: 'cough_yes' },
+  fever_yes: { label: 'Kuumetta', id: 'fever_yes' },
+  breathing_difficulties_yes: { label: 'Vaikeuksia hengittää', id: 'breathing_difficulties_yes' },
 };

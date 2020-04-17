@@ -20,6 +20,7 @@ locals {
     DOMAIN_NAME_OPEN_DATA      = var.open_data_domain
     KNOWN_HASHING_PEPPER       = var.known_hashing_pepper
     SSM_SECRETS_PREFIX         = var.ssm_secrets_prefix
+    ABUSE_DETECTION_TABLE      = aws_dynamodb_table.abuse_detection.name
   }
 }
 

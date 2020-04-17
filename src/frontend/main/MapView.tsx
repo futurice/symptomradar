@@ -173,7 +173,7 @@ const MapView = (props: MapViewProps) => {
   const topPartHeight = isEmbed ? 80 : 225;
   const { isShowing, toggleModal } = useModal();
   const [showMapInfo, setShowMapInfo] = useState(true);
-  const [selectedFilter, setSelectedFilter] = useState<FilterKey>('corona_suspicion_yes');
+  const [selectedFilter, setSelectedFilter] = useState<FilterKey>(FILTERS.corona_suspicion_yes.id as FilterKey);
   const [mapHeight, setMapHeight] = useState(window.innerHeight - topPartHeight);
   const [activeCityData, setActiveCityData] = useState({});
   const data = props.responseData.data;

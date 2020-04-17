@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import PrimaryButton from './PrimaryButton';
 
 type ModalContentProps = {
   content: any;
+  hide: () => void;
 };
 
 const ModalHeader = styled.div`
@@ -39,7 +41,13 @@ const Symptoms = styled.div`
   }
 `;
 
-const ModalContent = ({ content }: ModalContentProps) => {
+const CloseButton = styled(PrimaryButton)`
+  display: block;
+  margin: 40px auto 0 auto;
+  min-width: 135px;
+`;
+
+const ModalContent = ({ content, hide }: ModalContentProps) => {
   const responsesTotal = content.responses !== -1 ? content.responses.toLocaleString('fi-FI') : '< 25';
   const suspicionTotal =
     content.corona_suspicion_yes !== -1 ? content.corona_suspicion_yes.toLocaleString('fi-FI') : 'ei tietoa';
@@ -101,6 +109,7 @@ const ModalContent = ({ content }: ModalContentProps) => {
         </span>
         <p>Vaikeuksia hengittää</p>
       </Symptoms>
+      <CloseButton type="button" data-dismiss="modal" aria-label="Sulje" label="Sulje" handleClick={hide} />
     </>
   );
 };

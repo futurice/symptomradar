@@ -9,5 +9,5 @@
     "lib": ["es2017"],
     "outDir": "build"
   },
-  "include": ["src/index-backend.ts"]
+  "include": ["src/*.d.ts", "src/index-backend.ts"]
 }

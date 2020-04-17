@@ -25,10 +25,11 @@ module "backend_api" {
   api_gateway_cloudwatch_metrics = true
 
   function_env_vars = {
-    BUCKET_NAME_STORAGE  = aws_s3_bucket.storage.id
-    CORS_ALLOW_ORIGIN    = var.backend_cors_allow_any ? "*" : "https://${var.frontend_domain}"
-    KNOWN_HASHING_PEPPER = var.known_hashing_pepper
-    SSM_SECRETS_PREFIX   = var.ssm_secrets_prefix
+    BUCKET_NAME_STORAGE        = aws_s3_bucket.storage.id
+    BUCKET_NAME_ATHENA_RESULTS = aws_s3_bucket.storage_results.id
+    CORS_ALLOW_ORIGIN          = var.backend_cors_allow_any ? "*" : "https://${var.frontend_domain}"
+    KNOWN_HASHING_PEPPER       = var.known_hashing_pepper
+    SSM_SECRETS_PREFIX         = var.ssm_secrets_prefix
   }
 }
 
@@ -41,11 +42,17 @@ module "backend_worker" {
   function_s3_bucket     = aws_s3_bucket.backend_code.id
   function_zipfile       = "backend-lambda.zip"
   function_handler       = "index.workerEntrypoint"
-  schedule_expression    = "rate(3 minutes)" # note: full cron expressions are also supported
+  function_timeout       = 60 * 5             # i.e. 5 minutes
+  schedule_expression    = "rate(15 minutes)" # note: full cron expressions are also supported
   lambda_logging_enabled = true
 
   function_env_vars = {
-    BUCKET_NAME_STORAGE = aws_s3_bucket.storage.id
+    BUCKET_NAME_STORAGE        = aws_s3_bucket.storage.id
+    BUCKET_NAME_ATHENA_RESULTS = aws_s3_bucket.storage_results.id
+    ATHENA_DB_NAME             = aws_athena_database.storage.name
+    BUCKET_NAME_OPEN_DATA      = aws_s3_bucket.open_data.id
+    KNOWN_HASHING_PEPPER       = var.known_hashing_pepper
+    DOMAIN_NAME_OPEN_DATA      = var.open_data_domain
   }
 }
 
@@ -57,7 +64,7 @@ resource "aws_iam_policy" "backend_api" {
 {
   "Version": "2012-10-17",
   "Statement": [
-   {
+    {
       "Action": [
         "s3:*"
       ],
@@ -83,4 +90,70 @@ EOF
 resource "aws_iam_role_policy_attachment" "backend_api" {
   role       = module.backend_api.function_role
   policy_arn = aws_iam_policy.backend_api.arn
+}
+
+# Attach the required extra permissions to the backend worker function
+resource "aws_iam_policy" "backend_worker" {
+  name = "${var.name_prefix}-backend-worker-extras"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ReadOnlyAccessToResultsStorage",
+      "Action": [
+        "s3:ListBucket",
+        "s3:GetObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::${aws_s3_bucket.storage.id}",
+        "arn:aws:s3:::${aws_s3_bucket.storage.id}/*"
+      ],
+      "Effect": "Allow"
+    },
+    {
+      "Sid": "ReadWriteAccessToAthenaResultsAndOutputBucket",
+      "Action": [
+        "s3:*"
+      ],
+      "Resource": [
+        "arn:aws:s3:::${aws_s3_bucket.open_data.id}",
+        "arn:aws:s3:::${aws_s3_bucket.open_data.id}/*",
+        "arn:aws:s3:::${aws_s3_bucket.storage_results.id}",
+        "arn:aws:s3:::${aws_s3_bucket.storage_results.id}/*"
+      ],
+      "Effect": "Allow"
+    },
+    {
+      "Sid": "AllowQueryingAthena",
+      "Action": [
+        "athena:*"
+      ],
+      "Resource": [
+        "arn:aws:athena:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:workgroup/primary"
+      ],
+      "Effect": "Allow"
+    },
+    {
+      "Sid": "AllowUsingGlue",
+      "Action": [
+        "glue:*"
+      ],
+      "Resource": [
+        "arn:aws:glue:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:catalog",
+        "arn:aws:glue:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:database/${aws_athena_database.storage.name}",
+        "arn:aws:glue:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:table/${aws_athena_database.storage.name}/responses"
+      ],
+      "Effect": "Allow"
+    }
+  ]
+}
+EOF
+}
+
+# Attach the required extra permissions to the backend worker function
+resource "aws_iam_role_policy_attachment" "backend_worker" {
+  role       = module.backend_worker.function_role
+  policy_arn = aws_iam_policy.backend_worker.arn
 }

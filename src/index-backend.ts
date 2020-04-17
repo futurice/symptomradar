@@ -1,7 +1,7 @@
 import { APIGatewayProxyHandler, Handler } from 'aws-lambda';
 import { v4 as uuidV4 } from 'uuid';
 import { assertIs, FrontendResponseModel, FrontendResponseModelT } from './common/model';
-import { storeResponseInS3, prepareResponseForStorage } from './backend/main';
+import { storeResponseInS3, prepareResponseForStorage, storeTotalResponsesToS3 } from './backend/main';
 
 export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
   console.log(`Incoming request: ${event.httpMethod} ${event.path}`); // to preserve privacy, don't log any headers, etc
@@ -18,8 +18,15 @@ export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
   }
 };
 
-export const workerEntrypoint: Handler<unknown> = () => {
+export const workerEntrypoint: Handler<unknown> = async () => {
   console.log('Worker started');
+  try {
+    await storeTotalResponsesToS3();
+    console.log('Worker done');
+  } catch (error) {
+    console.error('ERROR (WORKER)', error);
+    throw error;
+  }
 };
 
 if (process.argv[0].match(/\/ts-node$/)) {
@@ -53,7 +60,7 @@ if (process.argv[0].match(/\/ts-node$/)) {
 
 const response = (statusCode: number, body?: object, logError?: Error) => {
   console.log(`Outgoing response: ${statusCode}`);
-  if (logError) console.error('ERROR', logError);
+  if (logError) console.error('ERROR (API)', logError);
   return {
     statusCode,
     body: body ? JSON.stringify(body, null, 2) : '',

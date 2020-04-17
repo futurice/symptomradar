@@ -13,15 +13,7 @@ type FilterToggleProps = {
 };
 
 const FilterButton = styled(PrimaryButton)`
-  font-size: 16px;
-  font-weight: bold;
-  background: ${props => props.theme.white};
-  height: 35px;
   padding: 5px 16px;
-  border-radius: 100px;
-  color: ${props => props.theme.black};
-  border: 1px solid ${props => props.theme.black};
-  cursor: pointer;
   display: flex;
   justify-content: center;
   margin-right: 8px;

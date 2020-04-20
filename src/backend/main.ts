@@ -66,22 +66,24 @@ export function prepareResponseForStorage(
   timestamp = Date.now,
 ): Promise<BackendResponseModelT> {
   return Promise.resolve(secretPepper).then(secretPepper =>
-    performAbuseDetection(dynamoDb, fingerprint, val => hash(val, secretPepper)).readPromise.then(abuseScore => {
-      console.log('Abuse score', { abuseScore });
-      const meta = {
-        response_id: uuid(),
-        participant_id: hash(hash(response.participant_id, knownPepper), secretPepper), // to preserve privacy, hash the participant_id before storing it, so after opening up the dataset, malicious actors can't submit more responses that pretend to belong to a previous participant
-        timestamp: new Date(timestamp()) // for security, don't trust browser clock, as it may be wrong or fraudulent
-          .toISOString()
-          .replace(/:..\..*/, ':00.000Z'), // to preserve privacy, intentionally reduce precision of the timestamp
-        app_version: 'v2.2', // TODO: This should be set by the deploy process, not hard-coded!
-        country_code: countryCode,
-        postal_code: mapPostalCode(response).postal_code, // to protect the privacy of participants from very small postal code areas, they are merged into larger ones, based on known population data
-        duration: response.duration === null ? null : parseInt(response.duration),
-      };
-      const model: BackendResponseModelT = { ...meta, ...response, ...meta }; // the double "...meta" is just for vanity: we want the meta-fields to appear first in the JSON representation
-      return assertIs(BackendResponseModel)(model); // ensure we still pass runtime validations as well
-    }),
+    performAbuseDetection(dynamoDb, fingerprint, val => hash(val, secretPepper))
+      .readPromise // importantly, we only care about the read operation here - the corresponding write can finish on its own
+      .then(abuse_score => {
+        const meta = {
+          response_id: uuid(),
+          participant_id: hash(hash(response.participant_id, knownPepper), secretPepper), // to preserve privacy, hash the participant_id before storing it, so after opening up the dataset, malicious actors can't submit more responses that pretend to belong to a previous participant
+          timestamp: new Date(timestamp()) // for security, don't trust browser clock, as it may be wrong or fraudulent
+            .toISOString()
+            .replace(/:..\..*/, ':00.000Z'), // to preserve privacy, intentionally reduce precision of the timestamp
+          app_version: 'v2.2', // TODO: This should be set by the deploy process, not hard-coded!
+          country_code: countryCode,
+          postal_code: mapPostalCode(response).postal_code, // to protect the privacy of participants from very small postal code areas, they are merged into larger ones, based on known population data
+          duration: response.duration === null ? null : parseInt(response.duration),
+          abuse_score,
+        };
+        const model: BackendResponseModelT = { ...meta, ...response, ...meta }; // the double "...meta" is just for vanity: we want the meta-fields to appear first in the JSON representation
+        return assertIs(BackendResponseModel)(model); // ensure we still pass runtime validations as well
+      }),
   );
 }
 

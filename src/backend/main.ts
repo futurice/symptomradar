@@ -5,6 +5,7 @@ import { v4 as uuidV4 } from 'uuid';
 import { assertIs, BackendResponseModel, BackendResponseModelT, FrontendResponseModelT } from '../common/model';
 import { mapPostalCode } from './postalCode';
 import { getSecret } from './secrets';
+import { totalResponsesQuery, cityLevelDataQuery } from './queries';
 
 const s3: AWS.S3 = new AWS.S3({ apiVersion: '2006-03-01' });
 const storageBucket = process.env.BUCKET_NAME_STORAGE || '';
@@ -85,7 +86,10 @@ function hash(input: string, pepper: string) {
     .digest('base64');
 }
 
-export async function storeTotalResponsesToS3() {
+export async function storeDataDumpsToS3() {
+  //
+  // Validations
+
   const db = process.env.ATHENA_DB_NAME;
   if (!db) throw new Error('Athena DB name missing from environment');
   const bucket = process.env.BUCKET_NAME_OPEN_DATA;
@@ -93,33 +97,85 @@ export async function storeTotalResponsesToS3() {
   const domain = process.env.DOMAIN_NAME_OPEN_DATA;
   if (!domain) throw new Error('Open data domain name missing from environment');
 
-  const queryResult = await athenaExpress.query({
-    sql: 'SELECT COUNT(*) as total_responses FROM responses',
-    db,
-  });
+  //
+  // Perform Athena queries in parallel
+
+  const [totalResponsesResult, cityLevelDataResponse] = await Promise.all([
+    athenaExpress.query({ sql: totalResponsesQuery, db }),
+    athenaExpress.query({ sql: cityLevelDataQuery, db }),
+  ]);
+
+  //
+  // Map query results into the JSON format we want to see in s3
 
   // TODO: Add model for this
-  const data = queryResult.Items[0];
+  const totalResponses = totalResponsesResult.Items[0];
 
-  await s3
+  const lowPopulationPostalCodes = await s3GetJsonHelper({ Bucket: bucket, Key: 'low_population_postal_codes.json' });
+
+  // @see infra/modules/main/open_data/population_per_city.json
+  // use populationPerCity.data
+  const populationPerCity = await s3GetJsonHelper({ Bucket: bucket, Key: 'population_per_city.json' });
+  console.log('populationPerCityResult', populationPerCity);
+
+  // TODO: Populate with `city` and `population` from `population_per_city.json`
+  // which can be accessed with s3 (that needs to enhanced with `postal_code`, or look it up from lowPopulationPostalCodes)
+  const cityLevelData = cityLevelDataResponse.Items.map(cityData => ({
+    city: 'TODO',
+    population: 0, // TODO
+    ...cityData,
+  }));
+
+  //
+  // Push data to S3
+
+  await s3PutJsonHelper({
+    Bucket: bucket,
+    Key: 'total_responses.json',
+    // TODO: If the cache is same for all JSON, move this to the helper
+    CacheControl: 'max-age=15',
+    Body: {
+      meta: {
+        description:
+          'Total number of responses collected by the system thus far. This is the raw number before any filtering or abuse detection has been performed.',
+        generated: new Date().toISOString(),
+        link: `https://${domain}/total_responses.json`,
+      },
+      data: totalResponses,
+    },
+  });
+
+  await s3PutJsonHelper({
+    Bucket: bucket,
+    Key: 'city_level_general_results.json',
+    CacheControl: 'max-age=15',
+    Body: {
+      meta: {
+        description:
+          'Population and response count per each city in Finland, where the response count was higher than 25. All the form inputs are coded in city level. Population data from Tilastokeskus. This data is released for journalistic and scientific purposes.',
+        generated: new Date().toISOString(),
+        link: `https://${domain}/city_level_general_results.json`,
+      },
+      data: cityLevelData,
+    },
+  });
+}
+
+async function s3GetJsonHelper(params: AWS.S3.GetObjectRequest) {
+  const result = await s3.getObject(params).promise();
+  if (!result.Body) {
+    throw Error(`Empty JSON in S3 object '${params.Bucket}/${params.Key}`);
+  }
+
+  return result.Body.toString('utf-8');
+}
+
+async function s3PutJsonHelper(params: AWS.S3.PutObjectRequest) {
+  return await s3
     .putObject({
-      Bucket: bucket,
-      Key: 'total_responses.json',
-      Body: JSON.stringify(
-        {
-          meta: {
-            description:
-              'Total number of responses collected by the system thus far. This is the raw number before any filtering or abuse detection has been performed.',
-            generated: new Date().toISOString(),
-            link: `https://${domain}/total_responses.json`,
-          },
-          data,
-        },
-        null,
-        2,
-      ),
+      ...params,
       ContentType: 'application/json',
-      CacheControl: 'max-age=15',
+      Body: JSON.stringify(params.Body, null, 2),
     })
     .promise();
 }

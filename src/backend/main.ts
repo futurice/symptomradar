@@ -1,4 +1,5 @@
 import * as AWS from 'aws-sdk';
+import AthenaExpress from 'athena-express';
 import { createHash } from 'crypto';
 import { v4 as uuidV4 } from 'uuid';
 import { assertIs, BackendResponseModel, BackendResponseModelT, FrontendResponseModelT } from '../common/model';
@@ -7,11 +8,15 @@ import { getSecret } from './secrets';
 
 const s3: AWS.S3 = new AWS.S3({ apiVersion: '2006-03-01' });
 const storageBucket = process.env.BUCKET_NAME_STORAGE || '';
+const athenaResultsBucket = process.env.BUCKET_NAME_ATHENA_RESULTS || '';
 const knownPepper = process.env.KNOWN_HASHING_PEPPER || '';
 
 // Crash and burn immediately (instead of at first request) for invalid configuration
 if (!storageBucket) throw new Error('Storage bucket name missing from environment');
+if (!athenaResultsBucket) throw new Error('Athena results bucket name missing from environment');
 if (!knownPepper) throw new Error('Hashing pepper missing from environment');
+
+const athenaExpress = new AthenaExpress({ aws: AWS, s3: `s3://${athenaResultsBucket}` });
 
 // Due to occasional very high volumes of incoming responses, cache the secret pepper for the lifetime of the Lambda instance
 let cachedSecretPepper: undefined | Promise<string>;
@@ -78,4 +83,43 @@ function hash(input: string, pepper: string) {
   return createHash('sha256')
     .update(input + pepper)
     .digest('base64');
+}
+
+export async function storeTotalResponsesToS3() {
+  const db = process.env.ATHENA_DB_NAME;
+  if (!db) throw new Error('Athena DB name missing from environment');
+  const bucket = process.env.BUCKET_NAME_OPEN_DATA;
+  if (!bucket) throw new Error('Open data bucket name missing from environment');
+  const domain = process.env.DOMAIN_NAME_OPEN_DATA;
+  if (!domain) throw new Error('Open data domain name missing from environment');
+
+  const queryResult = await athenaExpress.query({
+    sql: 'SELECT COUNT(*) as total_responses FROM responses',
+    db,
+  });
+
+  // TODO: Add model for this
+  const data = queryResult.Items[0];
+
+  await s3
+    .putObject({
+      Bucket: bucket,
+      Key: 'total_responses.json',
+      Body: JSON.stringify(
+        {
+          meta: {
+            description:
+              'Total number of responses collected by the system thus far. This is the raw number before any filtering or abuse detection has been performed.',
+            generated: new Date().toISOString(),
+            link: `https://${domain}/total_responses.json`,
+          },
+          data,
+        },
+        null,
+        2,
+      ),
+      ContentType: 'application/json',
+      CacheControl: 'max-age=15',
+    })
+    .promise();
 }

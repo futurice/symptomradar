@@ -11,7 +11,7 @@ type ButtonProps = {
 
 const Button = styled.button`
   height: 35px;
-  padding: 5px 25px;
+  padding: 5px 16px;
   background: ${props => props.theme.white};
   border-radius: 100px;
   font-weight: bold;

@@ -21,7 +21,7 @@ const ModalDialogContent = styled(DialogContent)`
 `;
 
 const ModalCloseButton = styled.button`
-  padding: 16px;
+  padding: 16px 16px 12px;
   cursor: pointer;
   border: none;
   background-color: transparent;

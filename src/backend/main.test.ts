@@ -48,10 +48,15 @@ const persistedResponseSample: BackendResponseModelT = {
   sore_throat: 'no',
   stomach_issues: 'no',
   timestamp: '2020-03-31T10:08:00.000Z', // note the rounding to minute precision
+  abuse_score: {
+    forwarded_for: 0,
+    source_ip: 0,
+    user_agent: 0,
+  },
 };
 
 describe('prepareResponseForStorage()', () => {
-  it('works', () => {
+  it('works for the first request', () => {
     return prepareResponseForStorage(
       incomingResponseSample,
       'FI',
@@ -65,6 +70,32 @@ describe('prepareResponseForStorage()', () => {
       () => cannedUuid,
       () => 1585649303678, // i.e. "2020-03-31T10:08:23.678Z"
     ).then(r => expect(r).toEqual(persistedResponseSample));
+  });
+
+  it('works for a second request', () => {
+    return prepareResponseForStorage(
+      incomingResponseSample,
+      'FI',
+      {
+        ...createMockDynamoDbClient(),
+        getValues(keys: string[]) {
+          return Promise.resolve([123, ...keys.map(() => 0)]);
+        },
+      },
+      {
+        source_ip: '1.1.1.1',
+        user_agent: 'Mozilla/5.0...Safari/537.36',
+        forwarded_for: '',
+      },
+      Promise.resolve('fake-secret-pepper'),
+      () => cannedUuid,
+      () => 1585649303678, // i.e. "2020-03-31T10:08:23.678Z"
+    ).then(r =>
+      expect(r).toEqual({
+        ...persistedResponseSample,
+        abuse_score: { ...persistedResponseSample.abuse_score, source_ip: 123 },
+      }),
+    );
   });
 });
 

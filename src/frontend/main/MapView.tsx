@@ -346,7 +346,7 @@ const MapView = (props: MapViewProps) => {
           </TotalResponses>
         </MapInfo>
       </MapWrapper>
-      <Modal isShowing={isShowing} hide={toggleModal}>
+      <Modal isShowing={isShowing} hide={toggleModal} ariaLabel="Kaupungin tiedot">
         <ModalContent content={activeCityData} hide={toggleModal} />
       </Modal>
     </>

@@ -303,7 +303,7 @@ const Map: React.FunctionComponent<{
         style={{ bottom: '125px', left: '10px', position: 'fixed' }}
         ref={node => (keyNode = node)}
       />
-      <Modal isShowing={isShowing} hide={toggleModal}>
+      <Modal isShowing={isShowing} hide={toggleModal} ariaLabel="Kaupungin tiedot">
         <ModalContent content={activeCityData} hide={toggleModal} />
       </Modal>
     </div>

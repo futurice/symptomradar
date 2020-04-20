@@ -32,7 +32,7 @@ const FilterToggle = ({ selectedFilter, handleFilterChange }: FilterToggleProps)
       <FilterButton type="button" handleClick={toggleModal} label="Rajaa">
         <FilterIcon />
       </FilterButton>
-      <Modal isShowing={isShowing} hide={toggleModal}>
+      <Modal isShowing={isShowing} hide={toggleModal} ariaLabel="Rajaa vastauksia">
         <Filters selectedFilter={selectedFilter} hide={toggleModal} handleFilterChange={handleFilterChange} />
       </Modal>
     </>

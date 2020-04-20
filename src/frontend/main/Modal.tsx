@@ -7,6 +7,7 @@ import '@reach/dialog/styles.css';
 type ModalProps = {
   isShowing: boolean;
   hide: () => void;
+  ariaLabel: string;
 };
 
 const ModalDialogContent = styled(DialogContent)`
@@ -36,10 +37,10 @@ const ModalCloseButton = styled.button`
   }
 `;
 
-const Modal: React.FC<ModalProps> = ({ isShowing, hide, children }) => {
+const Modal: React.FC<ModalProps> = ({ isShowing, hide, children, ariaLabel }) => {
   return (
     <DialogOverlay isOpen={isShowing} onDismiss={hide}>
-      <ModalDialogContent>
+      <ModalDialogContent aria-label={ariaLabel}>
         <ModalCloseButton type="button" aria-label="Sulje" onClick={hide}>
           <CloseIcon />
         </ModalCloseButton>

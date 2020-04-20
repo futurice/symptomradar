@@ -116,6 +116,7 @@ locals {
     "city_level_general_results",
     "low_population_postal_codes",
     "population_per_city",
+    "postalcode_city_mappings",
     "topojson_finland_simplified",
     "topojson_finland_without_aland",
   ])
@@ -139,6 +140,11 @@ locals {
         "description": "Population per each city in Finland in the end of 2019. Source is Tilastokeskus.",
         "generated": "2020-04-08T09:00:00.000Z",
         "link": "https://${var.open_data_domain}/population_per_city.json"
+      },
+      "postalcode_city_mappings": {
+        "description": "Mapping of postal codes to city names. Source is Tilastokeskus.",
+        "generated": "2020-04-20T09:00:00.000Z",
+        "link": "https://${var.open_data_domain}/postalcode_city_mappings.json"
       },
       "topojson_finland_simplified": {
         "description": "Topography used to render the outline of the map of Finland. Based on the open data at https://github.com/lucified/finland-municipalities-topojson, with some post-processing applied.",

@@ -45,6 +45,18 @@ resource "aws_cloudwatch_dashboard" "overview" {
                         {
                             "label": "Second result articles (https://www.hs.fi/kotimaa/art-2000006463218.html & https://www.is.fi/kotimaa/art-2000006463005.html)",
                             "value": "2020-04-03T16:00:00+03:00"
+                        },
+                        {
+                            "label": "Result articles (https://www.hs.fi/kotimaa/art-2000006469295.html & https://www.mtvuutiset.fi/artikkeli/nain-koronaoireet-leviavat-suomessa-paivita-omat-tietosi-karttaan-ja-katso-miten-kotikunnassasi-oireillaan/7784938 & https://www.is.fi/kotimaa/art-2000006469373.html)",
+                            "value": "2020-04-09T10:00:00+03:00"
+                        },
+                        {
+                            "label": "YLE joined (https://yle.fi/uutiset/3-11298005)",
+                            "value": "2020-04-14T15:45:00+03:00"
+                        },
+                        {
+                            "label": "Result articles (https://www.hs.fi/kotimaa/art-2000006476476.html & https://www.is.fi/kotimaa/art-2000006476603.html)",
+                            "value": "2020-04-16T14:00:00+03:00"
                         }
                     ]
                 }
@@ -78,7 +90,7 @@ resource "aws_cloudwatch_dashboard" "overview" {
             "height": 6,
             "properties": {
                 "metrics": [
-                    [ "AWS/ApiGateway", "5XXError", "ApiName", "${module.backend_api.resources.rest_api}", { "color": "#d62728" } ]
+                    [ "AWS/ApiGateway", "5XXError", "ApiName", "${module.backend_api.rest_api_name}", { "color": "#d62728" } ]
                 ],
                 "region": "${data.aws_region.current.name}",
                 "title": "API error count",
@@ -131,7 +143,7 @@ resource "aws_cloudwatch_dashboard" "overview" {
                 "view": "timeSeries",
                 "stacked": false,
                 "metrics": [
-                    [ "AWS/ApiGateway", "Latency", "ApiName", "${module.backend_api.resources.rest_api}" ]
+                    [ "AWS/ApiGateway", "Latency", "ApiName", "${module.backend_api.rest_api_name}" ]
                 ],
                 "region": "${data.aws_region.current.name}",
                 "title": "API Gateway latency"
@@ -147,7 +159,7 @@ resource "aws_cloudwatch_dashboard" "overview" {
                 "view": "timeSeries",
                 "stacked": false,
                 "metrics": [
-                    [ "AWS/CloudFront", "Requests", "Region", "Global", "DistributionId", "${module.frontend.resources.cloudfront_distribution}" ]
+                    [ "AWS/CloudFront", "Requests", "Region", "Global", "DistributionId", "${module.frontend.cloudfront_id}" ]
                 ],
                 "region": "us-east-1",
                 "title": "CloudFront requests",
@@ -172,14 +184,14 @@ resource "aws_cloudwatch_dashboard" "overview" {
                 "view": "timeSeries",
                 "stacked": false,
                 "metrics": [
-                    [ "AWS/CloudFront", "TotalErrorRate", "Region", "Global", "DistributionId", "${module.frontend.resources.cloudfront_distribution}" ],
-                    [ "AWS/CloudFront", "4xxErrorRate", "Region", "Global", "DistributionId", "${module.frontend.resources.cloudfront_distribution}", { "label": "Total4xxErrors", "region": "us-east-1" } ],
-                    [ "AWS/CloudFront", "5xxErrorRate", "Region", "Global", "DistributionId", "${module.frontend.resources.cloudfront_distribution}", { "label": "Total5xxErrors", "region": "us-east-1" } ],
+                    [ "AWS/CloudFront", "TotalErrorRate", "Region", "Global", "DistributionId", "${module.frontend.cloudfront_id}" ],
+                    [ "AWS/CloudFront", "4xxErrorRate", "Region", "Global", "DistributionId", "${module.frontend.cloudfront_id}", { "label": "Total4xxErrors", "region": "us-east-1" } ],
+                    [ "AWS/CloudFront", "5xxErrorRate", "Region", "Global", "DistributionId", "${module.frontend.cloudfront_id}", { "label": "Total5xxErrors", "region": "us-east-1" } ],
                     [ { "expression": "(m4+m5+m6)/m7*100", "label": "5xxErrorByLambdaEdge", "id": "e1", "region": "us-east-1" } ],
-                    [ "AWS/CloudFront", "LambdaExecutionError", "Region", "Global", "DistributionId", "${module.frontend.resources.cloudfront_distribution}", { "id": "m4", "stat": "Sum", "visible": false, "region": "us-east-1" } ],
-                    [ "AWS/CloudFront", "LambdaValidationError", "Region", "Global", "DistributionId", "${module.frontend.resources.cloudfront_distribution}", { "id": "m5", "stat": "Sum", "visible": false, "region": "us-east-1" } ],
-                    [ "AWS/CloudFront", "LambdaLimitExceededErrors", "Region", "Global", "DistributionId", "${module.frontend.resources.cloudfront_distribution}", { "id": "m6", "stat": "Sum", "visible": false, "region": "us-east-1" } ],
-                    [ "AWS/CloudFront", "Requests", "Region", "Global", "DistributionId", "${module.frontend.resources.cloudfront_distribution}", { "id": "m7", "stat": "Sum", "visible": false, "region": "us-east-1" } ]
+                    [ "AWS/CloudFront", "LambdaExecutionError", "Region", "Global", "DistributionId", "${module.frontend.cloudfront_id}", { "id": "m4", "stat": "Sum", "visible": false, "region": "us-east-1" } ],
+                    [ "AWS/CloudFront", "LambdaValidationError", "Region", "Global", "DistributionId", "${module.frontend.cloudfront_id}", { "id": "m5", "stat": "Sum", "visible": false, "region": "us-east-1" } ],
+                    [ "AWS/CloudFront", "LambdaLimitExceededErrors", "Region", "Global", "DistributionId", "${module.frontend.cloudfront_id}", { "id": "m6", "stat": "Sum", "visible": false, "region": "us-east-1" } ],
+                    [ "AWS/CloudFront", "Requests", "Region", "Global", "DistributionId", "${module.frontend.cloudfront_id}", { "id": "m7", "stat": "Sum", "visible": false, "region": "us-east-1" } ]
                 ],
                 "region": "us-east-1",
                 "title": "CloudFront Error rate (% of requests)",

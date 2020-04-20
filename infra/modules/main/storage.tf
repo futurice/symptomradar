@@ -100,7 +100,7 @@ resource "aws_athena_named_query" "by_day" {
   query       = <<-SQL
     SELECT
       day,
-      COUNT(*) AS ${local.table}
+      COUNT(*) AS responses
     FROM (
       SELECT SUBSTR(timestamp, 1, 10) AS day FROM ${local.table}
     )

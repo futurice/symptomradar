@@ -1,6 +1,6 @@
 export const totalResponsesQuery = 'SELECT COUNT(*) as total_responses FROM responses';
 
-export const cityLevelDataQuery = `SELECT postal_code,
+export const postalCodeLevelDataQuery = `SELECT postal_code,
   COUNT(*) AS responses,
   COUNT(IF ( fever = 'no', 1, NULL)) AS fever_no,
   COUNT(IF ( fever = 'slight', 1, NULL)) AS fever_slight,

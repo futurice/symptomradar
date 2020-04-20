@@ -7,7 +7,20 @@ resource "aws_s3_bucket" "backend_code" {
     target_bucket = var.s3_logs_bucket
     target_prefix = "${var.name_prefix}-backend-code/"
   }
+}
 
+locals {
+  # Note: this is used by both Lambda's, to ensure they have a consistent env
+  lambda_env = {
+    ATHENA_DB_NAME             = aws_athena_database.storage.name
+    BUCKET_NAME_ATHENA_RESULTS = aws_s3_bucket.storage_results.id
+    BUCKET_NAME_OPEN_DATA      = aws_s3_bucket.open_data.id
+    BUCKET_NAME_STORAGE        = aws_s3_bucket.storage.id
+    CORS_ALLOW_ORIGIN          = var.backend_cors_allow_any ? "*" : "https://${var.frontend_domain}"
+    DOMAIN_NAME_OPEN_DATA      = var.open_data_domain
+    KNOWN_HASHING_PEPPER       = var.known_hashing_pepper
+    SSM_SECRETS_PREFIX         = var.ssm_secrets_prefix
+  }
 }
 
 # Implements the Lambda API processing requests from the web
@@ -23,14 +36,7 @@ module "backend_api" {
   function_handler               = "index.apiEntrypoint"
   lambda_logging_enabled         = true
   api_gateway_cloudwatch_metrics = true
-
-  function_env_vars = {
-    BUCKET_NAME_STORAGE        = aws_s3_bucket.storage.id
-    BUCKET_NAME_ATHENA_RESULTS = aws_s3_bucket.storage_results.id
-    CORS_ALLOW_ORIGIN          = var.backend_cors_allow_any ? "*" : "https://${var.frontend_domain}"
-    KNOWN_HASHING_PEPPER       = var.known_hashing_pepper
-    SSM_SECRETS_PREFIX         = var.ssm_secrets_prefix
-  }
+  function_env_vars              = local.lambda_env
 }
 
 module "backend_worker" {
@@ -45,15 +51,7 @@ module "backend_worker" {
   function_timeout       = 60 * 5             # i.e. 5 minutes
   schedule_expression    = "rate(15 minutes)" # note: full cron expressions are also supported
   lambda_logging_enabled = true
-
-  function_env_vars = {
-    BUCKET_NAME_STORAGE        = aws_s3_bucket.storage.id
-    BUCKET_NAME_ATHENA_RESULTS = aws_s3_bucket.storage_results.id
-    ATHENA_DB_NAME             = aws_athena_database.storage.name
-    BUCKET_NAME_OPEN_DATA      = aws_s3_bucket.open_data.id
-    KNOWN_HASHING_PEPPER       = var.known_hashing_pepper
-    DOMAIN_NAME_OPEN_DATA      = var.open_data_domain
-  }
+  function_env_vars      = local.lambda_env
 }
 
 # Attach the required extra permissions to the backend API function
@@ -65,6 +63,7 @@ resource "aws_iam_policy" "backend_api" {
   "Version": "2012-10-17",
   "Statement": [
     {
+      "Sid": "ReadWriteAccessToResultsStorage",
       "Action": [
         "s3:*"
       ],
@@ -75,6 +74,7 @@ resource "aws_iam_policy" "backend_api" {
       "Effect": "Allow"
     },
     {
+      "Sid": "ReadOnlyAccessToSecrets",
       "Effect": "Allow",
       "Action": [
         "ssm:GetParameters"

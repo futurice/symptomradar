@@ -37,8 +37,3 @@ module "env_prod" {
   ssm_secrets_prefix   = "/symptomradar/prod/"
   s3_logs_bucket       = aws_s3_bucket.s3_logs.id
 }
-
-# Pass along any output from the instantiated module
-output "env_dev" {
-  value = module.env_dev
-}

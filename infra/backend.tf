@@ -19,11 +19,10 @@ resource "aws_s3_bucket" "terraform_state" {
 
 # https://www.terraform.io/docs/providers/aws/r/dynamodb_table.html
 resource "aws_dynamodb_table" "terraform_state_lock" {
-  name           = "${var.name_prefix}-terraform-state-lock"
-  hash_key       = "LockID"
-  read_capacity  = 20
-  write_capacity = 20
-  tags           = var.tags
+  name         = "${var.name_prefix}-terraform-state-lock"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "LockID"
+  tags         = var.tags
 
   attribute {
     name = "LockID"

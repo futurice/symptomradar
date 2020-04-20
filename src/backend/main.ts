@@ -112,7 +112,6 @@ export async function storeDataDumpsToS3() {
   const totalResponses = totalResponsesResult.Items[0];
 
   const cityLevelData = await mapPostalCodeLevelTopostalCodeLevelData(postalCodeLevelDataResponse.Items, bucket);
-  console.log('cityLevelData', cityLevelData);
 
   //
   // Push data to S3
@@ -164,12 +163,11 @@ async function mapPostalCodeLevelTopostalCodeLevelData(postalCodeLevelData: any[
 
   for (const postalCodeData of postalCodeLevelData) {
     const city = postalCodeCityMappings.data[postalCodeData.postal_code] || '';
-    const populationData = (populationPerCity.data as any[]).find(data => data.city === city);
 
     // Initialize accumulator data for this key if it doesn't exist yet
     cityLevelDataAcc[city] = cityLevelDataAcc[city] || {
       city,
-      population: (populationData && populationData.population) || 0,
+      population: populationByCityMap[city] || 0,
       responses: 0,
       fever_no: 0,
       fever_slight: 0,

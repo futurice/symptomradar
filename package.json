@@ -30,6 +30,7 @@
     "ts-node": "NODE_PATH=src ts-node --compiler-options '{\"module\":\"commonjs\"}'"
   },
   "dependencies": {
+    "@reach/dialog": "^0.10.0",
     "axios": "^0.19.2",
     "d3": "^5.15.1",
     "d3-geo-projection": "^2.8.1",

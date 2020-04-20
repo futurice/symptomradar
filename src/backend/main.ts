@@ -111,24 +111,10 @@ export async function storeDataDumpsToS3() {
   // TODO: Add model for this
   const totalResponses = totalResponsesResult.Items[0];
 
-  const lowPopulationPostalCodes = await s3GetJsonHelper({ Bucket: bucket, Key: 'low_population_postal_codes.json' });
-
-  // @see infra/modules/main/open_data/population_per_city.json
-  // use populationPerCity.data
-  const populationPerCity = await s3GetJsonHelper({ Bucket: bucket, Key: 'population_per_city.json' });
-  console.log('populationPerCityResult', populationPerCity);
-
-  // TODO: Populate with `city` and `population` from `population_per_city.json`
-  // which can be accessed with s3 (that needs to enhanced with `postal_code`, or look it up from lowPopulationPostalCodes)
-  const cityLevelData = cityLevelDataResponse.Items.map(cityData => ({
-    city: 'TODO',
-    population: 0, // TODO
-    ...cityData,
-  }));
+  const cityLevelData = await prepareCityLevelDataForStorage(cityLevelDataResponse.Items, bucket);
 
   //
   // Push data to S3
-
   await s3PutJsonHelper({
     Bucket: bucket,
     Key: 'total_responses.json',
@@ -161,13 +147,35 @@ export async function storeDataDumpsToS3() {
   });
 }
 
+async function prepareCityLevelDataForStorage(data: any[], bucket: string) {
+  const postalCodeCityMappings = await s3GetJsonHelper({ Bucket: bucket, Key: 'postalcode_city_mappings.json' });
+
+  const populationPerCity = await s3GetJsonHelper({ Bucket: bucket, Key: 'population_per_city.json' });
+
+  const cityLevelData = data.map(cityData => {
+    const cityName = postalCodeCityMappings.data[cityData.postal_code];
+    const populationData = (populationPerCity.data as any[]).find(data => data.city === cityName);
+
+    return {
+      city: cityName || '',
+      population: populationData ? populationData.population : 0,
+      ...cityData,
+    };
+  });
+
+  return cityLevelData;
+}
+
+//
+// S3 helpers
+
 async function s3GetJsonHelper(params: AWS.S3.GetObjectRequest) {
   const result = await s3.getObject(params).promise();
   if (!result.Body) {
     throw Error(`Empty JSON in S3 object '${params.Bucket}/${params.Key}`);
   }
 
-  return result.Body.toString('utf-8');
+  return JSON.parse(result.Body.toString('utf-8'));
 }
 
 async function s3PutJsonHelper(params: AWS.S3.PutObjectRequest) {

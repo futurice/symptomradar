@@ -17,6 +17,9 @@ export type AbuseScore = {
 const emptyScore: AbuseScore = { source_ip: 0, user_agent: 0, forwarded_for: 0 };
 const fingerprintKeys = (Object.keys(emptyScore) as any) as Array<keyof AbuseFingerprint>;
 
+// This special score can be used to indicate that a given response couldn't be scored, due to e.g. DynamoDB error or some such
+export const ABUSE_SCORE_ERROR: AbuseScore = { source_ip: -2, user_agent: -2, forwarded_for: -2 };
+
 // Reads & updates DynamoDB to keep track of our abuse detection metrics.
 // Promises the "abuse score" for the given fingerprint (i.e. request).
 // The read/write Promises are returned separately, so that client requests can be serviced immediately after reading the current abuse score finishes.

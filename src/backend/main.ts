@@ -3,7 +3,13 @@ import * as AWS from 'aws-sdk';
 import { createHash } from 'crypto';
 import { v4 as uuidV4 } from 'uuid';
 import { assertIs, BackendResponseModel, BackendResponseModelT, FrontendResponseModelT } from '../common/model';
-import { AbuseFingerprint, DynamoDBClient, performAbuseDetection } from './abuseDetection';
+import {
+  AbuseFingerprint,
+  AbuseScore,
+  ABUSE_SCORE_ERROR,
+  DynamoDBClient,
+  performAbuseDetection,
+} from './abuseDetection';
 import { mapPostalCode } from './postalCode';
 import { getSecret } from './secrets';
 import { totalResponsesQuery, postalCodeLevelDataQuery } from './queries';
@@ -65,9 +71,17 @@ export function prepareResponseForStorage(
   uuid: () => string = uuidV4,
   timestamp = Date.now,
 ): Promise<BackendResponseModelT> {
-  return Promise.resolve(secretPepper).then(secretPepper =>
-    performAbuseDetection(dynamoDb, fingerprint, val => hash(val, secretPepper))
-      .readPromise // importantly, we only care about the read operation here - the corresponding write can finish on its own
+  return Promise.resolve(secretPepper).then(secretPepper => {
+    const { readPromise, writePromise } = performAbuseDetection(dynamoDb, fingerprint, val => hash(val, secretPepper));
+    writePromise // we don't really care about the write operation here - it can finish on its own (we only need to handle its possible failure; if it keeps failing we want to know)
+      .catch(err => console.log(`Error: Couldn't write abuse score for response (caused by\n${err}\n)`));
+    return readPromise // we only care about the read operation
+      .catch(
+        (err): AbuseScore => {
+          console.log(`Error: Couldn't read abuse score for response; marking with error code (caused by\n${err}\n)`);
+          return ABUSE_SCORE_ERROR;
+        },
+      )
       .then(abuse_score => {
         const meta = {
           response_id: uuid(),
@@ -83,8 +97,8 @@ export function prepareResponseForStorage(
         };
         const model: BackendResponseModelT = { ...meta, ...response, ...meta }; // the double "...meta" is just for vanity: we want the meta-fields to appear first in the JSON representation
         return assertIs(BackendResponseModel)(model); // ensure we still pass runtime validations as well
-      }),
-  );
+      });
+  });
 }
 
 // Produces the key under which this response should be stored in S3

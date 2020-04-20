@@ -97,6 +97,36 @@ describe('prepareResponseForStorage()', () => {
       }),
     );
   });
+
+  it('handles errors', () => {
+    return prepareResponseForStorage(
+      incomingResponseSample,
+      'FI',
+      {
+        ...createMockDynamoDbClient(),
+        getValues() {
+          return Promise.reject(new Error('Simulated error in test suite'));
+        },
+      },
+      {
+        source_ip: '1.1.1.1',
+        user_agent: 'Mozilla/5.0...Safari/537.36',
+        forwarded_for: '',
+      },
+      Promise.resolve('fake-secret-pepper'),
+      () => cannedUuid,
+      () => 1585649303678, // i.e. "2020-03-31T10:08:23.678Z"
+    ).then(r =>
+      expect(r).toEqual({
+        ...persistedResponseSample,
+        abuse_score: {
+          forwarded_for: -2,
+          source_ip: -2,
+          user_agent: -2,
+        },
+      }),
+    );
+  });
 });
 
 describe('getStorageKey()', () => {

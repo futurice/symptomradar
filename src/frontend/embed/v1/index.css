@@ -197,7 +197,7 @@ label {
 }
 
 .option-wrapper label {
-  padding-left: 6px;
+  padding-left: 8px;
 }
 
 .input-field-label {
@@ -282,6 +282,45 @@ form .action-button {
   -webkit-flex: 0 0 85px;
   -ms-flex: 0 0 85px;
   margin: 0 12px 16px 0;
+}
+
+/* Radio button styling for embedded form */
+/* Based on https://www.a11ywithlindsey.com/blog/create-custom-keyboard-accessible-radio-buttons
+ * but modified to our styles */
+input[type='radio'] {
+  opacity: 0;
+}
+input[type='radio'] + label {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+input[type='radio'] + label::before {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  left: -24px;
+  top: -2px;
+  border-radius: 50%;
+  border: 1px solid #6f686a;
+  width: 24px;
+  height: 24px;
+}
+input[type='radio'] + label::after {
+  content: '';
+  position: absolute;
+  display: inline-block;
+  left: -20px;
+  top: 2px;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+}
+input[type='radio']:checked + label::after {
+  background: #328709;
+}
+input[type='radio']:focus + label::before {
+  box-shadow: 0 0px 0px 2px #328709, 0 0px 12px #328709;
 }
 
 /* Form embedded on main site, just the form without iframe paddings */

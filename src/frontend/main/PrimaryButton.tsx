@@ -10,8 +10,8 @@ type ButtonProps = {
 };
 
 const Button = styled.button`
-  height: 50px;
-  padding: 5px 25px;
+  height: 35px;
+  padding: 5px 16px;
   background: ${props => props.theme.white};
   border-radius: 100px;
   font-weight: bold;
@@ -21,9 +21,10 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const PrimaryButton = ({ type, label, className, handleClick, isActive }: ButtonProps) => {
+const PrimaryButton: React.FC<ButtonProps> = ({ type, label, className, handleClick, isActive, children }) => {
   return (
     <Button type={type} className={className} onClick={handleClick} aria-pressed={isActive}>
+      {children}
       {label}
     </Button>
   );

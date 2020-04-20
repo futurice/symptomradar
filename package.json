@@ -30,6 +30,7 @@
     "ts-node": "NODE_PATH=src ts-node --compiler-options '{\"module\":\"commonjs\"}'"
   },
   "dependencies": {
+    "@reach/dialog": "^0.10.0",
     "athena-express": "5.2.0",
     "axios": "^0.19.2",
     "d3": "^5.15.1",

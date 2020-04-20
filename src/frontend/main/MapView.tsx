@@ -4,10 +4,14 @@ import { RouteComponentProps } from '@reach/router';
 import * as d3 from 'd3';
 import ModalContent from './ModalContent';
 import Modal from './Modal';
+import FilterToggle from './FilterToggle';
 import PrimaryButton from './PrimaryButton';
 import MapContainer from './map/MapContainer';
 import useModal from './useModal';
 import CloseIcon from './assets/CloseIcon';
+import { FILTERS } from './constants';
+
+type FilterKey = keyof typeof FILTERS;
 
 interface MapViewProps extends RouteComponentProps {
   responseData: any;
@@ -52,10 +56,6 @@ interface mapProperties {
   y: number;
 }
 
-type FilterButtonProps = {
-  isActive: boolean;
-};
-
 const cartogramData: mapProperties[] = require('./assets/data/cartogram-coordinates.json');
 
 const MapNav = styled.div`
@@ -93,31 +93,19 @@ const MapWrapper = styled.div`
 const FilterWrapper = styled.div`
   position: absolute;
   top: 10px;
-  display: flex;
-  max-width: 100vw;
-  flex-wrap: nowrap;
   padding: 3px 16px;
-  overflow: scroll;
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-  scrollbar-width: none; /* Firefox */
-
-  &::-webkit-scrollbar {
-    display: none; /* Safari and Chrome */
-  }
+  display: flex;
 
   @media (min-width: 624px) {
     padding-left: 0;
   }
 `;
 
-const FilterButton = styled(PrimaryButton)<FilterButtonProps>`
-  flex: 0 0 auto;
-  margin-right: 8px;
-  padding: 8px 16px;
-  height: 35px;
-  background: ${props => (props.isActive ? props.theme.white : props.theme.grey)};
-  color: ${props => (props.isActive ? props.theme.black : props.theme.white)};
-  border: ${props => (props.isActive ? `1px solid ${props.theme.black}` : '1px solid transparent')};
+const ActiveFilter = styled(PrimaryButton)`
+  background: ${props => props.theme.grey};
+  color: ${props => props.theme.white};
+  border: none;
+  pointer-events: none;
 `;
 
 const MapInfo = styled.div`
@@ -185,7 +173,7 @@ const MapView = (props: MapViewProps) => {
   const topPartHeight = isEmbed ? 80 : 225;
   const { isShowing, toggleModal } = useModal();
   const [showMapInfo, setShowMapInfo] = useState(true);
-  const [selectedFilter, setSelectedFilter] = useState('corona_suspicion_yes');
+  const [selectedFilter, setSelectedFilter] = useState<FilterKey>(FILTERS.corona_suspicion_yes.id as FilterKey);
   const [mapHeight, setMapHeight] = useState(window.innerHeight - topPartHeight);
   const [activeCityData, setActiveCityData] = useState({});
   const data = props.responseData.data;
@@ -203,6 +191,10 @@ const MapView = (props: MapViewProps) => {
     .map((item: mapProperties) => {
       return item.city;
     });
+
+  const handleFilterChange = (filterName: string) => {
+    setSelectedFilter(filterName as FilterKey);
+  };
 
   const totalResponses = data.reduce((accumulator: number, currentValue: any) => {
     return accumulator + currentValue.responses;
@@ -323,38 +315,8 @@ const MapView = (props: MapViewProps) => {
         />
         <Container>
           <FilterWrapper>
-            <FilterButton
-              type="button"
-              label="Epäilys koronasta"
-              isActive={selectedFilter === 'corona_suspicion_yes' ? true : false}
-              handleClick={() => {
-                setSelectedFilter('corona_suspicion_yes');
-              }}
-            />
-            <FilterButton
-              type="button"
-              label="Yskää"
-              isActive={selectedFilter === 'cough_yes' ? true : false}
-              handleClick={() => {
-                setSelectedFilter('cough_yes');
-              }}
-            />
-            <FilterButton
-              type="button"
-              label="Kuumetta"
-              isActive={selectedFilter === 'fever_yes' ? true : false}
-              handleClick={() => {
-                setSelectedFilter('fever_yes');
-              }}
-            />
-            <FilterButton
-              type="button"
-              label="Vaikeuksia hengittää"
-              isActive={selectedFilter === 'breathing_difficulties_yes' ? true : false}
-              handleClick={() => {
-                setSelectedFilter('breathing_difficulties_yes');
-              }}
-            />
+            <FilterToggle selectedFilter={selectedFilter} handleFilterChange={handleFilterChange} />
+            <ActiveFilter type="button" label={FILTERS[selectedFilter].label}></ActiveFilter>
           </FilterWrapper>
         </Container>
         <MapInfo>
@@ -384,8 +346,8 @@ const MapView = (props: MapViewProps) => {
           </TotalResponses>
         </MapInfo>
       </MapWrapper>
-      <Modal isShowing={isShowing} hide={toggleModal}>
-        <ModalContent content={activeCityData} />
+      <Modal isShowing={isShowing} hide={toggleModal} ariaLabel="Kaupungin tiedot">
+        <ModalContent content={activeCityData} hide={toggleModal} />
       </Modal>
     </>
   );

@@ -1,59 +1,28 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import CloseIcon from './assets/CloseIcon';
-import PrimaryButton from './PrimaryButton';
+import { DialogOverlay, DialogContent } from '@reach/dialog';
+import '@reach/dialog/styles.css';
 
 type ModalProps = {
   isShowing: boolean;
   hide: () => void;
+  ariaLabel: string;
 };
 
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1040;
-  width: 100vw;
-  height: 100vh;
-  background-color: ${props => props.theme.black};
-  opacity: 0.5;
-`;
-
-const ModalWrapper = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1050;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  outline: 0;
-  pointer-events: none;
-`;
-
-const ModalContent = styled.div`
-  pointer-events: auto;
-  z-index: 100;
-  background: white;
+const ModalDialogContent = styled(DialogContent)`
   padding: 24px 18px 24px;
+  position: relative;
   width: 100%;
-  max-height: 90vh;
-  max-width: 90vw;
-  overflow: auto;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  max-width: 95vw;
 
-  @media (min-width: 768px) {
+  @media (min-width: 520px) {
     max-width: 500px;
   }
 `;
 
 const ModalCloseButton = styled.button`
-  padding: 16px;
+  padding: 16px 16px 12px;
   cursor: pointer;
   border: none;
   background-color: transparent;
@@ -68,32 +37,17 @@ const ModalCloseButton = styled.button`
   }
 `;
 
-const CloseButton = styled(PrimaryButton)`
-  display: block;
-  margin: 40px auto 0 auto;
-  min-width: 212px;
-  background: ${props => props.theme.grey};
-  color: ${props => props.theme.white};
-  border: none;
-`;
-
-const Modal: React.FC<ModalProps> = ({ isShowing, hide, children }) =>
-  isShowing
-    ? ReactDOM.createPortal(
-        <>
-          <ModalOverlay onClick={hide} />
-          <ModalWrapper aria-modal tabIndex={-1} role="dialog">
-            <ModalContent>
-              <ModalCloseButton type="button" data-dismiss="modal" aria-label="Sulje" onClick={hide}>
-                <CloseIcon />
-              </ModalCloseButton>
-              {children}
-              <CloseButton type="button" data-dismiss="modal" aria-label="Sulje" label="Sulje" handleClick={hide} />
-            </ModalContent>
-          </ModalWrapper>
-        </>,
-        document.body,
-      )
-    : null;
+const Modal: React.FC<ModalProps> = ({ isShowing, hide, children, ariaLabel }) => {
+  return (
+    <DialogOverlay isOpen={isShowing} onDismiss={hide}>
+      <ModalDialogContent aria-label={ariaLabel}>
+        <ModalCloseButton type="button" aria-label="Sulje" onClick={hide}>
+          <CloseIcon />
+        </ModalCloseButton>
+        {children}
+      </ModalDialogContent>
+    </DialogOverlay>
+  );
+};
 
 export default Modal;

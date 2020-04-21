@@ -10,6 +10,7 @@ import MapContainer from './map/MapContainer';
 import useModal from './useModal';
 import CloseIcon from './assets/CloseIcon';
 import { FILTERS } from './constants';
+import { HEADERHEIGHT, NAVHEIGHT } from './constants';
 
 type FilterKey = keyof typeof FILTERS;
 
@@ -59,7 +60,7 @@ interface mapProperties {
 const cartogramData: mapProperties[] = require('./assets/data/cartogram-coordinates.json');
 
 const MapNav = styled.div`
-  height: 55px;
+  height: ${NAVHEIGHT};
   padding: 0 16px;
   border-bottom: 1px solid ${props => props.theme.black};
 `;
@@ -87,7 +88,7 @@ const Label = styled.label`
 const MapWrapper = styled.div`
   text-align: center;
   position: relative;
-  height: calc(100vh - 185px);
+  height: calc(100vh - (${HEADERHEIGHT} + ${NAVHEIGHT}));
 `;
 
 const FilterWrapper = styled.div`

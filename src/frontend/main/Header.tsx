@@ -2,9 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link, Match } from '@reach/router';
 import Logo from './assets/oiretutka-logo-gradient.svg';
-import AboutIcon from './assets/AboutIcon';
-import MapIcon from './assets/MapIcon';
-import SurveyIcon from './assets/SurveyIcon';
+import { HEADERHEIGHT } from './constants';
 
 type LinkProps = {
   to: string;
@@ -24,7 +22,7 @@ const AppHeader = styled.header`
   padding: 24px 16px 10px 16px;
   background-color: ${props => props.theme.white};
   border-bottom: 1px solid ${props => props.theme.black};
-  height: 130px;
+  height: ${HEADERHEIGHT};
 `;
 
 const HeaderContainer = styled.div`

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Router, Location } from '@reach/router';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
+import FocusLock from 'react-focus-lock';
 import axios from 'axios';
 import Header from './Header';
 import MapView from './MapView';
 import About from './About';
 import Survey from './Survey';
 import Privacy from './Privacy';
+import Menu from './Menu';
 
 import RobotoEot from './assets/fonts/roboto-v20-latin-ext_latin-regular.eot';
 import RobotoSvg from './assets/fonts/roboto-v20-latin-ext_latin-regular.svg';
@@ -100,6 +102,7 @@ export const App = () => {
   const [data, setData] = useState<'FETCHING' | 'ERROR' | object>('FETCHING');
   const dataEndpoint = process.env.REACT_APP_DATA_ENDPOINT;
   const [username, password] = (process.env.REACT_APP_DATA_AUTH || '').split(':');
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     axios(`${dataEndpoint}city_level_general_results.json`, {
@@ -116,9 +119,12 @@ export const App = () => {
         <GlobalStyles />
         <Location>
           {({ location }) => {
-            return <Header location={location.pathname} />;
+            return <Header location={location.pathname} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />;
           }}
         </Location>
+        <FocusLock disabled={!menuOpen}>
+          <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}></Menu>
+        </FocusLock>
         <main>
           <Router>
             {<MapView path="/" responseData={data} />}

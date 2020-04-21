@@ -27,7 +27,7 @@
     "backend-build": "npm run lint-node && rm -rf build && tsc --project tsconfig-backend.json",
     "\n==================== UTILS ====================": "",
     "set-frontend": "/bin/bash -c 'set -x; (cd src/ && ln -fs index-frontend-$1.ts* index.tsx); (cd public/ && ln -fs index-$1.html index.html)' --",
-    "ts-node": "NODE_PATH=src ts-node --compiler-options '{\"module\":\"commonjs\"}'"
+    "ts-node": "NODE_PATH=src ts-node --project tsconfig-backend.json --files"
   },
   "dependencies": {
     "@reach/dialog": "^0.10.0",

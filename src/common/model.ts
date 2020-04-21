@@ -1,6 +1,7 @@
 import { isRight } from 'fp-ts/lib/Either';
 import * as t from 'io-ts';
 import { PathReporter } from 'io-ts/lib/PathReporter';
+import { AbuseScore } from '../backend/abuseDetection';
 import {
   age,
   cough,
@@ -48,6 +49,13 @@ export const FrontendResponseModel = t.strict(
 );
 export type FrontendResponseModelT = t.TypeOf<typeof FrontendResponseModel>;
 
+// Define this sub-object separately so we can check it against the AbuseScore type
+const abuse_score: { [key in keyof AbuseScore]: t.NumberC } = {
+  source_ip: t.number,
+  user_agent: t.number,
+  forwarded_for: t.number,
+};
+
 export const BackendResponseModel = t.strict(
   {
     response_id: t.string,
@@ -57,6 +65,7 @@ export const BackendResponseModel = t.strict(
     country_code: t.string,
     ...responseFields,
     duration: t.union([t.number, t.null]), // for persistence, let's cast to number
+    abuse_score: t.strict(abuse_score),
   },
   'BackendResponseModel',
 );

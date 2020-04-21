@@ -115,36 +115,36 @@ export async function storeDataDumpsToS3() {
 
   //
   // Push data to S3
-  await s3PutJsonHelper({
-    Bucket: bucket,
-    Key: 'total_responses.json',
-    // TODO: If the cache is same for all JSON, move this to the helper
-    CacheControl: 'max-age=15',
-    Body: {
-      meta: {
-        description:
-          'Total number of responses collected by the system thus far. This is the raw number before any filtering or abuse detection has been performed.',
-        generated: new Date().toISOString(),
-        link: `https://${domain}/total_responses.json`,
-      },
-      data: totalResponses,
-    },
-  });
 
-  await s3PutJsonHelper({
-    Bucket: bucket,
-    Key: 'city_level_general_results.json',
-    CacheControl: 'max-age=15',
-    Body: {
-      meta: {
-        description:
-          'Population and response count per each city in Finland, where the response count was higher than 25. All the form inputs are coded in city level. Population data from Tilastokeskus. This data is released for journalistic and scientific purposes.',
-        generated: new Date().toISOString(),
-        link: `https://${domain}/city_level_general_results.json`,
+  await Promise.all([
+    s3PutJsonHelper({
+      Bucket: bucket,
+      Key: 'total_responses.json',
+      Body: {
+        meta: {
+          description:
+            'Total number of responses collected by the system thus far. This is the raw number before any filtering or abuse detection has been performed.',
+          generated: new Date().toISOString(),
+          link: `https://${domain}/total_responses.json`,
+        },
+        data: totalResponses,
       },
-      data: cityLevelData,
-    },
-  });
+    }),
+
+    s3PutJsonHelper({
+      Bucket: bucket,
+      Key: 'city_level_general_results.json',
+      Body: {
+        meta: {
+          description:
+            'Population and response count per each city in Finland, where the response count was higher than 25. All the form inputs are coded in city level. Population data from Tilastokeskus. This data is released for journalistic and scientific purposes.',
+          generated: new Date().toISOString(),
+          link: `https://${domain}/city_level_general_results.json`,
+        },
+        data: cityLevelData,
+      },
+    }),
+  ]);
 }
 
 async function mapPostalCodeLevelToPostalCodeLevelData(postalCodeLevelData: any[], bucket: string) {
@@ -254,6 +254,7 @@ async function s3PutJsonHelper(params: AWS.S3.PutObjectRequest) {
     .putObject({
       ...params,
       ContentType: 'application/json',
+      CacheControl: 'max-age=15',
       Body: JSON.stringify(params.Body, null, 2),
     })
     .promise();

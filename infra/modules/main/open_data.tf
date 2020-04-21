@@ -88,17 +88,6 @@ module "open_data_site" {
   }
 }
 
-# Ensure an index file exists listing the other files
-# (the generation of this will be automated soon)
-resource "aws_s3_bucket_object" "open_data_index" {
-  bucket        = aws_s3_bucket.open_data.id
-  key           = "index.json"
-  content       = local.open_data_index
-  content_type  = "application/json"
-  cache_control = "max-age=15"
-  etag          = md5(local.open_data_index)
-}
-
 # Ensure each JSON file exists on S3
 resource "aws_s3_bucket_object" "open_data_file" {
   for_each = local.open_data_files
@@ -113,50 +102,10 @@ resource "aws_s3_bucket_object" "open_data_file" {
 
 locals {
   open_data_files = toset([
-    "city_level_general_results",
     "low_population_postal_codes",
     "population_per_city",
     "postalcode_city_mappings",
     "topojson_finland_simplified",
     "topojson_finland_without_aland",
   ])
-  open_data_index = <<-EOF
-  {
-    "meta": {
-      "description": "This is the open data site for the www.oiretutka.fi project"
-    },
-    "data": {
-      "city_level_general_results": {
-        "description": "Population and response count per each city in Finland, where the response count was higher than 25. All the form inputs are coded in city level. Population data from Tilastokeskus. This data is released for journalistic and scientific purposes.",
-        "generated": "2020-04-08T09:00:00.000Z",
-        "link": "https://${var.open_data_domain}/city_level_general_results.json"
-      },
-      "low_population_postal_codes": {
-        "description": "Mapping of postal code areas with too low a population to their nearest neighbor with high enough population. This is used before storing answers, to ensure privacy is preserved for participants from postal code areas with low population. Population data from Tilastokeskus.",
-        "generated": "2020-04-08T09:00:00.000Z",
-        "link": "https://${var.open_data_domain}/low_population_postal_codes.json"
-      },
-      "population_per_city": {
-        "description": "Population per each city in Finland in the end of 2019. Source is Tilastokeskus.",
-        "generated": "2020-04-08T09:00:00.000Z",
-        "link": "https://${var.open_data_domain}/population_per_city.json"
-      },
-      "postalcode_city_mappings": {
-        "description": "Mapping of postal codes to city names. Source is Tilastokeskus.",
-        "generated": "2020-04-20T09:00:00.000Z",
-        "link": "https://${var.open_data_domain}/postalcode_city_mappings.json"
-      },
-      "topojson_finland_simplified": {
-        "description": "Topography used to render the outline of the map of Finland. Based on the open data at https://github.com/lucified/finland-municipalities-topojson, with some post-processing applied.",
-        "generated": "2020-04-08T09:00:00.000Z",
-        "link": "https://${var.open_data_domain}/topojson_finland_simplified.json"
-      },
-      "topojson_finland_without_aland": {
-        "description": "Topography used to render a bubble chart on top of the map of Finland. Based on the open data at https://github.com/lucified/finland-municipalities-topojson, with some post-processing applied.",
-        "generated": "2020-04-08T09:00:00.000Z",
-        "link": "https://${var.open_data_domain}/topojson_finland_without_aland.json"
-      }
-    }
-  }
-    EOF
 }

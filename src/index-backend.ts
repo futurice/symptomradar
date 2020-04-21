@@ -1,9 +1,8 @@
 import { APIGatewayProxyHandler, Handler } from 'aws-lambda';
 import { v4 as uuidV4 } from 'uuid';
 import { createDynamoDbClient, normalizeForwardedFor } from './backend/abuseDetection';
-import { prepareResponseForStorage, storeDataDumpsToS3, storeResponse } from './backend/main';
+import { prepareResponseForStorage, storeDataDumpsToS3, storeResponse, updateOpenDataIndex } from './backend/main';
 import { assertIs, FrontendResponseModel, FrontendResponseModelT } from './common/model';
-import { storeResponseInS3, prepareResponseForStorage, storeDataDumpsToS3, updateOpenDataIndex } from './backend/main';
 
 const dynamoDb = createDynamoDbClient(process.env.ABUSE_DETECTION_TABLE || '');
 

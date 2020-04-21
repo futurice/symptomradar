@@ -177,6 +177,7 @@ export async function storeDataDumpsToS3() {
 }
 
 const openDataFileNames = [
+  'total_responses',
   'city_level_general_results',
   'low_population_postal_codes',
   'population_per_city',

@@ -1,7 +1,7 @@
 import { APIGatewayProxyHandler, Handler } from 'aws-lambda';
 import { v4 as uuidV4 } from 'uuid';
 import { assertIs, FrontendResponseModel, FrontendResponseModelT } from './common/model';
-import { storeResponseInS3, prepareResponseForStorage, storeDataDumpsToS3 } from './backend/main';
+import { storeResponseInS3, prepareResponseForStorage, storeDataDumpsToS3, updateOpenDataIndex } from './backend/main';
 
 export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
   console.log(`Incoming request: ${event.httpMethod} ${event.path}`); // to preserve privacy, don't log any headers, etc
@@ -22,6 +22,7 @@ export const workerEntrypoint: Handler<unknown> = async () => {
   console.log('Worker started');
   try {
     await storeDataDumpsToS3();
+    await updateOpenDataIndex();
     console.log('Worker done');
   } catch (error) {
     console.error('ERROR (WORKER)', error);

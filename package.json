@@ -42,6 +42,7 @@
     "normalize.css": "^8.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-focus-lock": "^2.3.1",
     "react-scripts": "3.4.1",
     "styled-components": "^5.0.1",
     "topojson": "^3.0.2",

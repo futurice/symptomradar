@@ -147,7 +147,7 @@ export async function storeDataDumpsToS3() {
   });
 }
 
-async function mapPostalCodeLevelTopostalCodeLevelData(postalCodeLevelData: any[], bucket: string) {
+async function mapPostalCodeLevelToPostalCodeLevelData(postalCodeLevelData: any[], bucket: string) {
   const postalCodeCityMappings = await s3GetJsonHelper({ Bucket: bucket, Key: 'postalcode_city_mappings.json' });
 
   const populationPerCity = await s3GetJsonHelper({ Bucket: bucket, Key: 'population_per_city.json' });

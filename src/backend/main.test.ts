@@ -1,5 +1,7 @@
-import { FrontendResponseModelT, BackendResponseModelT } from '../common/model';
-import { prepareResponseForStorage, getStorageKey } from './main';
+import { BackendResponseModelT, FrontendResponseModelT } from '../common/model';
+import { normalizeForwardedFor } from './abuseDetection';
+import { createMockDynamoDbClient } from './abuseDetection.test';
+import { getStorageKey, prepareResponseForStorage } from './main';
 
 const cannedUuid = '5fa8764a-7337-11ea-96ca-d38ac3d1909b';
 const incomingResponseSample: FrontendResponseModelT = {
@@ -47,17 +49,84 @@ const persistedResponseSample: BackendResponseModelT = {
   sore_throat: 'no',
   stomach_issues: 'no',
   timestamp: '2020-03-31T10:08:00.000Z', // note the rounding to minute precision
+  abuse_score: {
+    forwarded_for: -1, // i.e. ABUSE_SCORE_MISSING, because we didn't provide a "X-Forwarded-For" value to score
+    source_ip: 0,
+    user_agent: 0,
+  },
 };
 
 describe('prepareResponseForStorage()', () => {
-  it('works', () => {
+  it('works for the first request', () => {
     return prepareResponseForStorage(
       incomingResponseSample,
       'FI',
+      createMockDynamoDbClient(),
+      {
+        source_ip: '1.1.1.1',
+        user_agent: 'Mozilla/5.0...Safari/537.36',
+        forwarded_for: normalizeForwardedFor('1.1.1.1, 52.46.36.85'),
+      },
       Promise.resolve('fake-secret-pepper'),
       () => cannedUuid,
       () => 1585649303678, // i.e. "2020-03-31T10:08:23.678Z"
     ).then(r => expect(r).toEqual(persistedResponseSample));
+  });
+
+  it('works for a second request', () => {
+    return prepareResponseForStorage(
+      incomingResponseSample,
+      'FI',
+      {
+        ...createMockDynamoDbClient(),
+        getValues(keys: string[]) {
+          return Promise.resolve([123, ...keys.map(() => 0)]);
+        },
+      },
+      {
+        source_ip: '1.1.1.1',
+        user_agent: 'Mozilla/5.0...Safari/537.36',
+        forwarded_for: normalizeForwardedFor('1.1.1.1, 52.46.36.85'),
+      },
+      Promise.resolve('fake-secret-pepper'),
+      () => cannedUuid,
+      () => 1585649303678, // i.e. "2020-03-31T10:08:23.678Z"
+    ).then(r =>
+      expect(r).toEqual({
+        ...persistedResponseSample,
+        abuse_score: { ...persistedResponseSample.abuse_score, source_ip: 123 },
+      }),
+    );
+  });
+
+  it('handles errors', () => {
+    return prepareResponseForStorage(
+      incomingResponseSample,
+      'FI',
+      {
+        ...createMockDynamoDbClient(),
+        getValues() {
+          return Promise.reject(new Error('Simulated error in test suite'));
+        },
+      },
+      {
+        source_ip: '1.1.1.1',
+        user_agent: 'Mozilla/5.0...Safari/537.36',
+        forwarded_for: normalizeForwardedFor('1.1.1.1, 52.46.36.85'),
+      },
+      Promise.resolve('fake-secret-pepper'),
+      () => cannedUuid,
+      () => 1585649303678, // i.e. "2020-03-31T10:08:23.678Z"
+    ).then(r =>
+      expect(r).toEqual({
+        ...persistedResponseSample,
+        abuse_score: {
+          forwarded_for: -2,
+          source_ip: -2,
+          user_agent: -2,
+        },
+      }),
+    );
   });
 });
 

@@ -121,3 +121,21 @@ resource "aws_athena_named_query" "returning_participants" {
     ;
   SQL
 }
+
+# Example: Interacting with JSON
+# Based on https://docs.aws.amazon.com/athena/latest/ug/extracting-data-from-JSON.html
+/*
+WITH dataset AS (
+  SELECT
+    '{"name": "Susan Smith",
+      "org": "engineering",
+      "project": {"name":"project1", "completed":false}}' AS blob
+)
+SELECT
+  json_extract(blob, '$.name') AS name,
+  json_extract(blob, '$.project.name') AS project
+FROM
+  dataset
+WHERE
+  json_extract_scalar(blob, '$.project.name') = 'project1'
+*/

@@ -1,7 +1,11 @@
 import { APIGatewayProxyHandler, Handler } from 'aws-lambda';
 import { v4 as uuidV4 } from 'uuid';
+import { createDynamoDbClient, normalizeForwardedFor } from './backend/abuseDetection';
+import { prepareResponseForStorage, storeDataDumpsToS3, storeResponse } from './backend/main';
 import { assertIs, FrontendResponseModel, FrontendResponseModelT } from './common/model';
 import { storeResponseInS3, prepareResponseForStorage, storeDataDumpsToS3, updateOpenDataIndex } from './backend/main';
+
+const dynamoDb = createDynamoDbClient(process.env.ABUSE_DETECTION_TABLE || '');
 
 export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
   console.log(`Incoming request: ${event.httpMethod} ${event.path}`); // to preserve privacy, don't log any headers, etc
@@ -12,7 +16,13 @@ export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
     return Promise.resolve()
       .then(() => JSON.parse(event.body || '') as unknown)
       .then(assertIs(FrontendResponseModel))
-      .then(res => storeResponseInS3(res, countryCode))
+      .then(res =>
+        storeResponse(res, countryCode, dynamoDb, {
+          source_ip: event.requestContext.identity.sourceIp,
+          user_agent: event.headers['User-Agent'],
+          forwarded_for: normalizeForwardedFor(event.headers['X-Forwarded-For']),
+        }),
+      )
       .then(() => response(200, { success: true }))
       .catch(err => response(500, { error: true }, err));
   }
@@ -54,7 +64,19 @@ if (process.argv[0].match(/\/ts-node$/)) {
   };
   Promise.resolve(test)
     .then(assertIs(FrontendResponseModel))
-    .then(res => prepareResponseForStorage(res, 'FI', Promise.resolve('fake-secret-pepper')))
+    .then(res =>
+      prepareResponseForStorage(
+        res,
+        'FI',
+        dynamoDb,
+        {
+          source_ip: '127.0.0.1',
+          user_agent: 'localhost',
+          forwarded_for: '',
+        },
+        Promise.resolve('fake-secret-pepper'),
+      ),
+    )
     .catch(err => err)
     .then(res => console.log(res));
 }

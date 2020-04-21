@@ -41,6 +41,9 @@ const ActionButton = styled(PrimaryButton)`
   display: block;
   margin: 40px auto 0 auto;
   min-width: 135px;
+  background: ${props => props.theme.green};
+  color: ${props => props.theme.white};
+  border: none;
 `;
 
 const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {

@@ -24,6 +24,7 @@ const theme = {
   white: '#FFFFFF',
   black: '#000000',
   blue: '#0047FF',
+  green: '#328709',
 };
 
 const GlobalStyles = createGlobalStyle`

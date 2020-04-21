@@ -111,7 +111,7 @@ export async function storeDataDumpsToS3() {
   // TODO: Add model for this
   const totalResponses = totalResponsesResult.Items[0];
 
-  const cityLevelData = await mapPostalCodeLevelToPostalCodeLevelData(postalCodeLevelDataResponse.Items, bucket);
+  const cityLevelData = await mapPostalCodeLevelToCityLevelData(postalCodeLevelDataResponse.Items, bucket);
 
   //
   // Push data to S3
@@ -186,27 +186,16 @@ export async function updateOpenDataIndex() {
   await s3PutJsonHelper({ Bucket: bucket, Key: 'index.json', Body: openData });
 }
 
-async function mapPostalCodeLevelToPostalCodeLevelData(postalCodeLevelData: any[], bucket: string) {
+async function mapPostalCodeLevelToCityLevelData(postalCodeLevelData: any[], bucket: string) {
   const postalCodeCityMappings = await s3GetJsonHelper({ Bucket: bucket, Key: 'postalcode_city_mappings.json' });
 
   const populationPerCity = await s3GetJsonHelper({ Bucket: bucket, Key: 'population_per_city.json' });
 
-  // Turn populationPerCity which is an array into dict keyed by city
-  const populationByCityMap = (populationPerCity.data as any[]).reduce((acc, data) => {
-    acc[data.city] = data.population;
-    return acc;
-  }, {});
-
-  // Aggregate of all postal code level data as city level data
-  const cityLevelDataAcc: Record<string, any> = {};
-
-  for (const postalCodeData of postalCodeLevelData) {
-    const city = postalCodeCityMappings.data[postalCodeData.postal_code] || '';
-
-    // Initialize accumulator data for this key if it doesn't exist yet
-    cityLevelDataAcc[city] = cityLevelDataAcc[city] || {
-      city,
-      population: populationByCityMap[city] || 0,
+  // Generate initial city-level aggregation set from the city population data
+  const resultsByCity = (populationPerCity.data as any[]).reduce((acc, data) => {
+    acc[data.city] = {
+      city: data.city,
+      population: data.population,
       responses: 0,
       fever_no: 0,
       fever_slight: 0,
@@ -238,42 +227,54 @@ async function mapPostalCodeLevelToPostalCodeLevelData(postalCodeLevelData: any[
       corona_suspicion_no: 0,
       corona_suspicion_yes: 0,
     };
+    return acc;
+  }, {});
 
-    // Accumulate
-    cityLevelDataAcc[city].responses += Number(postalCodeData.responses);
-    cityLevelDataAcc[city].fever_no += Number(postalCodeData.fever_no);
-    cityLevelDataAcc[city].fever_slight += Number(postalCodeData.fever_slight);
-    cityLevelDataAcc[city].fever_high += Number(postalCodeData.fever_high);
-    cityLevelDataAcc[city].cough_no += Number(postalCodeData.cough_no);
-    cityLevelDataAcc[city].cough_mild += Number(postalCodeData.cough_mild);
-    cityLevelDataAcc[city].cough_intense += Number(postalCodeData.cough_intense);
-    cityLevelDataAcc[city].general_wellbeing_fine += Number(postalCodeData.general_wellbeing_fine);
-    cityLevelDataAcc[city].general_wellbeing_impaired += Number(postalCodeData.general_wellbeing_impaired);
-    cityLevelDataAcc[city].general_wellbeing_bad += Number(postalCodeData.general_wellbeing_bad);
-    cityLevelDataAcc[city].breathing_difficulties_no += Number(postalCodeData.breathing_difficulties_no);
-    cityLevelDataAcc[city].breathing_difficulties_yes += Number(postalCodeData.breathing_difficulties_yes);
-    cityLevelDataAcc[city].muscle_pain_no += Number(postalCodeData.muscle_pain_no);
-    cityLevelDataAcc[city].muscle_pain_yes += Number(postalCodeData.muscle_pain_yes);
-    cityLevelDataAcc[city].headache_no += Number(postalCodeData.headache_no);
-    cityLevelDataAcc[city].headache_yes += Number(postalCodeData.headache_yes);
-    cityLevelDataAcc[city].sore_throat_no += Number(postalCodeData.sore_throat_no);
-    cityLevelDataAcc[city].sore_throat_yes += Number(postalCodeData.sore_throat_yes);
-    cityLevelDataAcc[city].rhinitis_no += Number(postalCodeData.rhinitis_no);
-    cityLevelDataAcc[city].rhinitis_yes += Number(postalCodeData.rhinitis_yes);
-    cityLevelDataAcc[city].stomach_issues_no += Number(postalCodeData.stomach_issues_no);
-    cityLevelDataAcc[city].stomach_issues_yes += Number(postalCodeData.stomach_issues_yes);
-    cityLevelDataAcc[city].sensory_issues_no += Number(postalCodeData.sensory_issues_no);
-    cityLevelDataAcc[city].sensory_issues_yes += Number(postalCodeData.sensory_issues_yes);
-    cityLevelDataAcc[city].longterm_medication_no += Number(postalCodeData.longterm_medication_no);
-    cityLevelDataAcc[city].longterm_medication_yes += Number(postalCodeData.longterm_medication_yes);
-    cityLevelDataAcc[city].smoking_no += Number(postalCodeData.smoking_no);
-    cityLevelDataAcc[city].smoking_yes += Number(postalCodeData.smoking_yes);
-    cityLevelDataAcc[city].corona_suspicion_no += Number(postalCodeData.corona_suspicion_no);
-    cityLevelDataAcc[city].corona_suspicion_yes += Number(postalCodeData.corona_suspicion_yes);
+  // Accumulate postal code level data into city level data
+  for (const postalCodeData of postalCodeLevelData) {
+    const city = postalCodeCityMappings.data[postalCodeData.postal_code];
+
+    if (!city) {
+      console.warn(`mapPostalCodeLevelToCityLevelData: Skipping unknown postal code ${postalCodeData.postal_code}`);
+      continue;
+    }
+
+    resultsByCity[city].responses += Number(postalCodeData.responses);
+    resultsByCity[city].fever_no += Number(postalCodeData.fever_no);
+    resultsByCity[city].fever_slight += Number(postalCodeData.fever_slight);
+    resultsByCity[city].fever_high += Number(postalCodeData.fever_high);
+    resultsByCity[city].cough_no += Number(postalCodeData.cough_no);
+    resultsByCity[city].cough_mild += Number(postalCodeData.cough_mild);
+    resultsByCity[city].cough_intense += Number(postalCodeData.cough_intense);
+    resultsByCity[city].general_wellbeing_fine += Number(postalCodeData.general_wellbeing_fine);
+    resultsByCity[city].general_wellbeing_impaired += Number(postalCodeData.general_wellbeing_impaired);
+    resultsByCity[city].general_wellbeing_bad += Number(postalCodeData.general_wellbeing_bad);
+    resultsByCity[city].breathing_difficulties_no += Number(postalCodeData.breathing_difficulties_no);
+    resultsByCity[city].breathing_difficulties_yes += Number(postalCodeData.breathing_difficulties_yes);
+    resultsByCity[city].muscle_pain_no += Number(postalCodeData.muscle_pain_no);
+    resultsByCity[city].muscle_pain_yes += Number(postalCodeData.muscle_pain_yes);
+    resultsByCity[city].headache_no += Number(postalCodeData.headache_no);
+    resultsByCity[city].headache_yes += Number(postalCodeData.headache_yes);
+    resultsByCity[city].sore_throat_no += Number(postalCodeData.sore_throat_no);
+    resultsByCity[city].sore_throat_yes += Number(postalCodeData.sore_throat_yes);
+    resultsByCity[city].rhinitis_no += Number(postalCodeData.rhinitis_no);
+    resultsByCity[city].rhinitis_yes += Number(postalCodeData.rhinitis_yes);
+    resultsByCity[city].stomach_issues_no += Number(postalCodeData.stomach_issues_no);
+    resultsByCity[city].stomach_issues_yes += Number(postalCodeData.stomach_issues_yes);
+    resultsByCity[city].sensory_issues_no += Number(postalCodeData.sensory_issues_no);
+    resultsByCity[city].sensory_issues_yes += Number(postalCodeData.sensory_issues_yes);
+    resultsByCity[city].longterm_medication_no += Number(postalCodeData.longterm_medication_no);
+    resultsByCity[city].longterm_medication_yes += Number(postalCodeData.longterm_medication_yes);
+    resultsByCity[city].smoking_no += Number(postalCodeData.smoking_no);
+    resultsByCity[city].smoking_yes += Number(postalCodeData.smoking_yes);
+    resultsByCity[city].corona_suspicion_no += Number(postalCodeData.corona_suspicion_no);
+    resultsByCity[city].corona_suspicion_yes += Number(postalCodeData.corona_suspicion_yes);
   }
 
-  // NOTE: Does this need to be sorted alphabetically by city?
-  return Object.values(cityLevelDataAcc);
+  // NOTE: v8 should maintain insertion order here, and since the original
+  // data this is derived from arranges cities in alphabetical order,
+  // this should be alphabetically ordered as well.
+  return Object.values(resultsByCity);
 }
 
 //

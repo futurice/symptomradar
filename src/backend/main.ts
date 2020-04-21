@@ -176,6 +176,45 @@ export async function storeDataDumpsToS3() {
   ]);
 }
 
+const openDataFileNames = [
+  'city_level_general_results',
+  'low_population_postal_codes',
+  'population_per_city',
+  'postalcode_city_mappings',
+  'topojson_finland_simplified',
+  'topojson_finland_without_aland',
+];
+
+export async function updateOpenDataIndex() {
+  //
+  // Validate environment
+
+  const bucket = process.env.BUCKET_NAME_OPEN_DATA;
+  if (!bucket) throw new Error('Open data bucket name missing from environment');
+  const domain = process.env.DOMAIN_NAME_OPEN_DATA;
+  if (!domain) throw new Error('Open data domain name missing from environment');
+
+  //
+  // Fetch data files
+
+  // TODO: Model these (meta: OpenDataMeta, data: T = any)
+  const openDataIndex: Record<string, any> = {};
+
+  for (const filename of openDataFileNames) {
+    const data = await s3GetJsonHelper({ Bucket: bucket, Key: `${filename}.json` });
+    openDataIndex[filename] = data.meta;
+  }
+
+  const openData = {
+    meta: {
+      description: 'This is the open data site for the www.oiretutka.fi project',
+    },
+    data: openDataIndex,
+  };
+
+  await s3PutJsonHelper({ Bucket: bucket, Key: 'index.json', Body: openData });
+}
+
 async function mapPostalCodeLevelToCityLevelData(postalCodeLevelData: any[], bucket: string) {
   const postalCodeCityMappings = await s3GetJsonHelper({ Bucket: bucket, Key: 'postalcode_city_mappings.json' });
 

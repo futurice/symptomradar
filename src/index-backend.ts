@@ -1,7 +1,7 @@
 import { APIGatewayProxyHandler, Handler } from 'aws-lambda';
 import { v4 as uuidV4 } from 'uuid';
 import { createDynamoDbClient, normalizeForwardedFor } from './backend/abuseDetection';
-import { prepareResponseForStorage, storeDataDumpsToS3, storeResponse } from './backend/main';
+import { prepareResponseForStorage, storeDataDumpsToS3, storeResponse, updateOpenDataIndex } from './backend/main';
 import { assertIs, FrontendResponseModel, FrontendResponseModelT } from './common/model';
 
 const dynamoDb = createDynamoDbClient(process.env.ABUSE_DETECTION_TABLE || '');
@@ -31,6 +31,7 @@ export const workerEntrypoint: Handler<unknown> = async () => {
   console.log('Worker started');
   try {
     await storeDataDumpsToS3();
+    await updateOpenDataIndex();
     console.log('Worker done');
   } catch (error) {
     console.error('ERROR (WORKER)', error);

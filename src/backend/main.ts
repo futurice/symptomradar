@@ -111,7 +111,7 @@ export async function storeDataDumpsToS3() {
   // TODO: Add model for this
   const totalResponses = totalResponsesResult.Items[0];
 
-  const cityLevelData = await mapPostalCodeLevelTopostalCodeLevelData(postalCodeLevelDataResponse.Items, bucket);
+  const cityLevelData = await mapPostalCodeLevelToPostalCodeLevelData(postalCodeLevelDataResponse.Items, bucket);
 
   //
   // Push data to S3

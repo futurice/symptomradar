@@ -17,8 +17,8 @@ export type AbuseScore = {
 const emptyScore: AbuseScore = { source_ip: 0, user_agent: 0, forwarded_for: 0 };
 const fingerprintKeys = (Object.keys(emptyScore) as any) as Array<keyof AbuseFingerprint>;
 
-// This special score can be used to indicate that a given response couldn't be scored, due to e.g. DynamoDB error or some such
-export const ABUSE_SCORE_ERROR: AbuseScore = { source_ip: -2, user_agent: -2, forwarded_for: -2 };
+export const ABUSE_SCORE_ERROR: AbuseScore = { source_ip: -2, user_agent: -2, forwarded_for: -2 }; // this special score can be used to indicate that a given response couldn't be scored, due to e.g. DynamoDB error or some such
+export const ABUSE_SCORE_MISSING = -1; // this special score can be used to indicate that because there was no input value for something like X-Forwarded-For, there's no point in scoring it for this request
 
 // Reads & updates DynamoDB to keep track of our abuse detection metrics.
 // Promises the "abuse score" for the given fingerprint (i.e. request).
@@ -40,7 +40,10 @@ export function performAbuseDetection(
     .map(key => (fp[key] ? getStorageKey(key, fp[key], now) : null))
     .filter(nonNullable);
   const resultKeys = flatMap(fingerprintKeys, key => timeRange.map(() => key)); // e.g. [ 'source_ip', 'source_ip', 'source_ip', 'user_agent', 'user_agent', 'user_agent', ...
-  const tallyAbuseScore = (obj: AbuseScore, key: keyof AbuseScore, num: number) => ({ ...obj, [key]: obj[key] + num });
+  const tallyAbuseScore = (obj: AbuseScore, key: keyof AbuseScore, num: number) => ({
+    ...obj,
+    [key]: fp[key] ? obj[key] + num : ABUSE_SCORE_MISSING, // if there was no input for this fingerprint key (e.g. no X-Forwarded-For was provided to begin with), mark the return value as missing; otherwise, add to previous value
+  });
   const readPromise = dynamoDb.getValues(keysToGet).then(res =>
     res.reduce(
       (memo, next, i) => tallyAbuseScore(memo, resultKeys[i], next), // correlate each result with its corresponding fingerprint key (from resultKeys) and increment the relevant field in the score object

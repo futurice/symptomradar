@@ -1,6 +1,7 @@
-import { FrontendResponseModelT, BackendResponseModelT } from '../common/model';
-import { prepareResponseForStorage, getStorageKey } from './main';
+import { BackendResponseModelT, FrontendResponseModelT } from '../common/model';
+import { normalizeForwardedFor } from './abuseDetection';
 import { createMockDynamoDbClient } from './abuseDetection.test';
+import { getStorageKey, prepareResponseForStorage } from './main';
 
 const cannedUuid = '5fa8764a-7337-11ea-96ca-d38ac3d1909b';
 const incomingResponseSample: FrontendResponseModelT = {
@@ -49,7 +50,7 @@ const persistedResponseSample: BackendResponseModelT = {
   stomach_issues: 'no',
   timestamp: '2020-03-31T10:08:00.000Z', // note the rounding to minute precision
   abuse_score: {
-    forwarded_for: 0,
+    forwarded_for: -1, // i.e. ABUSE_SCORE_MISSING, because we didn't provide a "X-Forwarded-For" value to score
     source_ip: 0,
     user_agent: 0,
   },
@@ -64,7 +65,7 @@ describe('prepareResponseForStorage()', () => {
       {
         source_ip: '1.1.1.1',
         user_agent: 'Mozilla/5.0...Safari/537.36',
-        forwarded_for: '',
+        forwarded_for: normalizeForwardedFor('1.1.1.1, 52.46.36.85'),
       },
       Promise.resolve('fake-secret-pepper'),
       () => cannedUuid,
@@ -85,7 +86,7 @@ describe('prepareResponseForStorage()', () => {
       {
         source_ip: '1.1.1.1',
         user_agent: 'Mozilla/5.0...Safari/537.36',
-        forwarded_for: '',
+        forwarded_for: normalizeForwardedFor('1.1.1.1, 52.46.36.85'),
       },
       Promise.resolve('fake-secret-pepper'),
       () => cannedUuid,
@@ -111,7 +112,7 @@ describe('prepareResponseForStorage()', () => {
       {
         source_ip: '1.1.1.1',
         user_agent: 'Mozilla/5.0...Safari/537.36',
-        forwarded_for: '',
+        forwarded_for: normalizeForwardedFor('1.1.1.1, 52.46.36.85'),
       },
       Promise.resolve('fake-secret-pepper'),
       () => cannedUuid,

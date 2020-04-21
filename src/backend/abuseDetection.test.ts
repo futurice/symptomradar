@@ -78,7 +78,7 @@ describe('performAbuseDetection()', () => {
             expect(score).toEqual({
               source_ip: 0,
               user_agent: 0,
-              forwarded_for: 0,
+              forwarded_for: -1, // i.e. ABUSE_SCORE_MISSING, because we didn't provide a "X-Forwarded-For" value to score
             }),
           )
           .then(
@@ -101,7 +101,7 @@ describe('performAbuseDetection()', () => {
             expect(score).toEqual({
               source_ip: 2,
               user_agent: 2,
-              forwarded_for: 0,
+              forwarded_for: -1, // i.e. ABUSE_SCORE_MISSING, because we didn't provide a "X-Forwarded-For" value to score
             }),
           )
           .then(
@@ -126,7 +126,7 @@ describe('performAbuseDetection()', () => {
             expect(score).toEqual({
               source_ip: 2,
               user_agent: 4, // all requests have had the same UA, even if they had a different IP
-              forwarded_for: 0,
+              forwarded_for: -1, // i.e. ABUSE_SCORE_MISSING, because we didn't provide a "X-Forwarded-For" value to score
             }),
           )
           .then(
@@ -150,7 +150,7 @@ describe('performAbuseDetection()', () => {
             expect(score).toEqual({
               source_ip: 2,
               user_agent: 2,
-              forwarded_for: 0,
+              forwarded_for: -1, // i.e. ABUSE_SCORE_MISSING, because we didn't provide a "X-Forwarded-For" value to score
             }),
           )
           .then(
@@ -180,7 +180,7 @@ describe('performAbuseDetection()', () => {
             expect(score).toEqual({
               source_ip: 2,
               user_agent: 2,
-              forwarded_for: 0,
+              forwarded_for: -1, // i.e. ABUSE_SCORE_MISSING, because we didn't provide a "X-Forwarded-For" value to score
             }),
           )
           .then(
@@ -216,7 +216,7 @@ describe('performAbuseDetection()', () => {
             expect(score).toEqual({
               source_ip: 1, // only once from this distinct IP
               user_agent: 2, // but twice with this UA
-              forwarded_for: 0,
+              forwarded_for: -1, // i.e. ABUSE_SCORE_MISSING, because we didn't provide a "X-Forwarded-For" value to score
             }),
           )
           .then(

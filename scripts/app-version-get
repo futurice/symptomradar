@@ -1,0 +1,4 @@
+#!/bin/bash
+
+set -euo pipefail # exit on error; treat unset variables as errors; exit on errors in piped commands
+git describe --exact-match --tags 2>/dev/null || git rev-parse --short HEAD # e.g. "v2.2" or "a821087"

@@ -1,10 +1,18 @@
 import { APIGatewayProxyHandler, Handler } from 'aws-lambda';
 import { v4 as uuidV4 } from 'uuid';
 import { createDynamoDbClient, normalizeForwardedFor } from './backend/abuseDetection';
-import { prepareResponseForStorage, storeDataDumpsToS3, storeResponse, updateOpenDataIndex } from './backend/main';
+import {
+  APP_VERSION,
+  prepareResponseForStorage,
+  storeDataDumpsToS3,
+  storeResponse,
+  updateOpenDataIndex,
+} from './backend/main';
 import { assertIs, FrontendResponseModel, FrontendResponseModelT } from './common/model';
 
 const dynamoDb = createDynamoDbClient(process.env.ABUSE_DETECTION_TABLE || '');
+
+console.log(`Backend version "${APP_VERSION}" started`);
 
 export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
   console.log(`Incoming request: ${event.httpMethod} ${event.path}`); // to preserve privacy, don't log any headers, etc

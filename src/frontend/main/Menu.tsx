@@ -5,6 +5,7 @@ import AboutIcon from './assets/AboutIcon';
 import MapIcon from './assets/MapIcon';
 import SurveyIcon from './assets/SurveyIcon';
 import CloseIcon from './assets/CloseIcon';
+import { HEADERHEIGHT } from './constants';
 
 type MenuProps = {
   menuOpen: boolean;
@@ -23,6 +24,20 @@ interface activeLinkProps {
   readonly isActive: boolean;
 }
 
+const menuBreakpoint = '600px';
+
+const MenuContainer = styled.div`
+  width: 100vw;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+  top: -${HEADERHEIGHT}px;
+
+  @media (min-width: ${menuBreakpoint}) {
+    top: 0;
+  }
+`;
+
 const Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -32,6 +47,10 @@ const Overlay = styled.div`
   height: 100vh;
   background-color: ${props => props.theme.black};
   opacity: 0.6;
+
+  @media (min-width: ${menuBreakpoint}) {
+    display: none;
+  }
 `;
 
 const StyledMenu = styled.nav<MenuProps>`
@@ -46,6 +65,13 @@ const StyledMenu = styled.nav<MenuProps>`
   right: 0;
   z-index: 2;
   display: ${props => (props.menuOpen ? 'flex' : 'none')};
+
+  @media (min-width: ${menuBreakpoint}) {
+    height: auto;
+    width: 324px;
+    top: -1px;
+    border: 1px solid ${props => props.theme.black};
+  }
 `;
 
 const MenuHeader = styled.div`
@@ -55,6 +81,10 @@ const MenuHeader = styled.div`
   display: flex;
   align-items: center;
   padding-left: 8px;
+
+  @media (min-width: ${menuBreakpoint}) {
+    display: none;
+  }
 `;
 
 const MenuContent = styled.div`
@@ -138,7 +168,7 @@ const Menu = ({ menuOpen, setMenuOpen }: MenuProps) => {
   const isHidden = menuOpen ? true : false;
   const tabIndex = isHidden ? 0 : -1;
   return (
-    <>
+    <MenuContainer>
       {menuOpen && <Overlay onClick={() => setMenuOpen(false)} />}
       <StyledMenu menuOpen={menuOpen} id="main-menu" aria-hidden={!isHidden}>
         <MenuHeader>
@@ -179,7 +209,7 @@ const Menu = ({ menuOpen, setMenuOpen }: MenuProps) => {
           </LinkContainer>
         </MenuContent>
       </StyledMenu>
-    </>
+    </MenuContainer>
   );
 };
 export default Menu;

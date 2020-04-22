@@ -9,8 +9,9 @@ type MenuProps = {
 
 const StyledBurger = styled.button<MenuProps>`
   position: absolute;
-  top: 16px;
+  top: 12px;
   right: 16px;
+  padding: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;

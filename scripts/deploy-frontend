@@ -11,12 +11,18 @@ fi
 
 set -euo pipefail # exit on error; treat unset variables as errors; exit on errors in piped commands
 SELF_DIR="$(perl -e 'use File::Basename; use Cwd "abs_path"; print dirname(abs_path(@ARGV[0]));' -- "$0")" # figure out the absolute path to the current script, regardless of pwd (perl is more cross-platform than realpath; https://stackoverflow.com/a/30795461)
+ROOT_DIR="$SELF_DIR/.."
 BUILD_DIR="$SELF_DIR/../build"
 DEFAULT_LANG="fi"
 
 # Build the frontend static files
 (
-  PUBLIC_URL="$3" INLINE_RUNTIME_CHUNK=false GENERATE_SOURCEMAP=false npm run "$2" # don't inline webpack runtime (inline scripts are categorically banned by our CSP)
+  cd "$ROOT_DIR"
+  REACT_APP_APP_VERSION="$(./scripts/app-version-get)" \
+    PUBLIC_URL="$3" \
+    INLINE_RUNTIME_CHUNK=false \
+    GENERATE_SOURCEMAP=false \
+    npm run "$2" # don't inline webpack runtime (inline scripts are categorically banned by our CSP)
   (cd "$BUILD_DIR" && rm -fv index-*.html *manifest* service-worker.js) # remove some cruft we don't need
   npm run ts-node "$SELF_DIR/../scripts/translate-frontend.ts"
   (cd "$BUILD_DIR" && [ ! -f index.$DEFAULT_LANG.html ] || mv -v index{.$DEFAULT_LANG,}.html) # if translated index files got generated, replace the templated index HTML with the default-lang one

@@ -12,7 +12,7 @@ import { assertIs, FrontendResponseModel, FrontendResponseModelT } from './commo
 
 const dynamoDb = createDynamoDbClient(process.env.ABUSE_DETECTION_TABLE || '');
 
-console.log(`Backend version "${APP_VERSION}" started`);
+console.log(`Backend ${APP_VERSION} started`);
 
 export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
   console.log(`Incoming request: ${event.httpMethod} ${event.path}`); // to preserve privacy, don't log any headers, etc

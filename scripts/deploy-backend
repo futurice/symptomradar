@@ -21,6 +21,7 @@ REMOVE_PACKAGES="react react-dom react-scripts" # remove packages we KNOW we won
 (
   cd "$ROOT_DIR"
   npm run backend-build
+  ./scripts/app-version-get > "$BUILD_DIR/deployed-app-version"
   cd "$BUILD_DIR"
   mv index-backend.js index.js # TODO: Update TF config to make this unnecessary
   cp ../package* . # use the same dependencies from root

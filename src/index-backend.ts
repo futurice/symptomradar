@@ -1,16 +1,24 @@
 import { APIGatewayProxyHandler, Handler } from 'aws-lambda';
 import { v4 as uuidV4 } from 'uuid';
 import { createDynamoDbClient, normalizeForwardedFor } from './backend/abuseDetection';
-import { prepareResponseForStorage, storeDataDumpsToS3, storeResponse, updateOpenDataIndex } from './backend/main';
+import {
+  APP_VERSION,
+  prepareResponseForStorage,
+  storeDataDumpsToS3,
+  storeResponse,
+  updateOpenDataIndex,
+} from './backend/main';
 import { assertIs, FrontendResponseModel, FrontendResponseModelT } from './common/model';
 
 const dynamoDb = createDynamoDbClient(process.env.ABUSE_DETECTION_TABLE || '');
+
+console.log(`Backend ${APP_VERSION} started`);
 
 export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
   console.log(`Incoming request: ${event.httpMethod} ${event.path}`); // to preserve privacy, don't log any headers, etc
   if (event.httpMethod === 'OPTIONS') {
     return Promise.resolve().then(() => response(200, undefined));
-  } else {
+  } else if (event.httpMethod === 'POST') {
     const countryCode = event.headers['CloudFront-Viewer-Country'] || '';
     return Promise.resolve()
       .then(() => JSON.parse(event.body || '') as unknown)
@@ -24,6 +32,8 @@ export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
       )
       .then(() => response(200, { success: true }))
       .catch(err => response(500, { error: true }, err));
+  } else {
+    return Promise.resolve(response(200, { name: 'symptomradar', version: APP_VERSION }));
   }
 };
 

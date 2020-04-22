@@ -1,7 +1,7 @@
 import { BackendResponseModelT, FrontendResponseModelT } from '../common/model';
 import { normalizeForwardedFor } from './abuseDetection';
 import { createMockDynamoDbClient } from './abuseDetection.test';
-import { getStorageKey, prepareResponseForStorage } from './main';
+import { APP_VERSION, getStorageKey, prepareResponseForStorage } from './main';
 
 const cannedUuid = '5fa8764a-7337-11ea-96ca-d38ac3d1909b';
 const incomingResponseSample: FrontendResponseModelT = {
@@ -27,7 +27,7 @@ const incomingResponseSample: FrontendResponseModelT = {
 };
 const persistedResponseSample: BackendResponseModelT = {
   age_group: '20',
-  app_version: 'v2.2',
+  app_version: APP_VERSION,
   breathing_difficulties: 'no',
   corona_suspicion: 'no',
   cough: 'mild',

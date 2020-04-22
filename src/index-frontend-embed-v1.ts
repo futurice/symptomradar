@@ -4,6 +4,8 @@ import './frontend/embed/v1/index.css';
 import $ from 'jquery';
 import { v4 as uuidV4 } from 'uuid';
 
+console.log(`Frontend ${process.env.REACT_APP_APP_VERSION} started`);
+
 function storageAvailable() {
   try {
     const storage = window.localStorage;

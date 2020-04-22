@@ -181,7 +181,6 @@ If you find a security related issue in our service, please contact datadeski@hs
 
 # Release process
 
-- Update `app_version` and push it to `master`
 - Ensure `dev` has deployed the release you're planning to put out
 - [Test that basic data collection works directly](https://dev.oiretutka.fi/embed/v1/) and/or [embedded](https://www.hs.fi/datajournalismi/art-2000006450733.html)
 - Take a peek at the `dev` overview dashboard on CloudWatch and make sure everything looks fine

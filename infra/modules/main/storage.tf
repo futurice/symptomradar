@@ -55,7 +55,12 @@ resource "aws_athena_named_query" "create_table" {
         age_group string,
         gender string,
         postal_code string,
-        duration smallint
+        duration smallint,
+        abuse_score struct<
+          source_ip:smallint,
+          user_agent:smallint,
+          forwarded_for:smallint
+        >
      )
     ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
     WITH SERDEPROPERTIES ('serialization.format' = '1')
@@ -123,7 +128,8 @@ resource "aws_athena_named_query" "returning_participants" {
 }
 
 # Example: Interacting with JSON
-# Based on https://docs.aws.amazon.com/athena/latest/ug/extracting-data-from-JSON.html
+# Based on: https://docs.aws.amazon.com/athena/latest/ug/extracting-data-from-JSON.html
+# See also: https://aws.amazon.com/blogs/big-data/create-tables-in-amazon-athena-from-nested-json-and-mappings-using-jsonserde/ for how to do this during CREATE TABLE
 /*
 WITH dataset AS (
   SELECT

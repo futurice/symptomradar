@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Router, Location } from '@reach/router';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
-// import FocusLock from 'react-focus-lock';
+import FocusLock from 'react-focus-lock';
 import axios from 'axios';
 import Header from './Header';
 import MapView from './MapView';
@@ -122,9 +122,9 @@ export const App = () => {
             return <Header location={location.pathname} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />;
           }}
         </Location>
-        {/* <FocusLock disabled={!menuOpen}> */}
+        <FocusLock disabled={!menuOpen}>
         <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}></Menu>
-        {/* </FocusLock> */}
+        </FocusLock>
         <main>
           <Router>
             {<MapView path="/" responseData={data} />}

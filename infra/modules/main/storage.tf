@@ -33,29 +33,34 @@ resource "aws_athena_named_query" "create_table" {
   query       = <<-SQL
     CREATE EXTERNAL TABLE IF NOT EXISTS
       ${local.table} (
-        `response_id` string,
-        `timestamp` string,
-        `participant_id` string,
-        `app_version` string,
-        `country_code` string,
-        `fever` string,
-        `cough` string,
-        `breathing_difficulties` string,
-        `muscle_pain` string,
-        `headache` string,
-        `sore_throat` string,
-        `rhinitis` string,
-        `stomach_issues` string,
-        `sensory_issues` string,
-        `healthcare_contact` string,
-        `general_wellbeing` string,
-        `longterm_medication` string,
-        `smoking` string,
-        `corona_suspicion` string,
-        `age_group` string,
-        `gender` string,
-        `postal_code` string,
-        `duration` smallint
+        response_id string,
+        timestamp string,
+        participant_id string,
+        app_version string,
+        country_code string,
+        fever string,
+        cough string,
+        breathing_difficulties string,
+        muscle_pain string,
+        headache string,
+        sore_throat string,
+        rhinitis string,
+        stomach_issues string,
+        sensory_issues string,
+        healthcare_contact string,
+        general_wellbeing string,
+        longterm_medication string,
+        smoking string,
+        corona_suspicion string,
+        age_group string,
+        gender string,
+        postal_code string,
+        duration smallint,
+        abuse_score struct<
+          source_ip:smallint,
+          user_agent:smallint,
+          forwarded_for:smallint
+        >
      )
     ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
     WITH SERDEPROPERTIES ('serialization.format' = '1')
@@ -123,7 +128,8 @@ resource "aws_athena_named_query" "returning_participants" {
 }
 
 # Example: Interacting with JSON
-# Based on https://docs.aws.amazon.com/athena/latest/ug/extracting-data-from-JSON.html
+# Based on: https://docs.aws.amazon.com/athena/latest/ug/extracting-data-from-JSON.html
+# See also: https://aws.amazon.com/blogs/big-data/create-tables-in-amazon-athena-from-nested-json-and-mappings-using-jsonserde/ for how to do this during CREATE TABLE
 /*
 WITH dataset AS (
   SELECT

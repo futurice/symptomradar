@@ -16,7 +16,6 @@ type LinkProps = {
   to: string;
   linkText: string;
   icon: (match: { uri: string; path: string } | null) => void;
-  tabIndex: any;
   setMenuOpen: any;
 };
 
@@ -151,7 +150,7 @@ const CloseButton = styled.button`
   }
 `;
 
-const LinkItem = ({ to, linkText, icon, tabIndex, setMenuOpen }: LinkProps) => {
+const LinkItem = ({ to, linkText, icon, setMenuOpen }: LinkProps) => {
   return (
     <Match path={to}>
       {({ match }) => (
@@ -166,7 +165,6 @@ const LinkItem = ({ to, linkText, icon, tabIndex, setMenuOpen }: LinkProps) => {
 
 const Menu = ({ menuOpen, setMenuOpen }: MenuProps) => {
   const isHidden = menuOpen ? true : false;
-  const tabIndex = isHidden ? 0 : -1;
   return (
     <MenuContainer>
       {menuOpen && <Overlay onClick={() => setMenuOpen(false)} />}
@@ -181,7 +179,6 @@ const Menu = ({ menuOpen, setMenuOpen }: MenuProps) => {
           <LinkContainer>
             <li>
               <LinkItem
-                tabIndex={tabIndex}
                 to="/"
                 linkText="Kartta"
                 setMenuOpen={setMenuOpen}
@@ -190,7 +187,6 @@ const Menu = ({ menuOpen, setMenuOpen }: MenuProps) => {
             </li>
             <li>
               <LinkItem
-                tabIndex={tabIndex}
                 to="survey"
                 linkText="Kyselylomake"
                 setMenuOpen={setMenuOpen}
@@ -199,7 +195,6 @@ const Menu = ({ menuOpen, setMenuOpen }: MenuProps) => {
             </li>
             <li>
               <LinkItem
-                tabIndex={tabIndex}
                 to="about"
                 linkText="Info"
                 setMenuOpen={setMenuOpen}

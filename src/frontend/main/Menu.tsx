@@ -23,6 +23,17 @@ interface activeLinkProps {
   readonly isActive: boolean;
 }
 
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  background-color: ${props => props.theme.black};
+  opacity: 0.6;
+`;
+
 const StyledMenu = styled.nav<MenuProps>`
   display: flex;
   flex-direction: column;
@@ -127,6 +138,8 @@ const Menu = ({ menuOpen, setMenuOpen }: MenuProps) => {
   const isHidden = menuOpen ? true : false;
   const tabIndex = isHidden ? 0 : -1;
   return (
+    <>
+      {menuOpen && <Overlay onClick={() => setMenuOpen(false)} />}
     <StyledMenu menuOpen={menuOpen} id="main-menu" aria-hidden={!isHidden}>
       <MenuHeader>
         <CloseButton type="button" aria-label="Sulje" onClick={() => setMenuOpen(false)}>
@@ -166,6 +179,7 @@ const Menu = ({ menuOpen, setMenuOpen }: MenuProps) => {
         </LinkContainer>
       </MenuContent>
     </StyledMenu>
+    </>
   );
 };
 export default Menu;

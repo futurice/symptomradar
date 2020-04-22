@@ -217,6 +217,35 @@ resource "aws_cloudwatch_dashboard" "overview" {
                 "title": "Backend API logs matching \"error\"",
                 "view": "table"
             }
+        },
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 12,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "metrics": [
+                    [ { "expression": "(m1/1000)/60", "label": "Duration (minutes)", "id": "e1" } ],
+                    [ "AWS/Lambda", "Duration", "FunctionName", "${module.backend_worker.function_name}", { "color": "#1f77b4", "id": "m1", "visible": false } ],
+                    [ ".", "Errors", ".", ".", { "yAxis": "right", "color": "#d62728", "id": "m2" } ]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "${data.aws_region.current.name}",
+                "stat": "Average",
+                "period": 900,
+                "title": "Worker",
+                "yAxis": {
+                    "left": {
+                        "label": "Minutes",
+                        "showUnits": false
+                    },
+                    "right": {
+                        "label": "Errors"
+                    }
+                }
+            }
         }
     ]
 }

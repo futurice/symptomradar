@@ -60,7 +60,7 @@ interface mapProperties {
 const cartogramData: mapProperties[] = require('./assets/data/cartogram-coordinates.json');
 
 const MapNav = styled.div`
-  height: ${NAVHEIGHT};
+  height: ${NAVHEIGHT}px;
   padding: 0 16px;
   border-bottom: 1px solid ${props => props.theme.black};
 `;
@@ -88,7 +88,7 @@ const Label = styled.label`
 const MapWrapper = styled.div`
   text-align: center;
   position: relative;
-  height: calc(100vh - (${HEADERHEIGHT} + ${NAVHEIGHT}));
+  height: calc(100vh - (${HEADERHEIGHT}px + ${NAVHEIGHT}px));
 `;
 
 const FilterWrapper = styled.div`
@@ -171,7 +171,7 @@ const CloseButton = styled.button`
 const MapView = (props: MapViewProps) => {
   const currentPath = props.location!.pathname;
   const isEmbed = currentPath === '/map-embed';
-  const topPartHeight = isEmbed ? 80 : 225;
+  const topPartHeight = isEmbed ? NAVHEIGHT : HEADERHEIGHT + NAVHEIGHT;
   const { isShowing, toggleModal } = useModal();
   const [showMapInfo, setShowMapInfo] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState<FilterKey>(FILTERS.corona_suspicion_yes.id as FilterKey);

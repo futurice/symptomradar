@@ -270,7 +270,7 @@ const Map: React.FunctionComponent<{
               .style('height')
               .slice(0, -2),
           ) -
-          50})`,
+          30})`,
       );
       if (props.mapHeight < 345) d3.select(keyNode).style('bottom', '40px');
       else
@@ -283,7 +283,7 @@ const Map: React.FunctionComponent<{
           ) + 40}px`;
         });
     } else {
-      mapSVG.select('.masterG').attr('transform', `translate(0,-10)`);
+      mapSVG.select('.masterG').attr('transform', `translate(0,-30)`);
       d3.select(keyNode).style('bottom', '40px');
     }
   }, [props.popUpOpen, props.mapHeight]);

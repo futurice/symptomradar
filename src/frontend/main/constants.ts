@@ -5,5 +5,5 @@ export const FILTERS = {
   breathing_difficulties_yes: { label: 'Vaikeuksia hengittää', id: 'breathing_difficulties_yes' },
 };
 
-export const HEADERHEIGHT = '90px';
-export const NAVHEIGHT = '55px';
+export const HEADERHEIGHT = 90;
+export const NAVHEIGHT = 55;

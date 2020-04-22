@@ -23,10 +23,6 @@ const StyledBurger = styled.button<MenuProps>`
     width: 24px;
     margin-bottom: 4px;
   }
-
-  &:focus {
-    outline: none;
-  }
 `;
 
 const MenuLabel = styled.span`

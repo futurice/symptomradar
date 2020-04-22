@@ -40,12 +40,12 @@ const StyledMenu = styled.nav<MenuProps>`
   background: ${props => props.theme.white};
   height: 100vh;
   width: 90vw;
+  max-width: 324px;
   position: absolute;
   top: 0;
   right: 0;
-  transition: transform 0.3s ease-in-out;
-  z-index: 1;
-  transform: ${props => (props.menuOpen ? 'translateX(0)' : 'translateX(100%)')};
+  z-index: 2;
+  display: ${props => (props.menuOpen ? 'flex' : 'none')};
 `;
 
 const MenuHeader = styled.div`
@@ -140,45 +140,45 @@ const Menu = ({ menuOpen, setMenuOpen }: MenuProps) => {
   return (
     <>
       {menuOpen && <Overlay onClick={() => setMenuOpen(false)} />}
-    <StyledMenu menuOpen={menuOpen} id="main-menu" aria-hidden={!isHidden}>
-      <MenuHeader>
-        <CloseButton type="button" aria-label="Sulje" onClick={() => setMenuOpen(false)}>
-          <CloseIcon />
-          Sulje
-        </CloseButton>
-      </MenuHeader>
-      <MenuContent>
-        <LinkContainer>
-          <li>
-            <LinkItem
-              tabIndex={tabIndex}
-              to="/"
-              linkText="Kartta"
-              setMenuOpen={setMenuOpen}
-              icon={match => <MapIcon fillColor={match ? '#000' : '#0047FF'} />}
-            />
-          </li>
-          <li>
-            <LinkItem
-              tabIndex={tabIndex}
-              to="survey"
-              linkText="Kyselylomake"
-              setMenuOpen={setMenuOpen}
-              icon={match => <SurveyIcon fillColor={match ? '#000' : '#0047FF'} />}
-            />
-          </li>
-          <li>
-            <LinkItem
-              tabIndex={tabIndex}
-              to="about"
-              linkText="Info"
-              setMenuOpen={setMenuOpen}
-              icon={match => <AboutIcon fillColor={match ? '#000' : '#0047FF'} />}
-            />
-          </li>
-        </LinkContainer>
-      </MenuContent>
-    </StyledMenu>
+      <StyledMenu menuOpen={menuOpen} id="main-menu" aria-hidden={!isHidden}>
+        <MenuHeader>
+          <CloseButton type="button" aria-label="Sulje" onClick={() => setMenuOpen(false)}>
+            <CloseIcon />
+            Sulje
+          </CloseButton>
+        </MenuHeader>
+        <MenuContent>
+          <LinkContainer>
+            <li>
+              <LinkItem
+                tabIndex={tabIndex}
+                to="/"
+                linkText="Kartta"
+                setMenuOpen={setMenuOpen}
+                icon={match => <MapIcon fillColor={match ? '#000' : '#0047FF'} />}
+              />
+            </li>
+            <li>
+              <LinkItem
+                tabIndex={tabIndex}
+                to="survey"
+                linkText="Kyselylomake"
+                setMenuOpen={setMenuOpen}
+                icon={match => <SurveyIcon fillColor={match ? '#000' : '#0047FF'} />}
+              />
+            </li>
+            <li>
+              <LinkItem
+                tabIndex={tabIndex}
+                to="about"
+                linkText="Info"
+                setMenuOpen={setMenuOpen}
+                icon={match => <AboutIcon fillColor={match ? '#000' : '#0047FF'} />}
+              />
+            </li>
+          </LinkContainer>
+        </MenuContent>
+      </StyledMenu>
     </>
   );
 };

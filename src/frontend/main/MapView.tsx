@@ -175,7 +175,7 @@ const MapView = (props: MapViewProps) => {
   const { isShowing, toggleModal } = useModal();
   const [showMapInfo, setShowMapInfo] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState<FilterKey>(FILTERS.corona_suspicion_yes.id as FilterKey);
-  const [mapHeight, setMapHeight] = useState(window.innerHeight - topPartHeight);
+  const [mapHeight, setMapHeight] = useState(window.innerHeight - topPartHeight - 10);
   const [activeCityData, setActiveCityData] = useState({});
   const data = props.responseData.data;
 
@@ -202,7 +202,7 @@ const MapView = (props: MapViewProps) => {
   }, 0);
 
   window.addEventListener('resize', () => {
-    setMapHeight(window.innerHeight - topPartHeight);
+    setMapHeight(window.innerHeight - topPartHeight - 10);
   });
   let dataForMap: mapProperties[] = cartogramData.map((d: mapProperties) => {
     let index = data.findIndex((el: mapProperties) => d.city === el.city);

@@ -37,16 +37,16 @@ export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
   }
 };
 
-export const workerEntrypoint: Handler<unknown> = async () => {
+export const workerEntrypoint: Handler<unknown> = () => {
   console.log('Worker started');
-  try {
-    await storeDataDumpsToS3();
-    await updateOpenDataIndex();
-    console.log('Worker done');
-  } catch (error) {
-    console.error('ERROR (WORKER)', error);
-    throw error;
-  }
+  Promise.resolve()
+    .then(() => storeDataDumpsToS3())
+    .then(() => updateOpenDataIndex())
+    .then(() => console.log('Worker done'))
+    .catch(error => {
+      console.error('ERROR (WORKER)', error);
+      return Promise.reject(error);
+    });
 };
 
 if (process.argv[0].match(/\/ts-node$/)) {

@@ -120,7 +120,7 @@ export function hash(input: string, pepper: string) {
     .digest('base64');
 }
 
-export async function storeDataDumpsToS3() {
+export function storeDataDumpsToS3() {
   //
   // Validations
 
@@ -131,54 +131,59 @@ export async function storeDataDumpsToS3() {
   const domain = process.env.DOMAIN_NAME_OPEN_DATA;
   if (!domain) throw new Error('Open data domain name missing from environment');
 
-  //
-  // Perform Athena queries in parallel
+  return Promise.resolve()
+    .then(() =>
+      //
+      // Perform Athena queries in parallel
+      Promise.all([
+        athenaExpress.query({ sql: totalResponsesQuery, db }),
+        athenaExpress.query({ sql: postalCodeLevelDataQuery, db }),
+      ]),
+    )
+    .then(([totalResponsesResult, postalCodeLevelDataResult]) =>
+      //
+      // Map query results into the JSON format we want to see in s3
 
-  const [totalResponsesResult, postalCodeLevelDataResponse] = await Promise.all([
-    athenaExpress.query({ sql: totalResponsesQuery, db }),
-    athenaExpress.query({ sql: postalCodeLevelDataQuery, db }),
-  ]);
+      // TODO: Add model for these
+      Promise.all([
+        totalResponsesResult.Items[0],
+        mapPostalCodeLevelToCityLevelData(postalCodeLevelDataResult.Items, bucket),
+      ]),
+    )
+    .then(([totalResponses, cityLevelData]) =>
+      //
+      // Push data to S3
 
-  //
-  // Map query results into the JSON format we want to see in s3
+      Promise.all([
+        s3PutJsonHelper({
+          Bucket: bucket,
+          Key: 'total_responses.json',
+          Body: {
+            meta: {
+              description:
+                'Total number of responses collected by the system thus far. This is the raw number before any filtering or abuse detection has been performed.',
+              generated: new Date().toISOString(),
+              link: `https://${domain}/total_responses.json`,
+            },
+            data: totalResponses,
+          },
+        }),
 
-  // TODO: Add model for this
-  const totalResponses = totalResponsesResult.Items[0];
-
-  const cityLevelData = await mapPostalCodeLevelToCityLevelData(postalCodeLevelDataResponse.Items, bucket);
-
-  //
-  // Push data to S3
-
-  await Promise.all([
-    s3PutJsonHelper({
-      Bucket: bucket,
-      Key: 'total_responses.json',
-      Body: {
-        meta: {
-          description:
-            'Total number of responses collected by the system thus far. This is the raw number before any filtering or abuse detection has been performed.',
-          generated: new Date().toISOString(),
-          link: `https://${domain}/total_responses.json`,
-        },
-        data: totalResponses,
-      },
-    }),
-
-    s3PutJsonHelper({
-      Bucket: bucket,
-      Key: 'city_level_general_results.json',
-      Body: {
-        meta: {
-          description:
-            'Population and response count per each city in Finland, where the response count was higher than 25. All the form inputs are coded in city level. Population data from Tilastokeskus. This data is released for journalistic and scientific purposes.',
-          generated: new Date().toISOString(),
-          link: `https://${domain}/city_level_general_results.json`,
-        },
-        data: cityLevelData,
-      },
-    }),
-  ]);
+        s3PutJsonHelper({
+          Bucket: bucket,
+          Key: 'city_level_general_results.json',
+          Body: {
+            meta: {
+              description:
+                'Population and response count per each city in Finland, where the response count was higher than 25. All the form inputs are coded in city level. Population data from Tilastokeskus. This data is released for journalistic and scientific purposes.',
+              generated: new Date().toISOString(),
+              link: `https://${domain}/city_level_general_results.json`,
+            },
+            data: cityLevelData,
+          },
+        }),
+      ]),
+    );
 }
 
 const openDataFileNames = [
@@ -200,132 +205,151 @@ export async function updateOpenDataIndex() {
   const domain = process.env.DOMAIN_NAME_OPEN_DATA;
   if (!domain) throw new Error('Open data domain name missing from environment');
 
-  //
-  // Fetch data files
+  return Promise.all(
+    //
+    // Fetch data files
+    openDataFileNames.map(filename =>
+      s3GetJsonHelper({ Bucket: bucket, Key: `${filename}.json` }).then<[string, any]>(data => [filename, data]),
+    ),
+  ).then(entries => {
+    //
+    // Map data files into dictionary
+    const openDataIndex = entries.reduce((memo, [filename, data]) => {
+      memo[filename] = data.meta;
+      return memo;
+    }, {} as Record<string, any>);
 
-  // TODO: Model these (meta: OpenDataMeta, data: T = any)
-  const openDataIndex: Record<string, any> = {};
+    //
+    // Produce open data index
+    // TODO: Model these (meta: OpenDataMeta, data: T = any)
+    const openData = {
+      meta: {
+        description: 'This is the open data site for the www.oiretutka.fi project',
+      },
+      data: openDataIndex,
+    };
 
-  for (const filename of openDataFileNames) {
-    const data = await s3GetJsonHelper({ Bucket: bucket, Key: `${filename}.json` });
-    openDataIndex[filename] = data.meta;
-  }
-
-  const openData = {
-    meta: {
-      description: 'This is the open data site for the www.oiretutka.fi project',
-    },
-    data: openDataIndex,
-  };
-
-  await s3PutJsonHelper({ Bucket: bucket, Key: 'index.json', Body: openData });
+    //
+    // Push open data index to s3
+    return s3PutJsonHelper({ Bucket: bucket, Key: 'index.json', Body: openData });
+  });
 }
 
-async function mapPostalCodeLevelToCityLevelData(postalCodeLevelData: any[], bucket: string) {
-  const postalCodeCityMappings = await s3GetJsonHelper({ Bucket: bucket, Key: 'postalcode_city_mappings.json' });
+function mapPostalCodeLevelToCityLevelData(postalCodeLevelData: any[], bucket: string) {
+  return Promise.all([
+    //
+    // Fetch supporting data
+    s3GetJsonHelper({ Bucket: bucket, Key: 'postalcode_city_mappings.json' }),
+    s3GetJsonHelper({ Bucket: bucket, Key: 'population_per_city.json' }),
+  ]).then(([postalCodeCityMappings, populationPerCity]) => {
+    //
+    // Transform postal code level data to city level data
 
-  const populationPerCity = await s3GetJsonHelper({ Bucket: bucket, Key: 'population_per_city.json' });
+    // Generate initial city-level aggregation set from the city population data
+    const resultsByCity = (populationPerCity.data as any[]).reduce((acc, data) => {
+      acc[data.city] = {
+        city: data.city,
+        population: data.population,
+        responses: 0,
+        fever_no: 0,
+        fever_slight: 0,
+        fever_high: 0,
+        cough_no: 0,
+        cough_mild: 0,
+        cough_intense: 0,
+        general_wellbeing_fine: 0,
+        general_wellbeing_impaired: 0,
+        general_wellbeing_bad: 0,
+        breathing_difficulties_no: 0,
+        breathing_difficulties_yes: 0,
+        muscle_pain_no: 0,
+        muscle_pain_yes: 0,
+        headache_no: 0,
+        headache_yes: 0,
+        sore_throat_no: 0,
+        sore_throat_yes: 0,
+        rhinitis_no: 0,
+        rhinitis_yes: 0,
+        stomach_issues_no: 0,
+        stomach_issues_yes: 0,
+        sensory_issues_no: 0,
+        sensory_issues_yes: 0,
+        longterm_medication_no: 0,
+        longterm_medication_yes: 0,
+        smoking_no: 0,
+        smoking_yes: 0,
+        corona_suspicion_no: 0,
+        corona_suspicion_yes: 0,
+      };
+      return acc;
+    }, {});
 
-  // Generate initial city-level aggregation set from the city population data
-  const resultsByCity = (populationPerCity.data as any[]).reduce((acc, data) => {
-    acc[data.city] = {
-      city: data.city,
-      population: data.population,
-      responses: 0,
-      fever_no: 0,
-      fever_slight: 0,
-      fever_high: 0,
-      cough_no: 0,
-      cough_mild: 0,
-      cough_intense: 0,
-      general_wellbeing_fine: 0,
-      general_wellbeing_impaired: 0,
-      general_wellbeing_bad: 0,
-      breathing_difficulties_no: 0,
-      breathing_difficulties_yes: 0,
-      muscle_pain_no: 0,
-      muscle_pain_yes: 0,
-      headache_no: 0,
-      headache_yes: 0,
-      sore_throat_no: 0,
-      sore_throat_yes: 0,
-      rhinitis_no: 0,
-      rhinitis_yes: 0,
-      stomach_issues_no: 0,
-      stomach_issues_yes: 0,
-      sensory_issues_no: 0,
-      sensory_issues_yes: 0,
-      longterm_medication_no: 0,
-      longterm_medication_yes: 0,
-      smoking_no: 0,
-      smoking_yes: 0,
-      corona_suspicion_no: 0,
-      corona_suspicion_yes: 0,
-    };
-    return acc;
-  }, {});
+    // Accumulate postal code level data into city level data
+    for (const postalCodeData of postalCodeLevelData) {
+      const city = postalCodeCityMappings.data[postalCodeData.postal_code];
 
-  // Accumulate postal code level data into city level data
-  for (const postalCodeData of postalCodeLevelData) {
-    const city = postalCodeCityMappings.data[postalCodeData.postal_code];
+      if (!city) {
+        console.warn(`mapPostalCodeLevelToCityLevelData: Skipping unknown postal code ${postalCodeData.postal_code}`);
+        continue;
+      }
 
-    if (!city) {
-      console.warn(`mapPostalCodeLevelToCityLevelData: Skipping unknown postal code ${postalCodeData.postal_code}`);
-      continue;
+      resultsByCity[city].responses += Number(postalCodeData.responses);
+      resultsByCity[city].fever_no += Number(postalCodeData.fever_no);
+      resultsByCity[city].fever_slight += Number(postalCodeData.fever_slight);
+      resultsByCity[city].fever_high += Number(postalCodeData.fever_high);
+      resultsByCity[city].cough_no += Number(postalCodeData.cough_no);
+      resultsByCity[city].cough_mild += Number(postalCodeData.cough_mild);
+      resultsByCity[city].cough_intense += Number(postalCodeData.cough_intense);
+      resultsByCity[city].general_wellbeing_fine += Number(postalCodeData.general_wellbeing_fine);
+      resultsByCity[city].general_wellbeing_impaired += Number(postalCodeData.general_wellbeing_impaired);
+      resultsByCity[city].general_wellbeing_bad += Number(postalCodeData.general_wellbeing_bad);
+      resultsByCity[city].breathing_difficulties_no += Number(postalCodeData.breathing_difficulties_no);
+      resultsByCity[city].breathing_difficulties_yes += Number(postalCodeData.breathing_difficulties_yes);
+      resultsByCity[city].muscle_pain_no += Number(postalCodeData.muscle_pain_no);
+      resultsByCity[city].muscle_pain_yes += Number(postalCodeData.muscle_pain_yes);
+      resultsByCity[city].headache_no += Number(postalCodeData.headache_no);
+      resultsByCity[city].headache_yes += Number(postalCodeData.headache_yes);
+      resultsByCity[city].sore_throat_no += Number(postalCodeData.sore_throat_no);
+      resultsByCity[city].sore_throat_yes += Number(postalCodeData.sore_throat_yes);
+      resultsByCity[city].rhinitis_no += Number(postalCodeData.rhinitis_no);
+      resultsByCity[city].rhinitis_yes += Number(postalCodeData.rhinitis_yes);
+      resultsByCity[city].stomach_issues_no += Number(postalCodeData.stomach_issues_no);
+      resultsByCity[city].stomach_issues_yes += Number(postalCodeData.stomach_issues_yes);
+      resultsByCity[city].sensory_issues_no += Number(postalCodeData.sensory_issues_no);
+      resultsByCity[city].sensory_issues_yes += Number(postalCodeData.sensory_issues_yes);
+      resultsByCity[city].longterm_medication_no += Number(postalCodeData.longterm_medication_no);
+      resultsByCity[city].longterm_medication_yes += Number(postalCodeData.longterm_medication_yes);
+      resultsByCity[city].smoking_no += Number(postalCodeData.smoking_no);
+      resultsByCity[city].smoking_yes += Number(postalCodeData.smoking_yes);
+      resultsByCity[city].corona_suspicion_no += Number(postalCodeData.corona_suspicion_no);
+      resultsByCity[city].corona_suspicion_yes += Number(postalCodeData.corona_suspicion_yes);
     }
 
-    resultsByCity[city].responses += Number(postalCodeData.responses);
-    resultsByCity[city].fever_no += Number(postalCodeData.fever_no);
-    resultsByCity[city].fever_slight += Number(postalCodeData.fever_slight);
-    resultsByCity[city].fever_high += Number(postalCodeData.fever_high);
-    resultsByCity[city].cough_no += Number(postalCodeData.cough_no);
-    resultsByCity[city].cough_mild += Number(postalCodeData.cough_mild);
-    resultsByCity[city].cough_intense += Number(postalCodeData.cough_intense);
-    resultsByCity[city].general_wellbeing_fine += Number(postalCodeData.general_wellbeing_fine);
-    resultsByCity[city].general_wellbeing_impaired += Number(postalCodeData.general_wellbeing_impaired);
-    resultsByCity[city].general_wellbeing_bad += Number(postalCodeData.general_wellbeing_bad);
-    resultsByCity[city].breathing_difficulties_no += Number(postalCodeData.breathing_difficulties_no);
-    resultsByCity[city].breathing_difficulties_yes += Number(postalCodeData.breathing_difficulties_yes);
-    resultsByCity[city].muscle_pain_no += Number(postalCodeData.muscle_pain_no);
-    resultsByCity[city].muscle_pain_yes += Number(postalCodeData.muscle_pain_yes);
-    resultsByCity[city].headache_no += Number(postalCodeData.headache_no);
-    resultsByCity[city].headache_yes += Number(postalCodeData.headache_yes);
-    resultsByCity[city].sore_throat_no += Number(postalCodeData.sore_throat_no);
-    resultsByCity[city].sore_throat_yes += Number(postalCodeData.sore_throat_yes);
-    resultsByCity[city].rhinitis_no += Number(postalCodeData.rhinitis_no);
-    resultsByCity[city].rhinitis_yes += Number(postalCodeData.rhinitis_yes);
-    resultsByCity[city].stomach_issues_no += Number(postalCodeData.stomach_issues_no);
-    resultsByCity[city].stomach_issues_yes += Number(postalCodeData.stomach_issues_yes);
-    resultsByCity[city].sensory_issues_no += Number(postalCodeData.sensory_issues_no);
-    resultsByCity[city].sensory_issues_yes += Number(postalCodeData.sensory_issues_yes);
-    resultsByCity[city].longterm_medication_no += Number(postalCodeData.longterm_medication_no);
-    resultsByCity[city].longterm_medication_yes += Number(postalCodeData.longterm_medication_yes);
-    resultsByCity[city].smoking_no += Number(postalCodeData.smoking_no);
-    resultsByCity[city].smoking_yes += Number(postalCodeData.smoking_yes);
-    resultsByCity[city].corona_suspicion_no += Number(postalCodeData.corona_suspicion_no);
-    resultsByCity[city].corona_suspicion_yes += Number(postalCodeData.corona_suspicion_yes);
-  }
-
-  // NOTE: v8 should maintain insertion order here, and since the original
-  // data this is derived from arranges cities in alphabetical order,
-  // this should be alphabetically ordered as well.
-  return Object.values(resultsByCity);
+    // NOTE: v8 should maintain insertion order here, and since the original
+    // data this is derived from arranges cities in alphabetical order,
+    // this should be alphabetically ordered as well.
+    return Object.values(resultsByCity);
+  });
 }
 
 //
 // S3 helpers
 
-async function s3GetJsonHelper(params: AWS.S3.GetObjectRequest) {
-  const result = await s3.getObject(params).promise();
-  if (!result.Body) {
-    throw Error(`Empty JSON in S3 object '${params.Bucket}/${params.Key}`);
-  }
+function s3GetJsonHelper(params: AWS.S3.GetObjectRequest) {
+  return s3
+    .getObject(params)
+    .promise()
+    .then(result => {
+      if (!result.Body) {
+        throw Error(`Empty JSON in S3 object '${params.Bucket}/${params.Key}`);
+      }
 
-  return JSON.parse(result.Body.toString('utf-8'));
+      return JSON.parse(result.Body.toString('utf-8'));
+    });
 }
 
-async function s3PutJsonHelper(params: AWS.S3.PutObjectRequest) {
-  return await s3
+function s3PutJsonHelper(params: AWS.S3.PutObjectRequest) {
+  return s3
     .putObject({
       ...params,
       ContentType: 'application/json',

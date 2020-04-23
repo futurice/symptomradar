@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from '@reach/router';
 import Logo from './assets/oiretutka-logo-gradient.svg';
 import MenuButton from './MenuButton';
 import { HEADERHEIGHT } from './constants';
@@ -39,7 +40,9 @@ const Header = ({ location, menuOpen, setMenuOpen }: HeaderProps) => {
       <AppHeader>
         <HeaderContainer>
           <div>
-            <LogoImage src={Logo} alt="Oiretutka. Helsingin Sanomat ja Futurice." />
+            <Link to={'/'}>
+              <LogoImage src={Logo} alt="Oiretutka. Helsingin Sanomat ja Futurice." />
+            </Link>
           </div>
           <MenuButton menuOpen={menuOpen} setMenuOpen={setMenuOpen}></MenuButton>
         </HeaderContainer>

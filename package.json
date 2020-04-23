@@ -67,6 +67,7 @@
     "aws-sdk": "^2.642.0",
     "check-node-version": "^4.0.2",
     "concurrently": "^5.1.0",
+    "nan": "2.14.1",
     "prettier": "^1.19.1",
     "ts-node": "^8.8.1",
     "typescript": "^3.8.3"

@@ -22,6 +22,7 @@ interface activeLinkProps {
 
 const NavigationContainer = styled.nav`
   padding: 24px 42px;
+  background: ${props => props.theme.white};
 `;
 
 const LinkContainer = styled.ul`

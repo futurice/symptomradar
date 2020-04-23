@@ -68,7 +68,7 @@ const NavigationContainer = styled.div<MenuProps>`
 const MenuSmallScreen = ({ menuOpen, setMenuOpen }: MenuProps) => {
   return (
     <DialogOverlay isOpen={menuOpen} onDismiss={() => setMenuOpen(false)}>
-      <MenuContent aria-label="blee" id="main-menu">
+      <MenuContent aria-label="Navigaatio" id="main-menu">
         <MenuHeader>
           <CloseButton type="button" aria-label="Sulje" onClick={() => setMenuOpen(false)}>
             <CloseIcon />

@@ -42,10 +42,6 @@ const RouterLink = styled(Link)`
   font-size: 21px;
   padding: 16px 0;
 
-  &:not(:last-child) {
-    margin-right: 10px;
-  }
-
   svg {
     flex: 0 0 24px;
     width: 24px;

@@ -8,7 +8,7 @@ import { HEADERHEIGHT } from './constants';
 type HeaderProps = {
   location: string;
   menuOpen: boolean;
-  setMenuOpen: any;
+  setMenuOpen: (value: boolean) => void;
 };
 
 const AppHeader = styled.header`

@@ -8,7 +8,11 @@ import Navigation from './Navigation';
 
 type MenuProps = {
   menuOpen: boolean;
-  setMenuOpen?: any;
+  setMenuOpen: (value: boolean) => void;
+};
+
+type NavProps = {
+  isVisible: boolean;
 };
 
 const MenuContent = styled(DialogContent)`
@@ -49,8 +53,8 @@ const CloseButton = styled.button`
   }
 `;
 
-const NavigationContainer = styled.div<MenuProps>`
-  display: ${props => (props.menuOpen ? 'block' : 'none')};
+const NavigationContainer = styled.div<NavProps>`
+  display: ${props => (props.isVisible ? 'block' : 'none')};
   z-index: 1;
   position: relative;
   width: 100%;
@@ -83,7 +87,7 @@ const MenuSmallScreen = ({ menuOpen, setMenuOpen }: MenuProps) => {
 
 const MenuBigScreen = ({ menuOpen, setMenuOpen }: MenuProps) => {
   return (
-    <NavigationContainer menuOpen={menuOpen} id="main-menu">
+    <NavigationContainer isVisible={menuOpen} id="main-menu">
       <Navigation setMenuOpen={setMenuOpen}></Navigation>
     </NavigationContainer>
   );

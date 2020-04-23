@@ -13,7 +13,7 @@ type LinkProps = {
   to: string;
   linkText: string;
   icon: (match: { uri: string; path: string } | null) => void;
-  setMenuOpen: any;
+  setMenuOpen: (value: boolean) => void;
 };
 
 interface activeLinkProps {

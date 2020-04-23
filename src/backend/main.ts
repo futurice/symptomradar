@@ -35,38 +35,33 @@ const athenaExpress = new AthenaExpress({ aws: AWS, s3: `s3://${athenaResultsBuc
 let cachedSecretPepper: undefined | Promise<string>;
 
 // Saves the given response into our storage bucket
-export function storeResponse(
+export async function storeResponse(
   response: FrontendResponseModelT,
   countryCode: string,
   dynamoDb: DynamoDBClient,
   fingerprint: AbuseFingerprint,
 ) {
-  return Promise.resolve()
-    .then(() =>
-      prepareResponseForStorage(
-        response,
-        countryCode,
-        dynamoDb,
-        fingerprint,
-        (cachedSecretPepper = cachedSecretPepper || getSecret('secret-pepper')),
-      ),
-    )
-    .then(r => {
-      console.log('About to store response', r);
-      return s3
-        .putObject({
-          Bucket: storageBucket,
-          Key: getStorageKey(r),
-          Body: JSON.stringify(r),
-          ACL: 'private',
-        })
-        .promise();
+  const r = await prepareResponseForStorage(
+    response,
+    countryCode,
+    dynamoDb,
+    fingerprint,
+    (cachedSecretPepper = cachedSecretPepper || getSecret('secret-pepper')),
+  );
+
+  console.log('About to store response', r);
+  await s3
+    .putObject({
+      Bucket: storageBucket,
+      Key: getStorageKey(r),
+      Body: JSON.stringify(r),
+      ACL: 'private',
     })
-    .then(() => {}); // don't promise any value, just the success of the operation
+    .promise();
 }
 
 // Takes a response from the frontend, scrubs it clean, and adds fields required for storing it
-export function prepareResponseForStorage(
+export async function prepareResponseForStorage(
   response: FrontendResponseModelT,
   countryCode: string,
   dynamoDb: DynamoDBClient,
@@ -76,34 +71,36 @@ export function prepareResponseForStorage(
   uuid: () => string = uuidV4,
   timestamp = Date.now,
 ): Promise<BackendResponseModelT> {
-  return Promise.resolve(secretPepper).then(secretPepper => {
-    const { readPromise, writePromise } = performAbuseDetection(dynamoDb, fingerprint, val => hash(val, secretPepper));
-    writePromise // we don't really care about the write operation here - it can finish on its own (we only need to handle its possible failure; if it keeps failing we want to know)
-      .catch(err => console.log(`Error: Couldn't write abuse score for response (caused by\n${err}\n)`));
-    return readPromise // we only care about the read operation
-      .catch(
-        (err): AbuseScore => {
-          console.log(`Error: Couldn't read abuse score for response; marking with error code (caused by\n${err}\n)`);
-          return ABUSE_SCORE_ERROR;
-        },
-      )
-      .then(abuse_score => {
-        const meta = {
-          response_id: uuid(),
-          participant_id: hash(hash(response.participant_id, knownPepper), secretPepper), // to preserve privacy, hash the participant_id before storing it, so after opening up the dataset, malicious actors can't submit more responses that pretend to belong to a previous participant
-          timestamp: new Date(timestamp()) // for security, don't trust browser clock, as it may be wrong or fraudulent
-            .toISOString()
-            .replace(/:..\..*/, ':00.000Z'), // to preserve privacy, intentionally reduce precision of the timestamp
-          app_version: APP_VERSION, // document the app version that was used to process this response
-          country_code: countryCode,
-          postal_code: mapPostalCode(response).postal_code, // to protect the privacy of participants from very small postal code areas, they are merged into larger ones, based on known population data
-          duration: response.duration === null ? null : parseInt(response.duration),
-          abuse_score,
-        };
-        const model: BackendResponseModelT = { ...meta, ...response, ...meta }; // the double "...meta" is just for vanity: we want the meta-fields to appear first in the JSON representation
-        return assertIs(BackendResponseModel)(model); // ensure we still pass runtime validations as well
-      });
-  });
+  const secretPepperValue = await secretPepper;
+  const { readPromise, writePromise } = performAbuseDetection(dynamoDb, fingerprint, val =>
+    hash(val, secretPepperValue),
+  );
+
+  writePromise // we don't really care about the write operation here - it can finish on its own (we only need to handle its possible failure; if it keeps failing we want to know)
+    .catch(err => console.log(`Error: Couldn't write abuse score for response (caused by\n${err}\n)`));
+
+  const abuse_score = await readPromise // we only care about the read operation
+    .catch(
+      (err): AbuseScore => {
+        console.log(`Error: Couldn't read abuse score for response; marking with error code (caused by\n${err}\n)`);
+        return ABUSE_SCORE_ERROR;
+      },
+    );
+
+  const meta = {
+    response_id: uuid(),
+    participant_id: hash(hash(response.participant_id, knownPepper), secretPepperValue), // to preserve privacy, hash the participant_id before storing it, so after opening up the dataset, malicious actors can't submit more responses that pretend to belong to a previous participant
+    timestamp: new Date(timestamp()) // for security, don't trust browser clock, as it may be wrong or fraudulent
+      .toISOString()
+      .replace(/:..\..*/, ':00.000Z'), // to preserve privacy, intentionally reduce precision of the timestamp
+    app_version: APP_VERSION, // document the app version that was used to process this response
+    country_code: countryCode,
+    postal_code: mapPostalCode(response).postal_code, // to protect the privacy of participants from very small postal code areas, they are merged into larger ones, based on known population data
+    duration: response.duration === null ? null : parseInt(response.duration),
+    abuse_score,
+  };
+  const model: BackendResponseModelT = { ...meta, ...response, ...meta }; // the double "...meta" is just for vanity: we want the meta-fields to appear first in the JSON representation
+  return assertIs(BackendResponseModel)(model); // ensure we still pass runtime validations as well
 }
 
 // Produces the key under which this response should be stored in S3

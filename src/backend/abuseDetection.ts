@@ -66,8 +66,8 @@ export function createDynamoDbClient(
     // Increments the integer value at given key.
     // If the key doesn't exist, it's created automatically as having value 0, then incremented normally.
     // Returns the integer value (after being incremented).
-    incrementKey(key: string): Promise<number> {
-      return ddb
+    async incrementKey(key: string): Promise<number> {
+      const res = await ddb
         .updateItem({
           TableName: tableName,
           Key: { ADKey: { S: key } },
@@ -79,15 +79,15 @@ export function createDynamoDbClient(
           },
           ReturnValues: 'UPDATED_NEW',
         })
-        .promise()
-        .then(res => res?.Attributes?.ADVal)
-        .then(unwrapNumber);
+        .promise();
+
+      return unwrapNumber(res?.Attributes?.ADVal);
     },
 
     // Returns the integer values at given keys.
     // If some keys don't contain values, they're treated as 0's.
-    getValues(keys: string[]): Promise<number[]> {
-      return ddb
+    async getValues(keys: string[]): Promise<number[]> {
+      const res = await ddb
         .batchGetItem({
           RequestItems: {
             [tableName]: {
@@ -96,14 +96,14 @@ export function createDynamoDbClient(
             },
           },
         })
-        .promise()
-        .then(res =>
-          (res?.Responses?.[tableName] || []).reduce(
-            (memo, next) => ({ ...memo, [next.ADKey.S || '']: unwrapNumber(next.ADVal) }),
-            {} as { [key: string]: number },
-          ),
-        )
-        .then(res => keys.map(key => res[key] || 0));
+        .promise();
+
+      const valueMap = (res?.Responses?.[tableName] || []).reduce(
+        (memo, next) => ({ ...memo, [next.ADKey.S || '']: unwrapNumber(next.ADVal) }),
+        {} as { [key: string]: number },
+      );
+
+      return keys.map(key => valueMap[key] || 0);
     },
   };
 }

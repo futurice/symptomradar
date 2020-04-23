@@ -16,6 +16,7 @@ const FilterButton = styled(PrimaryButton)`
   padding: 5px 16px;
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-right: 8px;
 
   svg {

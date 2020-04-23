@@ -7,6 +7,7 @@ import MapView from './MapView';
 import About from './About';
 import Survey from './Survey';
 import Privacy from './Privacy';
+import Menu from './Menu';
 
 import RobotoEot from './assets/fonts/roboto-v20-latin-ext_latin-regular.eot';
 import RobotoSvg from './assets/fonts/roboto-v20-latin-ext_latin-regular.svg';
@@ -100,6 +101,7 @@ export const App = () => {
   const [data, setData] = useState<'FETCHING' | 'ERROR' | object>('FETCHING');
   const dataEndpoint = process.env.REACT_APP_DATA_ENDPOINT;
   const [username, password] = (process.env.REACT_APP_DATA_AUTH || '').split(':');
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     axios(`${dataEndpoint}city_level_general_results.json`, {
@@ -116,9 +118,10 @@ export const App = () => {
         <GlobalStyles />
         <Location>
           {({ location }) => {
-            return <Header location={location.pathname} />;
+            return <Header location={location.pathname} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />;
           }}
         </Location>
+        <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}></Menu>
         <main>
           <Router>
             {<MapView path="/" responseData={data} />}

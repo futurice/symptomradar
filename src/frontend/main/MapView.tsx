@@ -9,7 +9,7 @@ import PrimaryButton from './PrimaryButton';
 import MapContainer from './map/MapContainer';
 import useModal from './useModal';
 import CloseIcon from './assets/CloseIcon';
-import { FILTERS } from './constants';
+import { FILTERS, HEADERHEIGHT, NAVHEIGHT } from './constants';
 
 type FilterKey = keyof typeof FILTERS;
 
@@ -59,7 +59,7 @@ interface mapProperties {
 const cartogramData: mapProperties[] = require('./assets/data/cartogram-coordinates.json');
 
 const MapNav = styled.div`
-  height: 55px;
+  height: ${NAVHEIGHT}px;
   padding: 0 16px;
   border-bottom: 1px solid ${props => props.theme.black};
 `;
@@ -87,7 +87,7 @@ const Label = styled.label`
 const MapWrapper = styled.div`
   text-align: center;
   position: relative;
-  height: calc(100vh - 185px);
+  height: calc(100vh - (${HEADERHEIGHT}px + ${NAVHEIGHT}px));
 `;
 
 const FilterWrapper = styled.div`
@@ -170,11 +170,11 @@ const CloseButton = styled.button`
 const MapView = (props: MapViewProps) => {
   const currentPath = props.location!.pathname;
   const isEmbed = currentPath === '/map-embed';
-  const topPartHeight = isEmbed ? 80 : 225;
+  const topPartHeight = isEmbed ? NAVHEIGHT : HEADERHEIGHT + NAVHEIGHT;
   const { isShowing, toggleModal } = useModal();
   const [showMapInfo, setShowMapInfo] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState<FilterKey>(FILTERS.corona_suspicion_yes.id as FilterKey);
-  const [mapHeight, setMapHeight] = useState(window.innerHeight - topPartHeight);
+  const [mapHeight, setMapHeight] = useState(window.innerHeight - topPartHeight - 10);
   const [activeCityData, setActiveCityData] = useState({});
   const data = props.responseData.data;
 
@@ -201,7 +201,7 @@ const MapView = (props: MapViewProps) => {
   }, 0);
 
   window.addEventListener('resize', () => {
-    setMapHeight(window.innerHeight - topPartHeight);
+    setMapHeight(window.innerHeight - topPartHeight - 10);
   });
   let dataForMap: mapProperties[] = cartogramData.map((d: mapProperties) => {
     let index = data.findIndex((el: mapProperties) => d.city === el.city);

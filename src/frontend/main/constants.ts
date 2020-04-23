@@ -4,3 +4,6 @@ export const FILTERS = {
   fever_yes: { label: 'Kuumetta', id: 'fever_yes' },
   breathing_difficulties_yes: { label: 'Vaikeuksia hengittää', id: 'breathing_difficulties_yes' },
 };
+
+export const HEADERHEIGHT = 90;
+export const NAVHEIGHT = 55;

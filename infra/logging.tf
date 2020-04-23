@@ -88,7 +88,7 @@ resource "aws_iam_policy" "replication" {
         "s3:ReplicateDelete"
       ],
       "Effect": "Allow",
-      "Resource": "${var.central_log_vault_arn}"
+      "Resource": "${var.central_log_vault_arn}/*"
     }
   ]
 }

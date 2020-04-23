@@ -14,26 +14,26 @@ const dynamoDb = createDynamoDbClient(process.env.ABUSE_DETECTION_TABLE || '');
 
 console.log(`Backend ${APP_VERSION} started`);
 
-export const apiEntrypoint: APIGatewayProxyHandler = (event, context) => {
+export const apiEntrypoint: APIGatewayProxyHandler = async (event, context) => {
   console.log(`Incoming request: ${event.httpMethod} ${event.path}`); // to preserve privacy, don't log any headers, etc
   if (event.httpMethod === 'OPTIONS') {
-    return Promise.resolve().then(() => response(200, undefined));
+    return response(200, undefined);
   } else if (event.httpMethod === 'POST') {
-    const countryCode = event.headers['CloudFront-Viewer-Country'] || '';
-    return Promise.resolve()
-      .then(() => JSON.parse(event.body || '') as unknown)
-      .then(assertIs(FrontendResponseModel))
-      .then(res =>
-        storeResponse(res, countryCode, dynamoDb, {
-          source_ip: event.requestContext.identity.sourceIp,
-          user_agent: event.headers['User-Agent'],
-          forwarded_for: normalizeForwardedFor(event.headers['X-Forwarded-For']),
-        }),
-      )
-      .then(() => response(200, { success: true }))
-      .catch(err => response(500, { error: true }, err));
+    try {
+      const countryCode = event.headers['CloudFront-Viewer-Country'] || '';
+      const body = JSON.parse(event.body || '') as unknown;
+      const res = assertIs(FrontendResponseModel)(body);
+      await storeResponse(res, countryCode, dynamoDb, {
+        source_ip: event.requestContext.identity.sourceIp,
+        user_agent: event.headers['User-Agent'],
+        forwarded_for: normalizeForwardedFor(event.headers['X-Forwarded-For']),
+      });
+      return response(200, { success: true });
+    } catch (err) {
+      return response(500, { error: true }, err);
+    }
   } else {
-    return Promise.resolve(response(200, { name: 'symptomradar', version: APP_VERSION }));
+    return response(200, { name: 'symptomradar', version: APP_VERSION });
   }
 };
 

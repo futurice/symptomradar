@@ -57,8 +57,8 @@ const persistedResponseSample: BackendResponseModelT = {
 };
 
 describe('prepareResponseForStorage()', () => {
-  it('works for the first request', () => {
-    return prepareResponseForStorage(
+  it('works for the first request', async () => {
+    const r = await prepareResponseForStorage(
       incomingResponseSample,
       'FI',
       createMockDynamoDbClient(),
@@ -70,11 +70,12 @@ describe('prepareResponseForStorage()', () => {
       Promise.resolve('fake-secret-pepper'),
       () => cannedUuid,
       () => 1585649303678, // i.e. "2020-03-31T10:08:23.678Z"
-    ).then(r => expect(r).toEqual(persistedResponseSample));
+    );
+    expect(r).toEqual(persistedResponseSample);
   });
 
-  it('works for a second request', () => {
-    return prepareResponseForStorage(
+  it('works for a second request', async () => {
+    const r = await prepareResponseForStorage(
       incomingResponseSample,
       'FI',
       {
@@ -91,16 +92,15 @@ describe('prepareResponseForStorage()', () => {
       Promise.resolve('fake-secret-pepper'),
       () => cannedUuid,
       () => 1585649303678, // i.e. "2020-03-31T10:08:23.678Z"
-    ).then(r =>
-      expect(r).toEqual({
-        ...persistedResponseSample,
-        abuse_score: { ...persistedResponseSample.abuse_score, source_ip: 123 },
-      }),
     );
+    expect(r).toEqual({
+      ...persistedResponseSample,
+      abuse_score: { ...persistedResponseSample.abuse_score, source_ip: 123 },
+    });
   });
 
-  it('handles errors', () => {
-    return prepareResponseForStorage(
+  it('handles errors', async () => {
+    const r = await prepareResponseForStorage(
       incomingResponseSample,
       'FI',
       {
@@ -117,16 +117,15 @@ describe('prepareResponseForStorage()', () => {
       Promise.resolve('fake-secret-pepper'),
       () => cannedUuid,
       () => 1585649303678, // i.e. "2020-03-31T10:08:23.678Z"
-    ).then(r =>
-      expect(r).toEqual({
-        ...persistedResponseSample,
-        abuse_score: {
-          forwarded_for: -2,
-          source_ip: -2,
-          user_agent: -2,
-        },
-      }),
     );
+    expect(r).toEqual({
+      ...persistedResponseSample,
+      abuse_score: {
+        forwarded_for: -2,
+        source_ip: -2,
+        user_agent: -2,
+      },
+    });
   });
 });
 

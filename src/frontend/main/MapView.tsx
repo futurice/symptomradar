@@ -9,8 +9,7 @@ import PrimaryButton from './PrimaryButton';
 import MapContainer from './map/MapContainer';
 import useModal from './useModal';
 import CloseIcon from './assets/CloseIcon';
-import { FILTERS } from './constants';
-import { HEADERHEIGHT, NAVHEIGHT } from './constants';
+import { FILTERS, HEADERHEIGHT, NAVHEIGHT } from './constants';
 
 type FilterKey = keyof typeof FILTERS;
 

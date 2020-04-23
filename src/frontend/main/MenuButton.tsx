@@ -4,10 +4,10 @@ import MenuIcon from './assets/MenuIcon';
 
 type MenuProps = {
   menuOpen: boolean;
-  setMenuOpen?: any;
+  setMenuOpen: (value: boolean) => void;
 };
 
-const StyledBurger = styled.button<MenuProps>`
+const StyledBurger = styled.button`
   position: absolute;
   top: 12px;
   right: 16px;
@@ -36,7 +36,6 @@ const MenuButton = ({ menuOpen, setMenuOpen }: MenuProps) => {
       aria-label="Avaa/sulje valikko"
       aria-controls="main-menu"
       aria-expanded={menuOpen}
-      menuOpen={menuOpen}
       onClick={() => setMenuOpen(!menuOpen)}
     >
       <MenuIcon></MenuIcon>

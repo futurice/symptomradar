@@ -25,7 +25,7 @@ export const ABUSE_SCORE_MISSING = -1; // this special score can be used to indi
 // The read/write Promises are returned separately, so that client requests can be serviced immediately after reading the current abuse score finishes.
 // Thus the client doesn't need to wait for the writes to finish; those can happen after the client's already gotten its response.
 export function performAbuseDetection(
-  dynamoDb: DynamoDBClient,
+  dynamoDb: AbuseDetectionDBClient,
   fingerprint: AbuseFingerprint,
   hashFunction: (input: string) => string,
   // Allow overriding defaults in test code:
@@ -57,11 +57,11 @@ export function performAbuseDetection(
 }
 
 // Creates a specialized DynamoDB API wrapper for reading/writing abuse detection related data
-export function createDynamoDbClient(
+export function createAbuseDetectionDBClient(
+  ddb: AWS.DynamoDB,
   tableName: string,
   ttlSeconds = TIME_RANGE_HOURS * 60 * 60, // by default, expire each key 24 h after its last write
 ) {
-  var ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' }); // note: for local development, you may need to: AWS.config.update({ region: 'eu-west-1' });
   return {
     // Increments the integer value at given key.
     // If the key doesn't exist, it's created automatically as having value 0, then incremented normally.
@@ -107,7 +107,7 @@ export function createDynamoDbClient(
     },
   };
 }
-export type DynamoDBClient = ReturnType<typeof createDynamoDbClient>;
+export type AbuseDetectionDBClient = ReturnType<typeof createAbuseDetectionDBClient>;
 
 // See interface AttributeValue in DynamoDB
 function unwrapNumber(attrValue?: { N?: string }): number {

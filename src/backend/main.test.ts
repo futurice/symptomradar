@@ -1,7 +1,7 @@
 import { BackendResponseModelT, FrontendResponseModelT } from '../common/model';
 import { normalizeForwardedFor } from './abuseDetection';
-import { createMockDynamoDbClient } from './abuseDetection.test';
 import { APP_VERSION, getStorageKey, prepareResponseForStorage } from './main';
+import { createMockApp, createMockAbuseDetectionDbClient } from './appMocks';
 
 const cannedUuid = '5fa8764a-7337-11ea-96ca-d38ac3d1909b';
 const incomingResponseSample: FrontendResponseModelT = {
@@ -59,9 +59,9 @@ const persistedResponseSample: BackendResponseModelT = {
 describe('prepareResponseForStorage()', () => {
   it('works for the first request', async () => {
     const r = await prepareResponseForStorage(
+      createMockApp(),
       incomingResponseSample,
       'FI',
-      createMockDynamoDbClient(),
       {
         source_ip: '1.1.1.1',
         user_agent: 'Mozilla/5.0...Safari/537.36',
@@ -76,14 +76,15 @@ describe('prepareResponseForStorage()', () => {
 
   it('works for a second request', async () => {
     const r = await prepareResponseForStorage(
+      createMockApp({
+        abuseDetectionDBClient: createMockAbuseDetectionDbClient({
+          getValues(keys: string[]) {
+            return Promise.resolve([123, ...keys.map(() => 0)]);
+          },
+        }),
+      }),
       incomingResponseSample,
       'FI',
-      {
-        ...createMockDynamoDbClient(),
-        getValues(keys: string[]) {
-          return Promise.resolve([123, ...keys.map(() => 0)]);
-        },
-      },
       {
         source_ip: '1.1.1.1',
         user_agent: 'Mozilla/5.0...Safari/537.36',
@@ -101,14 +102,15 @@ describe('prepareResponseForStorage()', () => {
 
   it('handles errors', async () => {
     const r = await prepareResponseForStorage(
+      createMockApp({
+        abuseDetectionDBClient: createMockAbuseDetectionDbClient({
+          getValues() {
+            return Promise.reject(new Error('Simulated error in test suite'));
+          },
+        }),
+      }),
       incomingResponseSample,
       'FI',
-      {
-        ...createMockDynamoDbClient(),
-        getValues() {
-          return Promise.reject(new Error('Simulated error in test suite'));
-        },
-      },
       {
         source_ip: '1.1.1.1',
         user_agent: 'Mozilla/5.0...Safari/537.36',

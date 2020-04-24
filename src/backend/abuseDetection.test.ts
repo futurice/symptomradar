@@ -2,13 +2,14 @@ import { first, identity, last } from 'lodash';
 import { HOUR_IN_MS, MINUTE_IN_MS } from '../common/time';
 import {
   AbuseFingerprint,
-  DynamoDBClient,
+  AbuseDetectionDBClient,
   getStorageKey,
   getTimeRange,
   normalizeForwardedFor,
   performAbuseDetection,
 } from './abuseDetection';
 import { hash } from './main';
+import { createMockAbuseDetectionDbClient } from './appMocks';
 
 // Available as event.requestContext.identity.sourceIp in the Lambda request handler
 const sourceIp = '87.92.62.179';
@@ -43,7 +44,7 @@ describe('performAbuseDetection()', () => {
     describe(`with${withHashing ? '' : 'out'} hashing`, () => {
       // This suite is repeated for both configurations, to check it works the same
 
-      async function request(dynamoDb: DynamoDBClient, fingerprint: AbuseFingerprint, time = 0) {
+      async function request(dynamoDb: AbuseDetectionDBClient, fingerprint: AbuseFingerprint, time = 0) {
         const { readPromise, writePromise } = performAbuseDetection(
           dynamoDb,
           fingerprint,
@@ -73,7 +74,7 @@ describe('performAbuseDetection()', () => {
       };
 
       it('works for the first request', async () => {
-        const dynamoDb = createMockDynamoDbClient();
+        const dynamoDb = createMockAbuseDetectionDbClient();
         const score = await request(dynamoDb, sampleReq1);
         expect(score).toEqual({
           source_ip: 0,
@@ -88,7 +89,7 @@ describe('performAbuseDetection()', () => {
       });
 
       it('works for subsequent requests', async () => {
-        const dynamoDb = createMockDynamoDbClient();
+        const dynamoDb = createMockAbuseDetectionDbClient();
         await request(dynamoDb, sampleReq1);
         await request(dynamoDb, sampleReq1, MINUTE_IN_MS);
         const score = await request(dynamoDb, sampleReq1, MINUTE_IN_MS * 10);
@@ -105,7 +106,7 @@ describe('performAbuseDetection()', () => {
       });
 
       it('works for mixed requests', async () => {
-        const dynamoDb = createMockDynamoDbClient();
+        const dynamoDb = createMockAbuseDetectionDbClient();
         await request(dynamoDb, sampleReq1);
         await request(dynamoDb, sampleReq2);
         await request(dynamoDb, sampleReq1, MINUTE_IN_MS);
@@ -125,7 +126,7 @@ describe('performAbuseDetection()', () => {
       });
 
       it('works for requests spread over multiple hours', async () => {
-        const dynamoDb = createMockDynamoDbClient();
+        const dynamoDb = createMockAbuseDetectionDbClient();
         await request(dynamoDb, sampleReq1);
         await request(dynamoDb, sampleReq1, HOUR_IN_MS);
         const score = await request(dynamoDb, sampleReq1, HOUR_IN_MS * 2);
@@ -146,7 +147,7 @@ describe('performAbuseDetection()', () => {
       });
 
       it('works for requests going over the time range', async () => {
-        const dynamoDb = createMockDynamoDbClient();
+        const dynamoDb = createMockAbuseDetectionDbClient();
         await request(dynamoDb, sampleReq1, HOUR_IN_MS * 0); // by the time we expect(), this will be too told to be counted!
         await request(dynamoDb, sampleReq1, HOUR_IN_MS * 1); // ^ ditto
         await request(dynamoDb, sampleReq1, HOUR_IN_MS * 2); // ^ ditto
@@ -176,7 +177,7 @@ describe('performAbuseDetection()', () => {
       });
 
       it('works for mixed requests going over the time range', async () => {
-        const dynamoDb = createMockDynamoDbClient();
+        const dynamoDb = createMockAbuseDetectionDbClient();
         await request(dynamoDb, sampleReq1, HOUR_IN_MS * 0); // by the time we expect(), this will be too told to be counted!
         await request(dynamoDb, sampleReq2, HOUR_IN_MS * 1); // ^ ditto
         await request(dynamoDb, sampleReq1, HOUR_IN_MS * 2); // ^ ditto
@@ -206,7 +207,7 @@ describe('performAbuseDetection()', () => {
       });
 
       it('works for requests with X-Forwarded-For', async () => {
-        const dynamoDb = createMockDynamoDbClient();
+        const dynamoDb = createMockAbuseDetectionDbClient();
         await request(dynamoDb, sampleReq3);
         await request(dynamoDb, sampleReq3, MINUTE_IN_MS * 1);
         const score = await request(dynamoDb, sampleReq3, MINUTE_IN_MS * 2);
@@ -224,7 +225,7 @@ describe('performAbuseDetection()', () => {
       });
 
       it('works for requests with varying X-Forwarded-For', async () => {
-        const dynamoDb = createMockDynamoDbClient();
+        const dynamoDb = createMockAbuseDetectionDbClient();
         const clientBehindProxy = (ip: string) => ({
           ...sampleReq3,
           forwarded_for: normalizeForwardedFor(`${ip}, 87.92.62.179, 52.46.36.172`),
@@ -258,14 +259,14 @@ describe('performAbuseDetection()', () => {
 
 describe('createMockDynamoDbClient()', () => {
   it('increments keys', () => {
-    const client = createMockDynamoDbClient();
+    const client = createMockAbuseDetectionDbClient();
     return Promise.all(['key-01', 'key-01', 'key-03', 'key-04'].map(client.incrementKey)).then(res =>
       expect(res).toEqual([1, 2, 1, 1]),
     );
   });
 
   it('gets values', () => {
-    const client = createMockDynamoDbClient();
+    const client = createMockAbuseDetectionDbClient();
     return Promise.all(['key-01', 'key-01', 'key-03', 'key-04'].map(client.incrementKey))
       .then(() => client.getValues(['key-01', 'key-02', 'key-03', 'key-04']))
       .then(res => expect(res).toEqual([2, 0, 1, 1]));
@@ -311,16 +312,3 @@ describe('normalizeForwardedFor()', () => {
     );
   });
 });
-
-export function createMockDynamoDbClient(): DynamoDBClient & { _storage: { [key: string]: number | undefined } } {
-  const storage: { [key: string]: number | undefined } = {};
-  return {
-    incrementKey(key: string) {
-      return Promise.resolve((storage[key] = (storage[key] || 0) + 1));
-    },
-    getValues(keys: string[]) {
-      return Promise.resolve(keys.map(key => storage[key] || 0));
-    },
-    _storage: storage,
-  };
-}

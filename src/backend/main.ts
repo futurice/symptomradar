@@ -2,8 +2,15 @@ import AthenaExpress from 'athena-express';
 import * as AWS from 'aws-sdk';
 import { createHash } from 'crypto';
 import { readFileSync } from 'fs';
+import { fromPairs } from 'lodash';
 import { v4 as uuidV4 } from 'uuid';
-import { assertIs, BackendResponseModel, BackendResponseModelT, FrontendResponseModelT } from '../common/model';
+import {
+  assertIs,
+  BackendResponseModel,
+  BackendResponseModelT,
+  FrontendResponseModelT,
+  stringLiteralUnionFields,
+} from '../common/model';
 import {
   AbuseFingerprint,
   AbuseScore,
@@ -12,7 +19,7 @@ import {
   performAbuseDetection,
 } from './abuseDetection';
 import { mapPostalCode } from './postalCode';
-import { postalCodeLevelDataQuery, totalResponsesQuery } from './queries';
+import { dailyTotalsQuery, postalCodeLevelDataQuery, totalResponsesQuery } from './queries';
 import { getSecret } from './secrets';
 
 export const APP_VERSION = process.env.AWS_EXECUTION_ENV
@@ -134,9 +141,10 @@ export async function storeDataDumpsToS3() {
   //
   // Perform Athena queries in parallel
 
-  const [totalResponsesResult, postalCodeLevelDataResponse] = await Promise.all([
+  const [totalResponsesResult, postalCodeLevelDataResponse, dailyTotalsResponse] = await Promise.all([
     athenaExpress.query({ sql: totalResponsesQuery, db }),
     athenaExpress.query({ sql: postalCodeLevelDataQuery, db }),
+    athenaExpress.query({ sql: dailyTotalsQuery, db }),
   ]);
 
   //
@@ -146,6 +154,12 @@ export async function storeDataDumpsToS3() {
   const totalResponses = totalResponsesResult.Items[0];
 
   const cityLevelData = await mapPostalCodeLevelToCityLevelData(postalCodeLevelDataResponse.Items, bucket);
+
+  const dailyTotalsData = dailyTotalsResponse.Items.map((item: any) => ({
+    day: item.day,
+    total: item.total,
+    ...collateDailyTotalItem(item),
+  }));
 
   //
   // Push data to S3
@@ -178,12 +192,26 @@ export async function storeDataDumpsToS3() {
         data: cityLevelData,
       },
     }),
+
+    s3PutJsonHelper({
+      Bucket: bucket,
+      Key: 'daily_totals.json',
+      Body: {
+        meta: {
+          description: 'Total responses and field-specific totals per each day.',
+          generated: new Date().toISOString(),
+          link: `https://${domain}/daily_totals.json`,
+        },
+        data: dailyTotalsData,
+      },
+    }),
   ]);
 }
 
 const openDataFileNames = [
   'total_responses',
   'city_level_general_results',
+  'daily_totals',
   'low_population_postal_codes',
   'population_per_city',
   'postalcode_city_mappings',
@@ -310,6 +338,32 @@ async function mapPostalCodeLevelToCityLevelData(postalCodeLevelData: any[], buc
   // data this is derived from arranges cities in alphabetical order,
   // this should be alphabetically ordered as well.
   return Object.values(resultsByCity);
+}
+
+// @example collateDailyTotalItem({
+//   day: '2020-03-26',
+//   total: '5823',
+//   fever_no: '5126',
+//   fever_slight: '623',
+//   fever_high: '74',
+//   ...
+// }) => {
+//   day: '2020-03-26',
+//   total: 5823,
+//   fever: { no: 5126, slight: 623, high: 74 },
+//   ...
+// }
+function collateDailyTotalItem(item: any) {
+  return {
+    day: item.day,
+    total: Number(item.total),
+    ...fromPairs(
+      stringLiteralUnionFields.map(([field, values]) => [
+        field,
+        fromPairs(values.map(value => [value, Number(item[`${field}_${value}`])])),
+      ]),
+    ),
+  };
 }
 
 //

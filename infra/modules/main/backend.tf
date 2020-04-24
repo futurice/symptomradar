@@ -49,8 +49,8 @@ module "backend_worker" {
   function_s3_bucket     = aws_s3_bucket.backend_code.id
   function_zipfile       = "backend-lambda.zip"
   function_handler       = "index.workerEntrypoint"
-  function_timeout       = 60 * 10                   # i.e. 10 minutes
-  schedule_expression    = "cron(0 0,6,12,18 * * *)" # note: simple "rate(15 minutes)" expressions are also supported
+  function_timeout       = 60 * 10                     # i.e. 10 minutes
+  schedule_expression    = "cron(0 0,6,12,18 * * ? *)" # as in (Minutes Hours Day-of-month Month Day-of-week Year); see https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html
   lambda_logging_enabled = true
   function_env_vars      = local.lambda_env
 }

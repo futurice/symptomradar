@@ -44,8 +44,15 @@ export function createMockAbuseDetectionDbClient(
 }
 
 export function createMockApp(overrides: Partial<App> = {}): App {
-  const mockApp = {
-    constants: overrides.constants || notImplemented<App['constants']>(),
+  const constants = overrides.constants || {
+    domainName: 'test',
+    athenaDb: 'test',
+    knownPepper: process.env.KNOWN_HASHING_PEPPER!,
+    lowPopulationPostalCodesKey: 'low_population_postal_codes.json',
+  };
+
+  const mockApp: App = {
+    constants,
     s3Buckets: overrides.s3Buckets || notImplemented<App['s3Buckets']>(),
     s3Client: overrides.s3Client || notImplemented<App['s3Client']>(),
     athenaClient: overrides.athenaClient || notImplemented<App['athenaClient']>(),

@@ -124,8 +124,8 @@ export const App = () => {
         <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}></Menu>
         <main>
           <Router>
-            {<MapView path="/" responseData={data} />}
-            {<MapView path="/map-embed" responseData={data} />}
+            <MapView path="/" responseData={data} />
+            <MapView path="/map-embed" responseData={data} />
             <About path="about" />
             <Privacy path="tietosuojalauseke" />
             <Survey path="survey" />

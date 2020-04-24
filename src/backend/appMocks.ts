@@ -3,7 +3,7 @@
  * @see https://jestjs.io/docs/en/manual-mocks.html#mocking-user-modules
  */
 
-import { App, createAppConstants, createS33BucketSources } from './app';
+import { App } from './app';
 import { AbuseDetectionDBClient } from './abuseDetection';
 
 function notImplemented<T extends object>(target: any = {}): T {
@@ -44,18 +44,15 @@ export function createMockAbuseDetectionDbClient(
 }
 
 export function createMockApp(overrides: Partial<App> = {}): App {
-  const s3Buckets = overrides.s3Buckets || createS33BucketSources();
-  const dynamoDbClient = overrides.dynamoDbClient || notImplemented<App['dynamoDbClient']>();
-
-  const app = {
-    constants: overrides.constants || createAppConstants(),
-    s3Buckets,
+  const mockApp = {
+    constants: overrides.constants || notImplemented<App['constants']>(),
+    s3Buckets: overrides.s3Buckets || notImplemented<App['s3Buckets']>(),
     s3Client: overrides.s3Client || notImplemented<App['s3Client']>(),
     athenaClient: overrides.athenaClient || notImplemented<App['athenaClient']>(),
-    dynamoDbClient,
+    dynamoDbClient: overrides.dynamoDbClient || notImplemented<App['dynamoDbClient']>(),
     ssmClient: overrides.ssmClient || notImplemented<App['ssmClient']>(),
     abuseDetectionDBClient: overrides.abuseDetectionDBClient || createMockAbuseDetectionDbClient(),
   };
 
-  return app;
+  return mockApp;
 }

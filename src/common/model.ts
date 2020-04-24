@@ -1,5 +1,6 @@
 import { isRight } from 'fp-ts/lib/Either';
 import * as t from 'io-ts';
+import { UnionType } from 'io-ts';
 import { PathReporter } from 'io-ts/lib/PathReporter';
 import { AbuseScore } from '../backend/abuseDetection';
 import {
@@ -10,16 +11,18 @@ import {
   gender,
   generalWellbeing,
   iso8601DateString,
+  isStringLiteralType,
   notAnswered,
   postalCode,
   uuidString,
   yesOrNo,
 } from './io';
+import { nonNullable } from './types';
 
 // Because AWS Athena prefers lower-case column names (https://docs.aws.amazon.com/athena/latest/ug/tables-databases-columns-names.html),
 // we use snake case for some of these models, instead of camel case (https://en.wikipedia.org/wiki/Letter_case#Special_case_styles).
 
-const responseFields = {
+export const responseFields = {
   fever: fever,
   cough: cough,
   breathing_difficulties: yesOrNo,
@@ -38,6 +41,7 @@ const responseFields = {
   gender: gender,
   postal_code: postalCode,
 };
+export const responseFieldKeys = (Object.keys(responseFields) as any) as Array<keyof typeof responseFields>; // this is theoretically unsafe (https://stackoverflow.com/a/55012175) but practically a lot safer than going with string[] ¯\_(ツ)_/¯
 
 export const FrontendResponseModel = t.strict(
   {
@@ -84,3 +88,23 @@ export function assertIs<C extends t.ExactC<any>>(codec: C): (x: unknown) => t.T
     }
   };
 }
+
+// Defines tuples describing all response fields that are simple unions of string literals.
+// @example [
+//   [ 'healthcare_contact', [ 'yes', 'no' ] ],
+//   [ 'general_wellbeing', [ 'fine', 'impaired', 'bad' ] ],
+//   ...
+// ]
+// What makes these fields special is that their values are easy to GROUP BY, SUM() etc in queries.
+export const stringLiteralUnionFields: [string, string[]][] = responseFieldKeys
+  .map(key =>
+    responseFields[key] instanceof UnionType
+      ? ([
+          key,
+          (responseFields[key] as any).types // TODO: Assert that responseFields[key] is UnionType<Array<LiteralType>> instead (how?), to get rid of the awkward any
+            .map((t: unknown) => (isStringLiteralType(t) ? t.value : null))
+            .filter(nonNullable),
+        ] as [string, string[]])
+      : null,
+  )
+  .filter(nonNullable);

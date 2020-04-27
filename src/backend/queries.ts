@@ -1,3 +1,6 @@
+import { flatten } from 'lodash';
+import { stringLiteralUnionFields } from '../common/model';
+
 export const totalResponsesQuery = 'SELECT COUNT(*) as total_responses FROM responses';
 
 export const postalCodeLevelDataQuery = `SELECT postal_code,
@@ -34,3 +37,32 @@ export const postalCodeLevelDataQuery = `SELECT postal_code,
 FROM responses WHERE (country_code = 'FI' or country_code = '')
 GROUP BY  postal_code
 ORDER BY  responses DESC`;
+
+export const dailyTotalsQuery = `
+SELECT
+  day,
+  COUNT(*) AS total,
+  ${flatten(
+    stringLiteralUnionFields.map(([field, values]) =>
+      values.map(value => `SUM(${field}_${value}) AS ${field}_${value}`),
+    ),
+  ).join(',\n')}
+FROM
+  (
+    SELECT
+      SUBSTR(timestamp, 1, 10) AS day,
+      ${flatten(
+        stringLiteralUnionFields.map(([field, values]) =>
+          values.map(value => `IF(${field} = '${value}', 1, 0) AS ${field}_${value}`),
+        ),
+      ).join(',\n')}
+    FROM
+      responses
+    WHERE
+      country_code = 'FI'
+      OR
+      country_code = ''
+  )
+GROUP BY day
+ORDER BY day
+`;

@@ -1,4 +1,5 @@
 import * as t from 'io-ts';
+import { LiteralType } from 'io-ts';
 
 function defineRegexValidatedStringType(name: string, regex: RegExp) {
   const guard = (input: unknown): input is string => typeof input === 'string' && !!input.match(regex);
@@ -41,3 +42,8 @@ export const generalWellbeing = t.union([t.literal('fine'), t.literal('impaired'
 
 // range of 0–99 days
 export const duration = defineRegexValidatedStringType('symptomsDuration', /^[0-9]{1,2}$/);
+
+// @example isStringLiteralType(fever) => false
+// @example isStringLiteralType(fever.types[0]) => true
+export const isStringLiteralType = (x: unknown): x is LiteralType<string> =>
+  x instanceof LiteralType && typeof x.value === 'string';

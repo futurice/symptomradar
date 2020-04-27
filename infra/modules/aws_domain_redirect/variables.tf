@@ -33,7 +33,7 @@ variable "redirect_permanently" {
 
 variable "hsts_max_age" {
   description = "How long should `Strict-Transport-Security` remain in effect for the site; disabled automatically when `viewer_https_only = false`"
-  default     = 31557600                                                                                                                             # i.e. one year in seconds
+  default     = 31557600 # i.e. one year in seconds
 }
 
 variable "lambda_logging_enabled" {
@@ -43,6 +43,7 @@ variable "lambda_logging_enabled" {
 
 variable "tags" {
   description = "AWS Tags to add to all resources created (where possible); see https://aws.amazon.com/answers/account-management/aws-tagging-strategies/"
-  type        = "map"
+  type        = map(string)
   default     = {}
 }
+

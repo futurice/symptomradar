@@ -62,7 +62,11 @@ The system includes a privacy-preserving abuse detection/scoring system, which w
 
 ## Architecture
 
-TODO
+The diagram below depicts the major architectural components of the project, and their key technologies.
+
+<img  src="doc/architecture.png">
+
+All infrastructure is [defined in code with Terraform](./infra).
 
 ## Contributing
 

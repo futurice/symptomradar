@@ -1,7 +1,6 @@
 module "aws_reverse_proxy" {
-  # Available inputs: https://github.com/futurice/terraform-utils/tree/master/aws_reverse_proxy#inputs
-  # Check for updates: https://github.com/futurice/terraform-utils/compare/v11.0...master
-  source = "../aws_reverse_proxy"
+  source    = "../aws_reverse_proxy"
+  providers = { aws.us_east_1 = aws.us_east_1 } # this alias is needed because ACM is only available in the "us-east-1" region
 
   origin_url             = "http://example.com/" # note that this is just a dummy value to satisfy CloudFront, it won't ever be used with the override_* variables in place
   site_domain            = var.redirect_domain
@@ -17,8 +16,8 @@ module "aws_reverse_proxy" {
     "Location" = var.redirect_url
   }
 
-  override_response_status             = var.redirect_permanently ? "301" : "302"
-  override_response_status_description = var.redirect_permanently ? "Moved Permanently" : "Found"
+  override_response_code   = var.redirect_permanently ? "301" : "302"
+  override_response_status = var.redirect_permanently ? "Moved Permanently" : "Found"
 
   override_response_body = <<EOF
   <!doctype html>
@@ -30,8 +29,6 @@ module "aws_reverse_proxy" {
   <body>
     <pre>Redirecting to: <a href="${var.redirect_url}">${var.redirect_url}</a></pre>
   </body>
-  
 EOF
 
 }
-

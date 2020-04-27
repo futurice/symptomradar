@@ -8,7 +8,7 @@ variable "redirect_url" {
 
 variable "name_prefix" {
   description = "Name prefix to use for objects that need to be created (only lowercase alphanumeric characters and hyphens allowed, for S3 bucket name compatibility)"
-  default     = "aws-domain-redirect---"
+  default     = "aws-domain-redirect"
 }
 
 variable "comment_prefix" {
@@ -46,4 +46,3 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
-

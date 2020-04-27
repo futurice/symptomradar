@@ -1,5 +1,23 @@
 # symptomradar infra
 
+## Getting started
+
+Follow these instructions to set up your environment so that you can contribute to the development of the project.
+
+1. Install Terraform. On macOS, the simplest way is probably `brew install terraform`.
+1. Obtain secrets for your `.envrc` file (ask around in the team).
+1. Move to the `infra/` dir and run `terraform init` to set up Terraform.
+1. You're done!
+1. To check, you can run `terraform plan`. It should refresh a bunch of resources, and eventually tell you that "No changes. Infrastructure is up-to-date."
+
+## Initial setup
+
+**IMPORTANT: These are probably not the instructions you're looking for.**
+
+To get started working on our infrastructure, follow the above instructions.
+
+These instructions, by contrast, are for the _initial setup of Symptomradar_ when no infrastructure previously exists.
+
 1. Comment out `backend "s3"`
 1. `terraform init`
 1. `terraform apply -target aws_s3_bucket.terraform_state -target aws_dynamodb_table.terraform_state_lock`

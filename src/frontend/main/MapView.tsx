@@ -60,10 +60,20 @@ interface mapProperties {
 
 const cartogramData: mapProperties[] = require('./assets/data/cartogram-coordinates.json');
 
-const MapNav = styled.div`
+const Container = styled.div`
+  max-width: 600px;
+  margin: 0 auto;
+`;
+
+const MapNav = styled(Container)`
   height: ${NAVHEIGHT}px;
   border-bottom: 1px solid ${props => props.theme.grey};
   display: flex;
+
+  @media (min-width: 600px) {
+    border-left: 1px solid ${props => props.theme.grey};
+    border-right: 1px solid ${props => props.theme.grey};
+  }
 `;
 
 const MapNavButton = styled.button<MapNavProps>`
@@ -72,11 +82,6 @@ const MapNavButton = styled.button<MapNavProps>`
   color: ${props => (props.isActive ? props.theme.white : props.theme.black)};
   border: none;
   font-weight: bold;
-`;
-
-const Container = styled.div`
-  max-width: 600px;
-  margin: 0 auto;
 `;
 
 const MessageContainer = styled.div`

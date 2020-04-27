@@ -47,19 +47,6 @@ A number of measures are taken to ensure privacy-preserving data collection, inc
 
 For more information, and related legalese, see our [privacy information](https://www.oiretutka.fi/tietosuojalauseke.html) (currently only in Finnish).
 
-## Abuse detection
-
-The system includes a privacy-preserving abuse detection/scoring system, which works as follows:
-
-- When a request comes in, we grab its source IP, its `User-Agent` and `X-Forwarded-For`, and call that its "fingerprint"
-- Immediately after, we put those values through a one-way hash function, with a secret pepper included, so it can't be reversed
-- For each such hashed fingerprint key/value pair, we upsert an item in DynamoDB, e.g. `"2020-03-31T10Z/source_ip/6NehvvOtv6bGjk7FTtutfcozHqX478AVLV1EbcpmV+g=" => 3`
-- This means this IP has been seen 3 times within the hour-long time bucket at `2020-03-31T10:xx:yy`
-- Each key has a TTL value set up in DynamoDB, so they expire 24 hours after last being written (so the DB doesn't balloon forever)
-- We then calculate an "abuse score" for the incoming request, by simply tallying these values over the past 24 hours; e.g. `{ source_ip: 2, user_agent: 5, forwarded_for: -1 }` means we've seen this same IP 2 times during the past 24 hours, the `User-Agent` 5 times, and the `-1` is a special value meaning we didn't get an `X-Forwarded-For` value for this request (so it's pointless to score how common it's recently been)
-- This abuse score is stored along with the response
-- Later, this score can be used to assess the credibility of each response, during the data dump generation phase
-
 ## Architecture
 
 The diagram below depicts the major architectural components of the project, and their key technologies.
@@ -75,6 +62,19 @@ If you find a problem, please open an issue or submit a fix as a pull request.
 We welcome new features, but for large changes let's discuss first to make sure the changes can be accepted and integrated smoothly. Discussion should take place in issue dedicated to the new feature.
 
 Feel free to pick an issue and start contributing. For good first issues regarding contributing, see [issues labeled with open sourcing improvements](https://github.com/futurice/symptomradar/labels/open%20sourcing%20improvements).
+
+## Abuse detection
+
+The system includes a privacy-preserving abuse detection/scoring system, which works as follows:
+
+- When a request comes in, we grab its source IP, its `User-Agent` and `X-Forwarded-For`, and call that its "fingerprint"
+- Immediately after, we put those values through a one-way hash function, with a secret pepper included, so it can't be reversed
+- For each such hashed fingerprint key/value pair, we upsert an item in DynamoDB, e.g. `"2020-03-31T10Z/source_ip/6NehvvOtv6bGjk7FTtutfcozHqX478AVLV1EbcpmV+g=" => 3`
+- This means this IP has been seen 3 times within the hour-long time bucket at `2020-03-31T10:xx:yy`
+- Each key has a TTL value set up in DynamoDB, so they expire 24 hours after last being written (so the DB doesn't balloon forever)
+- We then calculate an "abuse score" for the incoming request, by simply tallying these values over the past 24 hours; e.g. `{ source_ip: 2, user_agent: 5, forwarded_for: -1 }` means we've seen this same IP 2 times during the past 24 hours, the `User-Agent` 5 times, and the `-1` is a special value meaning we didn't get an `X-Forwarded-For` value for this request (so it's pointless to score how common it's recently been)
+- This abuse score is stored along with the response
+- Later, this score can be used to assess the credibility of each response, during the data dump generation phase
 
 ## Contact
 

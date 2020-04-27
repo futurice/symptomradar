@@ -33,7 +33,32 @@ The data is published in a way that makes them readily available for consumption
 
 ## Privacy
 
-TODO: [Privacy information, currently only in Finnish](https://www.oiretutka.fi/tietosuojalauseke.html)
+A number of measures are taken to ensure privacy-preserving data collection, including:
+
+- No analytics are collected from any of the frontends
+- The analytics collection of embedding pages (e.g. news articles) can't reach into the `<iframe>` that hosts the data collection
+- Web fonts are self-hosted, to prevent snooping by e.g. Google Web Fonts
+- The unique ID's of participants are put through a one-way hash function (including a secret salt/pepper component) before being stored
+- Potentially personally identifiable meta-data (such as IP-addresses or HTTP headers) are never logged on the backend
+- Collected responses are never logged before obfuscation
+- Responses collected from postal code areas in Finland known to have low population are merged to neighboring larger postal code areas, to ensure individuals can't be identified that way from collected responses
+- The precision of timestamps of when responses were collected is intentionally reduced to make it harder to correlate individual answers with anything else
+- Some request meta-data is collected for abuse detection purposes, but they're not stored individually, only in aggregate; see below for more information
+
+For more information, and related legalese, see our [privacy information](https://www.oiretutka.fi/tietosuojalauseke.html) (currently only in Finnish).
+
+## Abuse detection
+
+The system includes a privacy-preserving abuse detection/scoring system, which works as follows:
+
+- When a request comes in, we grab its source IP, its `User-Agent` and `X-Forwarded-For`, and call that its "fingerprint"
+- Immediately after, we put those values through a one-way hash function, with a secret pepper included, so it can't be reversed
+- For each such hashed fingerprint key/value pair, we upsert an item in DynamoDB, e.g. `"2020-03-31T10Z/source_ip/6NehvvOtv6bGjk7FTtutfcozHqX478AVLV1EbcpmV+g=" => 3`
+- This means this IP has been seen 3 times within the hour-long time bucket at `2020-03-31T10:xx:yy`
+- Each key has a TTL value set up in DynamoDB, so they expire 24 hours after last being written (so the DB doesn't balloon forever)
+- We then calculate an "abuse score" for the incoming request, by simply tallying these values over the past 24 hours; e.g. `{ source_ip: 2, user_agent: 5, forwarded_for: -1 }` means we've seen this same IP 2 times during the past 24 hours, the `User-Agent` 5 times, and the `-1` is a special value meaning we didn't get an `X-Forwarded-For` value for this request (so it's pointless to score how common it's recently been)
+- This abuse score is stored along with the response
+- Later, this score can be used to assess the credibility of each response, during the data dump generation phase
 
 ## Architecture
 

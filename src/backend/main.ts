@@ -11,7 +11,6 @@ import {
   stringLiteralUnionFields,
 } from '../common/model';
 import { AbuseFingerprint, AbuseScore, ABUSE_SCORE_ERROR, performAbuseDetection } from './abuseDetection';
-import { mapPostalCode } from './postalCode';
 import { dailyTotalsQuery, postalCodeLevelDataQuery, totalResponsesQuery } from './queries';
 import { getSecret } from './secrets';
 import { App } from './app';
@@ -76,6 +75,9 @@ export async function prepareResponseForStorage(
       },
     );
 
+  // to protect the privacy of participants from very small postal code areas, they are merged into larger ones, based on known population data
+  const postal_code = await obfuscateLowPopulationPostalCode(app, response.postal_code);
+
   const meta = {
     response_id: uuid(),
     participant_id: hash(hash(response.participant_id, app.constants.knownPepper), secretPepperValue), // to preserve privacy, hash the participant_id before storing it, so after opening up the dataset, malicious actors can't submit more responses that pretend to belong to a previous participant
@@ -84,7 +86,7 @@ export async function prepareResponseForStorage(
       .replace(/:..\..*/, ':00.000Z'), // to preserve privacy, intentionally reduce precision of the timestamp
     app_version: APP_VERSION, // document the app version that was used to process this response
     country_code: countryCode,
-    postal_code: mapPostalCode(response).postal_code, // to protect the privacy of participants from very small postal code areas, they are merged into larger ones, based on known population data
+    postal_code,
     duration: response.duration === null ? null : parseInt(response.duration),
     abuse_score,
   };
@@ -104,6 +106,15 @@ export function hash(input: string, pepper: string) {
   return createHash('sha256')
     .update(input + pepper)
     .digest('base64');
+}
+
+export async function obfuscateLowPopulationPostalCode(app: App, postalCode: string) {
+  const lowPopulationPostalCodes = await s3GetJsonHelper(app.s3Client, {
+    Bucket: app.s3Buckets.openData,
+    Key: app.constants.lowPopulationPostalCodesKey,
+  });
+
+  return lowPopulationPostalCodes?.data?.[postalCode] || postalCode;
 }
 
 export async function storeDataDumpsToS3(app: App) {

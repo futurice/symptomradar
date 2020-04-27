@@ -28,11 +28,6 @@ const Description = styled.p`
 `;
 
 const Symptoms = styled.div`
-  p {
-    margin: 0;
-    hyphens: manual;
-  }
-
   td {
     padding-right: 10px;
 
@@ -48,6 +43,7 @@ const Symptoms = styled.div`
   th {
     font-weight: normal;
     text-align: left;
+    hyphens: manual;
   }
 `;
 

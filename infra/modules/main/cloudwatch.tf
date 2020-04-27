@@ -57,6 +57,10 @@ resource "aws_cloudwatch_dashboard" "overview" {
                         {
                             "label": "Result articles (https://www.hs.fi/kotimaa/art-2000006476476.html & https://www.is.fi/kotimaa/art-2000006476603.html)",
                             "value": "2020-04-16T14:00:00+03:00"
+                        },
+                        {
+                            "label": "Result article (https://www.hs.fi/kotimaa/art-2000006484008.html)",
+                            "value": "2020-04-16T15:03:00+03:00"
                         }
                     ]
                 }

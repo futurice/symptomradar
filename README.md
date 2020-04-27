@@ -10,6 +10,8 @@ The project is open source with an MIT license. We encourage media outlets to co
 
 ## Participation
 
+<img align="right" height="500" src="doc/oiretutka-finland-2020-04-27-readme.png">
+
 Following major Finnish news media have participated in data collection:
 
 - [Helsingin Sanomat](https://www.hs.fi/kotimaa/art-2000006452379.html)
@@ -20,8 +22,6 @@ Following major Finnish news media have participated in data collection:
 You can also participate by [direct link](https://www.oiretutka.fi/survey).
 
 ## Results
-
-<img align="right" width="216" height="391" src="doc/oiretutka.png">
 
 Results of the data collection, including interactive visualizations (example on the right) and more information about the project are presented at [Oiretutka.fi](https://www.oiretutka.fi).
 

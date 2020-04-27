@@ -22,6 +22,7 @@ import Roboto700Woff2 from './assets/fonts/roboto-v20-latin-ext_latin-700.woff2'
 
 const theme = {
   grey: '#757575',
+  lightGrey: '#ECECEC',
   white: '#FFFFFF',
   black: '#000000',
   blue: '#0047FF',

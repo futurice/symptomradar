@@ -1,6 +1,6 @@
 import * as AWS from 'aws-sdk';
 import AthenaExpress from 'athena-express';
-import { createAbuseDetectionDBClient } from './abuseDetection';
+import { createAbuseDetectionDbClient } from './abuseDetection';
 
 //
 // Utils
@@ -70,7 +70,7 @@ export function createDynamoDbClient() {
 //
 // SSM client
 
-export function createSSMClient() {
+export function createSsmClient() {
   return new AWS.SSM();
 }
 
@@ -87,8 +87,8 @@ export function createApp() {
     s3Client: createS3Client(),
     athenaClient: createAthenaClient(s3Buckets),
     dynamoDbClient,
-    ssmClient: createSSMClient(),
-    abuseDetectionDBClient: createAbuseDetectionDBClient(dynamoDbClient, process.env.ABUSE_DETECTION_TABLE!),
+    ssmClient: createSsmClient(),
+    abuseDetectionDBClient: createAbuseDetectionDbClient(dynamoDbClient, process.env.ABUSE_DETECTION_TABLE!),
   };
 
   return app;

@@ -4,7 +4,7 @@
  */
 
 import { App } from './app';
-import { AbuseDetectionDBClient } from './abuseDetection';
+import { AbuseDetectionDbClient } from './abuseDetection';
 
 function notImplemented<T extends object>(target: any = {}): T {
   const proxy = new Proxy(target, {
@@ -23,8 +23,8 @@ function notImplemented<T extends object>(target: any = {}): T {
 }
 
 export function createMockAbuseDetectionDbClient(
-  overrides: Partial<AbuseDetectionDBClient> = {},
-): AbuseDetectionDBClient & {
+  overrides: Partial<AbuseDetectionDbClient> = {},
+): AbuseDetectionDbClient & {
   _storage: { [key: string]: number | undefined };
 } {
   const storage: { [key: string]: number | undefined } = {};

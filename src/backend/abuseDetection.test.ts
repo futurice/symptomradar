@@ -2,7 +2,7 @@ import { first, identity, last } from 'lodash';
 import { HOUR_IN_MS, MINUTE_IN_MS } from '../common/time';
 import {
   AbuseFingerprint,
-  AbuseDetectionDBClient,
+  AbuseDetectionDbClient,
   getStorageKey,
   getTimeRange,
   normalizeForwardedFor,
@@ -44,9 +44,9 @@ describe('performAbuseDetection()', () => {
     describe(`with${withHashing ? '' : 'out'} hashing`, () => {
       // This suite is repeated for both configurations, to check it works the same
 
-      async function request(dynamoDb: AbuseDetectionDBClient, fingerprint: AbuseFingerprint, time = 0) {
+      async function request(abuseDetectionDb: AbuseDetectionDbClient, fingerprint: AbuseFingerprint, time = 0) {
         const { readPromise, writePromise } = performAbuseDetection(
-          dynamoDb,
+          abuseDetectionDb,
           fingerprint,
           withHashing ? x => hash(x, 'fake-secret-pepper') : identity,
           () => 1585649303678 + time, // i.e. "2020-03-31T10:08:23.678Z"
@@ -74,51 +74,51 @@ describe('performAbuseDetection()', () => {
       };
 
       it('works for the first request', async () => {
-        const dynamoDb = createMockAbuseDetectionDbClient();
-        const score = await request(dynamoDb, sampleReq1);
+        const abuseDetectionDb = createMockAbuseDetectionDbClient();
+        const score = await request(abuseDetectionDb, sampleReq1);
         expect(score).toEqual({
           source_ip: 0,
           user_agent: 0,
           forwarded_for: -1, // i.e. ABUSE_SCORE_MISSING, because we didn't provide a "X-Forwarded-For" value to score
         });
         withHashing || // only assert storage contents when they're legible
-          expect(dynamoDb._storage).toEqual({
+          expect(abuseDetectionDb._storage).toEqual({
             '2020-03-31T10Z/source_ip/87.92.62.179': 1,
             '2020-03-31T10Z/user_agent/Mozilla/5.0...Safari/537.36': 1,
           });
       });
 
       it('works for subsequent requests', async () => {
-        const dynamoDb = createMockAbuseDetectionDbClient();
-        await request(dynamoDb, sampleReq1);
-        await request(dynamoDb, sampleReq1, MINUTE_IN_MS);
-        const score = await request(dynamoDb, sampleReq1, MINUTE_IN_MS * 10);
+        const abuseDetectionDb = createMockAbuseDetectionDbClient();
+        await request(abuseDetectionDb, sampleReq1);
+        await request(abuseDetectionDb, sampleReq1, MINUTE_IN_MS);
+        const score = await request(abuseDetectionDb, sampleReq1, MINUTE_IN_MS * 10);
         expect(score).toEqual({
           source_ip: 2,
           user_agent: 2,
           forwarded_for: -1, // i.e. ABUSE_SCORE_MISSING, because we didn't provide a "X-Forwarded-For" value to score
         });
         withHashing ||
-          expect(dynamoDb._storage).toEqual({
+          expect(abuseDetectionDb._storage).toEqual({
             '2020-03-31T10Z/source_ip/87.92.62.179': 3,
             '2020-03-31T10Z/user_agent/Mozilla/5.0...Safari/537.36': 3,
           });
       });
 
       it('works for mixed requests', async () => {
-        const dynamoDb = createMockAbuseDetectionDbClient();
-        await request(dynamoDb, sampleReq1);
-        await request(dynamoDb, sampleReq2);
-        await request(dynamoDb, sampleReq1, MINUTE_IN_MS);
-        await request(dynamoDb, sampleReq2, MINUTE_IN_MS * 2);
-        const score = await request(dynamoDb, sampleReq1, MINUTE_IN_MS * 10);
+        const abuseDetectionDb = createMockAbuseDetectionDbClient();
+        await request(abuseDetectionDb, sampleReq1);
+        await request(abuseDetectionDb, sampleReq2);
+        await request(abuseDetectionDb, sampleReq1, MINUTE_IN_MS);
+        await request(abuseDetectionDb, sampleReq2, MINUTE_IN_MS * 2);
+        const score = await request(abuseDetectionDb, sampleReq1, MINUTE_IN_MS * 10);
         expect(score).toEqual({
           source_ip: 2,
           user_agent: 4, // all requests have had the same UA, even if they had a different IP
           forwarded_for: -1, // i.e. ABUSE_SCORE_MISSING, because we didn't provide a "X-Forwarded-For" value to score
         });
         withHashing ||
-          expect(dynamoDb._storage).toEqual({
+          expect(abuseDetectionDb._storage).toEqual({
             '2020-03-31T10Z/source_ip/87.92.62.179': 3,
             '2020-03-31T10Z/source_ip/123.123.123.123': 2,
             '2020-03-31T10Z/user_agent/Mozilla/5.0...Safari/537.36': 5,
@@ -126,17 +126,17 @@ describe('performAbuseDetection()', () => {
       });
 
       it('works for requests spread over multiple hours', async () => {
-        const dynamoDb = createMockAbuseDetectionDbClient();
-        await request(dynamoDb, sampleReq1);
-        await request(dynamoDb, sampleReq1, HOUR_IN_MS);
-        const score = await request(dynamoDb, sampleReq1, HOUR_IN_MS * 2);
+        const abuseDetectionDb = createMockAbuseDetectionDbClient();
+        await request(abuseDetectionDb, sampleReq1);
+        await request(abuseDetectionDb, sampleReq1, HOUR_IN_MS);
+        const score = await request(abuseDetectionDb, sampleReq1, HOUR_IN_MS * 2);
         expect(score).toEqual({
           source_ip: 2,
           user_agent: 2,
           forwarded_for: -1, // i.e. ABUSE_SCORE_MISSING, because we didn't provide a "X-Forwarded-For" value to score
         });
         withHashing ||
-          expect(dynamoDb._storage).toEqual({
+          expect(abuseDetectionDb._storage).toEqual({
             '2020-03-31T10Z/source_ip/87.92.62.179': 1,
             '2020-03-31T11Z/source_ip/87.92.62.179': 1,
             '2020-03-31T12Z/source_ip/87.92.62.179': 1,
@@ -147,20 +147,20 @@ describe('performAbuseDetection()', () => {
       });
 
       it('works for requests going over the time range', async () => {
-        const dynamoDb = createMockAbuseDetectionDbClient();
-        await request(dynamoDb, sampleReq1, HOUR_IN_MS * 0); // by the time we expect(), this will be too told to be counted!
-        await request(dynamoDb, sampleReq1, HOUR_IN_MS * 1); // ^ ditto
-        await request(dynamoDb, sampleReq1, HOUR_IN_MS * 2); // ^ ditto
-        await request(dynamoDb, sampleReq1, HOUR_IN_MS * 3);
-        await request(dynamoDb, sampleReq1, HOUR_IN_MS * 4);
-        const score = await request(dynamoDb, sampleReq1, HOUR_IN_MS * 5);
+        const abuseDetectionDb = createMockAbuseDetectionDbClient();
+        await request(abuseDetectionDb, sampleReq1, HOUR_IN_MS * 0); // by the time we expect(), this will be too told to be counted!
+        await request(abuseDetectionDb, sampleReq1, HOUR_IN_MS * 1); // ^ ditto
+        await request(abuseDetectionDb, sampleReq1, HOUR_IN_MS * 2); // ^ ditto
+        await request(abuseDetectionDb, sampleReq1, HOUR_IN_MS * 3);
+        await request(abuseDetectionDb, sampleReq1, HOUR_IN_MS * 4);
+        const score = await request(abuseDetectionDb, sampleReq1, HOUR_IN_MS * 5);
         expect(score).toEqual({
           source_ip: 2,
           user_agent: 2,
           forwarded_for: -1, // i.e. ABUSE_SCORE_MISSING, because we didn't provide a "X-Forwarded-For" value to score
         });
         withHashing ||
-          expect(dynamoDb._storage).toEqual({
+          expect(abuseDetectionDb._storage).toEqual({
             '2020-03-31T10Z/source_ip/87.92.62.179': 1,
             '2020-03-31T11Z/source_ip/87.92.62.179': 1,
             '2020-03-31T12Z/source_ip/87.92.62.179': 1,
@@ -177,20 +177,20 @@ describe('performAbuseDetection()', () => {
       });
 
       it('works for mixed requests going over the time range', async () => {
-        const dynamoDb = createMockAbuseDetectionDbClient();
-        await request(dynamoDb, sampleReq1, HOUR_IN_MS * 0); // by the time we expect(), this will be too told to be counted!
-        await request(dynamoDb, sampleReq2, HOUR_IN_MS * 1); // ^ ditto
-        await request(dynamoDb, sampleReq1, HOUR_IN_MS * 2); // ^ ditto
-        await request(dynamoDb, sampleReq2, HOUR_IN_MS * 3);
-        await request(dynamoDb, sampleReq1, HOUR_IN_MS * 4);
-        const score = await request(dynamoDb, sampleReq2, HOUR_IN_MS * 5);
+        const abuseDetectionDb = createMockAbuseDetectionDbClient();
+        await request(abuseDetectionDb, sampleReq1, HOUR_IN_MS * 0); // by the time we expect(), this will be too told to be counted!
+        await request(abuseDetectionDb, sampleReq2, HOUR_IN_MS * 1); // ^ ditto
+        await request(abuseDetectionDb, sampleReq1, HOUR_IN_MS * 2); // ^ ditto
+        await request(abuseDetectionDb, sampleReq2, HOUR_IN_MS * 3);
+        await request(abuseDetectionDb, sampleReq1, HOUR_IN_MS * 4);
+        const score = await request(abuseDetectionDb, sampleReq2, HOUR_IN_MS * 5);
         expect(score).toEqual({
           source_ip: 1, // only once from this distinct IP
           user_agent: 2, // but twice with this UA
           forwarded_for: -1, // i.e. ABUSE_SCORE_MISSING, because we didn't provide a "X-Forwarded-For" value to score
         });
         withHashing ||
-          expect(dynamoDb._storage).toEqual({
+          expect(abuseDetectionDb._storage).toEqual({
             '2020-03-31T10Z/source_ip/87.92.62.179': 1,
             '2020-03-31T11Z/source_ip/123.123.123.123': 1,
             '2020-03-31T12Z/source_ip/87.92.62.179': 1,
@@ -207,17 +207,17 @@ describe('performAbuseDetection()', () => {
       });
 
       it('works for requests with X-Forwarded-For', async () => {
-        const dynamoDb = createMockAbuseDetectionDbClient();
-        await request(dynamoDb, sampleReq3);
-        await request(dynamoDb, sampleReq3, MINUTE_IN_MS * 1);
-        const score = await request(dynamoDb, sampleReq3, MINUTE_IN_MS * 2);
+        const abuseDetectionDb = createMockAbuseDetectionDbClient();
+        await request(abuseDetectionDb, sampleReq3);
+        await request(abuseDetectionDb, sampleReq3, MINUTE_IN_MS * 1);
+        const score = await request(abuseDetectionDb, sampleReq3, MINUTE_IN_MS * 2);
         expect(score).toEqual({
           source_ip: 2,
           user_agent: 2,
           forwarded_for: 2,
         });
         withHashing ||
-          expect(dynamoDb._storage).toEqual({
+          expect(abuseDetectionDb._storage).toEqual({
             '2020-03-31T10Z/source_ip/87.92.62.179': 3,
             '2020-03-31T10Z/user_agent/Mozilla/5.0...Safari/537.36': 3,
             '2020-03-31T10Z/forwarded_for/50.50.50.50, 12.12.12.12': 3,
@@ -225,25 +225,25 @@ describe('performAbuseDetection()', () => {
       });
 
       it('works for requests with varying X-Forwarded-For', async () => {
-        const dynamoDb = createMockAbuseDetectionDbClient();
+        const abuseDetectionDb = createMockAbuseDetectionDbClient();
         const clientBehindProxy = (ip: string) => ({
           ...sampleReq3,
           forwarded_for: normalizeForwardedFor(`${ip}, 87.92.62.179, 52.46.36.172`),
           user_agent: `FakeBrowser/${ip}`,
         });
-        await request(dynamoDb, clientBehindProxy('1.1.1.1'), MINUTE_IN_MS * 0);
-        await request(dynamoDb, clientBehindProxy('2.2.2.2'), MINUTE_IN_MS * 1);
-        await request(dynamoDb, clientBehindProxy('2.2.2.2'), MINUTE_IN_MS * 2);
-        await request(dynamoDb, clientBehindProxy('3.3.3.3'), MINUTE_IN_MS * 3);
-        await request(dynamoDb, clientBehindProxy('3.3.3.3'), MINUTE_IN_MS * 4);
-        const score = await request(dynamoDb, clientBehindProxy('3.3.3.3'), MINUTE_IN_MS * 5);
+        await request(abuseDetectionDb, clientBehindProxy('1.1.1.1'), MINUTE_IN_MS * 0);
+        await request(abuseDetectionDb, clientBehindProxy('2.2.2.2'), MINUTE_IN_MS * 1);
+        await request(abuseDetectionDb, clientBehindProxy('2.2.2.2'), MINUTE_IN_MS * 2);
+        await request(abuseDetectionDb, clientBehindProxy('3.3.3.3'), MINUTE_IN_MS * 3);
+        await request(abuseDetectionDb, clientBehindProxy('3.3.3.3'), MINUTE_IN_MS * 4);
+        const score = await request(abuseDetectionDb, clientBehindProxy('3.3.3.3'), MINUTE_IN_MS * 5);
         expect(score).toEqual({
           source_ip: 5, // all requests came from the same "real" IP
           user_agent: 2, // last 3 had the same UA
           forwarded_for: 2, // and the same FF
         });
         withHashing ||
-          expect(dynamoDb._storage).toEqual({
+          expect(abuseDetectionDb._storage).toEqual({
             '2020-03-31T10Z/forwarded_for/1.1.1.1': 1,
             '2020-03-31T10Z/forwarded_for/2.2.2.2': 2,
             '2020-03-31T10Z/forwarded_for/3.3.3.3': 3,
@@ -257,7 +257,7 @@ describe('performAbuseDetection()', () => {
   );
 });
 
-describe('createMockDynamoDbClient()', () => {
+describe('createMockAbuseDetectionDbClient()', () => {
   it('increments keys', () => {
     const client = createMockAbuseDetectionDbClient();
     return Promise.all(['key-01', 'key-01', 'key-03', 'key-04'].map(client.incrementKey)).then(res =>

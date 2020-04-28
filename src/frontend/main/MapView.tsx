@@ -362,7 +362,7 @@ const MapView = (props: MapViewProps) => {
           </MapInfo>
         </MapWrapper>
       )}
-      {activeView === 'TABLE' && <TableView data={data} cities={cities}></TableView>}
+      {activeView === 'TABLE' && <TableView isEmbed={isEmbed} data={data} cities={cities}></TableView>}
     </>
   );
 };

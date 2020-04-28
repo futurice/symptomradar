@@ -22,6 +22,7 @@ import Roboto700Woff2 from './assets/fonts/roboto-v20-latin-ext_latin-700.woff2'
 
 const theme = {
   grey: '#757575',
+  lightGrey: '#ECECEC',
   white: '#FFFFFF',
   black: '#000000',
   blue: '#0047FF',
@@ -124,8 +125,8 @@ export const App = () => {
         <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}></Menu>
         <main>
           <Router>
-            {<MapView path="/" responseData={data} />}
-            {<MapView path="/map-embed" responseData={data} />}
+            <MapView path="/" responseData={data} />
+            <MapView path="/map-embed" responseData={data} />
             <About path="about" />
             <Privacy path="tietosuojalauseke" />
             <Survey path="survey" />

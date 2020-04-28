@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps } from '@reach/router';
 import * as d3 from 'd3';
-import ModalContent from './ModalContent';
-import Modal from './Modal';
 import FilterToggle from './FilterToggle';
 import PrimaryButton from './PrimaryButton';
 import MapContainer from './map/MapContainer';
-import useModal from './useModal';
 import CloseIcon from './assets/CloseIcon';
+import TableView from './TableView';
 import { FILTERS, HEADERHEIGHT, NAVHEIGHT } from './constants';
 
 type FilterKey = keyof typeof FILTERS;
@@ -16,6 +14,10 @@ type FilterKey = keyof typeof FILTERS;
 interface MapViewProps extends RouteComponentProps {
   responseData: any;
 }
+
+type MapNavProps = {
+  isActive: boolean;
+};
 
 interface mapProperties {
   city: string;
@@ -58,30 +60,33 @@ interface mapProperties {
 
 const cartogramData: mapProperties[] = require('./assets/data/cartogram-coordinates.json');
 
-const MapNav = styled.div`
-  height: ${NAVHEIGHT}px;
-  padding: 0 16px;
-  border-bottom: 1px solid ${props => props.theme.black};
-`;
-
 const Container = styled.div`
   max-width: 600px;
   margin: 0 auto;
 `;
 
+const MapNav = styled(Container)`
+  height: ${NAVHEIGHT}px;
+  border-bottom: 1px solid ${props => props.theme.grey};
+  display: flex;
+
+  @media (min-width: 600px) {
+    border-left: 1px solid ${props => props.theme.grey};
+    border-right: 1px solid ${props => props.theme.grey};
+  }
+`;
+
+const MapNavButton = styled.button<MapNavProps>`
+  width: 50%;
+  background: ${props => (props.isActive ? props.theme.grey : props.theme.white)};
+  color: ${props => (props.isActive ? props.theme.white : props.theme.black)};
+  border: none;
+  font-weight: bold;
+`;
+
 const MessageContainer = styled.div`
   text-align: center;
   margin: 24px 0;
-`;
-
-const MapNavContent = styled(Container)`
-  height: 100%;
-  display: flex;
-  align-items: center;
-`;
-
-const Label = styled.label`
-  margin-right: 8px;
 `;
 
 const MapWrapper = styled.div`
@@ -171,12 +176,11 @@ const MapView = (props: MapViewProps) => {
   const currentPath = props.location!.pathname;
   const isEmbed = currentPath === '/map-embed';
   const topPartHeight = isEmbed ? NAVHEIGHT : HEADERHEIGHT + NAVHEIGHT;
-  const { isShowing, toggleModal } = useModal();
   const [showMapInfo, setShowMapInfo] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState<FilterKey>(FILTERS.corona_suspicion_yes.id as FilterKey);
   const [mapHeight, setMapHeight] = useState(window.innerHeight - topPartHeight - 10);
-  const [activeCityData, setActiveCityData] = useState({});
   const data = props.responseData.data;
+  const [activeView, setActiveView] = useState<'MAP' | 'TABLE'>('MAP');
 
   if (props.responseData === 'FETCHING') {
     return <MessageContainer>Loading...</MessageContainer>;
@@ -283,72 +287,68 @@ const MapView = (props: MapViewProps) => {
   return (
     <>
       <MapNav>
-        <MapNavContent>
-          <Label htmlFor="city">Kunta</Label>
-          <select
-            name=""
-            id="city"
-            onChange={(event: { target: { value: string } }) => {
-              let indx = dataForMap.findIndex((obj: { city: string }) => obj.city === event.target.value);
-              setActiveCityData(dataForMap[indx]);
-              toggleModal();
-            }}
-          >
-            <option value="">Valitse kunta...</option>
-            {cities.map((city: string) => {
-              return (
-                <option key={city} value={city}>
-                  {city}
-                </option>
-              );
-            })}
-          </select>
-        </MapNavContent>
+        <MapNavButton
+          type="button"
+          isActive={activeView === 'MAP' ? true : false}
+          onClick={() => {
+            setActiveView('MAP');
+          }}
+        >
+          Koko Suomi
+        </MapNavButton>
+        <MapNavButton
+          type="button"
+          isActive={activeView === 'TABLE' ? true : false}
+          onClick={() => {
+            setActiveView('TABLE');
+          }}
+        >
+          Valitse kunta
+        </MapNavButton>
       </MapNav>
-
-      <MapWrapper>
-        <MapContainer
-          mapShapeData={dataForMap}
-          selectedFilter={selectedFilter}
-          mapHeight={mapHeight}
-          popUpOpen={showMapInfo}
-        />
-        <Container>
-          <FilterWrapper>
-            <FilterToggle selectedFilter={selectedFilter} handleFilterChange={handleFilterChange} />
-            <ActiveFilter type="button" label={FILTERS[selectedFilter].label}></ActiveFilter>
-          </FilterWrapper>
-        </Container>
-        <MapInfo>
-          {showMapInfo && (
-            <>
-              <MapInfoContent className="popUp">
-                <CloseButton
-                  type="button"
-                  data-dismiss="modal"
-                  aria-label="Sulje"
-                  onClick={() => setShowMapInfo(false)}
-                >
-                  <CloseIcon />
-                </CloseButton>
-                <p>
-                  Kartta näyttää, millaisia oireita vastaajilla on eri kunnissa. Mukana ovat kunnat, joista on saatu yli
-                  25 vastausta.
-                </p>
-                <p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
-              </MapInfoContent>
-            </>
-          )}
-          <TotalResponses>
-            <Container>
-              <p>Vastauksia yhteensä: {totalResponses.toLocaleString('fi-FI')}</p>
-            </Container>
-          </TotalResponses>
-        </MapInfo>
-      </MapWrapper>
-      <Modal isShowing={isShowing} hide={toggleModal} ariaLabel="Kaupungin tiedot">
-        <ModalContent content={activeCityData} hide={toggleModal} />
-      </Modal>
+      {activeView === 'MAP' && (
+        <MapWrapper>
+          <MapContainer
+            mapShapeData={dataForMap}
+            selectedFilter={selectedFilter}
+            mapHeight={mapHeight}
+            popUpOpen={showMapInfo}
+          />
+          <Container>
+            <FilterWrapper>
+              <FilterToggle selectedFilter={selectedFilter} handleFilterChange={handleFilterChange} />
+              <ActiveFilter type="button" label={FILTERS[selectedFilter].label}></ActiveFilter>
+            </FilterWrapper>
+          </Container>
+          <MapInfo>
+            {showMapInfo && (
+              <>
+                <MapInfoContent className="popUp">
+                  <CloseButton
+                    type="button"
+                    data-dismiss="modal"
+                    aria-label="Sulje"
+                    onClick={() => setShowMapInfo(false)}
+                  >
+                    <CloseIcon />
+                  </CloseButton>
+                  <p>
+                    Kartta näyttää, millaisia oireita vastaajilla on eri kunnissa. Mukana ovat kunnat, joista on saatu
+                    yli 25 vastausta.
+                  </p>
+                  <p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
+                </MapInfoContent>
+              </>
+            )}
+            <TotalResponses>
+              <Container>
+                <p>Vastauksia yhteensä: {totalResponses.toLocaleString('fi-FI')}</p>
+              </Container>
+            </TotalResponses>
+          </MapInfo>
+        </MapWrapper>
+      )}
+      {activeView === 'TABLE' && <TableView data={data} cities={cities}></TableView>}
     </>
   );
 };

@@ -6,4 +6,4 @@ export const FILTERS = {
 };
 
 export const HEADERHEIGHT = 90;
-export const NAVHEIGHT = 55;
+export const NAVHEIGHT = 40;

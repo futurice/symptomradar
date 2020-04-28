@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import ResponseDataHandler from './ResponseDataHandler';
 
 type TableViewProps = {
-  cities: any;
+  cities: Array<string>;
   data: any;
 };
 

@@ -17,34 +17,30 @@ function validateEnvironmentVariables(env: Record<string, string | undefined>, k
 // Constants
 
 export function createAppConstants() {
-  validateEnvironmentVariables(process.env, ['DOMAIN_NAME_OPEN_DATA', 'KNOWN_HASHING_PEPPER', 'ATHENA_DB_NAME']);
+  validateEnvironmentVariables(process.env, [
+    'DOMAIN_NAME_OPEN_DATA',
+    'KNOWN_HASHING_PEPPER',
+    'ATHENA_DB_NAME',
+    'ABUSE_DETECTION_TABLE',
+  ]);
 
   return {
     domainName: process.env.DOMAIN_NAME_OPEN_DATA!,
     knownPepper: process.env.KNOWN_HASHING_PEPPER!,
     athenaDb: process.env.ATHENA_DB_NAME!,
+    abuseDetectionTable: process.env.ABUSE_DETECTION_TABLE!,
+    // Bucket names
+    storageBucket: process.env.BUCKET_NAME_STORAGE!,
+    openDataBucket: process.env.BUCKET_NAME_OPEN_DATA!,
+    athenaResultsBucket: process.env.BUCKET_NAME_ATHENA_RESULTS!,
+    // Bucket key names
     lowPopulationPostalCodesKey: 'low_population_postal_codes.json',
+    populationPerCityKey: 'population_per_city.json',
+    postalCodeCityMappingsKey: 'postalcode_city_mappings.json',
   };
 }
 
-//
-// S3 buckets
-
-export function createS33BucketSources() {
-  validateEnvironmentVariables(process.env, [
-    'BUCKET_NAME_STORAGE',
-    'BUCKET_NAME_OPEN_DATA',
-    'BUCKET_NAME_ATHENA_RESULTS',
-  ]);
-
-  return {
-    storage: process.env.BUCKET_NAME_STORAGE!,
-    openData: process.env.BUCKET_NAME_OPEN_DATA!,
-    athenaResults: process.env.BUCKET_NAME_ATHENA_RESULTS!,
-  };
-}
-
-export type S3BucketSources = ReturnType<typeof createS33BucketSources>;
+export type AppConstants = ReturnType<typeof createAppConstants>;
 
 //
 // S3 client
@@ -54,10 +50,60 @@ export function createS3Client() {
 }
 
 //
+// S3 fetch helpers
+
+export async function s3GetJsonHelper(s3: AWS.S3, params: AWS.S3.GetObjectRequest) {
+  const result = await s3.getObject(params).promise();
+  if (!result.Body) {
+    throw Error(`Empty JSON in S3 object '${params.Bucket}/${params.Key}`);
+  }
+
+  return JSON.parse(result.Body.toString('utf-8'));
+}
+
+export async function s3PutJsonHelper(s3: AWS.S3, params: AWS.S3.PutObjectRequest) {
+  return await s3
+    .putObject({
+      ...params,
+      ContentType: 'application/json',
+      CacheControl: 'max-age=15',
+      Body: JSON.stringify(params.Body, null, 2),
+    })
+    .promise();
+}
+
+export function createS3Sources(appConstants: AppConstants, s3Client: AWS.S3) {
+  return {
+    fetchLowPopulationPostalCodes() {
+      return s3GetJsonHelper(s3Client, {
+        Bucket: appConstants.openDataBucket,
+        Key: appConstants.lowPopulationPostalCodesKey,
+      });
+    },
+
+    fetchPopulationPerCity() {
+      return s3GetJsonHelper(s3Client, {
+        Bucket: appConstants.openDataBucket,
+        Key: appConstants.populationPerCityKey,
+      });
+    },
+
+    fetchPostalCodeCityMappings() {
+      return s3GetJsonHelper(s3Client, {
+        Bucket: appConstants.openDataBucket,
+        Key: appConstants.postalCodeCityMappingsKey,
+      });
+    },
+  };
+}
+
+export type S3Sources = ReturnType<typeof createS3Sources>;
+
+//
 // Athena client
 
-export function createAthenaClient(s3Buckets: S3BucketSources) {
-  return new AthenaExpress({ aws: AWS, s3: `s3://${s3Buckets.athenaResults}` });
+export function createAthenaClient(appConstants: AppConstants) {
+  return new AthenaExpress({ aws: AWS, s3: `s3://${appConstants.athenaResultsBucket}` });
 }
 
 //
@@ -75,20 +121,18 @@ export function createSsmClient() {
 }
 
 export function createApp() {
-  validateEnvironmentVariables(process.env, ['ABUSE_DETECTION_TABLE']);
-
   const constants = createAppConstants();
-  const s3Buckets = createS33BucketSources();
+  const s3Client = createS3Client();
   const dynamoDbClient = createDynamoDbClient();
 
   const app = {
     constants,
-    s3Buckets,
-    s3Client: createS3Client(),
-    athenaClient: createAthenaClient(s3Buckets),
+    s3Client,
+    s3Sources: createS3Sources(constants, s3Client),
+    athenaClient: createAthenaClient(constants),
     dynamoDbClient,
     ssmClient: createSsmClient(),
-    abuseDetectionDBClient: createAbuseDetectionDbClient(dynamoDbClient, process.env.ABUSE_DETECTION_TABLE!),
+    abuseDetectionDBClient: createAbuseDetectionDbClient(dynamoDbClient, constants.abuseDetectionTable),
   };
 
   return app;

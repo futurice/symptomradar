@@ -3,7 +3,7 @@
  * @see https://jestjs.io/docs/en/manual-mocks.html#mocking-user-modules
  */
 
-import { App } from './app';
+import { App, S3Sources } from './app';
 import { AbuseDetectionDbClient } from './abuseDetection';
 
 function notImplemented<T extends object>(target: any = {}): T {
@@ -20,6 +20,18 @@ function notImplemented<T extends object>(target: any = {}): T {
   });
 
   return proxy;
+}
+
+export function createMockS3Sources(overrides: Partial<S3Sources> = {}) {
+  async function defaultMock() {
+    return {};
+  }
+
+  return {
+    fetchLowPopulationPostalCodes: overrides.fetchLowPopulationPostalCodes || defaultMock,
+    fetchPopulationPerCity: overrides.fetchPopulationPerCity || defaultMock,
+    fetchPostalCodeCityMappings: overrides.fetchPostalCodeCityMappings || defaultMock,
+  };
 }
 
 export function createMockAbuseDetectionDbClient(
@@ -45,16 +57,24 @@ export function createMockAbuseDetectionDbClient(
 
 export function createMockApp(overrides: Partial<App> = {}): App {
   const constants = overrides.constants || {
-    domainName: 'test',
-    athenaDb: 'test',
+    domainName: process.env.DOMAIN_NAME_OPEN_DATA!,
     knownPepper: process.env.KNOWN_HASHING_PEPPER!,
+    athenaDb: process.env.ATHENA_DB_NAME!,
+    abuseDetectionTable: process.env.ABUSE_DETECTION_TABLE!,
+    // Bucket names
+    storageBucket: process.env.BUCKET_NAME_STORAGE!,
+    openDataBucket: process.env.BUCKET_NAME_OPEN_DATA!,
+    athenaResultsBucket: process.env.BUCKET_NAME_ATHENA_RESULTS!,
+    // Bucket key names
     lowPopulationPostalCodesKey: 'low_population_postal_codes.json',
+    populationPerCityKey: 'population_per_city.json',
+    postalCodeCityMappingsKey: 'postalcode_city_mappings.json',
   };
 
   const mockApp: App = {
     constants,
-    s3Buckets: overrides.s3Buckets || notImplemented<App['s3Buckets']>(),
     s3Client: overrides.s3Client || notImplemented<App['s3Client']>(),
+    s3Sources: overrides.s3Sources || createMockS3Sources(),
     athenaClient: overrides.athenaClient || notImplemented<App['athenaClient']>(),
     dynamoDbClient: overrides.dynamoDbClient || notImplemented<App['dynamoDbClient']>(),
     ssmClient: overrides.ssmClient || notImplemented<App['ssmClient']>(),

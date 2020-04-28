@@ -303,7 +303,7 @@ const MapView = (props: MapViewProps) => {
             setActiveView('TABLE');
           }}
         >
-          Kunnittain
+          Valitse kunta
         </MapNavButton>
       </MapNav>
       {activeView === 'MAP' && (

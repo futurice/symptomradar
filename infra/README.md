@@ -4,7 +4,7 @@
 
 Follow these instructions to set up your environment so that you can contribute to the development of the project.
 
-1. Install Terraform. On macOS, the simplest way is probably `brew install terraform`.
+1. [Install Terraform](https://www.terraform.io/). On macOS, the simplest way is probably `brew install terraform`.
 1. Obtain secrets for your `.envrc` file (ask around in the team).
 1. Move to the `infra/` dir and run `terraform init` to set up Terraform.
 1. You're done!

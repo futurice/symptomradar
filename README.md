@@ -159,7 +159,13 @@ For the following times you will work on the project, you will need to
 
 ## Developing the stand alone (React) app
 
+Note that the embedded form on the survey page does not work locally, the iframe does not load the correct content there. If you want to test it, you can for example temporarily change the relative path in `Survey.tsx` to point in dev
+
+`src="https://dev.oiretutka.fi/embed/v1/?variant=plain"`
+
 ## Developing the embedded form (with vanilla JS, jQuery and TypeScript)
+
+### The technologies
 
 As said earlier in this document, the crowdsourcing happens by asking questions in an embed that is placed on news media pages or articles.
 
@@ -169,7 +175,17 @@ If you have worked previously with modern JS frameworks, these technologies migh
 
 If you haven't worked with TypeScript before, take a look at [the TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/basic-types.html). Mostly TypeScript means that all function parameters and outputs have to be typed. If [the basic types](https://www.typescriptlang.org/docs/handbook/basic-types.html) aren't enough, take a look at [jQuery types](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/682ebb5fcda0d6d68bda36862171cd1f116121b2/types/jquery) too.
 
-Also, as the form is emdedded through an <iframe> element, it's a good idea to read [the ultimate guide to iframes](https://blog.logrocket.com/the-ultimate-guide-to-iframes/), it'll give you more context about how the media sites will use this form.
+Also, as the form is emdedded through an `<iframe>` element, it's a good idea to read [the ultimate guide to iframes](https://blog.logrocket.com/the-ultimate-guide-to-iframes/), it'll give you more context about how the media sites will use this form.
+
+### Form variants
+
+There are currently two versions of the form. The default one is used in news artciles. The second version is defined with a query string parameter `?variant=plain`. It is used on the main site's Survey page.
+
+The differences to the default one are
+
+- Logo not visible
+- No header or start button, the form is already expanded
+- Some margins adjusted with the `plain` class
 
 # Contact
 

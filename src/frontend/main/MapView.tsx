@@ -17,6 +17,7 @@ interface MapViewProps extends RouteComponentProps {
 
 type MapNavProps = {
   isActive: boolean;
+  isEmbed: boolean;
 };
 
 interface mapProperties {
@@ -69,11 +70,6 @@ const MapNav = styled(Container)`
   height: ${NAVHEIGHT}px;
   border-bottom: 1px solid ${props => props.theme.grey};
   display: flex;
-
-  @media (min-width: 600px) {
-    border-left: 1px solid ${props => props.theme.grey};
-    border-right: 1px solid ${props => props.theme.grey};
-  }
 `;
 
 const MapNavButton = styled.button<MapNavProps>`
@@ -82,6 +78,22 @@ const MapNavButton = styled.button<MapNavProps>`
   color: ${props => (props.isActive ? props.theme.white : props.theme.black)};
   border: none;
   font-weight: bold;
+  border-top: ${props => (props.isEmbed ? `1px solid ${props.theme.grey}` : 'none')};
+
+  &:nth-child(1) {
+    border-left: ${props => (props.isEmbed ? `1px solid ${props.theme.grey}` : 'none')};
+
+    @media (min-width: 600px) {
+      border-left: 1px solid ${props => props.theme.grey};
+    }
+  }
+
+  &:nth-child(2) {
+    border-right: ${props => (props.isEmbed ? `1px solid ${props.theme.grey}` : 'none')};
+    @media (min-width: 600px) {
+      border-right: 1px solid ${props => props.theme.grey};
+    }
+  }
 `;
 
 const MessageContainer = styled.div`
@@ -290,6 +302,7 @@ const MapView = (props: MapViewProps) => {
         <MapNavButton
           type="button"
           isActive={activeView === 'MAP' ? true : false}
+          isEmbed={isEmbed}
           onClick={() => {
             setActiveView('MAP');
           }}
@@ -299,6 +312,7 @@ const MapView = (props: MapViewProps) => {
         <MapNavButton
           type="button"
           isActive={activeView === 'TABLE' ? true : false}
+          isEmbed={isEmbed}
           onClick={() => {
             setActiveView('TABLE');
           }}

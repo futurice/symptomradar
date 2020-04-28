@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import handleResponseData from './handleResponseData';
+import { NAVHEIGHT, CITYSELECTHEIGHT } from './constants';
 
 type TableViewProps = {
   cities: Array<string>;
   data: any;
+  isEmbed: boolean;
+};
+
+type TableViewWrapperProps = {
+  isEmbed: boolean;
 };
 
 const CitySelect = styled.div`
-  height: 58px;
+  height: ${CITYSELECTHEIGHT}px;
   padding: 0 16px;
   display: flex;
   align-items: center;
@@ -17,9 +23,11 @@ const CitySelect = styled.div`
   margin: 0 auto;
 `;
 
-const TableViewWrapper = styled.div`
+const TableViewWrapper = styled.div<TableViewWrapperProps>`
   max-width: 600px;
   margin: 0 auto;
+  height: ${props => (props.isEmbed ? `calc(100vh - (${CITYSELECTHEIGHT}px + ${NAVHEIGHT}px))` : 'auto')};
+  overflow: ${props => (props.isEmbed ? 'auto' : 'initial')};
 `;
 
 const TableContainer = styled.div`
@@ -111,7 +119,7 @@ const Label = styled.label`
   margin-right: 8px;
 `;
 
-const TableView = ({ data, cities }: TableViewProps) => {
+const TableView = ({ data, cities, isEmbed }: TableViewProps) => {
   const [selectedCity, setSelectedCity] = useState('');
   const cityList =
     selectedCity === ''
@@ -135,7 +143,7 @@ const TableView = ({ data, cities }: TableViewProps) => {
           })}
         </select>
       </CitySelect>
-      <TableViewWrapper>
+      <TableViewWrapper isEmbed={isEmbed}>
         {cityList.map((item: any) => {
           const formattedData = handleResponseData(item);
 

@@ -36,6 +36,7 @@ const Table = styled.table`
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
+  margin-top: 16px;
 
   th {
     font-weight: normal;
@@ -89,18 +90,21 @@ const TableHead = styled.thead`
   }
 `;
 
-const CityHeadingContainer = styled.h2`
+const CityHeadingContainer = styled.div`
   padding: 0 16px;
 `;
 
-const Description = styled.p`
-  font-weight: normal;
+const BoldText = styled.p`
+  font-weight: bold;
+`;
+
+const ItalicText = styled.p`
   font-style: italic;
 `;
 
 const CityHeading = styled.h2`
   font-size: 21px;
-  margin-bottom: 8px;
+  margin: 18px 0 8px;
 `;
 
 const Label = styled.label`
@@ -131,8 +135,8 @@ const TableView = ({ data, cities }: TableViewProps) => {
             <TableContainer key={item.city}>
               <CityHeadingContainer>
                 <CityHeading>{item.city}</CityHeading>
-                <p>Vastauksia yhteensä {formattedData.responsesTotal}</p>
-                <Description>{formattedData.percentageOfPopulation} % väkiluvusta</Description>
+                <BoldText>Vastauksia yhteensä {formattedData.responsesTotal}</BoldText>
+                <ItalicText>{formattedData.percentageOfPopulation} % väkiluvusta</ItalicText>
               </CityHeadingContainer>
               <Table>
                 <TableHead>

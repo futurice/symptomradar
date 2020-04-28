@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PrimaryButton from './PrimaryButton';
-import ResponseDataHandler from './ResponseDataHandler';
+import handleResponseData from './handleResponseData';
 
 type ModalContentProps = {
   content: any;
@@ -54,7 +54,7 @@ const CloseButton = styled(PrimaryButton)`
 `;
 
 const ModalContent = ({ content, hide }: ModalContentProps) => {
-  const formattedData = ResponseDataHandler(content);
+  const formattedData = handleResponseData(content);
 
   return (
     <>

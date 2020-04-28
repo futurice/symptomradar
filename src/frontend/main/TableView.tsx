@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import ResponseDataHandler from './ResponseDataHandler';
+import handleResponseData from './handleResponseData';
 
 type TableViewProps = {
   cities: Array<string>;
@@ -137,7 +137,7 @@ const TableView = ({ data, cities }: TableViewProps) => {
       </CitySelect>
       <TableViewWrapper>
         {cityList.map((item: any) => {
-          const formattedData = ResponseDataHandler(item);
+          const formattedData = handleResponseData(item);
 
           return (
             <TableContainer key={item.city}>

@@ -1,4 +1,4 @@
-const ResponseDataHandler = (data: any) => {
+const handleResponseData = (data: any) => {
   const responsesTotalValue = data.responses !== -1 ? data.responses.toLocaleString('fi-FI') : '< 25';
   const percentageOfPopulationValue =
     responsesTotalValue !== '< 25' ? ((data.responses * 100) / data.population).toFixed(2).replace('.', ',') : null;
@@ -49,4 +49,4 @@ const ResponseDataHandler = (data: any) => {
   };
 };
 
-export default ResponseDataHandler;
+export default handleResponseData;

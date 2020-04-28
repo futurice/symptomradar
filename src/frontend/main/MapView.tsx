@@ -180,7 +180,7 @@ const MapView = (props: MapViewProps) => {
   const [selectedFilter, setSelectedFilter] = useState<FilterKey>(FILTERS.corona_suspicion_yes.id as FilterKey);
   const [mapHeight, setMapHeight] = useState(window.innerHeight - topPartHeight - 10);
   const data = props.responseData.data;
-  const [activeView, setActiveView] = useState<'MAP' | 'TABLE'>('TABLE');
+  const [activeView, setActiveView] = useState<'MAP' | 'TABLE'>('MAP');
 
   if (props.responseData === 'FETCHING') {
     return <MessageContainer>Loading...</MessageContainer>;

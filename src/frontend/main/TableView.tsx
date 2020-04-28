@@ -21,6 +21,10 @@ const CitySelect = styled.div`
   border-bottom: 1px solid ${props => props.theme.grey};
   max-width: 600px;
   margin: 0 auto;
+
+  select {
+    max-width: 200px;
+  }
 `;
 
 const TableViewWrapper = styled.div<TableViewWrapperProps>`

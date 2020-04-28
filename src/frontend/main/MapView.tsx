@@ -20,6 +20,10 @@ type MapNavProps = {
   isEmbed: boolean;
 };
 
+type FilterWrapperProps = {
+  isEmbed: boolean;
+};
+
 interface mapProperties {
   city: string;
   responses: number;
@@ -107,10 +111,10 @@ const MapWrapper = styled.div`
   height: calc(100vh - (${HEADERHEIGHT}px + ${NAVHEIGHT}px));
 `;
 
-const FilterWrapper = styled.div`
+const FilterWrapper = styled.div<FilterWrapperProps>`
   position: absolute;
   top: 10px;
-  padding: 3px 16px;
+  padding: ${props => (props.isEmbed ? '3px' : '3px 16px')};
   display: flex;
 
   @media (min-width: 624px) {
@@ -329,7 +333,7 @@ const MapView = (props: MapViewProps) => {
             popUpOpen={showMapInfo}
           />
           <Container>
-            <FilterWrapper>
+            <FilterWrapper isEmbed={isEmbed}>
               <FilterToggle selectedFilter={selectedFilter} handleFilterChange={handleFilterChange} />
               <ActiveFilter type="button" label={FILTERS[selectedFilter].label}></ActiveFilter>
             </FilterWrapper>

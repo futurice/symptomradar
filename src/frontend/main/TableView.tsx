@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import ResponseDataHandler from './ResponseDataHandler';
 
@@ -112,11 +112,19 @@ const Label = styled.label`
 `;
 
 const TableView = ({ data, cities }: TableViewProps) => {
+  const [selectedCity, setSelectedCity] = useState('');
+  const cityList =
+    selectedCity === ''
+      ? data
+      : data.filter((item: any) => {
+          return item.city === selectedCity;
+        });
+
   return (
     <>
       <CitySelect>
         <Label htmlFor="city">Kunta</Label>
-        <select name="" id="city">
+        <select name="select" id="city" onChange={e => setSelectedCity(e.currentTarget.value)}>
           <option value="">Kaikki kunnat</option>
           {cities.map((city: string) => {
             return (
@@ -128,7 +136,7 @@ const TableView = ({ data, cities }: TableViewProps) => {
         </select>
       </CitySelect>
       <TableViewWrapper>
-        {data.map((item: any) => {
+        {cityList.map((item: any) => {
           const formattedData = ResponseDataHandler(item);
 
           return (

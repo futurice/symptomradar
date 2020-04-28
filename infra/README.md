@@ -1,4 +1,4 @@
-# symptomradar infra
+# Symptomradar (Oiretutka) infrastructure
 
 ## Getting started
 
@@ -8,7 +8,7 @@ Follow these instructions to set up your environment so that you can contribute 
 1. Obtain secrets for your `.envrc` file (ask around in the team).
 1. Move to the `infra/` dir and run `terraform init` to set up Terraform.
 1. You're done!
-1. To check, you can run `terraform plan`. It should refresh a bunch of resources, and eventually tell you that "No changes. Infrastructure is up-to-date."
+1. To check, you can run `terraform plan`. It should refresh a bunch of resources, and eventually tell you that "No changes. Infrastructure is up-to-date." If you DO see proposed changes at this point, someone might be working on the infra right now. Ask around in your team!
 
 ## Initial setup
 

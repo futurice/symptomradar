@@ -32,7 +32,7 @@ module "env_prod" {
   name_prefix     = "${var.name_prefix}-prod"
   tags            = merge(var.tags, { Environment = "prod" })
   frontend_domain = "www.oiretutka.fi"
-  # TODO: apex_redirect_domain = "oiretutka.fi"
+  apex_redirect_domain = "oiretutka.fi"
   backend_domain       = "api.oiretutka.fi"
   open_data_domain     = "data.oiretutka.fi"
   known_hashing_pepper = "vu2xkUW9iGUsIOUqjDEfarmSLmoRJnxB"

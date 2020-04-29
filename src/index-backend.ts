@@ -1,13 +1,7 @@
 import { APIGatewayProxyHandler, Handler } from 'aws-lambda';
 import { v4 as uuidV4 } from 'uuid';
 import { normalizeForwardedFor } from './backend/abuseDetection';
-import {
-  APP_VERSION,
-  prepareResponseForStorage,
-  storeDataDumpsToS3,
-  storeResponse,
-  updateOpenDataIndex,
-} from './backend/main';
+import { APP_VERSION, prepareResponseForStorage, exportOpenData, storeResponse } from './backend/main';
 import { assertIs, FrontendResponseModel, FrontendResponseModelT } from './common/model';
 import { createApp } from './backend/app';
 
@@ -41,8 +35,7 @@ export const apiEntrypoint: APIGatewayProxyHandler = async (event, context) => {
 export const workerEntrypoint: Handler<unknown> = async () => {
   console.log('Worker started');
   try {
-    await storeDataDumpsToS3(app);
-    await updateOpenDataIndex(app);
+    await exportOpenData(app);
     console.log('Worker done');
   } catch (error) {
     console.error('ERROR (WORKER)', error);

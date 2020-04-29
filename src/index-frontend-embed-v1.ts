@@ -42,6 +42,10 @@ function currentDisplayLanguage() {
           .substring(currentPage.length - 7)
           .replace('.html', '')
           .toLowerCase();
+  // For local development
+  if (currentPage === '/') {
+    lang = '';
+  }
   if (lang !== '') {
     $('#language-selector option[value=' + lang + ']').attr('selected', 'selected');
   } else {

@@ -156,11 +156,10 @@ const TableView = ({ data, cities, isEmbed }: TableViewProps) => {
               <CityHeadingContainer>
                 <CityHeading>{item.city}</CityHeading>
                 <BoldText>Vastauksia yhteensä {formattedData.responsesTotal}</BoldText>
-                <ItalicText>
-                  {formattedData.percentageOfPopulation != null
-                    ? `${formattedData.percentageOfPopulation} % väkiluvusta`
-                    : null}
-                </ItalicText>
+
+                {formattedData.percentageOfPopulation != null ? (
+                  <ItalicText>{formattedData.percentageOfPopulation} % väkiluvusta</ItalicText>
+                ) : null}
               </CityHeadingContainer>
               <Table>
                 <TableHead>

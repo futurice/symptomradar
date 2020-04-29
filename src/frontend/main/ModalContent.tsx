@@ -67,7 +67,7 @@ const ModalContent = ({ content, hide }: ModalContentProps) => {
           ? `(${formattedData.percentageOfPopulation} % väkiluvusta)`
           : null}
       </H3>
-      <Description>{formattedData.responsesTotal !== '< 25' ? 'Verrattuna kunnan väkilukuun' : null}</Description>
+      {formattedData.responsesTotal !== '< 25' ? <Description>Verrattuna kunnan väkilukuun</Description> : null}
       <Symptoms>
         <table>
           <tbody>

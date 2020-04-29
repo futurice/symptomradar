@@ -163,9 +163,9 @@ For the following times you will work on the project, you will need to
 
 The map view has two router paths, root `/` and `/map-embed`. The embed is used in news articles inside an iframe. The iframe needs a height defined and the content will adapt to that height (unlike for the form embed, which uses `iframeResizer` library with HS and on our site, making the iframe height adapt to the content height).
 
-The main difference is that the embed does not have a header. There are also some style adjustments that target the embed version.
+The main difference with the normal version and the embed is that the embed does not have a header. There are also some style adjustments that target the embed version.
 
-If the map view is edited, the embed version should also be tested. Locally you can check `/map-embed`. It's good to also test within an iframe. Ask the team for a test article URL. Also keep in mind that the updates will go to all news articles where the embed is already included.
+If the map view is edited, the embed version should also be tested. Locally you can check `/map-embed`. It's good to also test within an iframe (ask the team for a test article link). Also keep in mind that the updates will go to all news articles where the embed is already included.
 
 ### Survey page
 
@@ -190,7 +190,7 @@ Also, as the form is emdedded through an `<iframe>` element, it's a good idea to
 ### General notes about developing the form
 
 - When you update something, also test the form in a test article. Ask the team for the link.
-- At least on HS articles the form `iframe` will get the same padding as the normal article content. That is why the form doesn't have a big padding and also otherwise looks a bit weird when viewed.
+- At least on HS articles the form `iframe` will get the same padding as the normal article content. That is why the form doesn't have a big padding and also otherwise looks a bit weird when viewed alone in the browser, without being wrapper in an article.
 - When you run the form locally, the language selector does not work and you will only see the translation templates, not actual text. More about testing the translation below.
 
 ### Form translations

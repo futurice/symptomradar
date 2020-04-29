@@ -75,6 +75,18 @@ resource "aws_iam_policy" "backend_api" {
       "Effect": "Allow"
     },
     {
+      "Sid": "ReadOnlyAccessToOpenDataBucket",
+      "Action": [
+        "s3:ListBucket",
+        "s3:GetObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::${aws_s3_bucket.open_data.id}",
+        "arn:aws:s3:::${aws_s3_bucket.open_data.id}/*"
+      ],
+      "Effect": "Allow"
+    },
+    {
       "Sid": "ReadOnlyAccessToSecrets",
       "Effect": "Allow",
       "Action": [

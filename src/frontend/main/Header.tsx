@@ -14,7 +14,7 @@ type HeaderProps = {
 const AppHeader = styled.header`
   padding: 16px 16px 10px 16px;
   background-color: ${props => props.theme.white};
-  border-bottom: 1px solid ${props => props.theme.black};
+  border-bottom: 1px solid ${props => props.theme.grey};
   height: ${HEADERHEIGHT}px;
 `;
 

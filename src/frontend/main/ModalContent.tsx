@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PrimaryButton from './PrimaryButton';
+import handleResponseData from './handleResponseData';
 
 type ModalContentProps = {
   content: any;
@@ -21,23 +22,28 @@ const H3 = styled.h3`
   margin-bottom: 0;
 `;
 
-const P = styled.p`
+const Description = styled.p`
   font-style: italic;
-  font-size: 16px;
   margin-top: 0;
 `;
 
 const Symptoms = styled.div`
-  display: grid;
-  grid-template-columns: auto 50px 1fr;
-  grid-gap: 4px 10px;
-  p {
-    margin: 0;
-    hyphens: manual;
+  td {
+    padding-right: 10px;
+
+    &:nth-child(2) {
+      min-width: 60px;
+    }
+
+    @media (min-width: 450px) {
+      padding-right: 20px;
+    }
   }
 
-  @media (min-width: 350px) {
-    grid-gap: 4px 20px;
+  th {
+    font-weight: normal;
+    text-align: left;
+    hyphens: manual;
   }
 `;
 
@@ -48,66 +54,42 @@ const CloseButton = styled(PrimaryButton)`
 `;
 
 const ModalContent = ({ content, hide }: ModalContentProps) => {
-  const responsesTotal = content.responses !== -1 ? content.responses.toLocaleString('fi-FI') : '< 25';
-  const suspicionTotal =
-    content.corona_suspicion_yes !== -1 ? content.corona_suspicion_yes.toLocaleString('fi-FI') : 'ei tietoa';
-  const coughTotal =
-    content.cough_mild + content.cough_intense !== -2
-      ? (content.cough_mild + content.cough_intense).toLocaleString('fi-FI')
-      : 'ei tietoa';
-  const feverTotal =
-    content.fever_slight + content.fever_high !== -2
-      ? (content.fever_slight + content.fever_high).toLocaleString('fi-FI')
-      : 'ei tietoa';
-  const breathingDifficulties =
-    content.breathing_difficulties_yes !== -1
-      ? content.breathing_difficulties_yes.toLocaleString('fi-FI')
-      : 'ei tietoa';
+  const formattedData = handleResponseData(content);
+
   return (
     <>
       <ModalHeader>
         <H2>{content.city}</H2>
       </ModalHeader>
       <H3>
-        Vastauksia yhteensä: {responsesTotal}{' '}
-        {responsesTotal !== '< 25'
-          ? `(${((content.responses * 100) / content.population).toFixed(2).replace('.', ',')} % väkiluvusta)`
-          : null}
+        Vastauksia yhteensä: {formattedData.responsesTotal} ({formattedData.percentageOfPopulation} % väkiluvusta)
       </H3>
-      <P>{responsesTotal !== '< 25' ? 'Verrattuna kunnan väkilukuun' : null}</P>
+      <Description>{formattedData.responsesTotal !== '< 25' ? 'Verrattuna kunnan väkilukuun' : null}</Description>
       <Symptoms>
-        <span>{suspicionTotal}</span>
-        <span>
-          {content.corona_suspicion_yes !== -1
-            ? `${((content.corona_suspicion_yes * 100) / content.population).toFixed(2).replace('.', ',')} %`
-            : null}
-        </span>
-        <p>Epäilys koronavirus&shy;tartunnasta </p>
-        <span>{coughTotal}</span>
-        <span>
-          {content.cough_mild + content.cough_intense !== -2
-            ? `${(((content.cough_mild + content.cough_intense) * 100) / content.population)
-                .toFixed(2)
-                .replace('.', ',')} %`
-            : null}
-        </span>
-        <p>Yskää</p>
-        <span>{feverTotal}</span>
-        <span>
-          {content.fever_slight + content.fever_high !== -2
-            ? `${(((content.fever_slight + content.fever_high) * 100) / content.population)
-                .toFixed(2)
-                .replace('.', ',')} %`
-            : null}
-        </span>
-        <p>Kuumetta</p>
-        <span>{breathingDifficulties}</span>
-        <span>
-          {content.breathing_difficulties_yes !== -1
-            ? `${((content.breathing_difficulties_yes * 100) / content.population).toFixed(2).replace('.', ',')} %`
-            : null}
-        </span>
-        <p>Vaikeuksia hengittää</p>
+        <table>
+          <tbody>
+            <tr>
+              <td>{formattedData.suspicionTotal}</td>
+              <td>{formattedData.suspicionPercentage} %</td>
+              <th scope="row">Epäilys koronavirus&shy;tartunnasta</th>
+            </tr>
+            <tr>
+              <td>{formattedData.coughTotal}</td>
+              <td>{formattedData.coughPercentage} %</td>
+              <th scope="row">Yskää</th>
+            </tr>
+            <tr>
+              <td>{formattedData.feverTotal}</td>
+              <td>{formattedData.feverPercentage} %</td>
+              <th scope="row">Kuumetta</th>
+            </tr>
+            <tr>
+              <td>{formattedData.breathingDifficultiesTotal}</td>
+              <td>{formattedData.breathingDifficultiesPercentage} %</td>
+              <th scope="row">Vaikeuksia hengittää</th>
+            </tr>
+          </tbody>
+        </table>
       </Symptoms>
       <CloseButton type="button" data-dismiss="modal" aria-label="Sulje" label="Sulje" handleClick={hide} />
     </>

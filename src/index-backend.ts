@@ -1,16 +1,11 @@
 import { APIGatewayProxyHandler, Handler } from 'aws-lambda';
 import { v4 as uuidV4 } from 'uuid';
-import { createDynamoDbClient, normalizeForwardedFor } from './backend/abuseDetection';
-import {
-  APP_VERSION,
-  prepareResponseForStorage,
-  storeDataDumpsToS3,
-  storeResponse,
-  updateOpenDataIndex,
-} from './backend/main';
+import { normalizeForwardedFor } from './backend/abuseDetection';
+import { APP_VERSION, prepareResponseForStorage, exportOpenData, storeResponse } from './backend/main';
 import { assertIs, FrontendResponseModel, FrontendResponseModelT } from './common/model';
+import { createApp } from './backend/app';
 
-const dynamoDb = createDynamoDbClient(process.env.ABUSE_DETECTION_TABLE || '');
+const app = createApp();
 
 console.log(`Backend ${APP_VERSION} started`);
 
@@ -23,7 +18,7 @@ export const apiEntrypoint: APIGatewayProxyHandler = async (event, context) => {
       const countryCode = event.headers['CloudFront-Viewer-Country'] || '';
       const body = JSON.parse(event.body || '') as unknown;
       const res = assertIs(FrontendResponseModel)(body);
-      await storeResponse(res, countryCode, dynamoDb, {
+      await storeResponse(app, res, countryCode, {
         source_ip: event.requestContext.identity.sourceIp,
         user_agent: event.headers['User-Agent'],
         forwarded_for: normalizeForwardedFor(event.headers['X-Forwarded-For']),
@@ -40,8 +35,7 @@ export const apiEntrypoint: APIGatewayProxyHandler = async (event, context) => {
 export const workerEntrypoint: Handler<unknown> = async () => {
   console.log('Worker started');
   try {
-    await storeDataDumpsToS3();
-    await updateOpenDataIndex();
+    await exportOpenData(app);
     console.log('Worker done');
   } catch (error) {
     console.error('ERROR (WORKER)', error);
@@ -75,9 +69,9 @@ if (process.argv[0].match(/\/ts-node$/)) {
     .then(assertIs(FrontendResponseModel))
     .then(res =>
       prepareResponseForStorage(
+        app,
         res,
         'FI',
-        dynamoDb,
         {
           source_ip: '127.0.0.1',
           user_agent: 'localhost',

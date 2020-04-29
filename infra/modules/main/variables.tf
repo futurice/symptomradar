@@ -6,6 +6,10 @@ variable "frontend_domain" {
   description = "Full domain name under which the frontend should be made available on the Internet"
 }
 
+variable "apex_redirect_domain" {
+  description = "Domain name that redirects to the main domain"
+}
+
 variable "backend_domain" {
   description = "Full domain name under which the backend should be made available on the Internet"
 }

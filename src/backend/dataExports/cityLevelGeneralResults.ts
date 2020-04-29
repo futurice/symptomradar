@@ -242,36 +242,36 @@ export function mapCityLevelGeneralResults(
   // NOTE: Reuse for postal code data?
   for (const cityData of Object.values(resultsByCity) as any[]) {
     if (cityData.responses < 25) {
-      cityData.responses = 0;
-      cityData.fever_no = 0;
-      cityData.fever_slight = 0;
-      cityData.fever_high = 0;
-      cityData.cough_no = 0;
-      cityData.cough_mild = 0;
-      cityData.cough_intense = 0;
-      cityData.general_wellbeing_fine = 0;
-      cityData.general_wellbeing_impaired = 0;
-      cityData.general_wellbeing_bad = 0;
-      cityData.breathing_difficulties_no = 0;
-      cityData.breathing_difficulties_yes = 0;
-      cityData.muscle_pain_no = 0;
-      cityData.muscle_pain_yes = 0;
-      cityData.headache_no = 0;
-      cityData.headache_yes = 0;
-      cityData.sore_throat_no = 0;
-      cityData.sore_throat_yes = 0;
-      cityData.rhinitis_no = 0;
-      cityData.rhinitis_yes = 0;
-      cityData.stomach_issues_no = 0;
-      cityData.stomach_issues_yes = 0;
-      cityData.sensory_issues_no = 0;
-      cityData.sensory_issues_yes = 0;
-      cityData.longterm_medication_no = 0;
-      cityData.longterm_medication_yes = 0;
-      cityData.smoking_no = 0;
-      cityData.smoking_yes = 0;
-      cityData.corona_suspicion_no = 0;
-      cityData.corona_suspicion_yes = 0;
+      cityData.responses = -1;
+      cityData.fever_no = -1;
+      cityData.fever_slight = -1;
+      cityData.fever_high = -1;
+      cityData.cough_no = -1;
+      cityData.cough_mild = -1;
+      cityData.cough_intense = -1;
+      cityData.general_wellbeing_fine = -1;
+      cityData.general_wellbeing_impaired = -1;
+      cityData.general_wellbeing_bad = -1;
+      cityData.breathing_difficulties_no = -1;
+      cityData.breathing_difficulties_yes = -1;
+      cityData.muscle_pain_no = -1;
+      cityData.muscle_pain_yes = -1;
+      cityData.headache_no = -1;
+      cityData.headache_yes = -1;
+      cityData.sore_throat_no = -1;
+      cityData.sore_throat_yes = -1;
+      cityData.rhinitis_no = -1;
+      cityData.rhinitis_yes = -1;
+      cityData.stomach_issues_no = -1;
+      cityData.stomach_issues_yes = -1;
+      cityData.sensory_issues_no = -1;
+      cityData.sensory_issues_yes = -1;
+      cityData.longterm_medication_no = -1;
+      cityData.longterm_medication_yes = -1;
+      cityData.smoking_no = -1;
+      cityData.smoking_yes = -1;
+      cityData.corona_suspicion_no = -1;
+      cityData.corona_suspicion_yes = -1;
     }
   }
 

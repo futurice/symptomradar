@@ -159,7 +159,23 @@ For the following times you will work on the project, you will need to
 
 ## Developing the stand alone (React) app
 
+### Map embed
+
+The map view has two router paths, root `/` and `/map-embed`. The embed is used in news articles inside an iframe. The iframe needs a height defined and the content will adapt to that height (unlike for the form embed, which uses `iframeResizer` library with HS and on our site, making the iframe height adapt to the content height).
+
+The main difference with the normal version and the embed is that the embed does not have a header. There are also some style adjustments that target the embed version.
+
+If the map view is edited, the embed version should also be tested. Locally you can check `/map-embed`. It's good to also test within an iframe (ask the team for a test article link). Also keep in mind that the updates will go to all news articles where the embed is already included.
+
+### Survey page
+
+The embedded form on the survey page does not work locally, the iframe does not load the correct content there. If you want to test it, you can for example temporarily change the relative path in `Survey.tsx` to point in dev
+
+`src="https://dev.oiretutka.fi/embed/v1/?variant=plain"`
+
 ## Developing the embedded form (with vanilla JS, jQuery and TypeScript)
+
+### The technologies
 
 As said earlier in this document, the crowdsourcing happens by asking questions in an embed that is placed on news media pages or articles.
 
@@ -169,7 +185,63 @@ If you have worked previously with modern JS frameworks, these technologies migh
 
 If you haven't worked with TypeScript before, take a look at [the TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/basic-types.html). Mostly TypeScript means that all function parameters and outputs have to be typed. If [the basic types](https://www.typescriptlang.org/docs/handbook/basic-types.html) aren't enough, take a look at [jQuery types](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/682ebb5fcda0d6d68bda36862171cd1f116121b2/types/jquery) too.
 
-Also, as the form is emdedded through an <iframe> element, it's a good idea to read [the ultimate guide to iframes](https://blog.logrocket.com/the-ultimate-guide-to-iframes/), it'll give you more context about how the media sites will use this form.
+Also, as the form is emdedded through an `<iframe>` element, it's a good idea to read [the ultimate guide to iframes](https://blog.logrocket.com/the-ultimate-guide-to-iframes/), it'll give you more context about how the media sites will use this form.
+
+### General notes about developing the form
+
+- When you update something, also test the form in a test article. Ask the team for the link.
+- At least on HS articles the form `iframe` will get the same padding as the normal article content. That is why the form doesn't have a big padding and also otherwise looks a bit weird when viewed alone in the browser, without being wrapper in an article.
+- When you run the form locally, the language selector does not work and you will only see the translation templates, not actual text. More about testing the translations below.
+
+### Form translations
+
+To view a translated version
+
+- Copy the templated index file so it's ready for translation:
+
+  ```shell
+  cp public/index-embed-v1.html build/index.html
+  ```
+
+- Run the translation script:
+
+  ```shell
+  npm run ts-node scripts/translate-frontend.ts
+  ```
+
+  That will create `index.en.html` and `index.fi.html` in the build folder.
+
+- Choose one of the languages and overwrite the templated index file:
+
+  ```shell
+  cp build/index.en.html public/index-embed-v1.html
+  ```
+
+  OR
+
+  ```shell
+  cp build/index.fi.html public/index-embed-v1.html
+  ```
+
+- Start the dev server normally:
+
+  ```shell
+  npm run frontend-embed-v1-start
+  ```
+
+  Note that the language selector still doesn't work locally.
+
+- Don't commit your local changes to `public/index-embed-v1.html`
+
+### Form variants
+
+There are currently two versions of the form. The default one is used in news artciles. The second version is defined with a query string parameter `?variant=plain`. It is used on the main site's Survey page.
+
+The differences to the default one are
+
+- Header and logo not visible
+- Start button hidden, the form is already expanded
+- Some margins adjusted with the `plain` class
 
 # Contact
 

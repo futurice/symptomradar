@@ -62,30 +62,35 @@ const ModalContent = ({ content, hide }: ModalContentProps) => {
         <H2>{content.city}</H2>
       </ModalHeader>
       <H3>
-        Vastauksia yhteensä: {formattedData.responsesTotal} ({formattedData.percentageOfPopulation} % väkiluvusta)
+        Vastauksia yhteensä: {formattedData.responsesTotal}{' '}
+        {formattedData.percentageOfPopulation != null
+          ? `(${formattedData.percentageOfPopulation} % väkiluvusta)`
+          : null}
       </H3>
-      <Description>{formattedData.responsesTotal !== '< 25' ? 'Verrattuna kunnan väkilukuun' : null}</Description>
+      {formattedData.responsesTotal !== '< 25' ? <Description>Verrattuna kunnan väkilukuun</Description> : null}
       <Symptoms>
         <table>
           <tbody>
             <tr>
               <td>{formattedData.suspicionTotal}</td>
-              <td>{formattedData.suspicionPercentage} %</td>
+              {formattedData.suspicionPercentage != null ? <td>{formattedData.suspicionPercentage} %</td> : null}
               <th scope="row">Epäilys koronavirus&shy;tartunnasta</th>
             </tr>
             <tr>
               <td>{formattedData.coughTotal}</td>
-              <td>{formattedData.coughPercentage} %</td>
+              {formattedData.coughPercentage != null ? <td>{formattedData.coughPercentage} %</td> : null}
               <th scope="row">Yskää</th>
             </tr>
             <tr>
               <td>{formattedData.feverTotal}</td>
-              <td>{formattedData.feverPercentage} %</td>
+              {formattedData.feverPercentage != null ? <td>{formattedData.feverPercentage} %</td> : null}
               <th scope="row">Kuumetta</th>
             </tr>
             <tr>
               <td>{formattedData.breathingDifficultiesTotal}</td>
-              <td>{formattedData.breathingDifficultiesPercentage} %</td>
+              {formattedData.breathingDifficultiesPercentage != null ? (
+                <td>{formattedData.breathingDifficultiesPercentage} %</td>
+              ) : null}
               <th scope="row">Vaikeuksia hengittää</th>
             </tr>
           </tbody>

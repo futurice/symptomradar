@@ -156,7 +156,10 @@ const TableView = ({ data, cities, isEmbed }: TableViewProps) => {
               <CityHeadingContainer>
                 <CityHeading>{item.city}</CityHeading>
                 <BoldText>Vastauksia yhteensä {formattedData.responsesTotal}</BoldText>
-                <ItalicText>{formattedData.percentageOfPopulation} % väkiluvusta</ItalicText>
+
+                {formattedData.percentageOfPopulation != null ? (
+                  <ItalicText>{formattedData.percentageOfPopulation} % väkiluvusta</ItalicText>
+                ) : null}
               </CityHeadingContainer>
               <Table>
                 <TableHead>
@@ -170,22 +173,28 @@ const TableView = ({ data, cities, isEmbed }: TableViewProps) => {
                   <tr>
                     <th scope="row">Epäilys koronavirus&shy;tartunnasta</th>
                     <td>{formattedData.suspicionTotal}</td>
-                    <td>{formattedData.suspicionPercentage} %</td>
+                    <td>
+                      {formattedData.suspicionPercentage != null ? `${formattedData.suspicionPercentage} %` : '-'}
+                    </td>
                   </tr>
                   <tr>
                     <th scope="row">Yskää</th>
                     <td>{formattedData.coughTotal}</td>
-                    <td>{formattedData.coughPercentage} %</td>
+                    <td>{formattedData.coughPercentage != null ? `${formattedData.coughPercentage} %` : '-'}</td>
                   </tr>
                   <tr>
                     <th scope="row">Kuumetta</th>
                     <td>{formattedData.feverTotal}</td>
-                    <td>{formattedData.feverPercentage} %</td>
+                    <td>{formattedData.feverPercentage != null ? `${formattedData.feverPercentage} %` : '-'}</td>
                   </tr>
                   <tr>
                     <th scope="row">Vaikeuksia hengittää</th>
                     <td>{formattedData.breathingDifficultiesTotal}</td>
-                    <td>{formattedData.breathingDifficultiesPercentage} %</td>
+                    <td>
+                      {formattedData.breathingDifficultiesPercentage != null
+                        ? `${formattedData.breathingDifficultiesPercentage} %`
+                        : '-'}
+                    </td>
                   </tr>
                 </tbody>
               </Table>

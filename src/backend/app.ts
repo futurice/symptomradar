@@ -58,23 +58,30 @@ export function createS3Client() {
 // S3 fetch helpers
 
 export async function s3GetJsonHelper(s3: AWS.S3, params: AWS.S3.GetObjectRequest) {
-  const result = await s3.getObject(params).promise();
-  if (!result.Body) {
-    throw Error(`Empty JSON in S3 object '${params.Bucket}/${params.Key}`);
+  try {
+    const result = await s3.getObject(params).promise();
+    if (!result.Body) {
+      throw Error(`Empty JSON in S3 object "${params.Bucket}/${params.Key}"`);
+    }
+    return JSON.parse(result.Body.toString('utf-8'));
+  } catch (err) {
+    throw new Error(`Couldn't get JSON from S3 object "${params.Bucket}/${params.Key}" (caused by\n${err}\n)`);
   }
-
-  return JSON.parse(result.Body.toString('utf-8'));
 }
 
 export async function s3PutJsonHelper(s3: AWS.S3, params: AWS.S3.PutObjectRequest) {
-  return await s3
-    .putObject({
-      ...params,
-      ContentType: 'application/json',
-      CacheControl: 'max-age=15',
-      Body: JSON.stringify(params.Body, null, 2),
-    })
-    .promise();
+  try {
+    return await s3
+      .putObject({
+        ...params,
+        ContentType: 'application/json',
+        CacheControl: 'max-age=15',
+        Body: JSON.stringify(params.Body, null, 2),
+      })
+      .promise();
+  } catch (err) {
+    throw new Error(`Couldn't put JSON to S3 object "${params.Bucket}/${params.Key}" (caused by\n${err}\n)`);
+  }
 }
 
 export function createS3Sources(appConstants: AppConstants, s3Client: AWS.S3) {

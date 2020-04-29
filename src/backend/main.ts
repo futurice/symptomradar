@@ -33,14 +33,21 @@ export async function storeResponse(
   );
 
   console.log('About to store response', r);
+  const Bucket = app.constants.storageBucket;
+  const Key = getStorageKey(r);
   await app.s3Client
     .putObject({
-      Bucket: app.constants.storageBucket,
-      Key: getStorageKey(r),
+      Bucket,
+      Key,
       Body: JSON.stringify(r),
       ACL: 'private',
     })
-    .promise();
+    .promise()
+    .catch(err =>
+      Promise.reject(
+        new Error(`Couldn't store response to bucket "${Bucket}" under key "${Key}" (caused by\n${err}\n)`),
+      ),
+    );
 }
 
 // Takes a response from the frontend, scrubs it clean, and adds fields required for storing it
@@ -104,9 +111,12 @@ export function hash(input: string, pepper: string) {
 }
 
 export async function obfuscateLowPopulationPostalCode(app: App, postalCode: string) {
-  const lowPopulationPostalCodes = await app.s3Sources.fetchLowPopulationPostalCodes();
-
-  return lowPopulationPostalCodes?.data?.[postalCode] || postalCode;
+  try {
+    const lowPopulationPostalCodes = await app.s3Sources.fetchLowPopulationPostalCodes();
+    return lowPopulationPostalCodes?.data?.[postalCode] || postalCode;
+  } catch (err) {
+    throw new Error(`Couldn't obfuscate low population postal code "${postalCode}" (caused by\n${err}\n)`);
+  }
 }
 
 export async function exportOpenData(app: App) {

@@ -86,7 +86,7 @@ if (process.argv[0].match(/\/ts-node$/)) {
 
 const response = (statusCode: number, body?: object, logError?: Error) => {
   console.log(`Outgoing response: ${statusCode}`);
-  if (logError) console.error('ERROR (API)', logError);
+  if (logError) console.error(`API request processing failed (caused by\n${logError}\n)`);
   return {
     statusCode,
     body: body ? JSON.stringify(body, null, 2) : '',

@@ -191,7 +191,7 @@ Also, as the form is emdedded through an `<iframe>` element, it's a good idea to
 
 - When you update something, also test the form in a test article. Ask the team for the link.
 - At least on HS articles the form `iframe` will get the same padding as the normal article content. That is why the form doesn't have a big padding and also otherwise looks a bit weird when viewed alone in the browser, without being wrapper in an article.
-- When you run the form locally, the language selector does not work and you will only see the translation templates, not actual text. More about testing the translation below.
+- When you run the form locally, the language selector does not work and you will only see the translation templates, not actual text. More about testing the translations below.
 
 ### Form translations
 
@@ -199,13 +199,13 @@ To view a translated version
 
 - Copy the templated index file so it's ready for translation:
 
-  ```
+  ```shell
   cp public/index-embed-v1.html build/index.html
   ```
 
 - Run the translation script:
 
-  ```
+  ```shell
   npm run ts-node scripts/translate-frontend.ts
   ```
 
@@ -213,19 +213,19 @@ To view a translated version
 
 - Choose one of the languages and overwrite the templated index file:
 
-  ```
+  ```shell
   cp build/index.en.html public/index-embed-v1.html
   ```
 
   OR
 
-  ```
+  ```shell
   cp build/index.fi.html public/index-embed-v1.html
   ```
 
 - Start the dev server normally:
 
-  ```
+  ```shell
   npm run frontend-embed-v1-start
   ```
 

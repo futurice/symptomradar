@@ -29,9 +29,9 @@ module "env_prod" {
   source    = "git::ssh://git@github.com/futurice/symptomradar.git//infra/modules/main?ref=v2.4"
   providers = { aws.us_east_1 = aws.us_east_1 } # this alias is needed because ACM is only available in the "us-east-1" region
 
-  name_prefix     = "${var.name_prefix}-prod"
-  tags            = merge(var.tags, { Environment = "prod" })
-  frontend_domain = "www.oiretutka.fi"
+  name_prefix          = "${var.name_prefix}-prod"
+  tags                 = merge(var.tags, { Environment = "prod" })
+  frontend_domain      = "www.oiretutka.fi"
   apex_redirect_domain = "oiretutka.fi"
   backend_domain       = "api.oiretutka.fi"
   open_data_domain     = "data.oiretutka.fi"

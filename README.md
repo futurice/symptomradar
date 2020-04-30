@@ -188,7 +188,7 @@ To view a translated version
 - Copy the templated index file so it's ready for translation:
 
   ```shell
-  cp public/index-embed-v1.html build/index.html
+  mkdir -p build && cp public/index-embed-v1.html build/index.html
   ```
 
 - Run the translation script:

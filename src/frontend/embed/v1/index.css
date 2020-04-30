@@ -10,6 +10,18 @@ html {
   box-sizing: inherit;
 }
 
+/*
+* `header` and `main` are hidden by default in `index-embed-v1.html` to
+* wait for this css file to be appended via JavaScript.
+* The default `visibility:hidden` is to prevent flickering due to delayed
+* style changes as html content is displayed first, and it takes a while
+* for the app's js files to be loaded - which will then load this css file.
+*/
+header,
+main {
+  visibility: visible;
+}
+
 body {
   font-family: sans-serif;
   margin: 0;

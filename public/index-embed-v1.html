@@ -4,6 +4,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{ title }}</title>
+    <style>
+      /*
+      * Prevent flickering by hiding `main` and `header` section by default.
+      * After js files are loaded, the app's css files will be appended to the
+      * document and set them to visible again.
+      */
+      main,
+      header {
+        visibility: hidden;
+      }
+    </style>
   </head>
 
   <body>

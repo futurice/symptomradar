@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import handleResponseData from './handleResponseData';
 import { NAVHEIGHT, CITYSELECTHEIGHT } from './constants';
@@ -115,13 +115,23 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
   const [isFetching, setIsFetching] = useState(false);
   const container = useRef<HTMLDivElement>(null);
 
+  const fetchMoreListItems = useCallback(() => {
+    if (isFetching) return;
+    setIsFetching(true);
+
+    setTimeout(() => {
+      setListItems((prevState: any) => [...prevState, ...data.slice(prevState.length, prevState.length + 10)]);
+      setIsFetching(false);
+    }, 2000);
+  }, [data, isFetching]);
+
   // For the main site, where the page is scrolled
-  const handleWindowScroll = () => {
+  const handleWindowScroll = useCallback(() => {
     if (!isEmbed && selectedCity === '' && data.length > listItems.length) {
       if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
       fetchMoreListItems();
     }
-  };
+  }, [isEmbed, selectedCity, data, fetchMoreListItems, listItems]);
 
   // For article embeds, where the the container is scrolled
   const handleContainerScroll = () => {
@@ -134,16 +144,6 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
         fetchMoreListItems();
       }
     }
-  };
-
-  const fetchMoreListItems = () => {
-    if (isFetching) return;
-    setIsFetching(true);
-
-    setTimeout(() => {
-      setListItems((prevState: any) => [...prevState, ...data.slice(prevState.length, prevState.length + 10)]);
-      setIsFetching(false);
-    }, 2000);
   };
 
   useEffect(() => {
@@ -159,7 +159,7 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
   useEffect(() => {
     window.addEventListener('scroll', handleWindowScroll);
     return () => window.removeEventListener('scroll', handleWindowScroll);
-  }, [listItems]);
+  }, [handleWindowScroll, listItems]);
 
   return (
     <TableViewWrapper isEmbed={isEmbed} ref={container} onScroll={handleContainerScroll}>

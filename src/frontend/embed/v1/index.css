@@ -73,6 +73,10 @@ h1 {
   margin-bottom: 24px;
 }
 
+.hidden {
+  display: none;
+}
+
 /* To make sure mobile devices don't zoom in on input focus */
 input {
   font-size: 100%;
@@ -329,6 +333,12 @@ input[type='radio']:focus + label::before {
 .plain #collapse-survey,
 .plain #start-survey {
   margin-left: 16px;
+}
+
+.plain #start-survey,
+.plain #collapse-survey,
+.plain header {
+  display: none;
 }
 
 .plain .form-info {

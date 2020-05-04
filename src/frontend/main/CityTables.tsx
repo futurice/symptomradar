@@ -4,7 +4,8 @@ import handleResponseData from './handleResponseData';
 import { NAVHEIGHT, CITYSELECTHEIGHT } from './constants';
 
 type CityTablesProps = {
-  cityList: any;
+  data: any;
+  selectedCity: string;
   isEmbed: boolean;
 };
 
@@ -109,20 +110,24 @@ const TableViewWrapper = styled.div<TableViewWrapperProps>`
   overflow: ${props => (props.isEmbed ? 'auto' : 'initial')};
 `;
 
-const CityTables = ({ cityList, isEmbed }: CityTablesProps) => {
-  const [listItems, setListItems] = useState(cityList.slice(0, 10));
+const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
+  const [listItems, setListItems] = useState(data.slice(0, 10));
   const [isFetching, setIsFetching] = useState(false);
   const container = useRef<HTMLDivElement>(null);
 
-  console.log(cityList);
-  console.log(listItems);
-  if (cityList.length === 1) {
-    setListItems(cityList);
-  }
+  useEffect(() => {
+    const cityList =
+      selectedCity === ''
+        ? data
+        : data.filter((item: any) => {
+            return item.city === selectedCity;
+          });
+    setListItems(cityList.slice(0, 10));
+  }, [selectedCity]);
 
   // For the main site, where the page is scrolled
   const handleWindowScroll = () => {
-    if (!isEmbed && cityList.length > 1) {
+    if (!isEmbed && selectedCity !== '') {
       if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
       setIsFetching(true);
     }
@@ -130,7 +135,7 @@ const CityTables = ({ cityList, isEmbed }: CityTablesProps) => {
 
   // For article embeds, where the the container is scrolled
   const handleContainerScroll = () => {
-    if (isEmbed && container.current !== null && cityList.length > 1) {
+    if (isEmbed && container.current !== null && selectedCity !== '') {
       var scrollY = container.current.scrollHeight - container.current.scrollTop;
       var height = container.current.offsetHeight;
       var offset = height - scrollY;
@@ -141,6 +146,13 @@ const CityTables = ({ cityList, isEmbed }: CityTablesProps) => {
     }
   };
 
+  function fetchMoreListItems() {
+    setTimeout(() => {
+      setListItems((prevState: any) => [...prevState, ...data.slice(prevState.length, prevState.length + 10)]);
+      setIsFetching(false);
+    }, 2000);
+  }
+
   useEffect(() => {
     window.addEventListener('scroll', handleWindowScroll);
     return () => window.removeEventListener('scroll', handleWindowScroll);
@@ -150,13 +162,6 @@ const CityTables = ({ cityList, isEmbed }: CityTablesProps) => {
     if (!isFetching) return;
     fetchMoreListItems();
   }, [isFetching]);
-
-  function fetchMoreListItems() {
-    setTimeout(() => {
-      setListItems((prevState: any) => [...prevState, ...cityList.slice(prevState.length, prevState.length + 10)]);
-      setIsFetching(false);
-    }, 2000);
-  }
 
   return (
     <TableViewWrapper isEmbed={isEmbed} ref={container} onScroll={handleContainerScroll}>

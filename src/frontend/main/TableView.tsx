@@ -29,13 +29,6 @@ const Label = styled.label`
 
 const TableView = ({ data, cities, isEmbed }: TableViewProps) => {
   const [selectedCity, setSelectedCity] = useState('');
-  const cityList =
-    selectedCity === ''
-      ? data
-      : data.filter((item: any) => {
-          return item.city === selectedCity;
-        });
-
   return (
     <>
       <CitySelect>
@@ -51,7 +44,7 @@ const TableView = ({ data, cities, isEmbed }: TableViewProps) => {
           })}
         </select>
       </CitySelect>
-      <CityTables cityList={cityList} isEmbed={isEmbed} />
+      <CityTables data={data} selectedCity={selectedCity} isEmbed={isEmbed} />
     </>
   );
 };

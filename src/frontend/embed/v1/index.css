@@ -19,6 +19,11 @@ body {
   background-color: #ffffff;
 }
 
+/* hide spinner after the app is fully loaded */
+body.js-enabled::before {
+  display: none;
+}
+
 [tabindex='-1']:focus {
   outline: none;
   box-shadow: none;
@@ -71,10 +76,6 @@ h1 {
 /* To make sure mobile devices don't zoom in on input focus */
 input {
   font-size: 100%;
-}
-
-.hidden {
-  display: none;
 }
 
 .success-message {

@@ -150,9 +150,11 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
   }, [data, selectedCity]);
 
   useEffect(() => {
+    if (!isEmbed) {
     window.addEventListener('scroll', handleWindowScroll);
     return () => window.removeEventListener('scroll', handleWindowScroll);
-  }, [handleWindowScroll, listItems]);
+    }
+  }, [isEmbed, handleWindowScroll, listItems]);
 
   return (
     <TableViewWrapper isEmbed={isEmbed} ref={container} onScroll={handleContainerScroll}>

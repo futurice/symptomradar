@@ -119,7 +119,7 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
   const handleWindowScroll = () => {
     if (!isEmbed && selectedCity === '' && data.length > listItems.length) {
       if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
-      setIsFetching(true);
+      fetchMoreListItems();
     }
   };
 
@@ -131,9 +131,19 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
       var offset = height - scrollY;
 
       if (offset === 0 || offset === 1) {
-        setIsFetching(true);
+        fetchMoreListItems();
       }
     }
+  };
+
+  const fetchMoreListItems = () => {
+    if (isFetching) return;
+    setIsFetching(true);
+
+    setTimeout(() => {
+      setListItems((prevState: any) => [...prevState, ...data.slice(prevState.length, prevState.length + 10)]);
+      setIsFetching(false);
+    }, 2000);
   };
 
   useEffect(() => {
@@ -144,24 +154,12 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
             return item.city === selectedCity;
           });
     setListItems(cityList.slice(0, 10));
-  }, [selectedCity]);
+  }, [data, selectedCity]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleWindowScroll);
     return () => window.removeEventListener('scroll', handleWindowScroll);
   }, [listItems]);
-
-  useEffect(() => {
-    if (!isFetching) return;
-    fetchMoreListItems();
-  }, [isFetching]);
-
-  function fetchMoreListItems() {
-    setTimeout(() => {
-      setListItems((prevState: any) => [...prevState, ...data.slice(prevState.length, prevState.length + 10)]);
-      setIsFetching(false);
-    }, 2000);
-  }
 
   return (
     <TableViewWrapper isEmbed={isEmbed} ref={container} onScroll={handleContainerScroll}>

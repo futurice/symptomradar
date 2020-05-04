@@ -98,10 +98,6 @@ const TableHead = styled.thead`
   }
 `;
 
-const Loading = styled.p`
-  margin-top: 40px;
-`;
-
 const TableViewWrapper = styled.div<TableViewWrapperProps>`
   max-width: 600px;
   margin: 0 auto;
@@ -118,11 +114,8 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
   const fetchMoreListItems = useCallback(() => {
     if (isFetching) return;
     setIsFetching(true);
-
-    setTimeout(() => {
-      setListItems((prevState: any) => [...prevState, ...data.slice(prevState.length, prevState.length + 10)]);
-      setIsFetching(false);
-    }, 2000);
+    setListItems((prevState: any) => [...prevState, ...data.slice(prevState.length, prevState.length + 10)]);
+    setIsFetching(false);
   }, [data, isFetching]);
 
   // For the main site, where the page is scrolled
@@ -214,7 +207,6 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
           </TableContainer>
         );
       })}
-      {isFetching && <Loading>Ladataan...</Loading>}
     </TableViewWrapper>
   );
 };

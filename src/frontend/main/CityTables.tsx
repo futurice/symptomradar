@@ -120,11 +120,14 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
 
   // For the main site, where the page is scrolled
   const handleWindowScroll = useCallback(() => {
-    if (!isEmbed && selectedCity === '' && data.length > listItems.length) {
-      if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
-      fetchMoreListItems();
-    }
-  }, [isEmbed, selectedCity, data, fetchMoreListItems, listItems]);
+    if (
+      selectedCity !== '' ||
+      data.length === listItems.length ||
+      window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight
+    )
+      return;
+    fetchMoreListItems();
+  }, [selectedCity, data, fetchMoreListItems, listItems]);
 
   // For article embeds, where the the container is scrolled
   const handleContainerScroll = () => {
@@ -151,8 +154,8 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
 
   useEffect(() => {
     if (!isEmbed) {
-    window.addEventListener('scroll', handleWindowScroll);
-    return () => window.removeEventListener('scroll', handleWindowScroll);
+      window.addEventListener('scroll', handleWindowScroll);
+      return () => window.removeEventListener('scroll', handleWindowScroll);
     }
   }, [isEmbed, handleWindowScroll, listItems]);
 

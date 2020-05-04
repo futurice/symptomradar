@@ -156,6 +156,19 @@ function initValidation() {
     .change(inputChanged);
 }
 
+const variant = getUrlParameter('variant');
+
+function setupVariant() {
+  // Embedding only the form
+  if (variant === 'plain') {
+    $('header, #start-survey, #collapse-survey').addClass('hidden');
+    $('body').addClass('plain');
+    $('#symptom-questionnaire').removeClass('hidden');
+    $('#start-survey').addClass('hidden');
+    initValidation();
+  }
+}
+
 function hideSurvey() {
   $('#symptom-questionnaire').addClass('hidden');
   $('#start-survey').removeClass('hidden');
@@ -194,17 +207,6 @@ function init() {
   if (!endpoint) {
     console.error('Endpoint url missing');
     return;
-  }
-
-  const variant = getUrlParameter('variant');
-
-  // Embedding only the form
-  if (variant === 'plain') {
-    $('header, #start-survey, #collapse-survey').addClass('hidden');
-    $('body').addClass('plain');
-    $('#symptom-questionnaire').removeClass('hidden');
-    $('#start-survey').addClass('hidden');
-    initValidation();
   }
 
   // Show the right language in the selector
@@ -275,5 +277,10 @@ function init() {
       .fail(() => showSubmitError('Tietojen lähetys epäonnistui', 'Ole hyvä ja yritä uudelleen.'));
   });
 }
+
+// `setupVariant` hides and show elements based on the defined variant.
+// This function is called immediately without waiting for `document.ready` to
+// avoid noticable flickering of delayed style changes.
+setupVariant();
 
 $(document).ready(init);

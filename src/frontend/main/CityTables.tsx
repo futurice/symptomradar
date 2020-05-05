@@ -123,7 +123,7 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
     if (
       selectedCity !== '' ||
       data.length === listItems.length ||
-      window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight
+      window.innerHeight + document.documentElement.scrollTop + 20 < document.documentElement.offsetHeight
     )
       return;
     fetchMoreListItems();

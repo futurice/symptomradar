@@ -120,10 +120,11 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
 
   // For the main site, where the page is scrolled
   const handleWindowScroll = useCallback(() => {
+    const scrollTop = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop);
     if (
       selectedCity !== '' ||
       data.length === listItems.length ||
-      window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight
+      window.innerHeight + scrollTop + 40 < document.documentElement.offsetHeight
     )
       return;
     fetchMoreListItems();
@@ -136,7 +137,7 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
       var height = container.current.offsetHeight;
       var offset = height - scrollY;
 
-      if (offset === 0 || offset === 1) {
+      if (offset > -40) {
         fetchMoreListItems();
       }
     }

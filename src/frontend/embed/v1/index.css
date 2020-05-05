@@ -19,8 +19,8 @@ body {
   background-color: #ffffff;
 }
 
-/* hide spinner after the app is fully loaded */
-body.js-enabled::before {
+/* hide loader after the app is fully loaded */
+.loader {
   display: none;
 }
 

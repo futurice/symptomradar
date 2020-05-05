@@ -13,7 +13,7 @@
       }
 
       /* Only display loading animation if JavaScript is enabled */
-      body.js-enabled::before{;
+      .loader::before {;
         content: ".";
         font-size: 32px;
         display: block;
@@ -38,9 +38,7 @@
 
   <body>
     <noscript>{{ no_js }}</noscript>
-    <script>
-      document.body.classList.add("js-enabled");
-    </script>
+    <div class="loader"></div>
     <header>
       <img
         id="logo"

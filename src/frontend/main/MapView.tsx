@@ -217,7 +217,7 @@ const MapView = (props: MapViewProps) => {
   };
 
   const totalResponses = data.reduce((accumulator: number, currentValue: any) => {
-    if (currentValue.responses === -1) return accumulator;
+    if (currentValue.responses < 0) return accumulator;
     return accumulator + currentValue.responses;
   }, 0);
 

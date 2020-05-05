@@ -158,7 +158,7 @@ function initValidation() {
 
 const variant = getUrlParameter('variant');
 
-function setupVariant() {
+function setVariant() {
   // Embedding only the form
   if (variant === 'plain') {
     $('header, #start-survey, #collapse-survey').addClass('hidden');
@@ -166,6 +166,12 @@ function setupVariant() {
     $('#symptom-questionnaire').removeClass('hidden');
     $('#start-survey').addClass('hidden');
     initValidation();
+  }
+
+  const returningUser = isReturningUser();
+  if (returningUser) {
+    $('#form-info').addClass('hidden');
+    $('#form-info-returning').removeClass('hidden');
   }
 }
 
@@ -235,12 +241,6 @@ function init() {
     $('#symptom-questionnaire').trigger('reset');
   });
 
-  const returningUser = isReturningUser();
-  if (returningUser) {
-    $('#form-info').addClass('hidden');
-    $('#form-info-returning').removeClass('hidden');
-  }
-
   $('#symptom-questionnaire').submit(function(event) {
     event.preventDefault();
 
@@ -278,9 +278,9 @@ function init() {
   });
 }
 
-// `setupVariant` hides and show elements based on the defined variant.
+// `setVariant` hides and show elements based on the defined variant.
 // This function is called immediately without waiting for `document.ready` to
 // avoid noticable flickering of delayed style changes.
-setupVariant();
+setVariant();
 
 $(document).ready(init);

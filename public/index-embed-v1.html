@@ -22,7 +22,7 @@
         </select>
       </div>
     </header>
-    <main>
+    <main class="hidden">
       <div class="container">
         <div id="form-info" class="form-info">
           <h1 id="page-title" tabindex="-1">
@@ -58,10 +58,10 @@
             {{ thank_you_help }}
           </p>
         </div>
-        <button id="start-survey" class="button action-button">{{ start_survey }}</button>
+        <button id="start-survey" class="button action-button hidden">{{ start_survey }}</button>
       </div>
       <form id="symptom-questionnaire" class="hidden" novalidate>
-        <button id="collapse-survey" type="button" class="collapse-button">{{ close_survey }}</button>
+        <button id="collapse-survey" type="button" class="collapse-button hidden">{{ close_survey }}</button>
         <div class="question-group">
           <h2 id="form-header" class="question-group-title" tabindex="-1">{{ what_symptoms_headline }}</h2>
           <fieldset class="input-wrapper">

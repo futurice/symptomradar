@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import handleResponseData from './handleResponseData';
-import { NAVHEIGHT, CITYSELECTHEIGHT } from './constants';
 
 type CityTablesProps = {
   data: any;
@@ -102,7 +101,7 @@ const TableViewWrapper = styled.div<TableViewWrapperProps>`
   max-width: 600px;
   margin: 0 auto;
   padding-bottom: 40px;
-  height: ${props => (props.isEmbed ? `calc(100vh - (${CITYSELECTHEIGHT}px + ${NAVHEIGHT}px))` : 'auto')};
+  height: ${({ isEmbed, theme }) => (isEmbed ? `calc(100vh - ${theme.citySelectHeight + theme.navHeight}px)` : 'auto')};
   overflow: ${props => (props.isEmbed ? 'auto' : 'initial')};
 `;
 

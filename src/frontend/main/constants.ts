@@ -5,6 +5,14 @@ export const FILTERS = {
   breathing_difficulties_yes: { label: 'Vaikeuksia hengittää', id: 'breathing_difficulties_yes' },
 };
 
-export const HEADERHEIGHT = 90;
-export const NAVHEIGHT = 40;
-export const CITYSELECTHEIGHT = 58;
+export const theme = {
+  grey: '#757575',
+  lightGrey: '#ECECEC',
+  white: '#FFFFFF',
+  black: '#000000',
+  blue: '#0047FF',
+  green: '#328709',
+  headerHeight: 90,
+  navHeight: 40,
+  citySelectHeight: 58,
+};

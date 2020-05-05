@@ -7,7 +7,8 @@ import PrimaryButton from './PrimaryButton';
 import MapContainer from './map/MapContainer';
 import CloseIcon from './assets/CloseIcon';
 import TableView from './TableView';
-import { FILTERS, HEADERHEIGHT, NAVHEIGHT } from './constants';
+import { theme } from './constants';
+import { FILTERS } from './constants';
 
 type FilterKey = keyof typeof FILTERS;
 
@@ -71,7 +72,7 @@ const Container = styled.div`
 `;
 
 const MapNav = styled(Container)`
-  height: ${NAVHEIGHT}px;
+  height: ${props => props.theme.navHeight}px;
   border-bottom: 1px solid ${props => props.theme.grey};
   display: flex;
 `;
@@ -108,7 +109,7 @@ const MessageContainer = styled.div`
 const MapWrapper = styled.div`
   text-align: center;
   position: relative;
-  height: calc(100vh - (${HEADERHEIGHT}px + ${NAVHEIGHT}px));
+  height: calc(100vh - ${({ theme }) => theme.headerHeight + theme.navHeight}px);
 `;
 
 const FilterWrapper = styled.div<FilterWrapperProps>`
@@ -191,7 +192,8 @@ const CloseButton = styled.button`
 const MapView = (props: MapViewProps) => {
   const currentPath = props.location!.pathname;
   const isEmbed = currentPath === '/map-embed';
-  const topPartHeight = isEmbed ? NAVHEIGHT : HEADERHEIGHT + NAVHEIGHT;
+  const { navHeight, headerHeight } = theme;
+  const topPartHeight = isEmbed ? navHeight : headerHeight + navHeight;
   const [showMapInfo, setShowMapInfo] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState<FilterKey>(FILTERS.corona_suspicion_yes.id as FilterKey);
   const [mapHeight, setMapHeight] = useState(window.innerHeight - topPartHeight - 10);

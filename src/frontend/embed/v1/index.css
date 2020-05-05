@@ -20,15 +20,23 @@ body {
 }
 
 @keyframes dot-dot-doh {
-  0%   {content:"."}
-  33%  {content:".."}
-  66%  {content:"..."}
-  100% {content:"."}
+  0% {
+    content: '.';
+  }
+  33% {
+    content: '..';
+  }
+  66% {
+    content: '...';
+  }
+  100% {
+    content: '.';
+  }
 }
 
 /* Show loader while waiting for js files */
 body::before {
-  content: ".";
+  content: '.';
   font-size: 32px;
   display: block;
   width: 100%;

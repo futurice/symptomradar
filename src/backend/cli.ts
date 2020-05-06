@@ -5,8 +5,7 @@ import { createApp } from './app';
 import { fetchOpenDataIndex } from './dataExports/openDataIndex';
 import { fetchTotalResponses } from './dataExports/totalResponses';
 import { fetchCityLevelGeneralResults } from './dataExports/cityLevelGeneralResults';
-// NOTE: To be added in another PR
-// import { fetchCityLevelWeeklyGeneralResults } from './dataExports/cityLevelWeeklyGeneralResults';
+import { fetchCityLevelWeeklyGeneralResults } from './dataExports/cityLevelWeeklyGeneralResults';
 import { fetchDailyTotals } from './dataExports/dailyTotals';
 
 const writeFile = promisify(fs.writeFile);
@@ -25,7 +24,7 @@ const dumpHandlers = {
   [app.constants.openDataIndexKey]: fetchOpenDataIndex,
   [app.constants.totalResponsesKey]: fetchTotalResponses,
   [app.constants.cityLevelGeneralResultsKey]: fetchCityLevelGeneralResults,
-  // [app.constants.cityLevelWeeklyGeneralResultsKey]: fetchCityLevelWeeklyGeneralResults,
+  [app.constants.cityLevelWeeklyGeneralResultsKey]: fetchCityLevelWeeklyGeneralResults,
   [app.constants.dailyTotalsKey]: fetchDailyTotals,
 };
 

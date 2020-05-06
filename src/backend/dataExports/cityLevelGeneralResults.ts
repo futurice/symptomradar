@@ -1,6 +1,12 @@
 import { App, s3PutJsonHelper } from '../app';
+import { PostalCodeCityMappings, PopulationPerCity } from '../../common/model';
 
 export async function exportCityLevelGeneralResults(app: App) {
+  const cityLevelGeneralResults = await fetchCityLevelGeneralResults(app);
+  await pushCityLevelGeneralResults(app, cityLevelGeneralResults);
+}
+
+export async function fetchCityLevelGeneralResults(app: App) {
   const postalCodeLevelResultsResult = await queryPostalCodeLevelGeneralResults(app);
   const postalCodeCityMappings = (await app.s3Sources.fetchPostalCodeCityMappings()) as PostalCodeCityMappings;
   const populationPerCity = (await app.s3Sources.fetchPopulationPerCity()) as PopulationPerCity;
@@ -9,7 +15,7 @@ export async function exportCityLevelGeneralResults(app: App) {
     postalCodeCityMappings,
     populationPerCity,
   );
-  await pushCityLevelGeneralResults(app, cityLevelGeneralResults);
+  return cityLevelGeneralResults;
 }
 
 //
@@ -17,7 +23,7 @@ export async function exportCityLevelGeneralResults(app: App) {
 
 // TODO: Move these queries to postalLevelGeneralResults.ts
 
-interface PostalCodeLevelGeneralResultsQuery {
+export interface PostalCodeLevelGeneralResultsQuery {
   postal_code: string;
   responses: string;
   fever_no: string;
@@ -96,25 +102,8 @@ export async function queryPostalCodeLevelGeneralResults(app: App) {
 //
 // Map
 
-interface OpenDataModel<T> {
-  meta: {
-    description: string;
-    generated: string;
-    link: string;
-  };
-  data: T;
-}
-
-type PostalCodeCityMappings = OpenDataModel<Record<string, string>>;
-type PopulationPerCity = OpenDataModel<
-  Array<{
-    city: string;
-    population: number;
-  }>
->;
-
 // NOTE: Reuse for postal code level data
-interface CityLevelGeneralResult {
+export interface CityLevelGeneralResult {
   city: string;
   population: number;
   responses: number;
@@ -150,6 +139,28 @@ interface CityLevelGeneralResult {
 }
 
 export function mapCityLevelGeneralResults(
+  postalCodeLevelGeneralResults: PostalCodeLevelGeneralResultsQuery[],
+  postalCodeCityMappings: PostalCodeCityMappings,
+  populationPerCity: PopulationPerCity,
+) {
+  const resultsByCity = accumulateResultsByCity(
+    postalCodeLevelGeneralResults,
+    postalCodeCityMappings,
+    populationPerCity,
+  );
+
+  const filteredResultsByCity = filterResultsByCity(resultsByCity, cityData => cityData.responses >= 25);
+
+  // NOTE: v8 should maintain insertion order here, and since the original
+  // data this is derived from arranges cities in alphabetical order,
+  // this should be alphabetically ordered as well.
+
+  return Object.values(filteredResultsByCity);
+}
+
+type CityLevelGeneralResults = ReturnType<typeof mapCityLevelGeneralResults>;
+
+export function accumulateResultsByCity(
   postalCodeLevelGeneralResults: PostalCodeLevelGeneralResultsQuery[],
   postalCodeCityMappings: PostalCodeCityMappings,
   populationPerCity: PopulationPerCity,
@@ -198,7 +209,9 @@ export function mapCityLevelGeneralResults(
     const city = postalCodeCityMappings.data[postalCodeData.postal_code];
 
     if (!city || !(city in resultsByCity)) {
-      console.warn(`WARNING: mapCityLevelGeneralResults: Skipping unknown postal code ${postalCodeData.postal_code}`);
+      console.warn(
+        `WARNING: mapCityLevelWeeklyGeneralResults: Skipping unknown postal code ${postalCodeData.postal_code}`,
+      );
       continue;
     }
 
@@ -234,51 +247,57 @@ export function mapCityLevelGeneralResults(
     resultsByCity[city].corona_suspicion_yes += Number(postalCodeData.corona_suspicion_yes);
   }
 
-  // NOTE: v8 should maintain insertion order here, and since the original
-  // data this is derived from arranges cities in alphabetical order,
-  // this should be alphabetically ordered as well.
+  return resultsByCity;
+}
 
-  // Clear data from cities with less than 25 responses
-  // NOTE: Reuse for postal code data?
-  for (const cityData of Object.values(resultsByCity) as any[]) {
-    if (cityData.responses < 25) {
-      cityData.responses = -1;
-      cityData.fever_no = -1;
-      cityData.fever_slight = -1;
-      cityData.fever_high = -1;
-      cityData.cough_no = -1;
-      cityData.cough_mild = -1;
-      cityData.cough_intense = -1;
-      cityData.general_wellbeing_fine = -1;
-      cityData.general_wellbeing_impaired = -1;
-      cityData.general_wellbeing_bad = -1;
-      cityData.breathing_difficulties_no = -1;
-      cityData.breathing_difficulties_yes = -1;
-      cityData.muscle_pain_no = -1;
-      cityData.muscle_pain_yes = -1;
-      cityData.headache_no = -1;
-      cityData.headache_yes = -1;
-      cityData.sore_throat_no = -1;
-      cityData.sore_throat_yes = -1;
-      cityData.rhinitis_no = -1;
-      cityData.rhinitis_yes = -1;
-      cityData.stomach_issues_no = -1;
-      cityData.stomach_issues_yes = -1;
-      cityData.sensory_issues_no = -1;
-      cityData.sensory_issues_yes = -1;
-      cityData.longterm_medication_no = -1;
-      cityData.longterm_medication_yes = -1;
-      cityData.smoking_no = -1;
-      cityData.smoking_yes = -1;
-      cityData.corona_suspicion_no = -1;
-      cityData.corona_suspicion_yes = -1;
+export type ResultsByCity = ReturnType<typeof accumulateResultsByCity>;
+
+// NOTE: Filtering happens by setting all values to -1
+export function filterResultsByCity(resultsByCity: ResultsByCity, fn: (cityData: CityLevelGeneralResult) => boolean) {
+  const filteredResultsByCity: ResultsByCity = {};
+
+  for (const [key, cityData] of Object.entries(resultsByCity)) {
+    if (fn(cityData)) {
+      filteredResultsByCity[key] = { ...cityData };
+    } else {
+      filteredResultsByCity[key] = {
+        ...cityData,
+        responses: -1,
+        fever_no: -1,
+        fever_slight: -1,
+        fever_high: -1,
+        cough_no: -1,
+        cough_mild: -1,
+        cough_intense: -1,
+        general_wellbeing_fine: -1,
+        general_wellbeing_impaired: -1,
+        general_wellbeing_bad: -1,
+        breathing_difficulties_no: -1,
+        breathing_difficulties_yes: -1,
+        muscle_pain_no: -1,
+        muscle_pain_yes: -1,
+        headache_no: -1,
+        headache_yes: -1,
+        sore_throat_no: -1,
+        sore_throat_yes: -1,
+        rhinitis_no: -1,
+        rhinitis_yes: -1,
+        stomach_issues_no: -1,
+        stomach_issues_yes: -1,
+        sensory_issues_no: -1,
+        sensory_issues_yes: -1,
+        longterm_medication_no: -1,
+        longterm_medication_yes: -1,
+        smoking_no: -1,
+        smoking_yes: -1,
+        corona_suspicion_no: -1,
+        corona_suspicion_yes: -1,
+      };
     }
   }
 
-  return Object.values(resultsByCity);
+  return filteredResultsByCity;
 }
-
-type CityLevelGeneralResults = ReturnType<typeof mapCityLevelGeneralResults>;
 
 //
 // Push

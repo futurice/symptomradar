@@ -3,9 +3,14 @@ import { App, s3PutJsonHelper } from '../app';
 import { stringLiteralUnionFields } from '../../common/model';
 
 export async function exportDailyTotals(app: App) {
+  const dailyTotals = await fetchDailyTotals(app);
+  await pushDailyTotals(app, dailyTotals);
+}
+
+export async function fetchDailyTotals(app: App) {
   const dailyTotalsResult = await queryDailyTotals(app);
   const dailyTotals = mapDailyTotals(dailyTotalsResult.Items);
-  await pushDailyTotals(app, dailyTotals);
+  return dailyTotals;
 }
 
 interface DailyTotalsQuery extends Record<string, string> {

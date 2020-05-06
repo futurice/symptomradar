@@ -108,3 +108,23 @@ export const stringLiteralUnionFields: [string, string[]][] = responseFieldKeys
       : null,
   )
   .filter(nonNullable);
+
+//
+// Open data models
+
+export interface OpenDataModel<T> {
+  meta: {
+    description: string;
+    generated: string;
+    link: string;
+  };
+  data: T;
+}
+
+export type PostalCodeCityMappings = OpenDataModel<Record<string, string>>;
+export type PopulationPerCity = OpenDataModel<
+  Array<{
+    city: string;
+    population: number;
+  }>
+>;

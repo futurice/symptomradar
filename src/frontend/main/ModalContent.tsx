@@ -35,7 +35,7 @@ const Symptoms = styled.div`
       min-width: 60px;
     }
 
-    @media (min-width: 450px) {
+    @media (min-width: 500px) {
       padding-right: 20px;
     }
   }
@@ -92,6 +92,40 @@ const ModalContent = ({ content, hide }: ModalContentProps) => {
                 <td>{formattedData.breathingDifficultiesPercentage} %</td>
               ) : null}
               <th scope="row">Vaikeuksia hengittää</th>
+            </tr>
+            <tr>
+              <td>{formattedData.musclePainTotal}</td>
+              {formattedData.musclePainPercentage != null ? <td>{formattedData.musclePainPercentage} %</td> : null}
+              <th scope="row">Lihaskipuja</th>
+            </tr>
+            <tr>
+              <td>{formattedData.headacheTotal}</td>
+              {formattedData.headachePercentage != null ? <td>{formattedData.headachePercentage} %</td> : null}
+              <th scope="row">Päänsärkyä</th>
+            </tr>
+            <tr>
+              <td>{formattedData.soreThroatTotal}</td>
+              {formattedData.soreThroatPercentage != null ? <td>{formattedData.soreThroatPercentage} %</td> : null}
+              <th scope="row">Kurkkukipua</th>
+            </tr>
+            <tr>
+              <td>{formattedData.rhinitsTotal}</td>
+              {formattedData.rhinitsPercentage != null ? <td>{formattedData.rhinitsPercentage} %</td> : null}
+              <th scope="row">Nuhaa</th>
+            </tr>
+            <tr>
+              <td>{formattedData.stomachIssuesTotal}</td>
+              {formattedData.stomachIssuesPercentage != null ? (
+                <td>{formattedData.stomachIssuesPercentage} %</td>
+              ) : null}
+              <th scope="row">Vatsaoireita</th>
+            </tr>
+            <tr>
+              <td>{formattedData.sensoryIssuesTotal}</td>
+              {formattedData.sensoryIssuesPercentage != null ? (
+                <td>{formattedData.sensoryIssuesPercentage} %</td>
+              ) : null}
+              <th scope="row">Hajuaistin tai makuaistin heikkenemistä</th>
             </tr>
           </tbody>
         </table>

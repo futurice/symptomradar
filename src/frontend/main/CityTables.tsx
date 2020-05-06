@@ -190,52 +190,52 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
                   <tr>
                     <th scope="row">Epäilys koronavirus&shy;tartunnasta</th>
                     <td>{formattedData.suspicionTotal}</td>
-                    <td>{formattedData.suspicionPercentage}</td>
+                    <td>{formattedData.suspicionPercentage} %</td>
                   </tr>
                   <tr>
                     <th scope="row">Yskää</th>
                     <td>{formattedData.coughTotal}</td>
-                    <td>{formattedData.coughPercentage}</td>
+                    <td>{formattedData.coughPercentage} %</td>
                   </tr>
                   <tr>
                     <th scope="row">Kuumetta</th>
                     <td>{formattedData.feverTotal}</td>
-                    <td>{formattedData.feverPercentage}</td>
+                    <td>{formattedData.feverPercentage} %</td>
                   </tr>
                   <tr>
                     <th scope="row">Vaikeuksia hengittää</th>
                     <td>{formattedData.breathingDifficultiesTotal}</td>
-                    <td>{formattedData.breathingDifficultiesPercentage}</td>
+                    <td>{formattedData.breathingDifficultiesPercentage} %</td>
                   </tr>
                   <tr>
                     <th scope="row">Lihaskipuja</th>
                     <td>{formattedData.musclePainTotal}</td>
-                    <td>{formattedData.musclePainPercentage}</td>
+                    <td>{formattedData.musclePainPercentage} %</td>
                   </tr>
                   <tr>
                     <th scope="row">Päänsärkyä</th>
                     <td>{formattedData.headacheTotal}</td>
-                    <td>{formattedData.headachePercentage}</td>
+                    <td>{formattedData.headachePercentage} %</td>
                   </tr>
                   <tr>
                     <th scope="row">Kurkkukipua</th>
                     <td>{formattedData.soreThroatTotal}</td>
-                    <td>{formattedData.soreThroatPercentage}</td>
+                    <td>{formattedData.soreThroatPercentage} %</td>
                   </tr>
                   <tr>
                     <th scope="row">Nuhaa</th>
                     <td>{formattedData.rhinitisTotal}</td>
-                    <td>{formattedData.rhinitisPercentage}</td>
+                    <td>{formattedData.rhinitisPercentage} %</td>
                   </tr>
                   <tr>
                     <th scope="row">Vatsaoireita</th>
                     <td>{formattedData.stomachIssuesTotal}</td>
-                    <td>{formattedData.stomachIssuesPercentage}</td>
+                    <td>{formattedData.stomachIssuesPercentage} %</td>
                   </tr>
                   <tr>
                     <th scope="row">Hajuaistin tai makuaistin heikkenemistä</th>
                     <td>{formattedData.sensoryIssuesTotal}</td>
-                    <td>{formattedData.sensoryIssuesPercentage}</td>
+                    <td>{formattedData.sensoryIssuesPercentage} %</td>
                   </tr>
                 </tbody>
               </Table>

@@ -190,12 +190,12 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
                   <tr>
                     <th scope="row">Epäilys koronavirus&shy;tartunnasta</th>
                     <td>{formattedData.suspicionTotal}</td>
-                    <td>{formattedData.suspicionPercentage}}</td>
+                    <td>{formattedData.suspicionPercentage}</td>
                   </tr>
                   <tr>
                     <th scope="row">Yskää</th>
                     <td>{formattedData.coughTotal}</td>
-                    <td>{formattedData.coughPercentage}}</td>
+                    <td>{formattedData.coughPercentage}</td>
                   </tr>
                   <tr>
                     <th scope="row">Kuumetta</th>

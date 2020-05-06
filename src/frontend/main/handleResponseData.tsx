@@ -1,7 +1,6 @@
 const handleResponseData = (data: any) => {
-  console.log(data);
   const handleData = (value: number) => {
-    return value >= 0 ? value.toLocaleString('fi-FI') : 'ei tietoa';
+    return value >= 0 ? value.toLocaleString('fi-FI') : null;
   };
 
   const handlePercentageData = (value: number) => {
@@ -9,7 +8,7 @@ const handleResponseData = (data: any) => {
   };
 
   return {
-    responsesTotal: data.responses !== -1 ? data.responses.toLocaleString('fi-FI') : '< 25',
+    responsesTotal: handleData(data.responses),
     percentageOfPopulation: handlePercentageData(data.responses),
     suspicionTotal: handleData(data.corona_suspicion_yes),
     suspicionPercentage: handlePercentageData(data.corona_suspicion_yes),

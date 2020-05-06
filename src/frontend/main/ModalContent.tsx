@@ -61,75 +61,74 @@ const ModalContent = ({ content, hide }: ModalContentProps) => {
       <ModalHeader>
         <H2>{content.city}</H2>
       </ModalHeader>
-      <H3>
-        Vastauksia yhteensä: {formattedData.responsesTotal}{' '}
-        {formattedData.percentageOfPopulation != null
-          ? `(${formattedData.percentageOfPopulation} % väkiluvusta)`
-          : null}
-      </H3>
-      {formattedData.responsesTotal !== '< 25' ? <Description>Verrattuna kunnan väkilukuun</Description> : null}
-      <Symptoms>
-        <table>
-          <tbody>
-            <tr>
-              <td>{formattedData.suspicionTotal}</td>
-              {formattedData.suspicionPercentage != null ? <td>{formattedData.suspicionPercentage} %</td> : null}
-              <th scope="row">Epäilys koronavirus&shy;tartunnasta</th>
-            </tr>
-            <tr>
-              <td>{formattedData.coughTotal}</td>
-              {formattedData.coughPercentage != null ? <td>{formattedData.coughPercentage} %</td> : null}
-              <th scope="row">Yskää</th>
-            </tr>
-            <tr>
-              <td>{formattedData.feverTotal}</td>
-              {formattedData.feverPercentage != null ? <td>{formattedData.feverPercentage} %</td> : null}
-              <th scope="row">Kuumetta</th>
-            </tr>
-            <tr>
-              <td>{formattedData.breathingDifficultiesTotal}</td>
-              {formattedData.breathingDifficultiesPercentage != null ? (
+      {formattedData.responsesTotal != null ? (
+        <>
+          <H3>
+            Vastauksia yhteensä: {formattedData.responsesTotal} ({formattedData.percentageOfPopulation} % väkiluvusta)
+          </H3>
+          <Description>Verrattuna kunnan väkilukuun</Description>
+        </>
+      ) : (
+        <p>Alle 25 vastausta</p>
+      )}
+      {formattedData.responsesTotal != null && (
+        <Symptoms>
+          <table>
+            <tbody>
+              <tr>
+                <td>{formattedData.suspicionTotal}</td>
+                <td>{formattedData.suspicionPercentage} %</td>
+                <th scope="row">Epäilys koronavirus&shy;tartunnasta</th>
+              </tr>
+              <tr>
+                <td>{formattedData.coughTotal}</td>
+                <td>{formattedData.coughPercentage} %</td>
+                <th scope="row">Yskää</th>
+              </tr>
+              <tr>
+                <td>{formattedData.feverTotal}</td>
+                <td>{formattedData.feverPercentage} %</td>
+                <th scope="row">Kuumetta</th>
+              </tr>
+              <tr>
+                <td>{formattedData.breathingDifficultiesTotal}</td>
                 <td>{formattedData.breathingDifficultiesPercentage} %</td>
-              ) : null}
-              <th scope="row">Vaikeuksia hengittää</th>
-            </tr>
-            <tr>
-              <td>{formattedData.musclePainTotal}</td>
-              {formattedData.musclePainPercentage != null ? <td>{formattedData.musclePainPercentage} %</td> : null}
-              <th scope="row">Lihaskipuja</th>
-            </tr>
-            <tr>
-              <td>{formattedData.headacheTotal}</td>
-              {formattedData.headachePercentage != null ? <td>{formattedData.headachePercentage} %</td> : null}
-              <th scope="row">Päänsärkyä</th>
-            </tr>
-            <tr>
-              <td>{formattedData.soreThroatTotal}</td>
-              {formattedData.soreThroatPercentage != null ? <td>{formattedData.soreThroatPercentage} %</td> : null}
-              <th scope="row">Kurkkukipua</th>
-            </tr>
-            <tr>
-              <td>{formattedData.rhinitisTotal}</td>
-              {formattedData.rhinitisPercentage != null ? <td>{formattedData.rhinitisPercentage} %</td> : null}
-              <th scope="row">Nuhaa</th>
-            </tr>
-            <tr>
-              <td>{formattedData.stomachIssuesTotal}</td>
-              {formattedData.stomachIssuesPercentage != null ? (
+                <th scope="row">Vaikeuksia hengittää</th>
+              </tr>
+              <tr>
+                <td>{formattedData.musclePainTotal}</td>
+                <td>{formattedData.musclePainPercentage} %</td>
+                <th scope="row">Lihaskipuja</th>
+              </tr>
+              <tr>
+                <td>{formattedData.headacheTotal}</td>
+                <td>{formattedData.headachePercentage} %</td>
+                <th scope="row">Päänsärkyä</th>
+              </tr>
+              <tr>
+                <td>{formattedData.soreThroatTotal}</td>
+                <td>{formattedData.soreThroatPercentage} %</td>
+                <th scope="row">Kurkkukipua</th>
+              </tr>
+              <tr>
+                <td>{formattedData.rhinitisTotal}</td>
+                <td>{formattedData.rhinitisPercentage} %</td>
+                <th scope="row">Nuhaa</th>
+              </tr>
+              <tr>
+                <td>{formattedData.stomachIssuesTotal}</td>
                 <td>{formattedData.stomachIssuesPercentage} %</td>
-              ) : null}
-              <th scope="row">Vatsaoireita</th>
-            </tr>
-            <tr>
-              <td>{formattedData.sensoryIssuesTotal}</td>
-              {formattedData.sensoryIssuesPercentage != null ? (
+                <th scope="row">Vatsaoireita</th>
+              </tr>
+              <tr>
+                <td>{formattedData.sensoryIssuesTotal}</td>
                 <td>{formattedData.sensoryIssuesPercentage} %</td>
-              ) : null}
-              <th scope="row">Hajuaistin tai makuaistin heikkenemistä</th>
-            </tr>
-          </tbody>
-        </table>
-      </Symptoms>
+                <th scope="row">Hajuaistin tai makuaistin heikkenemistä</th>
+              </tr>
+            </tbody>
+          </table>
+        </Symptoms>
+      )}
       <CloseButton type="button" data-dismiss="modal" aria-label="Sulje" label="Sulje" handleClick={hide} />
     </>
   );

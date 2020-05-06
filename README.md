@@ -132,6 +132,16 @@ All available run targets can be printed with `npm run`. The main ones for front
 - `frontend-embed-v1-start` runs the embed of Oiretutka
 - `frontend-embed-v1-build` creates a build for the embed
 
+### Content Security Policy (CSP) headers
+
+Due to the use of [CSP headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) any inline `<script>`
+defined in the html files won't be executed in live environments (production and dev), although they would
+still work locally.
+
+The restriction also applies to external script (both js and css) from a different domain.
+
+Applied CSP rules are defined in `infra/modules/main/frontend.tf`
+
 ### Release process
 
 - Ensure `dev` has deployed the release you're planning to put out

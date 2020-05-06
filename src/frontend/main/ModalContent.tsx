@@ -109,8 +109,8 @@ const ModalContent = ({ content, hide }: ModalContentProps) => {
               <th scope="row">Kurkkukipua</th>
             </tr>
             <tr>
-              <td>{formattedData.rhinitsTotal}</td>
-              {formattedData.rhinitsPercentage != null ? <td>{formattedData.rhinitsPercentage} %</td> : null}
+              <td>{formattedData.rhinitisTotal}</td>
+              {formattedData.rhinitisPercentage != null ? <td>{formattedData.rhinitisPercentage} %</td> : null}
               <th scope="row">Nuhaa</th>
             </tr>
             <tr>

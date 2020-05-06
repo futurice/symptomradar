@@ -207,6 +207,45 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
                       : '-'}
                   </td>
                 </tr>
+                <tr>
+                  <th scope="row">Lihaskipuja</th>
+                  <td>{formattedData.musclePainTotal}</td>
+                  <td>
+                    {formattedData.musclePainPercentage != null ? `${formattedData.musclePainPercentage} %` : '-'}
+                  </td>
+                </tr>
+
+                <tr>
+                  <th scope="row">Päänsärkyä</th>
+                  <td>{formattedData.headacheTotal}</td>
+                  <td>{formattedData.headachePercentage != null ? `${formattedData.headachePercentage} %` : '-'}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Kurkkukipua</th>
+                  <td>{formattedData.soreThroatTotal}</td>
+                  <td>
+                    {formattedData.soreThroatPercentage != null ? `${formattedData.soreThroatPercentage} %` : '-'}
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Nuhaa</th>
+                  <td>{formattedData.rhinitisTotal}</td>
+                  <td>{formattedData.rhinitisPercentage != null ? `${formattedData.rhinitisPercentage} %` : '-'}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Vatsaoireita</th>
+                  <td>{formattedData.stomachIssuesTotal}</td>
+                  <td>
+                    {formattedData.stomachIssuesPercentage != null ? `${formattedData.stomachIssuesPercentage} %` : '-'}
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Hajuaistin tai makuaistin heikkenemistä</th>
+                  <td>{formattedData.sensoryIssuesTotal}</td>
+                  <td>
+                    {formattedData.sensoryIssuesPercentage != null ? `${formattedData.sensoryIssuesPercentage} %` : '-'}
+                  </td>
+                </tr>
               </tbody>
             </Table>
           </TableContainer>

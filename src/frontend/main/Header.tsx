@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Link } from '@reach/router';
 import Logo from './assets/oiretutka-logo-gradient.svg';
 import MenuButton from './MenuButton';
-import { HEADERHEIGHT } from './constants';
 
 type HeaderProps = {
   location: string;
@@ -15,7 +14,7 @@ const AppHeader = styled.header`
   padding: 16px 16px 10px 16px;
   background-color: ${props => props.theme.white};
   border-bottom: 1px solid ${props => props.theme.grey};
-  height: ${HEADERHEIGHT}px;
+  height: ${({ theme }) => theme.headerHeight}px;
 `;
 
 const HeaderContainer = styled.div`

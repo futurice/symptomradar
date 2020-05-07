@@ -44,7 +44,12 @@ const FilterWrapper = styled.div<FilterWrapperProps>`
   }
 `;
 
-const ActiveFilter = styled(PrimaryButton)`
+const ActiveFilter = styled.div`
+  height: 35px;
+  padding: 5px 16px;
+  border-radius: 100px;
+  font-weight: bold;
+  font-size: 16px;
   background: ${props => props.theme.grey};
   color: ${props => props.theme.white};
   border: none;

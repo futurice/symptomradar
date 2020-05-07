@@ -241,6 +241,26 @@ The differences to the default one are
 - Start button hidden, the form is already expanded
 - Some margins adjusted with the `plain` class
 
+### Notes on backend development
+
+#### Local open data dumps
+
+To create local dumps of the generated open data for testing, validation or other needs, you can use the provided CLI tool in `src/backend/cli.ts`. There is an npm script that wraps the necessary Typescript incantations, which is recommended.
+
+The tool currently supports only the `dump` command which fetches and formats the open data as JSON to either stdout stream or to provided filename. Example uses:
+
+```sh
+# Print total_responses.json to stdout
+npm run open-data-cli dump total_responses.json
+
+# Use --silent to suppress npm messages and stream output to a file
+npm run --silent open-data-cli dump total_responses.json > /tmp/total_responses.json
+
+# Use --out flag to specify filename to print the data to
+# Note the requirement to use '--' before options
+npm run open-data-cli dump total_responses.json -- --out=/tmp/total_responses.json
+```
+
 ## MIT License
 
 Copyright 2020 Futurice & Helsingin Sanomat

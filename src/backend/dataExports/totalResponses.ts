@@ -1,9 +1,14 @@
 import { App, s3PutJsonHelper } from '../app';
 
 export async function exportTotalResponses(app: App) {
+  const totalResponses = await fetchTotalResponses(app);
+  await pushTotalResponses(app, totalResponses);
+}
+
+export async function fetchTotalResponses(app: App) {
   const totalResponsesResult = await queryTotalResponses(app);
   const totalResponses = mapTotalResponses(totalResponsesResult.Items[0]);
-  await pushTotalResponses(app, totalResponses);
+  return totalResponses;
 }
 
 //

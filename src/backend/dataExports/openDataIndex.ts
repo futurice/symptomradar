@@ -1,4 +1,7 @@
 import { App, s3GetJsonHelper, AppConstants, s3PutJsonHelper } from '../app';
+import { OpenDataModel } from '../../common/model';
+
+type OpenDataIndex = Record<string, OpenDataModel<never>>;
 
 const openDataConstantKeys: Array<keyof AppConstants> = [
   'totalResponsesKey',
@@ -12,11 +15,13 @@ const openDataConstantKeys: Array<keyof AppConstants> = [
 ];
 
 export async function exportOpenDataIndex(app: App) {
-  //
-  // Fetch data files
+  const openData = await fetchOpenDataIndex(app);
 
-  // TODO: Model these (meta: OpenDataMeta, data: T = any)
-  const openDataIndex: Record<string, any> = {};
+  await pushOpenDataIndex(app, openData);
+}
+
+export async function fetchOpenDataIndex(app: App) {
+  const openDataIndex: OpenDataIndex = {};
 
   for (const constantKey of openDataConstantKeys) {
     const key = app.constants[constantKey];
@@ -24,7 +29,7 @@ export async function exportOpenDataIndex(app: App) {
     openDataIndex[key] = data.meta;
   }
 
-  const openData = {
+  const openData: OpenDataModel<OpenDataIndex> = {
     meta: {
       description: 'This is the open data site for the www.oiretutka.fi project',
       generated: new Date().toISOString(),
@@ -33,5 +38,13 @@ export async function exportOpenDataIndex(app: App) {
     data: openDataIndex,
   };
 
-  await s3PutJsonHelper(app.s3Client, { Bucket: app.constants.openDataBucket, Key: 'index.json', Body: openData });
+  return openData;
+}
+
+export async function pushOpenDataIndex(app: App, openData: OpenDataModel<OpenDataIndex>) {
+  await s3PutJsonHelper(app.s3Client, {
+    Bucket: app.constants.openDataBucket,
+    Key: app.constants.openDataIndexKey,
+    Body: openData,
+  });
 }

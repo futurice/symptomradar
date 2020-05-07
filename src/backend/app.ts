@@ -37,11 +37,14 @@ export function createAppConstants() {
     lowPopulationPostalCodesKey: 'low_population_postal_codes.json',
     populationPerCityKey: 'population_per_city.json',
     postalCodeCityMappingsKey: 'postalcode_city_mappings.json',
-    totalResponsesKey: 'total_responses.json',
-    cityLevelGeneralResultsKey: 'city_level_general_results.json',
-    dailyTotalsKey: 'daily_totals.json',
     topoJsonFinlandSimplifiedKey: 'topojson_finland_simplified.json',
     topoJsonFinlandWithoutAlandKey: 'topojson_finland_without_aland.json',
+    // Data dump bucket keys
+    openDataIndexKey: 'index.json',
+    totalResponsesKey: 'total_responses.json',
+    cityLevelGeneralResultsKey: 'city_level_general_results.json',
+    cityLevelWeeklyGeneralResultsKey: 'city_level_weekly_general_results.json',
+    dailyTotalsKey: 'daily_totals.json',
   };
 }
 

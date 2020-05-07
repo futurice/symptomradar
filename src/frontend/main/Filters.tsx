@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
+
 import PrimaryButton from './PrimaryButton';
 import { FILTERS } from './constants';
 
@@ -48,6 +50,7 @@ const ActionButton = styled(PrimaryButton)`
 
 const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
   const [activeFilter, setActiveFilter] = useState(selectedFilter);
+  const { t } = useTranslation('mapView');
 
   const applyFilters = () => {
     handleFilterChange(activeFilter);
@@ -55,8 +58,8 @@ const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
   };
   return (
     <div>
-      <H2>Rajaa vastauksia</H2>
-      <H3>Oireet</H3>
+      <H2>{t('filterDialogTitle')}</H2>
+      <H3>{t('symptoms')}</H3>
       <TagGroup>
         {Object.keys(FILTERS).map(key => {
           return (

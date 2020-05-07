@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import Modal from './Modal';
 import FilterIcon from './assets/FilterIcon';
 import PrimaryButton from './PrimaryButton';
@@ -27,13 +28,14 @@ const FilterButton = styled(PrimaryButton)`
 
 const FilterToggle = ({ selectedFilter, handleFilterChange }: FilterToggleProps) => {
   const { isShowing, toggleModal } = useModal();
+  const { t } = useTranslation('mapView');
 
   return (
     <>
-      <FilterButton type="button" handleClick={toggleModal} label="Rajaa">
+      <FilterButton type="button" handleClick={toggleModal} label={t('filter')}>
         <FilterIcon />
       </FilterButton>
-      <Modal isShowing={isShowing} hide={toggleModal} ariaLabel="Rajaa vastauksia">
+      <Modal isShowing={isShowing} hide={toggleModal} ariaLabel={t('filterDialogTitle')}>
         <Filters selectedFilter={selectedFilter} hide={toggleModal} handleFilterChange={handleFilterChange} />
       </Modal>
     </>

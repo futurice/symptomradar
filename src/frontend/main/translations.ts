@@ -1,5 +1,12 @@
 export default {
   en: {
+    mapView: {
+      allOfFinland: 'All of Finland',
+      chooseMunicipality: 'Choose the municipality',
+      filter: 'Filter',
+      filterResponses: 'Filter responses',
+      filterDialogTitle: 'Filter responses',
+    },
     navigation: {
       map: 'Map',
       survey: 'Survey',
@@ -21,6 +28,13 @@ Tiedot ovat kerätty kyselylomakkeen avulla. Tällä sivustolla näytämme kysel
     },
   },
   fi: {
+    mapView: {
+      allOfFinland: 'Koko Suomi',
+      chooseMunicipality: 'Valitse kunta',
+      filter: 'Rajaa',
+      filterResponses: 'Filter responses',
+      filterDialogTitle: 'Rajaa vastauksia',
+    },
     navigation: {
       map: 'Karrta',
       survey: 'Kyselylomake',

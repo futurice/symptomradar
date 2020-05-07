@@ -71,8 +71,6 @@ interface DumpArgs extends CommonArgs {
 }
 
 export async function dump(args: DumpArgs) {
-  console.log('dump', args);
-
   const { filename, out } = args;
 
   const handler = dumpHandlers[filename];

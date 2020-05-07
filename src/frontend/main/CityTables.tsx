@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import handleResponseData from './handleResponseData';
-import { NAVHEIGHT, CITYSELECTHEIGHT } from './constants';
 
 type CityTablesProps = {
   data: any;
@@ -102,7 +101,7 @@ const TableViewWrapper = styled.div<TableViewWrapperProps>`
   max-width: 600px;
   margin: 0 auto;
   padding-bottom: 40px;
-  height: ${props => (props.isEmbed ? `calc(100vh - (${CITYSELECTHEIGHT}px + ${NAVHEIGHT}px))` : 'auto')};
+  height: ${({ isEmbed, theme }) => (isEmbed ? `calc(100vh - ${theme.citySelectHeight + theme.navHeight}px)` : 'auto')};
   overflow: ${props => (props.isEmbed ? 'auto' : 'initial')};
 `;
 
@@ -120,10 +119,11 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
 
   // For the main site, where the page is scrolled
   const handleWindowScroll = useCallback(() => {
+    const scrollTop = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop);
     if (
       selectedCity !== '' ||
       data.length === listItems.length ||
-      window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight
+      window.innerHeight + scrollTop + 40 < document.documentElement.offsetHeight
     )
       return;
     fetchMoreListItems();
@@ -136,7 +136,7 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
       var height = container.current.offsetHeight;
       var offset = height - scrollY;
 
-      if (offset === 0 || offset === 1) {
+      if (offset > -40) {
         fetchMoreListItems();
       }
     }
@@ -168,47 +168,78 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
           <TableContainer key={item.city}>
             <CityHeadingContainer>
               <CityHeading>{item.city}</CityHeading>
-              <BoldText>Vastauksia yhteensä {formattedData.responsesTotal}</BoldText>
-
-              {formattedData.percentageOfPopulation != null ? (
-                <ItalicText>{formattedData.percentageOfPopulation} % väkiluvusta</ItalicText>
-              ) : null}
+              {formattedData.responsesTotal != null ? (
+                <>
+                  <BoldText>Vastauksia yhteensä {formattedData.responsesTotal}</BoldText>
+                  <ItalicText>{formattedData.percentageOfPopulation} % väkiluvusta</ItalicText>
+                </>
+              ) : (
+                <p>Alueelta ei ole vielä tarpeeksi vastauksia</p>
+              )}
             </CityHeadingContainer>
-            <Table>
-              <TableHead>
-                <tr>
-                  <th>Oireet</th>
-                  <th>Vastauksia</th>
-                  <th>Osuus väkiluvusta</th>
-                </tr>
-              </TableHead>
-              <tbody>
-                <tr>
-                  <th scope="row">Epäilys koronavirus&shy;tartunnasta</th>
-                  <td>{formattedData.suspicionTotal}</td>
-                  <td>{formattedData.suspicionPercentage != null ? `${formattedData.suspicionPercentage} %` : '-'}</td>
-                </tr>
-                <tr>
-                  <th scope="row">Yskää</th>
-                  <td>{formattedData.coughTotal}</td>
-                  <td>{formattedData.coughPercentage != null ? `${formattedData.coughPercentage} %` : '-'}</td>
-                </tr>
-                <tr>
-                  <th scope="row">Kuumetta</th>
-                  <td>{formattedData.feverTotal}</td>
-                  <td>{formattedData.feverPercentage != null ? `${formattedData.feverPercentage} %` : '-'}</td>
-                </tr>
-                <tr>
-                  <th scope="row">Vaikeuksia hengittää</th>
-                  <td>{formattedData.breathingDifficultiesTotal}</td>
-                  <td>
-                    {formattedData.breathingDifficultiesPercentage != null
-                      ? `${formattedData.breathingDifficultiesPercentage} %`
-                      : '-'}
-                  </td>
-                </tr>
-              </tbody>
-            </Table>
+            {formattedData.responsesTotal != null && (
+              <Table>
+                <TableHead>
+                  <tr>
+                    <th>Oireet</th>
+                    <th>Vastauksia</th>
+                    <th>Osuus väkiluvusta</th>
+                  </tr>
+                </TableHead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Epäilys koronavirus&shy;tartunnasta</th>
+                    <td>{formattedData.suspicionTotal}</td>
+                    <td>{formattedData.suspicionPercentage} %</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Yskää</th>
+                    <td>{formattedData.coughTotal}</td>
+                    <td>{formattedData.coughPercentage} %</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Kuumetta</th>
+                    <td>{formattedData.feverTotal}</td>
+                    <td>{formattedData.feverPercentage} %</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Vaikeuksia hengittää</th>
+                    <td>{formattedData.breathingDifficultiesTotal}</td>
+                    <td>{formattedData.breathingDifficultiesPercentage} %</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Lihaskipuja</th>
+                    <td>{formattedData.musclePainTotal}</td>
+                    <td>{formattedData.musclePainPercentage} %</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Päänsärkyä</th>
+                    <td>{formattedData.headacheTotal}</td>
+                    <td>{formattedData.headachePercentage} %</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Kurkkukipua</th>
+                    <td>{formattedData.soreThroatTotal}</td>
+                    <td>{formattedData.soreThroatPercentage} %</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Nuhaa</th>
+                    <td>{formattedData.rhinitisTotal}</td>
+                    <td>{formattedData.rhinitisPercentage} %</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Vatsaoireita</th>
+                    <td>{formattedData.stomachIssuesTotal}</td>
+                    <td>{formattedData.stomachIssuesPercentage} %</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Hajuaistin tai makuaistin heikkenemistä</th>
+                    <td>{formattedData.sensoryIssuesTotal}</td>
+                    <td>{formattedData.sensoryIssuesPercentage} %</td>
+                  </tr>
+                </tbody>
+              </Table>
+            )}
           </TableContainer>
         );
       })}

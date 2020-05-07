@@ -8,6 +8,7 @@ import About from './About';
 import Survey from './Survey';
 import Privacy from './Privacy';
 import Menu from './Menu';
+import { theme } from './constants';
 
 import RobotoEot from './assets/fonts/roboto-v20-latin-ext_latin-regular.eot';
 import RobotoSvg from './assets/fonts/roboto-v20-latin-ext_latin-regular.svg';
@@ -19,15 +20,6 @@ import Roboto700Svg from './assets/fonts/roboto-v20-latin-ext_latin-700.svg';
 import Roboto700Ttf from './assets/fonts/roboto-v20-latin-ext_latin-700.ttf';
 import Roboto700Woff from './assets/fonts/roboto-v20-latin-ext_latin-700.woff';
 import Roboto700Woff2 from './assets/fonts/roboto-v20-latin-ext_latin-700.woff2';
-
-const theme = {
-  grey: '#757575',
-  lightGrey: '#ECECEC',
-  white: '#FFFFFF',
-  black: '#000000',
-  blue: '#0047FF',
-  green: '#328709',
-};
 
 const GlobalStyles = createGlobalStyle`
 

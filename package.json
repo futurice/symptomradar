@@ -27,7 +27,8 @@
     "backend-build": "npm run lint-node && rm -rf build && tsc --project tsconfig-backend.json",
     "\n==================== UTILS ====================": "",
     "set-frontend": "/usr/bin/env bash -c 'set -x; (cd src/ && ln -fs index-frontend-$1.ts* index.tsx); (cd public/ && ln -fs index-$1.html index.html)' --",
-    "ts-node": "NODE_PATH=src ts-node --project tsconfig-backend.json --files"
+    "ts-node": "NODE_PATH=src ts-node --project tsconfig-backend.json --files",
+    "open-data-cli": "NODE_PATH=src ts-node --project tsconfig-backend.json --files src/backend/cli.ts"
   },
   "dependencies": {
     "@reach/dialog": "^0.10.0",

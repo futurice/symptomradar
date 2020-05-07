@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import CityTables from './CityTables';
-import { CITYSELECTHEIGHT } from './constants';
 
 type TableViewProps = {
   cities: Array<string>;
@@ -10,7 +9,7 @@ type TableViewProps = {
 };
 
 const CitySelect = styled.div`
-  height: ${CITYSELECTHEIGHT}px;
+  height: ${({ theme }) => theme.citySelectHeight}px;
   padding: 0 16px;
   display: flex;
   align-items: center;

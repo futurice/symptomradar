@@ -58,38 +58,19 @@ const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
       <H2>Rajaa vastauksia</H2>
       <H3>Oireet</H3>
       <TagGroup>
-        <Tag
-          type="button"
-          label={FILTERS.corona_suspicion_yes.label}
-          isActive={activeFilter === FILTERS.corona_suspicion_yes.id ? true : false}
-          handleClick={() => {
-            setActiveFilter(FILTERS.corona_suspicion_yes.id as FilterKey);
-          }}
-        ></Tag>
-        <Tag
-          type="button"
-          label={FILTERS.cough_yes.label}
-          isActive={activeFilter === FILTERS.cough_yes.id ? true : false}
-          handleClick={() => {
-            setActiveFilter(FILTERS.cough_yes.id as FilterKey);
-          }}
-        ></Tag>
-        <Tag
-          type="button"
-          label={FILTERS.fever_yes.label}
-          isActive={activeFilter === FILTERS.fever_yes.id ? true : false}
-          handleClick={() => {
-            setActiveFilter(FILTERS.fever_yes.id as FilterKey);
-          }}
-        ></Tag>
-        <Tag
-          type="button"
-          label={FILTERS.breathing_difficulties_yes.label}
-          isActive={activeFilter === FILTERS.breathing_difficulties_yes.id ? true : false}
-          handleClick={() => {
-            setActiveFilter(FILTERS.breathing_difficulties_yes.id as FilterKey);
-          }}
-        ></Tag>
+        {Object.keys(FILTERS).map(key => {
+          return (
+            <Tag
+              key={key}
+              type="button"
+              label={FILTERS[key as FilterKey].label}
+              isActive={activeFilter === FILTERS[key as FilterKey].id ? true : false}
+              handleClick={() => {
+                setActiveFilter(FILTERS[key as FilterKey].id as FilterKey);
+              }}
+            ></Tag>
+          );
+        })}
       </TagGroup>
       <ButtonWrapper>
         <ActionButton type="button" label="Rajaa vastauksia" handleClick={applyFilters} />

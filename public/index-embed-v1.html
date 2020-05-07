@@ -4,44 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{ title }}</title>
-    <style>
-      @keyframes dot-dot-doh {
-        0%   {content:"."}
-        33%  {content:".."}
-        66%  {content:"..."}
-        100% {content:"."}
-      }
-
-      /* Only display loading animation if JavaScript is enabled */
-      body.js-enabled::before{;
-        content: ".";
-        font-size: 32px;
-        display: block;
-        width: 100%;
-        height: 10px;
-        animation-name: dot-dot-doh;
-        animation-duration: 1.2s;
-        animation-iteration-count: infinite;
-      }
-
-      /*
-      * Prevent flickering by hiding `main` and `header` section by default.
-      * After js files are loaded, the app's css files will be appended to the
-      * document and set them to visible again.
-      */
-      main,
-      header {
-        display: none;
-      }
-    </style>
   </head>
 
   <body>
     <noscript>{{ no_js }}</noscript>
-    <script>
-      document.body.classList.add("js-enabled");
-    </script>
-    <header>
+    <header class="hidden">
       <img
         id="logo"
         class="logo"
@@ -55,7 +22,7 @@
         </select>
       </div>
     </header>
-    <main>
+    <main class="hidden">
       <div class="container">
         <div id="form-info" class="form-info">
           <h1 id="page-title" tabindex="-1">
@@ -91,10 +58,10 @@
             {{ thank_you_help }}
           </p>
         </div>
-        <button id="start-survey" class="button action-button">{{ start_survey }}</button>
+        <button id="start-survey" class="button action-button hidden">{{ start_survey }}</button>
       </div>
       <form id="symptom-questionnaire" class="hidden" novalidate>
-        <button id="collapse-survey" type="button" class="collapse-button">{{ close_survey }}</button>
+        <button id="collapse-survey" type="button" class="collapse-button hidden">{{ close_survey }}</button>
         <div class="question-group">
           <h2 id="form-header" class="question-group-title" tabindex="-1">{{ what_symptoms_headline }}</h2>
           <fieldset class="input-wrapper">

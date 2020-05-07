@@ -26,13 +26,13 @@ module "env_dev" {
 module "env_prod" {
   # IMPORTANT: The prod environment is pinned to the latest release version, so it won't change during normal development.
   # See infra/README.md for how to deal with it during releases, when actual prod infra changes need to be made.
-  source    = "git::ssh://git@github.com/futurice/symptomradar.git//infra/modules/main?ref=v2.5"
+  source    = "git::ssh://git@github.com/futurice/symptomradar.git//infra/modules/main?ref=v2.6"
   providers = { aws.us_east_1 = aws.us_east_1 } # this alias is needed because ACM is only available in the "us-east-1" region
 
-  name_prefix     = "${var.name_prefix}-prod"
-  tags            = merge(var.tags, { Environment = "prod" })
-  frontend_domain = "www.oiretutka.fi"
-  # TODO: apex_redirect_domain = "oiretutka.fi"
+  name_prefix          = "${var.name_prefix}-prod"
+  tags                 = merge(var.tags, { Environment = "prod" })
+  frontend_domain      = "www.oiretutka.fi"
+  apex_redirect_domain = "oiretutka.fi"
   backend_domain       = "api.oiretutka.fi"
   open_data_domain     = "data.oiretutka.fi"
   known_hashing_pepper = "vu2xkUW9iGUsIOUqjDEfarmSLmoRJnxB"

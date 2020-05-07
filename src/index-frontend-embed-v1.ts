@@ -156,19 +156,6 @@ function initValidation() {
     .change(inputChanged);
 }
 
-const variant = getUrlParameter('variant');
-
-function setupVariant() {
-  // Embedding only the form
-  if (variant === 'plain') {
-    $('header, #start-survey, #collapse-survey').addClass('hidden');
-    $('body').addClass('plain');
-    $('#symptom-questionnaire').removeClass('hidden');
-    $('#start-survey').addClass('hidden');
-    initValidation();
-  }
-}
-
 function hideSurvey() {
   $('#symptom-questionnaire').addClass('hidden');
   $('#start-survey').removeClass('hidden');
@@ -202,7 +189,27 @@ function hideSubmitError() {
   $('#submit-error').addClass('hidden');
 }
 
+const variant = getUrlParameter('variant');
+
 function init() {
+  $('body').addClass('js-loaded');
+  $('main').removeClass('hidden');
+
+  // Embedding only the form
+  if (variant === 'plain') {
+    $('body').addClass('plain');
+    $('#symptom-questionnaire').removeClass('hidden');
+    initValidation();
+  } else {
+    $('header, #start-survey, #collapse-survey').removeClass('hidden');
+  }
+
+  const returningUser = isReturningUser();
+  if (returningUser) {
+    $('#form-info').addClass('hidden');
+    $('#form-info-returning').removeClass('hidden');
+  }
+
   const endpoint = process.env.REACT_APP_API_ENDPOINT;
   if (!endpoint) {
     console.error('Endpoint url missing');
@@ -234,12 +241,6 @@ function init() {
     }
     $('#symptom-questionnaire').trigger('reset');
   });
-
-  const returningUser = isReturningUser();
-  if (returningUser) {
-    $('#form-info').addClass('hidden');
-    $('#form-info-returning').removeClass('hidden');
-  }
 
   $('#symptom-questionnaire').submit(function(event) {
     event.preventDefault();
@@ -277,10 +278,5 @@ function init() {
       .fail(() => showSubmitError('Tietojen lähetys epäonnistui', 'Ole hyvä ja yritä uudelleen.'));
   });
 }
-
-// `setupVariant` hides and show elements based on the defined variant.
-// This function is called immediately without waiting for `document.ready` to
-// avoid noticable flickering of delayed style changes.
-setupVariant();
 
 $(document).ready(init);

@@ -132,6 +132,16 @@ All available run targets can be printed with `npm run`. The main ones for front
 - `frontend-embed-v1-start` runs the embed of Oiretutka
 - `frontend-embed-v1-build` creates a build for the embed
 
+### Content Security Policy (CSP) headers
+
+Due to the use of [CSP headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) any inline `<script>`
+defined in the html files won't be executed in live environments (production and dev), although they would
+still work locally.
+
+The restriction also applies to external script (both js and css) from a different domain.
+
+Applied CSP rules are defined in `infra/modules/main/frontend.tf`
+
 ### Release process
 
 - Ensure `dev` has deployed the release you're planning to put out
@@ -230,6 +240,26 @@ The differences to the default one are
 - Header and logo not visible
 - Start button hidden, the form is already expanded
 - Some margins adjusted with the `plain` class
+
+### Notes on backend development
+
+#### Local open data dumps
+
+To create local dumps of the generated open data for testing, validation or other needs, you can use the provided CLI tool in `src/backend/cli.ts`. There is an npm script that wraps the necessary Typescript incantations, which is recommended.
+
+The tool currently supports only the `dump` command which fetches and formats the open data as JSON to either stdout stream or to provided filename. Example uses:
+
+```sh
+# Print total_responses.json to stdout
+npm run open-data-cli dump total_responses.json
+
+# Use --silent to suppress npm messages and stream output to a file
+npm run --silent open-data-cli dump total_responses.json > /tmp/total_responses.json
+
+# Use --out flag to specify filename to print the data to
+# Note the requirement to use '--' before options
+npm run open-data-cli dump total_responses.json -- --out=/tmp/total_responses.json
+```
 
 ## MIT License
 

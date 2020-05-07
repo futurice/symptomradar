@@ -1,8 +1,8 @@
 import { App, s3PutJsonHelper } from '../app';
 import {
-  mapCityLevelGeneralResults,
   accumulateResultsByCity,
   PostalCodeLevelGeneralResultsQuery,
+  filterResultsByCity,
 } from './cityLevelGeneralResults';
 import { PostalCodeCityMappings, PopulationPerCity } from '../../common/model';
 
@@ -15,7 +15,7 @@ export async function fetchCityLevelWeeklyGeneralResults(app: App) {
   const postalCodeLevelResultsResult = await queryPostalCodeLevelGeneralResults(app);
   const postalCodeCityMappings = (await app.s3Sources.fetchPostalCodeCityMappings()) as PostalCodeCityMappings;
   const populationPerCity = (await app.s3Sources.fetchPopulationPerCity()) as PopulationPerCity;
-  const cityLevelWeeklyGeneralResults = mapCityLevelGeneralResults(
+  const cityLevelWeeklyGeneralResults = mapCityLevelWeeklyGeneralResults(
     postalCodeLevelResultsResult.Items,
     postalCodeCityMappings,
     populationPerCity,
@@ -84,11 +84,13 @@ export function mapCityLevelWeeklyGeneralResults(
     populationPerCity,
   );
 
+  const filteredResultsByCity = filterResultsByCity(resultsByCity, cityData => cityData.responses > 0);
+
   // NOTE: v8 should maintain insertion order here, and since the original
   // data this is derived from arranges cities in alphabetical order,
   // this should be alphabetically ordered as well.
 
-  return Object.values(resultsByCity);
+  return Object.values(filteredResultsByCity);
 }
 
 type CityLevelWeeklyGeneralResults = ReturnType<typeof mapCityLevelWeeklyGeneralResults>;

@@ -174,7 +174,7 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
                   <ItalicText>{formattedData.percentageOfPopulation} % väkiluvusta</ItalicText>
                 </>
               ) : (
-                <p>Alle 25 vastausta</p>
+                <p>Alueelta ei ole vielä tarpeeksi vastauksia</p>
               )}
             </CityHeadingContainer>
             {formattedData.responsesTotal != null && (

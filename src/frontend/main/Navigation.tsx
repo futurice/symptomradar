@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import AboutIcon from './assets/AboutIcon';
 import MapIcon from './assets/MapIcon';
 import SurveyIcon from './assets/SurveyIcon';
+import { useTranslation } from 'react-i18next';
 
 type MenuProps = {
   setMenuOpen?: any;
@@ -78,35 +79,38 @@ const LinkItem = ({ to, linkText, icon, setMenuOpen }: LinkProps) => {
   );
 };
 
-const Navigation = ({ setMenuOpen }: MenuProps) => (
-  <NavigationContainer>
-    <LinkContainer>
-      <li>
-        <LinkItem
-          to="/"
-          linkText="Kartta"
-          setMenuOpen={setMenuOpen}
-          icon={match => <MapIcon fillColor={match ? '#000' : '#0047FF'} />}
-        />
-      </li>
-      <li>
-        <LinkItem
-          to="survey"
-          linkText="Kyselylomake"
-          setMenuOpen={setMenuOpen}
-          icon={match => <SurveyIcon fillColor={match ? '#000' : '#0047FF'} />}
-        />
-      </li>
-      <li>
-        <LinkItem
-          to="about"
-          linkText="Info"
-          setMenuOpen={setMenuOpen}
-          icon={match => <AboutIcon fillColor={match ? '#000' : '#0047FF'} />}
-        />
-      </li>
-    </LinkContainer>
-  </NavigationContainer>
-);
+const Navigation = ({ setMenuOpen }: MenuProps) => {
+  const { t } = useTranslation('navigation');
+  return (
+    <NavigationContainer>
+      <LinkContainer>
+        <li>
+          <LinkItem
+            to="/"
+            linkText={t('map')}
+            setMenuOpen={setMenuOpen}
+            icon={match => <MapIcon fillColor={match ? '#000' : '#0047FF'} />}
+          />
+        </li>
+        <li>
+          <LinkItem
+            to="survey"
+            linkText={t('survey')}
+            setMenuOpen={setMenuOpen}
+            icon={match => <SurveyIcon fillColor={match ? '#000' : '#0047FF'} />}
+          />
+        </li>
+        <li>
+          <LinkItem
+            to="about"
+            linkText={t('info')}
+            setMenuOpen={setMenuOpen}
+            icon={match => <AboutIcon fillColor={match ? '#000' : '#0047FF'} />}
+          />
+        </li>
+      </LinkContainer>
+    </NavigationContainer>
+  );
+};
 
 export default Navigation;

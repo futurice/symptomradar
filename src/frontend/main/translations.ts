@@ -1,11 +1,24 @@
 export default {
   en: {
+    symptoms: {
+      corona_suspicion_yes: 'Corona suspicion',
+      cough_yes: 'Cough',
+      fever_yes: 'Fever',
+      breathing_difficulties_yes: 'Breathing difficulties',
+      muscle_pain_yes: 'Muscle pain',
+      headache_yes: 'Headache',
+      sore_throat_yes: 'Sore throat',
+      rhinitis_yes: 'Rhinitis',
+      stomach_issues_yes: 'Stomache issues',
+      sensory_issues_yes: 'Sensory issues',
+    },
     mapView: {
       allOfFinland: 'All of Finland',
       chooseMunicipality: 'Choose the municipality',
       filter: 'Filter',
       filterResponses: 'Filter responses',
       filterDialogTitle: 'Filter responses',
+      filterDialogSymptomFilters: 'Symptoms',
     },
     navigation: {
       map: 'Map',
@@ -28,12 +41,25 @@ Tiedot ovat kerätty kyselylomakkeen avulla. Tällä sivustolla näytämme kysel
     },
   },
   fi: {
+    symptoms: {
+      corona_suspicion_yes: 'Epäilys koronasta',
+      cough_yes: 'Yskää',
+      fever_yes: 'Kuumetta',
+      breathing_difficulties_yes: 'Vaikeuksia hengittää',
+      muscle_pain_yes: 'Lihaskipuja',
+      headache_yes: 'Päänsärkyä',
+      sore_throat_yes: 'Kurkkukipua',
+      rhinitis_yes: 'Nuhaa',
+      stomach_issues_yes: 'Vatsaoireita',
+      sensory_issues_yes: 'Aistien heikkenemistä',
+    },
     mapView: {
       allOfFinland: 'Koko Suomi',
       chooseMunicipality: 'Valitse kunta',
       filter: 'Rajaa',
       filterResponses: 'Filter responses',
       filterDialogTitle: 'Rajaa vastauksia',
+      filterDialogSymptomFilters: 'Oireet',
     },
     navigation: {
       map: 'Karrta',

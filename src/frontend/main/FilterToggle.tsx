@@ -9,8 +9,8 @@ import useModal from './useModal';
 import { FILTERS } from './constants';
 
 type FilterToggleProps = {
-  selectedFilter: keyof typeof FILTERS;
-  handleFilterChange: (filterName: keyof typeof FILTERS) => void;
+  selectedFilter: FILTERS;
+  handleFilterChange: (filterName: FILTERS) => void;
 };
 
 const FilterButton = styled(PrimaryButton)`

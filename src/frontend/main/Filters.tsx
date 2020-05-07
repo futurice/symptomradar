@@ -7,11 +7,9 @@ import { FILTERS } from './constants';
 
 type FilterProps = {
   hide: () => void;
-  selectedFilter: keyof typeof FILTERS;
-  handleFilterChange: (filterName: keyof typeof FILTERS) => void;
+  selectedFilter: FILTERS;
+  handleFilterChange: (filterName: FILTERS) => void;
 };
-
-type FilterKey = keyof typeof FILTERS;
 
 const H3 = styled.h3`
   font-size: 16px;
@@ -50,7 +48,7 @@ const ActionButton = styled(PrimaryButton)`
 
 const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
   const [activeFilter, setActiveFilter] = useState(selectedFilter);
-  const { t } = useTranslation('mapView');
+  const { t } = useTranslation(['mapView', 'symptoms']);
 
   const applyFilters = () => {
     handleFilterChange(activeFilter);
@@ -58,18 +56,18 @@ const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
   };
   return (
     <div>
-      <H2>{t('filterDialogTitle')}</H2>
-      <H3>{t('symptoms')}</H3>
+      <H2>{t('mapView:filterDialogTitle')}</H2>
+      <H3>{t('mapView:filterDialogSymptomFilters')}</H3>
       <TagGroup>
-        {Object.keys(FILTERS).map(key => {
+        {Object.keys(FILTERS).map(symptomId => {
           return (
             <Tag
-              key={key}
+              key={symptomId}
               type="button"
-              label={FILTERS[key as FilterKey].label}
-              isActive={activeFilter === FILTERS[key as FilterKey].id ? true : false}
+              label={t(`symptoms:${symptomId}`)}
+              isActive={activeFilter === symptomId ? true : false}
               handleClick={() => {
-                setActiveFilter(FILTERS[key as FilterKey].id as FilterKey);
+                setActiveFilter(symptomId as FILTERS);
               }}
             ></Tag>
           );

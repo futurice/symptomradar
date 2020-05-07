@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link, Match } from '@reach/router';
+import { useTranslation } from 'react-i18next';
+import i18next from 'i18next';
 import styled from 'styled-components';
 import AboutIcon from './assets/AboutIcon';
 import MapIcon from './assets/MapIcon';
 import SurveyIcon from './assets/SurveyIcon';
-import { useTranslation } from 'react-i18next';
 
 type MenuProps = {
   setMenuOpen?: any;
@@ -81,9 +82,22 @@ const LinkItem = ({ to, linkText, icon, setMenuOpen }: LinkProps) => {
 
 const Navigation = ({ setMenuOpen }: MenuProps) => {
   const { t } = useTranslation('navigation');
+  const selectLanguage = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    i18next.changeLanguage(e.target.value);
+  };
   return (
     <NavigationContainer>
       <LinkContainer>
+        <li>
+          <select onChange={selectLanguage}>
+            <option value="fi" selected={i18next.language === 'fi'}>
+              Suomi
+            </option>
+            <option value="en" selected={i18next.language === 'en'}>
+              English
+            </option>
+          </select>
+        </li>
         <li>
           <LinkItem
             to="/"

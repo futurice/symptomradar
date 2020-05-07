@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { RouteComponentProps } from '@reach/router';
 import * as d3 from 'd3';
 import FilterToggle from './FilterToggle';
-import PrimaryButton from './PrimaryButton';
 import MapContainer from './map/MapContainer';
 import CloseIcon from './assets/CloseIcon';
 import TableView from './TableView';

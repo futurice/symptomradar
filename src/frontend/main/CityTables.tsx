@@ -35,7 +35,7 @@ const Table = styled.table`
 
     @media (min-width: 450px) {
       padding-left: 0;
-      width: 140px;
+      width: 145px;
     }
   }
 
@@ -191,7 +191,7 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
                   <tr>
                     <th>{t('main:symptoms')}</th>
                     <th>{t('main:responses')}</th>
-                    <th>${t('main:shareOfPopulation')}</th>
+                    <th>{t('main:shareOfPopulation')}</th>
                   </tr>
                 </TableHead>
                 <tbody>

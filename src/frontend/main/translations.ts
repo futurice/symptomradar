@@ -68,7 +68,12 @@ Tiedot ovat kerätty kyselylomakkeen avulla. Tällä sivustolla näytämme kysel
   },
   fi: {
     symptomLabels: {
-      corona_infection_suspicion: 'Epäilys koronavirus&shy;tartunnasta',
+      // NOTE: the character "­" in "koronavirus­tartunnasta" is not a normal "-", but
+      // rather a "soft hyphen", added here via copy-pasting.
+      // "­" is used in conjunction with css style `hyphens: manual`
+      // Using &shy; (the html code for ­) seems to be too troublesome since it will be
+      // is escaped by default by both i18next and React.
+      corona_infection_suspicion: 'Epäilys koronavirus­tartunnasta',
       corona_suspicion: 'Epäilys koronasta',
       cough: 'Yskää',
       fever: 'Kuumetta',

@@ -89,7 +89,7 @@ function collateDailyTotalItem(item: any) {
   };
 }
 
-async function pushDailyTotals(app: App, dailyTotals: DailyTotals) {
+export async function pushDailyTotals(app: App, dailyTotals: DailyTotals) {
   return s3PutJsonHelper(app.s3Client, {
     Bucket: app.constants.openDataBucket,
     Key: app.constants.dailyTotalsKey,

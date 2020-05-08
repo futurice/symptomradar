@@ -122,9 +122,20 @@ export interface OpenDataModel<T> {
 }
 
 export type PostalCodeCityMappings = OpenDataModel<Record<string, string>>;
+
 export type PopulationPerCity = OpenDataModel<
   Array<{
     city: string;
     population: number;
+  }>
+>;
+
+export type LowPopulationPostalCodes = OpenDataModel<Record<string, string>>;
+
+export type PostalCodeAreas = OpenDataModel<
+  Array<{
+    code: string;
+    name: string;
+    city: string;
   }>
 >;

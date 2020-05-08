@@ -23,7 +23,7 @@ function notImplemented<T extends object>(target: any = {}): T {
 }
 
 export function createMockS3Sources(overrides: Partial<S3Sources> = {}) {
-  async function defaultMock() {
+  async function defaultMock(): Promise<any> {
     return {};
   }
 
@@ -31,6 +31,7 @@ export function createMockS3Sources(overrides: Partial<S3Sources> = {}) {
     fetchLowPopulationPostalCodes: overrides.fetchLowPopulationPostalCodes || defaultMock,
     fetchPopulationPerCity: overrides.fetchPopulationPerCity || defaultMock,
     fetchPostalCodeCityMappings: overrides.fetchPostalCodeCityMappings || defaultMock,
+    fetchPostalCodeAreas: overrides.fetchPostalCodeAreas || defaultMock,
   };
 }
 
@@ -77,6 +78,7 @@ export function createMockApp(overrides: Partial<App> = {}): App {
     totalResponsesKey: 'total_responses.json',
     cityLevelGeneralResultsKey: 'city_level_general_results.json',
     cityLevelWeeklyGeneralResultsKey: 'city_level_weekly_general_results.json',
+    postalCodeLevelGeneralResultsKey: 'postalcode_level_general_results.json',
     dailyTotalsKey: 'daily_totals.json',
   };
 

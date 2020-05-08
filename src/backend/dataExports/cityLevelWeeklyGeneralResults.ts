@@ -10,8 +10,10 @@ export async function exportCityLevelWeeklyGeneralResults(app: App) {
 
 export async function fetchCityLevelWeeklyGeneralResults(app: App) {
   const postalCodeLevelResultsResult = await queryPostalCodeLevelGeneralResults(app);
-  const postalCodeCityMappings = (await app.s3Sources.fetchPostalCodeCityMappings()) as PostalCodeCityMappings;
-  const populationPerCity = (await app.s3Sources.fetchPopulationPerCity()) as PopulationPerCity;
+
+  const postalCodeCityMappings = await app.s3Sources.fetchPostalCodeCityMappings();
+  const populationPerCity = await app.s3Sources.fetchPopulationPerCity();
+
   const cityLevelWeeklyGeneralResults = mapCityLevelWeeklyGeneralResults(
     postalCodeLevelResultsResult.Items,
     postalCodeCityMappings,
@@ -95,7 +97,7 @@ type CityLevelWeeklyGeneralResults = ReturnType<typeof mapCityLevelWeeklyGeneral
 //
 // Push
 
-async function pushCityLevelWeeklyGeneralResults(
+export async function pushCityLevelWeeklyGeneralResults(
   app: App,
   cityLevelWeeklyGeneralResults: CityLevelWeeklyGeneralResults,
 ) {

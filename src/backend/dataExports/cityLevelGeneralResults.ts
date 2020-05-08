@@ -12,8 +12,10 @@ export async function exportCityLevelGeneralResults(app: App) {
 
 export async function fetchCityLevelGeneralResults(app: App) {
   const postalCodeLevelResultsResult = await queryPostalCodeLevelGeneralResults(app);
-  const postalCodeCityMappings = (await app.s3Sources.fetchPostalCodeCityMappings()) as PostalCodeCityMappings;
-  const populationPerCity = (await app.s3Sources.fetchPopulationPerCity()) as PopulationPerCity;
+
+  const postalCodeCityMappings = await app.s3Sources.fetchPostalCodeCityMappings();
+  const populationPerCity = await app.s3Sources.fetchPopulationPerCity();
+
   const cityLevelGeneralResults = mapCityLevelGeneralResults(
     postalCodeLevelResultsResult.Items,
     postalCodeCityMappings,
@@ -25,7 +27,6 @@ export async function fetchCityLevelGeneralResults(app: App) {
 //
 // Map
 
-// NOTE: Reuse for postal code level data
 export interface CityLevelGeneralResult {
   city: string;
   population: number;
@@ -225,7 +226,7 @@ export function filterResultsByCity(resultsByCity: ResultsByCity, fn: (cityData:
 //
 // Push
 
-async function pushCityLevelGeneralResults(app: App, cityLevelGeneralResults: CityLevelGeneralResults) {
+export async function pushCityLevelGeneralResults(app: App, cityLevelGeneralResults: CityLevelGeneralResults) {
   return s3PutJsonHelper(app.s3Client, {
     Bucket: app.constants.openDataBucket,
     Key: app.constants.cityLevelGeneralResultsKey,

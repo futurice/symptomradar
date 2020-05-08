@@ -1,31 +1,51 @@
 import fs from 'fs';
 import { promisify } from 'util';
 import yargs from 'yargs';
-import { createApp } from './app';
-import { fetchOpenDataIndex } from './dataExports/openDataIndex';
-import { fetchTotalResponses } from './dataExports/totalResponses';
-import { fetchCityLevelGeneralResults } from './dataExports/cityLevelGeneralResults';
-import { fetchCityLevelWeeklyGeneralResults } from './dataExports/cityLevelWeeklyGeneralResults';
-import { fetchDailyTotals } from './dataExports/dailyTotals';
+import { createApp, App, AppConstants } from './app';
+import { fetchOpenDataIndex, pushOpenDataIndex } from './dataExports/openDataIndex';
+import { fetchTotalResponses, pushTotalResponses } from './dataExports/totalResponses';
+import { fetchCityLevelGeneralResults, pushCityLevelGeneralResults } from './dataExports/cityLevelGeneralResults';
+import {
+  fetchCityLevelWeeklyGeneralResults,
+  pushCityLevelWeeklyGeneralResults,
+} from './dataExports/cityLevelWeeklyGeneralResults';
+import { fetchDailyTotals, pushDailyTotals } from './dataExports/dailyTotals';
+import {
+  fetchPostalCodeLevelGeneralResults,
+  pushPostalCodeLevelGeneralResults,
+} from './dataExports/postalCodeLevelGeneralResults';
 
 const writeFile = promisify(fs.writeFile);
 
 const app = createApp();
 
-const openDataFilenames = [
-  app.constants.openDataIndexKey,
-  app.constants.totalResponsesKey,
-  app.constants.cityLevelGeneralResultsKey,
-  app.constants.cityLevelWeeklyGeneralResultsKey,
-  app.constants.dailyTotalsKey,
-];
+interface DataExportHandler {
+  fetch(app: App): Promise<any>;
+  push(app: App, data: any): Promise<void>;
+}
 
-const dumpHandlers = {
-  [app.constants.openDataIndexKey]: fetchOpenDataIndex,
-  [app.constants.totalResponsesKey]: fetchTotalResponses,
-  [app.constants.cityLevelGeneralResultsKey]: fetchCityLevelGeneralResults,
-  [app.constants.cityLevelWeeklyGeneralResultsKey]: fetchCityLevelWeeklyGeneralResults,
-  [app.constants.dailyTotalsKey]: fetchDailyTotals,
+const dataExportHandlers: { [K in keyof AppConstants]?: DataExportHandler } = {
+  [app.constants.openDataIndexKey]: {
+    fetch: fetchOpenDataIndex,
+    push: pushOpenDataIndex,
+  },
+  [app.constants.totalResponsesKey]: {
+    fetch: fetchTotalResponses,
+    push: pushTotalResponses,
+  },
+  [app.constants.cityLevelGeneralResultsKey]: {
+    fetch: fetchCityLevelGeneralResults,
+    push: pushCityLevelGeneralResults,
+  },
+  [app.constants.cityLevelWeeklyGeneralResultsKey]: {
+    fetch: fetchCityLevelWeeklyGeneralResults,
+    push: pushCityLevelWeeklyGeneralResults,
+  },
+  [app.constants.postalCodeLevelGeneralResultsKey]: {
+    fetch: fetchPostalCodeLevelGeneralResults,
+    push: pushPostalCodeLevelGeneralResults,
+  },
+  [app.constants.dailyTotalsKey]: { fetch: fetchDailyTotals, push: pushDailyTotals },
 };
 
 interface CommonArgs {
@@ -41,7 +61,7 @@ yargs
       yargs
         .positional('filename', {
           describe: 'Filename to export',
-          choices: openDataFilenames,
+          choices: Object.keys(dataExportHandlers),
         })
         .option('out', {
           alias: 'o',
@@ -72,12 +92,12 @@ interface DumpArgs extends CommonArgs {
 export async function dump(args: DumpArgs) {
   const { filename, out } = args;
 
-  const handler = dumpHandlers[filename];
+  const handler = dataExportHandlers[filename as keyof AppConstants];
   if (!handler) {
     throw Error(`Unknown filename "${filename}"`);
   }
 
-  const data = await handler(app);
+  const data = await handler.fetch(app);
   const json = JSON.stringify(data, null, 2);
 
   if (out) {

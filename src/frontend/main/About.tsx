@@ -10,10 +10,10 @@ const Container = styled.div`
 `;
 
 const About = (props: RouteComponentProps) => {
-  const { t } = useTranslation('aboutPage');
+  const { t } = useTranslation(['aboutPage']);
   return (
     <Container>
-      <Trans i18nKey="content" t={t}>
+      <Trans i18nKey="aboutPage:content" t={t}>
         <h1>Oiretutka kerää tietoa koronaviruksesta</h1>
         <p>
           Oiretutka on Helsingin Sanomien ja teknologiayhtiö Futuricen kehittämä hanke, jonka tarkoituksena on kerätä

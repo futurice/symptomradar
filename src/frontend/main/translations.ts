@@ -43,7 +43,7 @@ export default {
       totalResponsesModalInfoText: 'Total responses: {{total}} ({{percentage}}% of the population)',
       comparedToMunicipalityPopulation: 'Compared to municipality population',
       ofPopulation: 'of the population',
-      notEnoughResponses: 'Not enough responses form this area yet',
+      notEnoughResponses: 'Not enough responses from this area yet',
       municipality: 'Municipality',
     },
     navigation: {

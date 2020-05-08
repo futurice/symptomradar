@@ -182,7 +182,7 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
                   </ItalicText>
                 </>
               ) : (
-                <p>Alueelta ei ole vielä tarpeeksi vastauksia</p>
+                <p>{t('main:notEnoughResponses')}</p>
               )}
             </CityHeadingContainer>
             {formattedData.responsesTotal != null && (

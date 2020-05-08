@@ -75,7 +75,7 @@ const ModalContent = ({ content, hide }: ModalContentProps) => {
           <Description>{t('main:comparedToMunicipalityPopulation')}</Description>
         </>
       ) : (
-        <p>Alueelta ei ole vielä tarpeeksi vastauksia</p>
+        <p>{t('main:notEnoughResponses')}</p>
       )}
       {formattedData.responsesTotal != null && (
         <Symptoms>

@@ -9,6 +9,7 @@ const openDataConstantKeys: Array<keyof AppConstants> = [
   'dailyTotalsKey',
   'lowPopulationPostalCodesKey',
   'populationPerCityKey',
+  'postalCodeAreasKey',
   'postalCodeCityMappingsKey',
   'topoJsonFinlandSimplifiedKey',
   'topoJsonFinlandWithoutAlandKey',

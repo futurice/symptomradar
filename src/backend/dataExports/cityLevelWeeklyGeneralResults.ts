@@ -1,10 +1,7 @@
 import { App, s3PutJsonHelper } from '../app';
-import {
-  accumulateResultsByCity,
-  PostalCodeLevelGeneralResultsQuery,
-  filterResultsByCity,
-} from './cityLevelGeneralResults';
+import { accumulateResultsByCity, filterResultsByCity } from './cityLevelGeneralResults';
 import { PostalCodeCityMappings, PopulationPerCity } from '../../common/model';
+import { PostalCodeLevelGeneralResultsQuery } from './postalCodeLevelGeneralResults';
 
 export async function exportCityLevelWeeklyGeneralResults(app: App) {
   const cityLevelWeeklyGeneralResults = await fetchCityLevelWeeklyGeneralResults(app);

@@ -36,6 +36,7 @@ export function createAppConstants() {
     // Bucket key names
     lowPopulationPostalCodesKey: 'low_population_postal_codes.json',
     populationPerCityKey: 'population_per_city.json',
+    postalCodeAreasKey: 'postalcode_areas.json',
     postalCodeCityMappingsKey: 'postalcode_city_mappings.json',
     topoJsonFinlandSimplifiedKey: 'topojson_finland_simplified.json',
     topoJsonFinlandWithoutAlandKey: 'topojson_finland_without_aland.json',

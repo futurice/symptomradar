@@ -67,7 +67,7 @@ const Map: React.FunctionComponent<{
 }> = props => {
   const [activeCityData, setActiveCityData] = useState({});
   const { isShowing, toggleModal } = useModal();
-  const { t } = useTranslation(['mapView']);
+  const { t } = useTranslation(['main']);
 
   // radius and color scale
   let rScale = d3
@@ -142,21 +142,21 @@ const Map: React.FunctionComponent<{
     let keyG = keySVG.append('g').attr('class', 'keyG');
     let colorKey = [...props.colorRange];
     colorKey.reverse().push(props.defaultColor);
-    let colorLegend = ['Top 10', '10-20', '20-30', t('mapView:other'), t('mapView:noInformation')];
+    let colorLegend = ['Top 10', '10-20', '20-30', t('main:other'), t('main:noInformation')];
     keyG
       .append('text')
       .attr('x', 5)
       .attr('y', 200 - 55)
       .attr('fill', '#000')
       .attr('font-size', 10)
-      .text(t('mapView:legendInfoLine1'));
+      .text(t('main:legendInfoLine1'));
     keyG
       .append('text')
       .attr('x', 5)
       .attr('y', 200 - 42)
       .attr('fill', '#000')
       .attr('font-size', 10)
-      .text(t('mapView:legendInfoLine2'));
+      .text(t('main:legendInfoLine2'));
     keyG
       .selectAll('.keyRect')
       .data(colorKey.reverse())
@@ -187,9 +187,9 @@ const Map: React.FunctionComponent<{
       .attr('y', 180)
       .attr('fill', '#000')
       .attr('font-size', 10)
-      .text(t('mapView:legendInfoLine3'));
+      .text(t('main:legendInfoLine3'));
 
-    if (t('mapView:legendInfoLine4') !== '') {
+    if (t('main:legendInfoLine4') !== '') {
       keyG
         .append('text')
         .attr('class', 'keyText')
@@ -197,7 +197,7 @@ const Map: React.FunctionComponent<{
         .attr('y', 192)
         .attr('fill', '#000')
         .attr('font-size', 10)
-        .text(t('mapView:legendInfoLine4'));
+        .text(t('main:legendInfoLine4'));
     }
 
     // eslint-disable-next-line
@@ -319,7 +319,7 @@ const Map: React.FunctionComponent<{
         style={{ bottom: '125px', left: '10px', position: 'fixed' }}
         ref={node => (keyNode = node)}
       />
-      <Modal isShowing={isShowing} hide={toggleModal} ariaLabel="Kaupungin tiedot">
+      <Modal isShowing={isShowing} hide={toggleModal} ariaLabel={t('main:cityInformation')}>
         <ModalContent content={activeCityData} hide={toggleModal} />
       </Modal>
     </div>

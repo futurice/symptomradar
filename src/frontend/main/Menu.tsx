@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import { DialogOverlay, DialogContent } from '@reach/dialog';
 import '@reach/dialog/styles.css';
 import { useMediaQuery } from 'react-responsive';
@@ -70,11 +71,12 @@ const NavigationContainer = styled.div<NavProps>`
 `;
 
 const MenuSmallScreen = ({ menuOpen, setMenuOpen }: MenuProps) => {
+  const { t } = useTranslation(['main']);
   return (
     <DialogOverlay isOpen={menuOpen} onDismiss={() => setMenuOpen(false)}>
-      <MenuContent aria-label="Navigaatio" id="main-menu">
+      <MenuContent aria-label={t('main:navigation')} id="main-menu">
         <MenuHeader>
-          <CloseButton type="button" aria-label="Sulje" onClick={() => setMenuOpen(false)}>
+          <CloseButton type="button" aria-label={t('main:close')} onClick={() => setMenuOpen(false)}>
             <CloseIcon />
             Sulje
           </CloseButton>

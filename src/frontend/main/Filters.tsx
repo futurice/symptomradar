@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
 import PrimaryButton from './PrimaryButton';
-import { FILTERS } from './constants';
+import { FILTERS, FilterKey } from './constants';
 
 type FilterProps = {
   hide: () => void;
-  selectedFilter: FILTERS;
-  handleFilterChange: (filterName: FILTERS) => void;
+  selectedFilter: FilterKey;
+  handleFilterChange: (filterName: FilterKey) => void;
 };
 
 const H3 = styled.h3`
@@ -48,7 +48,7 @@ const ActionButton = styled(PrimaryButton)`
 
 const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
   const [activeFilter, setActiveFilter] = useState(selectedFilter);
-  const { t } = useTranslation(['mapView', 'symptomLabels']);
+  const { t } = useTranslation(['main', 'symptomLabels']);
 
   const applyFilters = () => {
     handleFilterChange(activeFilter);
@@ -56,25 +56,25 @@ const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
   };
   return (
     <div>
-      <H2>{t('mapView:filterDialogTitle')}</H2>
-      <H3>{t('mapView:symptoms')}</H3>
+      <H2>{t('main:filterDialogTitle')}</H2>
+      <H3>{t('main:symptoms')}</H3>
       <TagGroup>
         {Object.keys(FILTERS).map(symptomId => {
           return (
             <Tag
               key={symptomId}
               type="button"
-              label={t(`symptomLabels:${symptomId}`)}
+              label={t(`symptomLabels:${FILTERS[symptomId as FilterKey].label}`)}
               isActive={activeFilter === symptomId ? true : false}
               handleClick={() => {
-                setActiveFilter(symptomId as FILTERS);
+                setActiveFilter(symptomId as FilterKey);
               }}
             ></Tag>
           );
         })}
       </TagGroup>
       <ButtonWrapper>
-        <ActionButton type="button" label={t('mapView:filterResponses')} handleClick={applyFilters} />
+        <ActionButton type="button" label={t('main:filterResponses')} handleClick={applyFilters} />
       </ButtonWrapper>
     </div>
   );

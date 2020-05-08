@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import CityTables from './CityTables';
 import { RouteComponentProps } from '@reach/router';
@@ -29,13 +30,14 @@ const Label = styled.label`
 
 const TableView = ({ data, cities, isEmbed }: TableViewProps) => {
   const [selectedCity, setSelectedCity] = useState('');
+  const { t } = useTranslation(['main']);
 
   return (
     <>
       <CitySelect>
-        <Label htmlFor="city">Kunta</Label>
+        <Label htmlFor="city">${t('main:municipality')}</Label>
         <select name="select" id="city" onChange={e => setSelectedCity(e.currentTarget.value)}>
-          <option value="">Kaikki kunnat</option>
+          <option value="">{t('main:allMunicipalities')}</option>
           {cities.map((city: string) => {
             return (
               <option key={city} value={city}>

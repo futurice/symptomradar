@@ -1,10 +1,42 @@
-const handleResponseData = (data: any) => {
+import i18n from 'i18next';
+
+export interface ResponseData {
+  responsesTotal: string | null;
+  percentageOfPopulation: string | null;
+  suspicionTotal: string | null;
+  suspicionPercentage: string | null;
+  coughTotal: string | null;
+  coughPercentage: string | null;
+  feverTotal: string | null;
+  feverPercentage: string | null;
+  breathingDifficultiesTotal: string | null;
+  breathingDifficultiesPercentage: string | null;
+  musclePainTotal: string | null;
+  musclePainPercentage: string | null;
+  headacheTotal: string | null;
+  headachePercentage: string | null;
+  soreThroatTotal: string | null;
+  soreThroatPercentage: string | null;
+  rhinitisTotal: string | null;
+  rhinitisPercentage: string | null;
+  stomachIssuesTotal: string | null;
+  stomachIssuesPercentage: string | null;
+  sensoryIssuesTotal: string | null;
+  sensoryIssuesPercentage: string | null;
+}
+
+export type ResponseDataKey = keyof ResponseData;
+
+const handleResponseData = (data: any): ResponseData => {
+  const currentLocale = `${i18n.language}-${i18n.language.toUpperCase()}`;
   const handleData = (value: number) => {
-    return value >= 0 ? value.toLocaleString('fi-FI') : null;
+    return value >= 0 ? value.toLocaleString(currentLocale) : null;
   };
 
   const handlePercentageData = (value: number) => {
-    return data.responses > 25 ? ((value * 100) / data.population).toFixed(2).replace('.', ',') : null;
+    return data.responses > 25
+      ? (Math.round(((value * 100) / data.population) * 100) / 100).toLocaleString(currentLocale)
+      : null;
   };
 
   return {

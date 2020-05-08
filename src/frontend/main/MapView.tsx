@@ -9,7 +9,7 @@ import MapContainer from './map/MapContainer';
 import CloseIcon from './assets/CloseIcon';
 import TableView from './TableView';
 import { theme } from './constants';
-import { FILTERS } from './constants';
+import { FILTERS, FilterKey } from './constants';
 
 interface MapViewProps extends RouteComponentProps {
   responseData: any;
@@ -189,14 +189,14 @@ const CloseButton = styled.button`
 `;
 
 const MapView = (props: MapViewProps) => {
-  const { t } = useTranslation(['mapView', 'symptomLabels']);
+  const { t } = useTranslation(['main', 'symptomLabels']);
 
   const currentPath = props.location!.pathname;
   const isEmbed = currentPath === '/map-embed';
   const { navHeight, headerHeight } = theme;
   const topPartHeight = isEmbed ? navHeight : headerHeight + navHeight;
   const [showMapInfo, setShowMapInfo] = useState(true);
-  const [selectedFilter, setSelectedFilter] = useState<FILTERS>(FILTERS.corona_suspicion_yes);
+  const [selectedFilter, setSelectedFilter] = useState<FilterKey>(FILTERS.corona_suspicion_yes.id as FilterKey);
   const [mapHeight, setMapHeight] = useState(window.innerHeight - topPartHeight - 10);
   const data = props.responseData.data;
   const [activeView, setActiveView] = useState<'MAP' | 'TABLE'>('MAP');
@@ -216,7 +216,7 @@ const MapView = (props: MapViewProps) => {
     });
 
   const handleFilterChange = (filterName: string) => {
-    setSelectedFilter(filterName as FILTERS);
+    setSelectedFilter(filterName as FilterKey);
   };
 
   const totalResponses = data.reduce((accumulator: number, currentValue: any) => {
@@ -315,7 +315,7 @@ const MapView = (props: MapViewProps) => {
             setActiveView('MAP');
           }}
         >
-          {t('mapView:allOfFinland')}
+          {t('main:allOfFinland')}
         </MapNavButton>
         <MapNavButton
           type="button"
@@ -325,7 +325,7 @@ const MapView = (props: MapViewProps) => {
             setActiveView('TABLE');
           }}
         >
-          {t('mapView:chooseMunicipality')}
+          {t('main:chooseMunicipality')}
         </MapNavButton>
       </MapNav>
       {activeView === 'MAP' && (
@@ -339,7 +339,7 @@ const MapView = (props: MapViewProps) => {
           <Container>
             <FilterWrapper isEmbed={isEmbed}>
               <FilterToggle selectedFilter={selectedFilter} handleFilterChange={handleFilterChange} />
-              <ActiveFilter type="button" label={t(`symptomLabels:${FILTERS[selectedFilter]}`)}></ActiveFilter>
+              <ActiveFilter type="button" label={t(`symptomLabels:${FILTERS[selectedFilter].label}`)}></ActiveFilter>
             </FilterWrapper>
           </Container>
           <MapInfo>
@@ -349,12 +349,12 @@ const MapView = (props: MapViewProps) => {
                   <CloseButton
                     type="button"
                     data-dismiss="modal"
-                    aria-label="Sulje"
+                    aria-label={t('main:close')}
                     onClick={() => setShowMapInfo(false)}
                   >
                     <CloseIcon />
                   </CloseButton>
-                  <Trans i18nKey="mapView:mapInfo" t={t}>
+                  <Trans i18nKey="main:mapInfo" t={t}>
                     <p>
                       Kartta näyttää, millaisia oireita vastaajilla on eri kunnissa. Mukana ovat kunnat, joista on saatu
                       yli 25 vastausta.
@@ -367,7 +367,7 @@ const MapView = (props: MapViewProps) => {
             <TotalResponses>
               <Container>
                 <p>
-                  {t('mapView:totalResponses')}: {totalResponses.toLocaleString('fi-FI')}
+                  {t('main:totalResponses')}: {totalResponses.toLocaleString('fi-FI')}
                 </p>
               </Container>
             </TotalResponses>

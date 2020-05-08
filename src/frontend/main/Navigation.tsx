@@ -67,6 +67,13 @@ const LinkText = styled.span<activeLinkProps>`
   }
 `;
 
+const LanguageSelector = styled.div`
+  margin: 16px 0;
+  label {
+    font-weight: bold;
+  }
+`;
+
 const LinkItem = ({ to, linkText, icon, setMenuOpen }: LinkProps) => {
   return (
     <Match path={to}>
@@ -90,10 +97,14 @@ const Navigation = ({ setMenuOpen }: MenuProps) => {
     <NavigationContainer>
       <LinkContainer>
         <li>
-          <select onChange={selectLanguage} defaultValue={i18n.language}>
-            <option value="fi">Suomi</option>
-            <option value="en">English</option>
-          </select>
+          <LanguageSelector>
+            <label htmlFor="language-selector">{t('main:languageSelector')}</label>
+            <br />
+            <select id="language-selector" onChange={selectLanguage} defaultValue={i18n.language}>
+              <option value="fi">Suomi</option>
+              <option value="en">English</option>
+            </select>
+          </LanguageSelector>
         </li>
         <li>
           <LinkItem

@@ -15,6 +15,7 @@ export default {
       loss_of_smell_or_taste: 'Loss of smell or taste',
     },
     main: {
+      languageSelector: 'Kieli',
       cityInformation: 'City information',
       openOrCloseMenu: 'Open/Close menu',
       close: 'Close',
@@ -87,6 +88,7 @@ Tiedot ovat kerätty kyselylomakkeen avulla. Tällä sivustolla näytämme kysel
       loss_smell_or_taste: 'Hajuaistin tai makuaistin heikkenemistä',
     },
     main: {
+      languageSelector: 'Language',
       cityInformation: 'Kaupungin tiedot',
       openOrCloseMenu: 'Avaa/sulje valikko',
       navigation: 'Navigaatio',

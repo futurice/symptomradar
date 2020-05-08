@@ -48,7 +48,7 @@ const ActionButton = styled(PrimaryButton)`
 
 const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
   const [activeFilter, setActiveFilter] = useState(selectedFilter);
-  const { t } = useTranslation(['mapView', 'symptoms']);
+  const { t } = useTranslation(['mapView', 'symptomLabels']);
 
   const applyFilters = () => {
     handleFilterChange(activeFilter);
@@ -57,14 +57,14 @@ const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
   return (
     <div>
       <H2>{t('mapView:filterDialogTitle')}</H2>
-      <H3>{t('mapView:filterDialogSymptomFilters')}</H3>
+      <H3>{t('mapView:symptoms')}</H3>
       <TagGroup>
         {Object.keys(FILTERS).map(symptomId => {
           return (
             <Tag
               key={symptomId}
               type="button"
-              label={t(`symptoms:${symptomId}`)}
+              label={t(`symptomLabels:${symptomId}`)}
               isActive={activeFilter === symptomId ? true : false}
               handleClick={() => {
                 setActiveFilter(symptomId as FILTERS);
@@ -74,7 +74,7 @@ const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
         })}
       </TagGroup>
       <ButtonWrapper>
-        <ActionButton type="button" label="Rajaa vastauksia" handleClick={applyFilters} />
+        <ActionButton type="button" label={t('mapView:filterResponses')} handleClick={applyFilters} />
       </ButtonWrapper>
     </div>
   );

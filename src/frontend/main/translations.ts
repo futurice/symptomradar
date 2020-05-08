@@ -1,6 +1,6 @@
 export default {
   en: {
-    symptoms: {
+    symptomLabels: {
       corona_suspicion_yes: 'Corona suspicion',
       cough_yes: 'Cough',
       fever_yes: 'Fever',
@@ -18,7 +18,19 @@ export default {
       filter: 'Filter',
       filterResponses: 'Filter responses',
       filterDialogTitle: 'Filter responses',
-      filterDialogSymptomFilters: 'Symptoms',
+      symptoms: 'Symptoms',
+      legendInfoLine1: 'Color coded by amount',
+      legendInfoLine2: 'of symptoms reported',
+      legendInfoLine3: 'The size of the circle illustrates',
+      legendInfoLine4: 'population size',
+      mapInfo: `
+<p>The map shows symptoms the respondents have in various municipalities. Only municipalities with over 25 answers are included.</p>
+
+<p>You can view answers by municipality by clicking the circle or using search.</p>
+      `,
+      totalResponses: 'Total responses',
+      other: 'Other',
+      noInformation: 'No information',
     },
     navigation: {
       map: 'Map',
@@ -41,7 +53,7 @@ Tiedot ovat kerätty kyselylomakkeen avulla. Tällä sivustolla näytämme kysel
     },
   },
   fi: {
-    symptoms: {
+    symptomLabels: {
       corona_suspicion_yes: 'Epäilys koronasta',
       cough_yes: 'Yskää',
       fever_yes: 'Kuumetta',
@@ -57,9 +69,21 @@ Tiedot ovat kerätty kyselylomakkeen avulla. Tällä sivustolla näytämme kysel
       allOfFinland: 'Koko Suomi',
       chooseMunicipality: 'Valitse kunta',
       filter: 'Rajaa',
-      filterResponses: 'Filter responses',
+      filterResponses: 'Rajaa vastauksia',
       filterDialogTitle: 'Rajaa vastauksia',
-      filterDialogSymptomFilters: 'Oireet',
+      symptoms: 'Oireet',
+      legendInfoLine1: 'Väri kertoo, missä oireita',
+      legendInfoLine2: 'on raportoitu eniten',
+      legendInfoLine3: 'Ympyrän koko kuvaa väkilukua',
+      legendInfoLine4: '',
+      mapInfo: `
+<p>Kartta näyttää, millaisia oireita vastaajilla on eri kunnissa. Mukana ovat kunnat, joista on saatu yli 25 vastausta.</p>
+
+<p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
+      `,
+      totalResponses: 'Vastauksia yhteensä',
+      other: 'Muut',
+      noInformation: 'Ei tietoa',
     },
     navigation: {
       map: 'Karrta',

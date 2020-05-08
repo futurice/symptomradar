@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps } from '@reach/router';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import * as d3 from 'd3';
 import FilterToggle from './FilterToggle';
 import PrimaryButton from './PrimaryButton';
@@ -189,7 +189,7 @@ const CloseButton = styled.button`
 `;
 
 const MapView = (props: MapViewProps) => {
-  const { t } = useTranslation(['mapView', 'symptoms']);
+  const { t } = useTranslation(['mapView', 'symptomLabels']);
 
   const currentPath = props.location!.pathname;
   const isEmbed = currentPath === '/map-embed';
@@ -339,7 +339,7 @@ const MapView = (props: MapViewProps) => {
           <Container>
             <FilterWrapper isEmbed={isEmbed}>
               <FilterToggle selectedFilter={selectedFilter} handleFilterChange={handleFilterChange} />
-              <ActiveFilter type="button" label={t(`symptoms:${FILTERS[selectedFilter]}`)}></ActiveFilter>
+              <ActiveFilter type="button" label={t(`symptomLabels:${FILTERS[selectedFilter]}`)}></ActiveFilter>
             </FilterWrapper>
           </Container>
           <MapInfo>
@@ -354,17 +354,21 @@ const MapView = (props: MapViewProps) => {
                   >
                     <CloseIcon />
                   </CloseButton>
-                  <p>
-                    Kartta näyttää, millaisia oireita vastaajilla on eri kunnissa. Mukana ovat kunnat, joista on saatu
-                    yli 25 vastausta.
-                  </p>
-                  <p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
+                  <Trans i18nKey="mapView:mapInfo" t={t}>
+                    <p>
+                      Kartta näyttää, millaisia oireita vastaajilla on eri kunnissa. Mukana ovat kunnat, joista on saatu
+                      yli 25 vastausta.
+                    </p>
+                    <p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
+                  </Trans>
                 </MapInfoContent>
               </>
             )}
             <TotalResponses>
               <Container>
-                <p>Vastauksia yhteensä: {totalResponses.toLocaleString('fi-FI')}</p>
+                <p>
+                  {t('mapView:totalResponses')}: {totalResponses.toLocaleString('fi-FI')}
+                </p>
               </Container>
             </TotalResponses>
           </MapInfo>

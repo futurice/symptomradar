@@ -35,7 +35,7 @@ const TableView = ({ data, cities, isEmbed }: TableViewProps) => {
   return (
     <>
       <CitySelect>
-        <Label htmlFor="city">${t('main:municipality')}</Label>
+        <Label htmlFor="city">{t('main:municipality')}</Label>
         <select name="select" id="city" onChange={e => setSelectedCity(e.currentTarget.value)}>
           <option value="">{t('main:allMunicipalities')}</option>
           {cities.map((city: string) => {

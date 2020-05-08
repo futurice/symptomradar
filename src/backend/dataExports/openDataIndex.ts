@@ -6,6 +6,7 @@ type OpenDataIndex = Record<string, OpenDataModel<never>>;
 const openDataConstantKeys: Array<keyof AppConstants> = [
   'totalResponsesKey',
   'cityLevelGeneralResultsKey',
+  'postalCodeLevelGeneralResultsKey',
   'dailyTotalsKey',
   'lowPopulationPostalCodesKey',
   'populationPerCityKey',

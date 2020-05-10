@@ -9,7 +9,7 @@ type CityTablesProps = {
 };
 
 type TableViewWrapperProps = {
-  isEmbed: boolean;
+  readonly isEmbed: boolean;
 };
 
 const Table = styled.table`

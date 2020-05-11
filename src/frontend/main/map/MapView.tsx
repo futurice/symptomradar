@@ -127,7 +127,12 @@ const MapView = (props: MapViewProps) => {
         {showMapInfo && (
           <>
             <MapInfoContent className="popUp">
-              <CloseButton type="button" data-dismiss="modal" aria-label="Sulje" onClick={() => setShowMapInfo(false)}>
+              <CloseButton
+                type="button"
+                data-dismiss="modal"
+                aria-label={t('main:close')}
+                onClick={() => setShowMapInfo(false)}
+              >
                 <CloseIcon />
               </CloseButton>
               <Trans i18nKey="main:mapInfo" t={t}>

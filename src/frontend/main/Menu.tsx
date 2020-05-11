@@ -78,7 +78,7 @@ const MenuSmallScreen = ({ menuOpen, setMenuOpen }: MenuProps) => {
         <MenuHeader>
           <CloseButton type="button" aria-label={t('main:close')} onClick={() => setMenuOpen(false)}>
             <CloseIcon />
-            Sulje
+            {t('main:close')}
           </CloseButton>
         </MenuHeader>
         <Navigation setMenuOpen={setMenuOpen}></Navigation>

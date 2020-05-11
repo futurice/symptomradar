@@ -86,12 +86,12 @@ const ModalContent = ({ content, hide }: ModalContentProps) => {
                 const percentageKey = `${key}Percentage` as ResponseDataKey;
                 return (
                   <tr key={`symptom-row-${key}`}>
-                    <th scope="row">{t(`symptomLabels:${symptomLabels[key]}`)}</th>
                     <td>{formattedData[totalKey]}</td>
                     <td>
                       {percentageKey in formattedData &&
                         `${t('format:percentage', { percentage: formattedData[percentageKey] })}`}
                     </td>
+                    <th scope="row">{t(`symptomLabels:${symptomLabels[key]}`)}</th>
                   </tr>
                 );
               })}

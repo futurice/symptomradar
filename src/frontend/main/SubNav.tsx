@@ -45,6 +45,9 @@ const SubNavLink = styled.span<SubNavLinkProps>`
   display: flex;
   align-items: center;
   justify-content: center;
+  line-height: 1.1;
+  padding: 0 10px;
+  text-align: center;
   border-top: ${props => (props.isEmbed ? `1px solid ${props.theme.grey}` : 'none')};
   /*
   The borders are first defined in the parent element (RouterLink) and overriden here in specific cases

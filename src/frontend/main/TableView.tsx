@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import CityTables from './CityTables';
+import { RouteComponentProps } from '@reach/router';
 
-type TableViewProps = {
+interface TableViewProps extends RouteComponentProps {
   cities: Array<string>;
   data: any;
   isEmbed: boolean;
-};
+}
 
 const CitySelect = styled.div`
   height: ${({ theme }) => theme.citySelectHeight}px;

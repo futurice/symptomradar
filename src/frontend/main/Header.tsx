@@ -33,7 +33,7 @@ const LogoImage = styled.img`
 `;
 
 const Header = ({ location, menuOpen, setMenuOpen }: HeaderProps) => {
-  const isEmbedView = location === '/map-embed';
+  const isEmbedView = location.includes('/map-embed');
   if (!isEmbedView) {
     return (
       <AppHeader>

@@ -59,7 +59,7 @@ export const postalCodeLevelWeeklyGeneralResultsQuery = `SELECT postal_code,
   COUNT(IF ( corona_suspicion	 = 'yes', 1, NULL)) AS corona_suspicion_yes
 FROM responses
 WHERE (country_code = 'FI' or country_code = '')
-  AND from_iso8601_timestamp(timestamp) >= date_add('week', -1, current_timestamp)
+  AND from_iso8601_timestamp(timestamp) >= date_add('day', -6, current_date)
 GROUP BY  postal_code
 ORDER BY  responses DESC`;
 
@@ -84,6 +84,7 @@ export function mapCityLevelWeeklyGeneralResults(
     populationPerCity,
   );
 
+  // Mark all entries with no responses with `-1` to conform to UI logic
   const filteredResultsByCity = filterResultsByCity(resultsByCity, cityData => cityData.responses > 0);
 
   // NOTE: v8 should maintain insertion order here, and since the original

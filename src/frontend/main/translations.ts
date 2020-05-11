@@ -12,7 +12,7 @@ export default {
       rhinitis: 'Rhinitis',
       stomach_issues: 'Stomache issues',
       sensory_issues: 'Sensory issues',
-      loss_of_smell_or_taste: 'Loss of smell or taste',
+      loss_smell_or_taste: 'Loss of smell or taste',
     },
     main: {
       languageSelector: 'Kieli',

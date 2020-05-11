@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
+import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { symptomLabels } from './constants';
 import handleResponseData, { ResponseDataKey } from './handleResponseData';
@@ -199,7 +200,7 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
                     const totalKey = `${key}Total` as ResponseDataKey;
                     const percentageKey = `${key}Percentage` as ResponseDataKey;
                     return (
-                      <tr key={`symptom-row-${key}`}>
+                      <tr key={`symptom-row-${key}-${i18n.language}`}>
                         <th scope="row">{t(`symptomLabels:${symptomLabels[key]}`)}</th>
                         <td>{totalKey in formattedData && formattedData[totalKey]}</td>
                         <td>{percentageKey in formattedData && `${formattedData[percentageKey]} %`}</td>

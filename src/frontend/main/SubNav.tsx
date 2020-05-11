@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import { Link, Match } from '@reach/router';
 
 type SubNavProps = {
@@ -59,6 +60,7 @@ const SubNavLink = styled.span<SubNavLinkProps>`
 
 const SubNav = ({ isEmbed }: SubNavProps) => {
   const mapPath = isEmbed ? '/map-embed' : '/';
+  const { t } = useTranslation(['main']);
 
   return (
     <>
@@ -67,7 +69,7 @@ const SubNav = ({ isEmbed }: SubNavProps) => {
           {({ match }) => (
             <RouterLink to={mapPath}>
               <SubNavLink isActive={match ? true : false} isEmbed={isEmbed}>
-                Koko Suomi
+                {t('main:allOfFinland')}
               </SubNavLink>
             </RouterLink>
           )}
@@ -76,7 +78,7 @@ const SubNav = ({ isEmbed }: SubNavProps) => {
           {({ match }) => (
             <RouterLink to="dashboard">
               <SubNavLink isActive={match ? true : false} isEmbed={isEmbed}>
-                Valitse kunta
+                {t('main:chooseMunicipality')}
               </SubNavLink>
             </RouterLink>
           )}

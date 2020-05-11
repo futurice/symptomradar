@@ -105,7 +105,7 @@ const MapView = (props: MapViewProps) => {
     };
     window.addEventListener('resize', resizeHandler);
     return () => window.removeEventListener('resize', resizeHandler);
-  }, []);
+  }, [topPartHeight]);
 
   return (
     <MapWrapper>

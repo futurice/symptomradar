@@ -9,6 +9,7 @@ import SubNav from './SubNav';
 
 interface MainWrapperProps extends RouteComponentProps {
   responseData: any;
+  isEmbed: boolean;
 }
 
 interface mapProperties {
@@ -82,8 +83,7 @@ const TotalResponses = styled.div`
 `;
 
 const MainWrapper = (props: MainWrapperProps) => {
-  const currentPath = props.location!.pathname;
-  const isEmbed = currentPath.includes('/map-embed');
+  const { isEmbed } = props;
 
   if (props.responseData === 'FETCHING') {
     return <MessageContainer>Loading...</MessageContainer>;

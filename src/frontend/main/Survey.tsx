@@ -23,11 +23,9 @@ const Iframe = styled.iframe`
 const Survey = (props: RouteComponentProps) => {
   const [iframeSrc, setIframeSrc] = useState('/embed/v1/?variant=plain');
   const currentLanguage = i18n.language;
-  useEffect(() => {
-    iframeResizer({ log: false }, '#formIframe');
-  });
 
   useEffect(() => {
+    iframeResizer({ log: false }, '#formIframe');
     const newUrl = currentLanguage === 'en' ? '/embed/v1/index.en.html?variant=plain' : '/embed/v1/?variant=plain';
     setIframeSrc(newUrl);
   }, [currentLanguage]);

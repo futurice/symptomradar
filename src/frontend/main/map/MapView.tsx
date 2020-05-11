@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import FilterToggle from '../FilterToggle';
 import PrimaryButton from '../PrimaryButton';
@@ -99,9 +99,13 @@ const MapView = (props: MapViewProps) => {
     setSelectedFilter(filterName as FilterKey);
   };
 
-  window.addEventListener('resize', () => {
-    setMapHeight(window.innerHeight - topPartHeight - 10);
-  });
+  useEffect(() => {
+    const resizeHandler = () => {
+      setMapHeight(window.innerHeight - topPartHeight - 10);
+    };
+    window.addEventListener('resize', resizeHandler);
+    return () => window.removeEventListener('resize', resizeHandler);
+  }, []);
 
   return (
     <MapWrapper>

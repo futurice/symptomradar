@@ -1,7 +1,15 @@
 import i18n from 'i18next';
 
+export function getCurrentLocale(): string {
+  const lang = i18n.language;
+  // Default to locale en-GB if English. Otherwise the default is decided
+  // (probably by i18n) to be en-US
+  const locale = lang === 'en' ? 'en-GB' : `${lang}-${lang.toUpperCase()}`;
+  return locale;
+}
+
 export function toLocaleDateMonth(date: Date): string {
-  const dmyString = date.toLocaleDateString(i18n.language);
+  const dmyString = date.toLocaleDateString(getCurrentLocale());
   return dmyString.substring(0, dmyString.length - 5);
 }
 

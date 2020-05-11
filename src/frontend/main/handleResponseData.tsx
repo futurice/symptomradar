@@ -1,4 +1,4 @@
-import i18n from 'i18next';
+import { getCurrentLocale } from './translations';
 
 export interface ResponseData {
   responsesTotal: string | null;
@@ -28,14 +28,14 @@ export interface ResponseData {
 export type ResponseDataKey = keyof ResponseData;
 
 const handleResponseData = (data: any): ResponseData => {
-  const currentLang = i18n.language;
+  const currentLocale = getCurrentLocale();
   const handleData = (value: number) => {
-    return value >= 0 ? value.toLocaleString(currentLang) : null;
+    return value >= 0 ? value.toLocaleString(currentLocale) : null;
   };
 
   const handlePercentageData = (value: number) => {
     return data.responses > 25
-      ? (Math.round(((value * 100) / data.population) * 100) / 100).toLocaleString(currentLang)
+      ? (Math.round(((value * 100) / data.population) * 100) / 100).toLocaleString(currentLocale)
       : null;
   };
 

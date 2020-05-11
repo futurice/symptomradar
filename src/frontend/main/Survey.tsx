@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import i18n from 'i18next';
 import { RouteComponentProps } from '@reach/router';
 
 // IMPORANT: We can't import the WHOLE library, just the "parent page" part!
@@ -20,13 +21,20 @@ const Iframe = styled.iframe`
 `;
 
 const Survey = (props: RouteComponentProps) => {
+  const [iframeSrc, setIframeSrc] = useState('/embed/v1/?variant=plain');
+  const currentLanguage = i18n.language;
   useEffect(() => {
     iframeResizer({ log: false }, '#formIframe');
   });
 
+  useEffect(() => {
+    const newUrl = currentLanguage === 'en' ? '/embed/v1/index.en.html?variant=plain' : '/embed/v1/?variant=plain';
+    setIframeSrc(newUrl);
+  }, [currentLanguage]);
+
   return (
     <Container>
-      <Iframe id="formIframe" title="Oiretutka-kysely" src="/embed/v1/?variant=plain" />
+      <Iframe id="formIframe" title="Oiretutka-kysely" src={iframeSrc} />
     </Container>
   );
 };

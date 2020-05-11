@@ -111,7 +111,7 @@ const TableViewWrapper = styled.div<TableViewWrapperProps>`
 const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
   const [listItems, setListItems] = useState(data.slice(0, 10));
   const [isFetching, setIsFetching] = useState(false);
-  const { t } = useTranslation(['main']);
+  const { t } = useTranslation(['main', 'format']);
 
   const container = useRef<HTMLDivElement>(null);
 
@@ -179,7 +179,8 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
                     {t('main:totalResponses')} {formattedData.responsesTotal}
                   </BoldText>
                   <ItalicText>
-                    {formattedData.percentageOfPopulation} % {t('main:ofPopulation')}
+                    {t('format:percentage', { percentage: formattedData.percentageOfPopulation })}{' '}
+                    {t('main:ofPopulation')}
                   </ItalicText>
                 </>
               ) : (
@@ -203,7 +204,10 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
                       <tr key={`symptom-row-${key}-${i18n.language}`}>
                         <th scope="row">{t(`symptomLabels:${symptomLabels[key]}`)}</th>
                         <td>{totalKey in formattedData && formattedData[totalKey]}</td>
-                        <td>{percentageKey in formattedData && `${formattedData[percentageKey]} %`}</td>
+                        <td>
+                          {percentageKey in formattedData &&
+                            `${t('format:percentage', { percentage: formattedData[percentageKey] })}`}
+                        </td>
                       </tr>
                     );
                   })}

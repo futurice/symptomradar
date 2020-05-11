@@ -57,7 +57,7 @@ const CloseButton = styled(PrimaryButton)`
 
 const ModalContent = ({ content, hide }: ModalContentProps) => {
   const formattedData = handleResponseData(content);
-  const { t } = useTranslation(['main']);
+  const { t } = useTranslation(['main', 'format']);
 
   return (
     <>
@@ -88,7 +88,10 @@ const ModalContent = ({ content, hide }: ModalContentProps) => {
                   <tr key={`symptom-row-${key}`}>
                     <th scope="row">{t(`symptomLabels:${symptomLabels[key]}`)}</th>
                     <td>{formattedData[totalKey]}</td>
-                    <td>{percentageKey in formattedData && `${formattedData[percentageKey]} %`}</td>
+                    <td>
+                      {percentageKey in formattedData &&
+                        `${t('format:percentage', { percentage: formattedData[percentageKey] })}`}
+                    </td>
                   </tr>
                 );
               })}

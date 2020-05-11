@@ -1,5 +1,8 @@
 export default {
   en: {
+    format: {
+      percentage: '{{percentage}}%',
+    },
     symptomLabels: {
       corona_infection_suspicion: 'Corona infection suspicion',
       corona_suspicion: 'Corona suspicion',
@@ -15,14 +18,14 @@ export default {
       loss_smell_or_taste: 'Loss of smell or taste',
     },
     main: {
-      languageSelector: 'Kieli',
+      languageSelector: 'Language',
       cityInformation: 'City information',
       openOrCloseMenu: 'Open/Close menu',
       close: 'Close',
       navigation: 'Navigation',
       allMunicipalities: 'All municipalities',
       allOfFinland: 'All of Finland',
-      chooseMunicipality: 'Choose the municipality',
+      chooseMunicipality: 'Choose a municipality',
       filter: 'Filter',
       filterResponses: 'Filter responses',
       filterDialogTitle: 'Filter responses',
@@ -62,13 +65,15 @@ Oiretutka is a collaborative project between Helsingin Sanomat and digital engin
 </1>
 
 <2>
-The information was collected using a questionnaire form. This site displays the results of the questionnaire.
-Tiedot ovat kerätty kyselylomakkeen avulla. Tällä sivustolla näytämme kyselyn tuloksia. <2>Read more about the privacy policy (in Finnish).</2>
+The information was collected using a questionnaire form. This site displays the results of the questionnaire. <2>Read more about the privacy policy (in Finnish).</2>
 </2>
       `,
     },
   },
   fi: {
+    format: {
+      percentage: '{{percentage}} %',
+    },
     symptomLabels: {
       // NOTE: the character "­" in "koronavirus­tartunnasta" is not a normal "-", but
       // rather a "soft hyphen", added here via copy-pasting.
@@ -89,7 +94,7 @@ Tiedot ovat kerätty kyselylomakkeen avulla. Tällä sivustolla näytämme kysel
       loss_smell_or_taste: 'Hajuaistin tai makuaistin heikkenemistä',
     },
     main: {
-      languageSelector: 'Language',
+      languageSelector: 'Kieli',
       cityInformation: 'Kaupungin tiedot',
       openOrCloseMenu: 'Avaa/sulje valikko',
       navigation: 'Navigaatio',
@@ -116,14 +121,14 @@ Tiedot ovat kerätty kyselylomakkeen avulla. Tällä sivustolla näytämme kysel
       lastUpdated: 'päivitetty',
       other: 'Muut',
       noInformation: 'Ei tietoa',
-      totalResponsesModalInfoText: 'Vastauksia yhteensä: {{total}} ({{percentage}}% väkiluvusta)',
+      totalResponsesModalInfoText: 'Vastauksia yhteensä: {{total}} ({{percentage}} % väkiluvusta)',
       comparedToMunicipalityPopulation: 'Verrattuna kunnan väkilukuun',
       ofPopulation: 'väkiluvusta',
       notEnoughResponses: 'Alueelta ei ole vielä tarpeeksi vastauksia',
       municipality: 'Kunta',
     },
     navigation: {
-      map: 'Karrta',
+      map: 'Kartta',
       survey: 'Kyselylomake',
       info: 'Info',
     },

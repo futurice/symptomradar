@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation, Trans } from 'react-i18next';
 import styled from 'styled-components';
 import FilterToggle from '../FilterToggle';
 import PrimaryButton from '../PrimaryButton';
@@ -89,6 +90,7 @@ const CloseButton = styled.button`
 
 const MapView = (props: MapViewProps) => {
   const [showMapInfo, setShowMapInfo] = useState(true);
+  const { t } = useTranslation(['symptomLabels', 'main']);
   const { navHeight, headerHeight } = theme;
   const topPartHeight = props.isEmbed ? navHeight : headerHeight + navHeight;
 
@@ -118,7 +120,7 @@ const MapView = (props: MapViewProps) => {
       <Container>
         <FilterWrapper isEmbed={props.isEmbed}>
           <FilterToggle selectedFilter={selectedFilter} handleFilterChange={handleFilterChange} />
-          <ActiveFilter type="button" label={FILTERS[selectedFilter].label}></ActiveFilter>
+          <ActiveFilter type="button" label={t(`symptomLabels:${FILTERS[selectedFilter].label}`)}></ActiveFilter>
         </FilterWrapper>
       </Container>
       <MapInfo>
@@ -128,11 +130,13 @@ const MapView = (props: MapViewProps) => {
               <CloseButton type="button" data-dismiss="modal" aria-label="Sulje" onClick={() => setShowMapInfo(false)}>
                 <CloseIcon />
               </CloseButton>
-              <p>
-                Kartta näyttää, millaisia oireita vastaajilla on eri kunnissa. Mukana ovat kunnat, joista on saatu yli
-                25 vastausta.
-              </p>
-              <p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
+              <Trans i18nKey="main:mapInfo" t={t}>
+                <p>
+                  Kartta näyttää, millaisia oireita vastaajilla on eri kunnissa. Mukana ovat kunnat, joista on saatu yli
+                  25 vastausta.
+                </p>
+                <p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
+              </Trans>
             </MapInfoContent>
           </>
         )}

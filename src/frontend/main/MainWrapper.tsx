@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Router, RouteComponentProps } from '@reach/router';
 import * as d3 from 'd3';
@@ -84,6 +85,7 @@ const TotalResponses = styled.div`
 
 const MainWrapper = (props: MainWrapperProps) => {
   const { isEmbed } = props;
+  const { t } = useTranslation(['main']);
 
   if (props.responseData === 'FETCHING') {
     return <MessageContainer>Loading...</MessageContainer>;
@@ -195,7 +197,8 @@ const MainWrapper = (props: MainWrapperProps) => {
       <TotalResponses>
         <Container>
           <p>
-            Vastauksia yhteensä: {totalResponses.toLocaleString('fi-FI')} (päivitetty: {lastUpdated})
+            {t('main:totalResponses')}: {totalResponses.toLocaleString('fi-FI')} ({t('main:lastUpdated')}: {lastUpdated}
+            )
           </p>
         </Container>
       </TotalResponses>

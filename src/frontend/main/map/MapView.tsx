@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import styled from 'styled-components';
 import FilterToggle from '../FilterToggle';
-import PrimaryButton from '../PrimaryButton';
 import MapContainer from './MapContainer';
 import CloseIcon from '../assets/CloseIcon';
 import { FILTERS, theme } from '../constants';

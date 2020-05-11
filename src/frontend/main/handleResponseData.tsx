@@ -1,4 +1,4 @@
-import i18n from 'i18next';
+import { getCurrentLocale } from './translations';
 
 export interface ResponseData {
   responsesTotal: string | null;
@@ -28,7 +28,7 @@ export interface ResponseData {
 export type ResponseDataKey = keyof ResponseData;
 
 const handleResponseData = (data: any): ResponseData => {
-  const currentLocale = `${i18n.language}-${i18n.language.toUpperCase()}`;
+  const currentLocale = getCurrentLocale();
   const handleData = (value: number) => {
     return value >= 0 ? value.toLocaleString(currentLocale) : null;
   };

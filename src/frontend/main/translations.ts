@@ -1,3 +1,18 @@
+import i18n from 'i18next';
+
+export function getCurrentLocale(): string {
+  const lang = i18n.language;
+  const locale = lang === 'en' ? 'en-UK' : `${lang}-${lang.toUpperCase()}`;
+  return locale;
+}
+
+export function toLocaleDateMonth(date: Date): string {
+  const dmyString = date.toLocaleDateString(getCurrentLocale());
+  // Assuming the last 4 digits are always year for any locale,
+  // Removing 5 characters to exclude the year and the spearator char
+  return dmyString.substring(0, dmyString.length - 5);
+}
+
 export default {
   en: {
     format: {

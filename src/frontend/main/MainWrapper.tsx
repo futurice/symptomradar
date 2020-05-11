@@ -5,6 +5,7 @@ import { Router, RouteComponentProps } from '@reach/router';
 import * as d3 from 'd3';
 import MapView from './map/MapView';
 import TableView from './TableView';
+import { toLocaleDateMonth } from './translations';
 
 import SubNav from './SubNav';
 
@@ -97,7 +98,7 @@ const MainWrapper = (props: MainWrapperProps) => {
 
   const data = props.responseData.data;
   const date = new Date(props.responseData.meta.generated);
-  const lastUpdated = `${date.getDate()}.${date.getMonth() + 1}.`;
+  const lastUpdated = toLocaleDateMonth(date);
 
   const cities: string[] = cartogramData
     .sort((x: mapProperties, y: mapProperties) => d3.ascending(x.city, y.city))

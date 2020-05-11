@@ -45,7 +45,7 @@ const SubNavLink = styled.span<SubNavLinkProps>`
   align-items: center;
   justify-content: center;
   border-top: ${props => (props.isEmbed ? `1px solid ${props.theme.grey}` : 'none')};
-  /* 
+  /*
   The borders are first defined in the parent element (RouterLink) and overriden here in specific cases
   because for some reason the router Link element didn't accept isActive and isEmbed as props.
   Ideally all styles would be on the Link and not a span inside of it.
@@ -58,9 +58,7 @@ const SubNavLink = styled.span<SubNavLinkProps>`
 `;
 
 const SubNav = ({ isEmbed }: SubNavProps) => {
-  console.log(isEmbed);
   const mapPath = isEmbed ? '/map-embed' : '/';
-  console.log(mapPath);
 
   return (
     <>

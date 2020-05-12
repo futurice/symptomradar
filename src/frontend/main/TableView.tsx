@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import CityTables from './CityTables';
 import { RouteComponentProps } from '@reach/router';
-import { getCurrentLocale } from './translations';
+import { getLocaleDateMonth } from './translations';
 
 interface TableViewProps extends RouteComponentProps {
   cities: Array<string>;
@@ -78,7 +78,7 @@ const TableView = ({ data, cities, isEmbed, lastUpdated }: TableViewProps) => {
       <CityTables data={data} selectedCity={selectedCity} isEmbed={isEmbed} />
       <LastUpdatedWrapper>
         <LastUpdated>
-          {t('main:lastUpdated')}: {lastUpdated.toLocaleDateString(getCurrentLocale())}
+          {t('main:lastUpdated')}: {getLocaleDateMonth(lastUpdated)}
         </LastUpdated>
       </LastUpdatedWrapper>
     </>

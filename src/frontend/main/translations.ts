@@ -9,8 +9,14 @@ export function getCurrentLocale(): string {
 }
 
 export function toLocaleDateMonth(date: Date): string {
-  const dmyString = date.toLocaleDateString(getCurrentLocale());
-  return dmyString.substring(0, dmyString.length - 5);
+  const currentLocale = getCurrentLocale();
+  const dmyString = date.toLocaleDateString(currentLocale);
+  // Assuming the last 4 digits are always years, and there is a
+  // preceeding separator character, and we only want to display
+  // day and month.
+  const dmString = dmyString.substring(0, dmyString.length - 5);
+  // However, Finnish date.month. format includes a trailing dot
+  return currentLocale === 'fi-FI' ? `${dmString}.` : dmString;
 }
 
 export default {
@@ -28,7 +34,7 @@ export default {
       headache: 'Headache',
       sore_throat: 'Sore throat',
       rhinitis: 'Rhinitis',
-      stomach_issues: 'Stomache issues',
+      stomach_issues: 'Stomach issues',
       sensory_issues: 'Sensory issues',
       loss_smell_or_taste: 'Loss of smell or taste',
     },

@@ -65,14 +65,18 @@ const Container = styled.div`
   margin: 0 auto;
 `;
 
-const TotalResponses = styled.div`
+const TotalResponses = styled(Container)<{ topBorder?: boolean }>`
+  border-top: ${({ topBorder, theme }) => (topBorder ? `1px solid ${theme.black}` : 'none')};
+  padding: 10px 0;
+`;
+
+const TotalResponsesWrapper = styled.div`
   background: ${props => props.theme.white};
   position: fixed;
   bottom: 0px;
-  padding: 10px 0 10px 16px;
   font-size: 14px;
   font-style: italic;
-  width: 100vw;
+  width: 100%;
   text-align: left;
 
   p {
@@ -188,6 +192,10 @@ const MainWrapper = (props: MainWrapperProps) => {
     return obj;
   });
 
+  // location.pathname was already made avaiable here by @reach/router
+  const path = props.location!.pathname;
+  const isCitiesTableView = path.indexOf('dashboard') > -1;
+
   return (
     <>
       <SubNav isEmbed={isEmbed} />
@@ -195,14 +203,14 @@ const MainWrapper = (props: MainWrapperProps) => {
         <MapView isEmbed={isEmbed} dataForMap={dataForMap} path="/" />
         <TableView isEmbed={isEmbed} cities={cities} data={data} path="dashboard" />
       </Router>
-      <TotalResponses>
-        <Container>
+      <TotalResponsesWrapper>
+        <TotalResponses topBorder={isCitiesTableView}>
           <p>
             {t('main:totalResponses')}: {totalResponses.toLocaleString('fi-FI')} ({t('main:lastUpdated')}: {lastUpdated}
             )
           </p>
-        </Container>
-      </TotalResponses>
+        </TotalResponses>
+      </TotalResponsesWrapper>
     </>
   );
 };

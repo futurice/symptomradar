@@ -60,7 +60,7 @@ yargs
     yargs => {
       yargs
         .positional('filename', {
-          describe: 'Filename to export',
+          describe: 'Filename of open data file',
           choices: Object.keys(dataExportHandlers),
         })
         .option('out', {
@@ -71,7 +71,25 @@ yargs
     },
     async args => {
       try {
-        await dump(args as any);
+        await dumpCommand(args as any);
+      } catch (error) {
+        console.error(error);
+        process.exit(1);
+      }
+    },
+  )
+  .command(
+    'export [filename]',
+    'Fetch data and export open data dump to S3',
+    yargs => {
+      yargs.positional('filename', {
+        describe: 'Filename of open data file',
+        choices: Object.keys(dataExportHandlers),
+      });
+    },
+    async args => {
+      try {
+        await exportCommand(args as any);
       } catch (error) {
         console.error(error);
         process.exit(1);
@@ -89,7 +107,7 @@ interface DumpArgs extends CommonArgs {
   out: string;
 }
 
-export async function dump(args: DumpArgs) {
+export async function dumpCommand(args: DumpArgs) {
   const { filename, out } = args;
 
   const handler = dataExportHandlers[filename as keyof AppConstants];
@@ -105,4 +123,22 @@ export async function dump(args: DumpArgs) {
   } else {
     console.log(json);
   }
+}
+
+interface ExportArgs extends CommonArgs {
+  filename: string;
+}
+
+export async function exportCommand(args: ExportArgs) {
+  const { filename } = args;
+
+  const handler = dataExportHandlers[filename as keyof AppConstants];
+  if (!handler) {
+    throw Error(`Unknown filename "${filename}"`);
+  }
+
+  const data = await handler.fetch(app);
+  await handler.push(app, data);
+
+  console.log(`Exported "${filename}"`);
 }

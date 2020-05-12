@@ -136,6 +136,6 @@ export type PostalCodeAreas = OpenDataModel<
   Array<{
     code: string;
     name: string;
-    city: string;
+    population: number;
   }>
 >;

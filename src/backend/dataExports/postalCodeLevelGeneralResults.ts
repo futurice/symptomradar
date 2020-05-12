@@ -1,6 +1,9 @@
 import { App, s3PutJsonHelper } from '../app';
 import { LowPopulationPostalCodes, PostalCodeAreas } from '../../common/model';
 
+const MINIMUM_REPLIES_PER_POSTAL_AREA = 10;
+const MINIMUM_POPULATION_PER_POSTAL_AREA = 500;
+
 export async function exportPostalCodeLevelGeneralResults(app: App) {
   const postalCodeLevelResults = await fetchPostalCodeLevelGeneralResults(app);
   await pushPostalCodeLevelGeneralResults(app, postalCodeLevelResults);
@@ -106,7 +109,7 @@ export async function queryPostalCodeLevelGeneralResults(app: App) {
 export interface PostalCodeLevelGeneralResult {
   code: string;
   name: string;
-  city: string;
+  population: number;
   responses: number;
   fever_no: number;
   fever_slight: number;
@@ -153,7 +156,9 @@ export function mapPostalCodeLevelGeneralResults(
 
   const filteredResultsByPostalCode = filterResultsByPostalCode(
     resultsByPostalCode,
-    postalCodeData => postalCodeData.responses >= 10,
+    postalCodeData =>
+      postalCodeData.population >= MINIMUM_POPULATION_PER_POSTAL_AREA &&
+      postalCodeData.responses >= MINIMUM_REPLIES_PER_POSTAL_AREA,
   );
 
   return Object.values(filteredResultsByPostalCode);
@@ -167,15 +172,12 @@ function accumulateResultsByPostalCode(
   lowPopulationPostalCodes: LowPopulationPostalCodes,
 ) {
   // Initialize data
-  // TODO: Include population
   const resultsByPostalCode = postalCodeAreas.data.reduce((memo, next) => {
-    // Only include this postal code area if it doesn't exist
-    // in low population postal areas
-    if (!(next.code in lowPopulationPostalCodes.data)) {
+    if (next.population >= MINIMUM_POPULATION_PER_POSTAL_AREA) {
       memo[next.code] = {
         code: next.code,
         name: next.name,
-        city: next.city,
+        population: next.population,
         responses: 0,
         fever_no: 0,
         fever_slight: 0,

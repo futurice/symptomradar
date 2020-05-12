@@ -6,21 +6,21 @@ import {
 } from './cityLevelGeneralResults';
 import { PostalCodeCityMappings, PopulationPerCity } from '../../common/model';
 
-export async function exportCityLevelWeeklyGeneralResults(app: App) {
-  const cityLevelWeeklyGeneralResults = await fetchCityLevelWeeklyGeneralResults(app);
-  await pushCityLevelWeeklyGeneralResults(app, cityLevelWeeklyGeneralResults);
+export async function exportCityLevelPastWeekGeneralResults(app: App) {
+  const cityLevelPastWeekGeneralResults = await fetchCityLevelPastWeekGeneralResults(app);
+  await pushCityLevelPastWeekGeneralResults(app, cityLevelPastWeekGeneralResults);
 }
 
-export async function fetchCityLevelWeeklyGeneralResults(app: App) {
+export async function fetchCityLevelPastWeekGeneralResults(app: App) {
   const postalCodeLevelResultsResult = await queryPostalCodeLevelGeneralResults(app);
   const postalCodeCityMappings = (await app.s3Sources.fetchPostalCodeCityMappings()) as PostalCodeCityMappings;
   const populationPerCity = (await app.s3Sources.fetchPopulationPerCity()) as PopulationPerCity;
-  const cityLevelWeeklyGeneralResults = mapCityLevelWeeklyGeneralResults(
+  const cityLevelPastWeekGeneralResults = mapCityLevelPastWeekGeneralResults(
     postalCodeLevelResultsResult.Items,
     postalCodeCityMappings,
     populationPerCity,
   );
-  return cityLevelWeeklyGeneralResults;
+  return cityLevelPastWeekGeneralResults;
 }
 
 //
@@ -73,7 +73,7 @@ export async function queryPostalCodeLevelGeneralResults(app: App) {
 //
 // Map
 
-export function mapCityLevelWeeklyGeneralResults(
+export function mapCityLevelPastWeekGeneralResults(
   postalCodeLevelGeneralResults: PostalCodeLevelGeneralResultsQuery[],
   postalCodeCityMappings: PostalCodeCityMappings,
   populationPerCity: PopulationPerCity,
@@ -94,26 +94,26 @@ export function mapCityLevelWeeklyGeneralResults(
   return Object.values(filteredResultsByCity);
 }
 
-type CityLevelWeeklyGeneralResults = ReturnType<typeof mapCityLevelWeeklyGeneralResults>;
+type CityLevelPastWeekGeneralResults = ReturnType<typeof mapCityLevelPastWeekGeneralResults>;
 
 //
 // Push
 
-async function pushCityLevelWeeklyGeneralResults(
+async function pushCityLevelPastWeekGeneralResults(
   app: App,
-  cityLevelWeeklyGeneralResults: CityLevelWeeklyGeneralResults,
+  cityLevelPastWeekGeneralResults: CityLevelPastWeekGeneralResults,
 ) {
   return s3PutJsonHelper(app.s3Client, {
     Bucket: app.constants.openDataBucket,
-    Key: app.constants.cityLevelWeeklyGeneralResultsKey,
+    Key: app.constants.cityLevelPastWeekGeneralResultsKey,
     Body: {
       meta: {
         description:
           'Weekly population and response count per each city in Finland, where the response count was higher than 25. All the form inputs are coded in city level. Population data from Tilastokeskus. This data is released for journalistic and scientific purposes.',
         generated: new Date().toISOString(),
-        link: `https://${app.constants.domainName}/${app.constants.cityLevelWeeklyGeneralResultsKey}`,
+        link: `https://${app.constants.domainName}/${app.constants.cityLevelPastWeekGeneralResultsKey}`,
       },
-      data: cityLevelWeeklyGeneralResults,
+      data: cityLevelPastWeekGeneralResults,
     },
   });
 }

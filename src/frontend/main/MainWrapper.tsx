@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import { Router, RouteComponentProps } from '@reach/router';
 import * as d3 from 'd3';
 import MapView from './map/MapView';
@@ -58,44 +59,20 @@ const MessageContainer = styled.div`
   margin: 24px 0;
 `;
 
-const Container = styled.div`
-  max-width: 600px;
-  margin: 0 auto;
-`;
-
-const TotalResponses = styled.div`
-  background: ${props => props.theme.white};
-  position: fixed;
-  bottom: 0px;
-  padding: 10px 0 10px 16px;
-  font-size: 14px;
-  font-style: italic;
-  width: 100vw;
-  text-align: left;
-
-  p {
-    margin: 0;
-  }
-
-  @media (min-width: 624px) {
-    padding-left: 0;
-  }
-`;
-
 const MainWrapper = (props: MainWrapperProps) => {
   const { isEmbed } = props;
+  const { t } = useTranslation(['main']);
 
   if (props.responseData === 'FETCHING') {
-    return <MessageContainer>Loading...</MessageContainer>;
+    return <MessageContainer>{t('main:loading')}</MessageContainer>;
   }
 
   if (props.responseData === 'ERROR') {
-    return <MessageContainer>Error loading data</MessageContainer>;
+    return <MessageContainer>{t('main:errorLoadingData')}</MessageContainer>;
   }
 
   const data = props.responseData.data;
-  const date = new Date(props.responseData.meta.generated);
-  const lastUpdated = `${date.getDate()}.${date.getMonth() + 1}.`;
+  const lastUpdated = new Date(props.responseData.meta.generated);
 
   const cities: string[] = cartogramData
     .sort((x: mapProperties, y: mapProperties) => d3.ascending(x.city, y.city))
@@ -189,16 +166,15 @@ const MainWrapper = (props: MainWrapperProps) => {
     <>
       <SubNav isEmbed={isEmbed} />
       <Router>
-        <MapView isEmbed={isEmbed} dataForMap={dataForMap} path="/" />
-        <TableView isEmbed={isEmbed} cities={cities} data={data} path="dashboard" />
+        <MapView
+          path="/"
+          isEmbed={isEmbed}
+          dataForMap={dataForMap}
+          totalResponses={totalResponses}
+          lastUpdated={lastUpdated}
+        />
+        <TableView path="dashboard" isEmbed={isEmbed} cities={cities} data={data} lastUpdated={lastUpdated} />
       </Router>
-      <TotalResponses>
-        <Container>
-          <p>
-            Vastauksia yhteensä: {totalResponses.toLocaleString('fi-FI')} (päivitetty: {lastUpdated})
-          </p>
-        </Container>
-      </TotalResponses>
     </>
   );
 };

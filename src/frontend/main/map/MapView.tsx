@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation, Trans } from 'react-i18next';
 import styled from 'styled-components';
 import FilterToggle from '../FilterToggle';
 import PrimaryButton from '../PrimaryButton';
 import MapContainer from './MapContainer';
 import CloseIcon from '../assets/CloseIcon';
-import { FILTERS } from '../constants';
-import { theme } from '../constants';
+import { FILTERS, theme } from '../constants';
+import { getLocaleDateMonth, getCurrentLocale } from '../translations';
 import { RouteComponentProps } from '@reach/router';
 
 type FilterKey = keyof typeof FILTERS;
@@ -13,6 +14,8 @@ type FilterKey = keyof typeof FILTERS;
 interface MapViewProps extends RouteComponentProps {
   isEmbed: boolean;
   dataForMap: any;
+  lastUpdated: Date;
+  totalResponses: number;
 }
 
 type FilterWrapperProps = {
@@ -36,7 +39,7 @@ const FilterWrapper = styled.div<FilterWrapperProps>`
   padding: ${props => (props.isEmbed ? '3px' : '3px 16px')};
   display: flex;
 
-  @media (min-width: 624px) {
+  @media (min-width: ${({ theme }) => `${theme.mobileWidth}px`}) {
     padding-left: 0;
   }
 `;
@@ -48,13 +51,13 @@ const ActiveFilter = styled(PrimaryButton)`
   pointer-events: none;
 `;
 
-const MapInfo = styled.div`
+const MapInfo = styled.div<{ topBorder?: boolean }>`
   position: fixed;
-  bottom: 34px;
+  bottom: 0;
   width: 100vw;
   background: ${props => props.theme.white};
   text-align: left;
-  border-top: 1px solid ${props => props.theme.black};
+  border-top: ${({ topBorder, theme }) => (topBorder ? `1px solid ${theme.black}` : 'none')};
   line-height: 1.25;
 
   p {
@@ -63,10 +66,14 @@ const MapInfo = styled.div`
 `;
 
 const MapInfoContent = styled(Container)`
-  padding: 6px 34px 0 16px;
+  padding: 6px 34px 0px 16px;
   position: relative;
 
-  @media (min-width: 624px) {
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (min-width: ${({ theme }) => `${theme.mobileWidth}px`}) {
     padding-left: 0;
   }
 `;
@@ -87,10 +94,21 @@ const CloseButton = styled.button`
   }
 `;
 
+const LastUpdated = styled(Container)`
+  padding: 10px 16px 10px 16px;
+  font-style: italic;
+  font-size: 14px;
+  @media (min-width: ${({ theme }) => `${theme.mobileWidth}px`}) {
+    padding-left: 0;
+  }
+`;
+
 const MapView = (props: MapViewProps) => {
   const [showMapInfo, setShowMapInfo] = useState(true);
+  const { t } = useTranslation(['symptomLabels', 'main']);
   const { navHeight, headerHeight } = theme;
   const topPartHeight = props.isEmbed ? navHeight : headerHeight + navHeight;
+  const currentLocale = getCurrentLocale();
 
   const [selectedFilter, setSelectedFilter] = useState<FilterKey>(FILTERS.corona_suspicion_yes.id as FilterKey);
   const [mapHeight, setMapHeight] = useState(window.innerHeight - topPartHeight - 10);
@@ -118,24 +136,35 @@ const MapView = (props: MapViewProps) => {
       <Container>
         <FilterWrapper isEmbed={props.isEmbed}>
           <FilterToggle selectedFilter={selectedFilter} handleFilterChange={handleFilterChange} />
-          <ActiveFilter type="button" label={FILTERS[selectedFilter].label}></ActiveFilter>
+          <ActiveFilter type="button" label={t(`symptomLabels:${FILTERS[selectedFilter].label}`)}></ActiveFilter>
         </FilterWrapper>
       </Container>
-      <MapInfo>
+      <MapInfo topBorder={showMapInfo}>
         {showMapInfo && (
           <>
             <MapInfoContent className="popUp">
-              <CloseButton type="button" data-dismiss="modal" aria-label="Sulje" onClick={() => setShowMapInfo(false)}>
+              <CloseButton
+                type="button"
+                data-dismiss="modal"
+                aria-label={t('main:close')}
+                onClick={() => setShowMapInfo(false)}
+              >
                 <CloseIcon />
               </CloseButton>
-              <p>
-                Kartta näyttää, millaisia oireita vastaajilla on eri kunnissa. Mukana ovat kunnat, joista on saatu yli
-                25 vastausta.
-              </p>
-              <p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
+              <Trans i18nKey="main:mapInfo" t={t}>
+                <p>
+                  Kartta näyttää, millaisia oireita vastaajilla on eri kunnissa. Mukana ovat kunnat, joista on saatu yli
+                  25 vastausta.
+                </p>
+                <p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
+              </Trans>
             </MapInfoContent>
           </>
         )}
+        <LastUpdated>
+          {t('main:totalResponses')}: {props.totalResponses.toLocaleString(currentLocale)} ({t('main:lastUpdated')}:{' '}
+          {getLocaleDateMonth(props.lastUpdated)})
+        </LastUpdated>
       </MapInfo>
     </MapWrapper>
   );

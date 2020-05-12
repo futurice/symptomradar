@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import { Link, Match } from '@reach/router';
 
 type SubNavProps = {
@@ -44,6 +45,9 @@ const SubNavLink = styled.span<SubNavLinkProps>`
   display: flex;
   align-items: center;
   justify-content: center;
+  line-height: 1.1;
+  padding: 0 10px;
+  text-align: center;
   border-top: ${props => (props.isEmbed ? `1px solid ${props.theme.grey}` : 'none')};
   /*
   The borders are first defined in the parent element (RouterLink) and overriden here in specific cases
@@ -59,6 +63,7 @@ const SubNavLink = styled.span<SubNavLinkProps>`
 
 const SubNav = ({ isEmbed }: SubNavProps) => {
   const mapPath = isEmbed ? '/map-embed' : '/';
+  const { t } = useTranslation(['main']);
 
   return (
     <>
@@ -67,7 +72,7 @@ const SubNav = ({ isEmbed }: SubNavProps) => {
           {({ match }) => (
             <RouterLink to={mapPath}>
               <SubNavLink isActive={match ? true : false} isEmbed={isEmbed}>
-                Koko Suomi
+                {t('main:allOfFinland')}
               </SubNavLink>
             </RouterLink>
           )}
@@ -76,7 +81,7 @@ const SubNav = ({ isEmbed }: SubNavProps) => {
           {({ match }) => (
             <RouterLink to="dashboard">
               <SubNavLink isActive={match ? true : false} isEmbed={isEmbed}>
-                Valitse kunta
+                {t('main:chooseMunicipality')}
               </SubNavLink>
             </RouterLink>
           )}

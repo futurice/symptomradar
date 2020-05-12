@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
+
 import PrimaryButton from './PrimaryButton';
-import { FILTERS } from './constants';
+import { FILTERS, FilterKey } from './constants';
 
 type FilterProps = {
   hide: () => void;
-  selectedFilter: keyof typeof FILTERS;
-  handleFilterChange: (filterName: keyof typeof FILTERS) => void;
+  selectedFilter: FilterKey;
+  handleFilterChange: (filterName: FilterKey) => void;
 };
-
-type FilterKey = keyof typeof FILTERS;
 
 const H3 = styled.h3`
   font-size: 16px;
@@ -48,6 +48,7 @@ const ActionButton = styled(PrimaryButton)`
 
 const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
   const [activeFilter, setActiveFilter] = useState(selectedFilter);
+  const { t } = useTranslation(['main', 'symptomLabels']);
 
   const applyFilters = () => {
     handleFilterChange(activeFilter);
@@ -55,25 +56,25 @@ const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
   };
   return (
     <div>
-      <H2>Rajaa vastauksia</H2>
-      <H3>Oireet</H3>
+      <H2>{t('main:filterDialogTitle')}</H2>
+      <H3>{t('main:symptoms')}</H3>
       <TagGroup>
-        {Object.keys(FILTERS).map(key => {
+        {Object.keys(FILTERS).map(symptomId => {
           return (
             <Tag
-              key={key}
+              key={symptomId}
               type="button"
-              label={FILTERS[key as FilterKey].label}
-              isActive={activeFilter === FILTERS[key as FilterKey].id ? true : false}
+              label={t(`symptomLabels:${FILTERS[symptomId as FilterKey].label}`)}
+              isActive={activeFilter === symptomId ? true : false}
               handleClick={() => {
-                setActiveFilter(FILTERS[key as FilterKey].id as FilterKey);
+                setActiveFilter(symptomId as FilterKey);
               }}
             ></Tag>
           );
         })}
       </TagGroup>
       <ButtonWrapper>
-        <ActionButton type="button" label="Rajaa vastauksia" handleClick={applyFilters} />
+        <ActionButton type="button" label={t('main:filterResponses')} handleClick={applyFilters} />
       </ButtonWrapper>
     </div>
   );

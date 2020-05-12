@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import MenuIcon from './assets/MenuIcon';
 
 type MenuProps = {
@@ -31,9 +32,10 @@ const MenuLabel = styled.span`
 `;
 
 const MenuButton = ({ menuOpen, setMenuOpen }: MenuProps) => {
+  const { t } = useTranslation(['main']);
   return (
     <StyledBurger
-      aria-label="Avaa/sulje valikko"
+      aria-label={t('main:openOrCloseMenu')}
       aria-controls="main-menu"
       aria-expanded={menuOpen}
       onClick={() => setMenuOpen(!menuOpen)}

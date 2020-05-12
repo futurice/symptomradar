@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import CloseIcon from './assets/CloseIcon';
 import { DialogOverlay, DialogContent } from '@reach/dialog';
 import '@reach/dialog/styles.css';
@@ -38,10 +39,11 @@ const ModalCloseButton = styled.button`
 `;
 
 const Modal: React.FC<ModalProps> = ({ isShowing, hide, children, ariaLabel }) => {
+  const { t } = useTranslation(['main']);
   return (
     <DialogOverlay isOpen={isShowing} onDismiss={hide}>
       <ModalDialogContent aria-label={ariaLabel}>
-        <ModalCloseButton type="button" aria-label="Sulje" onClick={hide}>
+        <ModalCloseButton type="button" aria-label={t('main:close')} onClick={hide}>
           <CloseIcon />
         </ModalCloseButton>
         {children}

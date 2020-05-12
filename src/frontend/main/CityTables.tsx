@@ -108,31 +108,6 @@ const TableViewWrapper = styled.div<TableViewWrapperProps>`
   overflow: ${props => (props.isEmbed ? 'auto' : 'initial')};
 `;
 
-const TotalResponses = styled.div<{ topBorder?: boolean }>`
-  max-width: 600px;
-  margin: 0 auto;
-  border-top: ${({ topBorder, theme }) => (topBorder ? `1px solid ${theme.black}` : 'none')};
-  padding: 10px 0;
-`;
-
-const TotalResponsesWrapper = styled.div`
-  background: ${props => props.theme.white};
-  position: fixed;
-  bottom: 0px;
-  font-size: 14px;
-  font-style: italic;
-  width: 100%;
-  text-align: left;
-
-  p {
-    margin: 0;
-  }
-
-  @media (min-width: 624px) {
-    padding-left: 0;
-  }
-`;
-
 const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
   const [listItems, setListItems] = useState(data.slice(0, 10));
   const [isFetching, setIsFetching] = useState(false);

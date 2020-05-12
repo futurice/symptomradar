@@ -51,13 +51,13 @@ const ActiveFilter = styled(PrimaryButton)`
   pointer-events: none;
 `;
 
-const MapInfo = styled.div`
+const MapInfo = styled.div<{ topBorder?: boolean }>`
   position: fixed;
   bottom: 0;
   width: 100vw;
   background: ${props => props.theme.white};
   text-align: left;
-  border-top: 1px solid ${props => props.theme.black};
+  border-top: ${({ topBorder, theme }) => (topBorder ? `1px solid ${theme.black}` : 'none')};
   line-height: 1.25;
 
   p {
@@ -66,7 +66,7 @@ const MapInfo = styled.div`
 `;
 
 const MapInfoContent = styled(Container)`
-  padding: 6px 34px 14px 16px;
+  padding: 6px 34px 0px 16px;
   position: relative;
 
   @media (min-width: 624px) {
@@ -90,8 +90,8 @@ const CloseButton = styled.button`
   }
 `;
 
-const LastUpdated = styled.div`
-  padding-top: 8px;
+const LastUpdated = styled(Container)`
+  padding: 8px 0 13px 0;
   font-style: italic;
   font-size: 14px;
 `;
@@ -132,7 +132,7 @@ const MapView = (props: MapViewProps) => {
           <ActiveFilter type="button" label={t(`symptomLabels:${FILTERS[selectedFilter].label}`)}></ActiveFilter>
         </FilterWrapper>
       </Container>
-      <MapInfo>
+      <MapInfo topBorder={showMapInfo}>
         {showMapInfo && (
           <>
             <MapInfoContent className="popUp">
@@ -151,13 +151,13 @@ const MapView = (props: MapViewProps) => {
                 </p>
                 <p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
               </Trans>
-              <LastUpdated>
-                {t('main:totalResponses')}: {props.totalResponses.toLocaleString(currentLocale)} (
-                {t('main:lastUpdated')}: {getLocaleDateMonth(props.lastUpdated)})
-              </LastUpdated>
             </MapInfoContent>
           </>
         )}
+        <LastUpdated>
+          {t('main:totalResponses')}: {props.totalResponses.toLocaleString(currentLocale)} ({t('main:lastUpdated')}:{' '}
+          {getLocaleDateMonth(props.lastUpdated)})
+        </LastUpdated>
       </MapInfo>
     </MapWrapper>
   );

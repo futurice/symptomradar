@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Router, RouteComponentProps } from '@reach/router';
 import * as d3 from 'd3';
@@ -59,14 +58,8 @@ const MessageContainer = styled.div`
   margin: 24px 0;
 `;
 
-const Container = styled.div`
-  max-width: 600px;
-  margin: 0 auto;
-`;
-
 const MainWrapper = (props: MainWrapperProps) => {
   const { isEmbed } = props;
-  const { t } = useTranslation(['main']);
 
   if (props.responseData === 'FETCHING') {
     return <MessageContainer>Loading...</MessageContainer>;

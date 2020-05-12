@@ -35,7 +35,7 @@ const LastUpdated = styled.div<{ topBorder?: boolean }>`
   margin: 0 auto;
   border-top: ${({ theme }) => `1px solid ${theme.black}`};
   text-transform: capitalize;
-  padding: 10px 0;
+  padding: 8px 0;
 `;
 
 const LastUpdatedWrapper = styled.div`

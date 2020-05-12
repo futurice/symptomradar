@@ -95,12 +95,7 @@ yargs
         process.exit(1);
       }
     },
-  )
-  .option('env', {
-    describe: 'Environment to use',
-    choices: ['dev', 'prod'],
-    default: 'dev',
-  }).argv;
+  ).argv;
 
 interface DumpArgs extends CommonArgs {
   filename: string;

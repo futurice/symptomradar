@@ -5,8 +5,8 @@ import FilterToggle from '../FilterToggle';
 import PrimaryButton from '../PrimaryButton';
 import MapContainer from './MapContainer';
 import CloseIcon from '../assets/CloseIcon';
-import { FILTERS } from '../constants';
-import { theme } from '../constants';
+import { FILTERS, theme } from '../constants';
+import { getLocaleDateMonth, getCurrentLocale } from '../translations';
 import { RouteComponentProps } from '@reach/router';
 
 type FilterKey = keyof typeof FILTERS;
@@ -14,6 +14,8 @@ type FilterKey = keyof typeof FILTERS;
 interface MapViewProps extends RouteComponentProps {
   isEmbed: boolean;
   dataForMap: any;
+  lastUpdated: Date;
+  totalResponses: number;
 }
 
 type FilterWrapperProps = {
@@ -51,7 +53,7 @@ const ActiveFilter = styled(PrimaryButton)`
 
 const MapInfo = styled.div`
   position: fixed;
-  bottom: 34px;
+  bottom: 0;
   width: 100vw;
   background: ${props => props.theme.white};
   text-align: left;
@@ -64,7 +66,7 @@ const MapInfo = styled.div`
 `;
 
 const MapInfoContent = styled(Container)`
-  padding: 6px 34px 0 16px;
+  padding: 6px 34px 14px 16px;
   position: relative;
 
   @media (min-width: 624px) {
@@ -88,11 +90,18 @@ const CloseButton = styled.button`
   }
 `;
 
+const LastUpdated = styled.div`
+  padding-top: 8px;
+  font-style: italic;
+  font-size: 14px;
+`;
+
 const MapView = (props: MapViewProps) => {
   const [showMapInfo, setShowMapInfo] = useState(true);
   const { t } = useTranslation(['symptomLabels', 'main']);
   const { navHeight, headerHeight } = theme;
   const topPartHeight = props.isEmbed ? navHeight : headerHeight + navHeight;
+  const currentLocale = getCurrentLocale();
 
   const [selectedFilter, setSelectedFilter] = useState<FilterKey>(FILTERS.corona_suspicion_yes.id as FilterKey);
   const [mapHeight, setMapHeight] = useState(window.innerHeight - topPartHeight - 10);
@@ -142,6 +151,10 @@ const MapView = (props: MapViewProps) => {
                 </p>
                 <p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
               </Trans>
+              <LastUpdated>
+                {t('main:totalResponses')}: {props.totalResponses.toLocaleString(currentLocale)} (
+                {t('main:lastUpdated')}: {getLocaleDateMonth(props.lastUpdated)})
+              </LastUpdated>
             </MapInfoContent>
           </>
         )}

@@ -5,7 +5,6 @@ import { Router, RouteComponentProps } from '@reach/router';
 import * as d3 from 'd3';
 import MapView from './map/MapView';
 import TableView from './TableView';
-import { toLocaleDateMonth } from './translations';
 
 import SubNav from './SubNav';
 
@@ -65,29 +64,6 @@ const Container = styled.div`
   margin: 0 auto;
 `;
 
-const TotalResponses = styled(Container)<{ topBorder?: boolean }>`
-  border-top: ${({ topBorder, theme }) => (topBorder ? `1px solid ${theme.black}` : 'none')};
-  padding: 10px 0;
-`;
-
-const TotalResponsesWrapper = styled.div`
-  background: ${props => props.theme.white};
-  position: fixed;
-  bottom: 0px;
-  font-size: 14px;
-  font-style: italic;
-  width: 100%;
-  text-align: left;
-
-  p {
-    margin: 0;
-  }
-
-  @media (min-width: 624px) {
-    padding-left: 0;
-  }
-`;
-
 const MainWrapper = (props: MainWrapperProps) => {
   const { isEmbed } = props;
   const { t } = useTranslation(['main']);
@@ -101,8 +77,7 @@ const MainWrapper = (props: MainWrapperProps) => {
   }
 
   const data = props.responseData.data;
-  const date = new Date(props.responseData.meta.generated);
-  const lastUpdated = toLocaleDateMonth(date);
+  const lastUpdated = new Date(props.responseData.meta.generated);
 
   const cities: string[] = cartogramData
     .sort((x: mapProperties, y: mapProperties) => d3.ascending(x.city, y.city))
@@ -192,25 +167,19 @@ const MainWrapper = (props: MainWrapperProps) => {
     return obj;
   });
 
-  // location.pathname was already made avaiable here by @reach/router
-  const path = props.location!.pathname;
-  const isCitiesTableView = path.indexOf('dashboard') > -1;
-
   return (
     <>
       <SubNav isEmbed={isEmbed} />
       <Router>
-        <MapView isEmbed={isEmbed} dataForMap={dataForMap} path="/" />
-        <TableView isEmbed={isEmbed} cities={cities} data={data} path="dashboard" />
+        <MapView
+          path="/"
+          isEmbed={isEmbed}
+          dataForMap={dataForMap}
+          totalResponses={totalResponses}
+          lastUpdated={lastUpdated}
+        />
+        <TableView path="dashboard" isEmbed={isEmbed} cities={cities} data={data} lastUpdated={lastUpdated} />
       </Router>
-      <TotalResponsesWrapper>
-        <TotalResponses topBorder={isCitiesTableView}>
-          <p>
-            {t('main:totalResponses')}: {totalResponses.toLocaleString('fi-FI')} ({t('main:lastUpdated')}: {lastUpdated}
-            )
-          </p>
-        </TotalResponses>
-      </TotalResponsesWrapper>
     </>
   );
 };

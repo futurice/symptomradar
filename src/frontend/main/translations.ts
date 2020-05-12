@@ -8,7 +8,7 @@ export function getCurrentLocale(): string {
   return locale;
 }
 
-export function toLocaleDateMonth(date: Date): string {
+export function getLocaleDateMonth(date: Date): string {
   const currentLocale = getCurrentLocale();
   const dmyString = date.toLocaleDateString(currentLocale);
   // Assuming the last 4 digits are always years, and there is a

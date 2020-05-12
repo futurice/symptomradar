@@ -75,7 +75,7 @@ export function createMockApp(overrides: Partial<App> = {}): App {
     openDataIndexKey: 'index.json',
     totalResponsesKey: 'total_responses.json',
     cityLevelGeneralResultsKey: 'city_level_general_results.json',
-    cityLevelWeeklyGeneralResultsKey: 'city_level_past_week_general_results.json',
+    cityLevelPastWeekGeneralResultsKey: 'city_level_past_week_general_results.json',
     dailyTotalsKey: 'daily_totals.json',
   };
 

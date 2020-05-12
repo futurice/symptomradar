@@ -30,14 +30,6 @@ const Label = styled.label`
   margin-right: 8px;
 `;
 
-const LastUpdated = styled.div<{ topBorder?: boolean }>`
-  max-width: 600px;
-  margin: 0 auto;
-  border-top: ${({ theme }) => `1px solid ${theme.black}`};
-  text-transform: capitalize;
-  padding: 8px 0;
-`;
-
 const LastUpdatedWrapper = styled.div`
   background: ${props => props.theme.white};
   position: fixed;
@@ -51,9 +43,17 @@ const LastUpdatedWrapper = styled.div`
     margin: 0;
   }
 
-  @media (min-width: 624px) {
+  @media (min-width: ${({ theme }) => `${theme.mobileWidth}px`}) {
     padding-left: 0;
   }
+`;
+
+const LastUpdated = styled.div<{ topBorder?: boolean }>`
+  max-width: 600px;
+  margin: 0 auto;
+  border-top: ${({ theme }) => `1px solid ${theme.black}`};
+  text-transform: capitalize;
+  padding: 8px 16px;
 `;
 
 const TableView = ({ data, cities, isEmbed, lastUpdated }: TableViewProps) => {

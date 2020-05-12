@@ -36,4 +36,5 @@ export const theme = {
   headerHeight: 90,
   navHeight: 40,
   citySelectHeight: 58,
+  mobileWidth: 624,
 };

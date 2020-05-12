@@ -39,7 +39,7 @@ const FilterWrapper = styled.div<FilterWrapperProps>`
   padding: ${props => (props.isEmbed ? '3px' : '3px 16px')};
   display: flex;
 
-  @media (min-width: 624px) {
+  @media (min-width: ${({ theme }) => `${theme.mobileWidth}px`}) {
     padding-left: 0;
   }
 `;
@@ -69,7 +69,7 @@ const MapInfoContent = styled(Container)`
   padding: 6px 34px 0px 16px;
   position: relative;
 
-  @media (min-width: 624px) {
+  @media (min-width: ${({ theme }) => `${theme.mobileWidth}px`}) {
     padding-left: 0;
   }
 `;
@@ -91,9 +91,12 @@ const CloseButton = styled.button`
 `;
 
 const LastUpdated = styled(Container)`
-  padding: 8px 0 13px 0;
+  padding: 8px 16px 13px 16px;
   font-style: italic;
   font-size: 14px;
+  @media (min-width: ${({ theme }) => `${theme.mobileWidth}px`}) {
+    padding-left: 0;
+  }
 `;
 
 const MapView = (props: MapViewProps) => {

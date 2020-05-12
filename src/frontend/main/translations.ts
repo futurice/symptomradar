@@ -84,7 +84,7 @@ export default {
 <0>Symptom Radar collects information about the coronavirus</0>
 
 <1>
-Oiretutka is a collaborative project between Helsingin Sanomat and digital engineering and innovation consultancy Futurice. It collects information about symptoms people have experienced all around Finland and disseminates this information to readers. Other Finnish medias are also taking part in collecting the information. The goal is to gain a better understanding of how the coronavirus might be spreading in Finland. The project follows open source principles. <2>The source code for the site is available here.</2>
+Symptom Radar is a collaborative project between Helsingin Sanomat and digital engineering and innovation consultancy Futurice. It collects information about symptoms people have experienced all around Finland and disseminates this information to readers. Other Finnish medias are also taking part in collecting the information. The goal is to gain a better understanding of how the coronavirus might be spreading in Finland. The project follows open source principles. <2>The source code for the site is available here.</2>
 </1>
 
 <2>

@@ -69,6 +69,10 @@ const MapInfoContent = styled(Container)`
   padding: 6px 34px 0px 16px;
   position: relative;
 
+  p:last-child {
+    margin-bottom: 0;
+  }
+
   @media (min-width: ${({ theme }) => `${theme.mobileWidth}px`}) {
     padding-left: 0;
   }
@@ -91,7 +95,7 @@ const CloseButton = styled.button`
 `;
 
 const LastUpdated = styled(Container)`
-  padding: 8px 16px 13px 16px;
+  padding: 10px 16px 10px 16px;
   font-style: italic;
   font-size: 14px;
   @media (min-width: ${({ theme }) => `${theme.mobileWidth}px`}) {

@@ -140,7 +140,7 @@ const MapView = (props: MapViewProps) => {
       <Container>
         <FilterWrapper isEmbed={props.isEmbed}>
           <FilterToggle selectedFilter={selectedFilter} handleFilterChange={handleFilterChange} />
-          <ActiveFilter type="button" label={t(`symptomLabels:${FILTERS[selectedFilter].label}`)}></ActiveFilter>
+          <ActiveFilter>{t(`symptomLabels:${FILTERS[selectedFilter].label}`)}</ActiveFilter>
         </FilterWrapper>
       </Container>
       <MapInfo topBorder={showMapInfo}>

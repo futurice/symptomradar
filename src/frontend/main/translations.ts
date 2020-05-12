@@ -39,6 +39,8 @@ export default {
       loss_smell_or_taste: 'Loss of smell or taste',
     },
     main: {
+      loading: 'Loading...',
+      errorLoadingData: 'Error loading data',
       languageSelector: 'Language',
       cityInformation: 'City information',
       openOrCloseMenu: 'Open/Close menu',
@@ -115,6 +117,8 @@ The information was collected using a questionnaire form. This site displays the
       loss_smell_or_taste: 'Hajuaistin tai makuaistin heikkenemistä',
     },
     main: {
+      loading: 'Ladataan...',
+      errorLoadingData: 'Virhe tietojen latauksessa',
       languageSelector: 'Kieli',
       cityInformation: 'Kaupungin tiedot',
       openOrCloseMenu: 'Avaa/sulje valikko',

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import { Router, RouteComponentProps } from '@reach/router';
 import * as d3 from 'd3';
 import MapView from './map/MapView';
@@ -60,13 +61,14 @@ const MessageContainer = styled.div`
 
 const MainWrapper = (props: MainWrapperProps) => {
   const { isEmbed } = props;
+  const { t } = useTranslation(['main']);
 
   if (props.responseData === 'FETCHING') {
-    return <MessageContainer>Loading...</MessageContainer>;
+    return <MessageContainer>{t('main:loading')}</MessageContainer>;
   }
 
   if (props.responseData === 'ERROR') {
-    return <MessageContainer>Error loading data</MessageContainer>;
+    return <MessageContainer>{t('main:errorLoadingData')}</MessageContainer>;
   }
 
   const data = props.responseData.data;

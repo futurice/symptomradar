@@ -7,6 +7,7 @@ import MapView from './MapView';
 import About from './About';
 import Survey from './Survey';
 import Privacy from './Privacy';
+import Dashboard from './Dashboard';
 import Menu from './Menu';
 import { theme } from './constants';
 
@@ -118,6 +119,7 @@ export const App = () => {
         <main>
           <Router>
             <MapView path="/" responseData={data} />
+            <Dashboard path="dashboard" responseData={data} />
             <MapView path="/map-embed" responseData={data} />
             <About path="about" />
             <Privacy path="tietosuojalauseke" />

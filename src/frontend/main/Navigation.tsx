@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link, Match } from '@reach/router';
+import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
 import styled from 'styled-components';
 import AboutIcon from './assets/AboutIcon';
 import MapIcon from './assets/MapIcon';
@@ -65,6 +67,13 @@ const LinkText = styled.span<activeLinkProps>`
   }
 `;
 
+const LanguageSelector = styled.div`
+  margin: 16px 0;
+  label {
+    font-weight: bold;
+  }
+`;
+
 const LinkItem = ({ to, linkText, icon, setMenuOpen }: LinkProps) => {
   return (
     <Match path={to}>
@@ -78,35 +87,52 @@ const LinkItem = ({ to, linkText, icon, setMenuOpen }: LinkProps) => {
   );
 };
 
-const Navigation = ({ setMenuOpen }: MenuProps) => (
-  <NavigationContainer>
-    <LinkContainer>
-      <li>
-        <LinkItem
-          to="/"
-          linkText="Kartta"
-          setMenuOpen={setMenuOpen}
-          icon={match => <MapIcon fillColor={match ? '#000' : '#0047FF'} />}
-        />
-      </li>
-      <li>
-        <LinkItem
-          to="survey"
-          linkText="Kyselylomake"
-          setMenuOpen={setMenuOpen}
-          icon={match => <SurveyIcon fillColor={match ? '#000' : '#0047FF'} />}
-        />
-      </li>
-      <li>
-        <LinkItem
-          to="about"
-          linkText="Info"
-          setMenuOpen={setMenuOpen}
-          icon={match => <AboutIcon fillColor={match ? '#000' : '#0047FF'} />}
-        />
-      </li>
-    </LinkContainer>
-  </NavigationContainer>
-);
+const Navigation = ({ setMenuOpen }: MenuProps) => {
+  const { t } = useTranslation('navigation');
+  const selectLanguage = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    i18n.changeLanguage(e.target.value);
+    setMenuOpen(false);
+  };
+  return (
+    <NavigationContainer>
+      <LinkContainer>
+        <li>
+          <LanguageSelector>
+            <label htmlFor="language-selector">{t('main:languageSelector')}</label>
+            <br />
+            <select id="language-selector" onChange={selectLanguage} defaultValue={i18n.language}>
+              <option value="fi">Suomi</option>
+              <option value="en">English</option>
+            </select>
+          </LanguageSelector>
+        </li>
+        <li>
+          <LinkItem
+            to="/"
+            linkText={t('map')}
+            setMenuOpen={setMenuOpen}
+            icon={match => <MapIcon fillColor={match ? '#000' : '#0047FF'} />}
+          />
+        </li>
+        <li>
+          <LinkItem
+            to="survey"
+            linkText={t('survey')}
+            setMenuOpen={setMenuOpen}
+            icon={match => <SurveyIcon fillColor={match ? '#000' : '#0047FF'} />}
+          />
+        </li>
+        <li>
+          <LinkItem
+            to="about"
+            linkText={t('info')}
+            setMenuOpen={setMenuOpen}
+            icon={match => <AboutIcon fillColor={match ? '#000' : '#0047FF'} />}
+          />
+        </li>
+      </LinkContainer>
+    </NavigationContainer>
+  );
+};
 
 export default Navigation;

@@ -3,11 +3,10 @@ import { Router, Location } from '@reach/router';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import axios from 'axios';
 import Header from './Header';
-import MapView from './MapView';
+import MainWrapper from './MainWrapper';
 import About from './About';
 import Survey from './Survey';
 import Privacy from './Privacy';
-import Dashboard from './Dashboard';
 import Menu from './Menu';
 import { theme } from './constants';
 
@@ -118,9 +117,8 @@ export const App = () => {
         <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}></Menu>
         <main>
           <Router>
-            <MapView path="/" responseData={data} />
-            <Dashboard path="dashboard" responseData={data} />
-            <MapView path="/map-embed" responseData={data} />
+            <MainWrapper path="/*" responseData={data} isEmbed={false} />
+            <MainWrapper path="/map-embed/*" responseData={data} isEmbed={true} />
             <About path="about" />
             <Privacy path="tietosuojalauseke" />
             <Survey path="survey" />

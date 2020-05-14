@@ -1,9 +1,10 @@
 import React from 'react';
 import DorlingCartogram from './DorlingCartogram';
+import { FilterKey } from '../constants';
 
 const App: React.FunctionComponent<{
   mapShapeData: any;
-  selectedFilter: string;
+  selectedFilter: FilterKey;
   mapHeight: number;
   popUpOpen: boolean;
 }> = props => {

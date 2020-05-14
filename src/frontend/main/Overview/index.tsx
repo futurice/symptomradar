@@ -5,7 +5,8 @@ import DonutSuspectingCorona from './DonutSuspectingCorona';
 import { RouteComponentProps } from '@reach/router';
 
 interface DashboardViewProps extends RouteComponentProps {
-  responseData: any;
+  isEmbed: boolean;
+  data: any;
 }
 
 const Table = styled.table`
@@ -124,13 +125,6 @@ const Label = styled.label`
 
 const Dashboard = (props: DashboardViewProps) => {
   const [selectedSymptom, setSelectedSymptom] = useState('fever');
-  if (props.responseData === 'FETCHING') {
-    return <MessageContainer>Loading...</MessageContainer>;
-  }
-
-  if (props.responseData === 'ERROR') {
-    return <MessageContainer>Error loading data</MessageContainer>;
-  }
   const symptomList = [
     {
       symptomName: 'Fever',
@@ -221,7 +215,7 @@ const Dashboard = (props: DashboardViewProps) => {
       },
     ],
   };
-  props.responseData.data.forEach((d: any) => {
+  props.data.forEach((d: any) => {
     finlandTotalData.population += d.population;
     if (d.responses !== -1) {
       finlandTotalData.responses += d.responses;
@@ -252,7 +246,7 @@ const Dashboard = (props: DashboardViewProps) => {
       </tr>
     );
   });
-  const topCities: any = [...props.responseData.data]
+  const topCities: any = [...props.data]
     .filter((d: any) => d.responses !== -1)
     .sort((a, b) => {
       return (b.corona_suspicion_yes * 100) / b.responses - (a.corona_suspicion_yes * 100) / a.responses;

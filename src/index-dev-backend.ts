@@ -2,7 +2,7 @@ import http from 'http';
 import { parse as parseUrl } from 'url';
 import { APIGatewayProxyHandler, APIGatewayProxyEventBase, Context, APIGatewayProxyResult } from 'aws-lambda';
 
-import * as entrypoints from '../index-backend';
+import * as entrypoints from './index-backend';
 import { AddressInfo } from 'net';
 
 const server = http.createServer((req: http.IncomingMessage, res: http.ServerResponse) => {

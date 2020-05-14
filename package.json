@@ -24,6 +24,7 @@
     "frontend-embed-v1-start": "npm run lint-node && npm run set-frontend embed-v1 && BROWSER=none react-scripts start",
     "frontend-embed-v1-build": "npm run lint-node && npm run set-frontend embed-v1 && react-scripts build",
     "\n==================== BACKEND ====================": "",
+    "backend-start": "npm run ts-node src/index-dev-backend",
     "backend-build": "npm run lint-node && rm -rf build && tsc --project tsconfig-backend.json",
     "\n==================== UTILS ====================": "",
     "set-frontend": "/usr/bin/env bash -c 'set -x; (cd src/ && ln -fs index-frontend-$1.ts* index.tsx); (cd public/ && ln -fs index-$1.html index.html)' --",

@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import PrimaryButton from './PrimaryButton';
-import handleResponseData from './handleResponseData';
+import { symptomLabels } from './constants';
+import handleResponseData, { ResponseDataKey } from './handleResponseData';
 
 type ModalContentProps = {
   content: any;
@@ -55,6 +57,7 @@ const CloseButton = styled(PrimaryButton)`
 
 const ModalContent = ({ content, hide }: ModalContentProps) => {
   const formattedData = handleResponseData(content);
+  const { t } = useTranslation(['main', 'format']);
 
   return (
     <>
@@ -64,72 +67,45 @@ const ModalContent = ({ content, hide }: ModalContentProps) => {
       {formattedData.responsesTotal != null ? (
         <>
           <H3>
-            Vastauksia yhteensä: {formattedData.responsesTotal} ({formattedData.percentageOfPopulation} % väkiluvusta)
+            {t('main:totalResponsesModalInfoText', {
+              total: formattedData.responsesTotal,
+              percentage: formattedData.percentageOfPopulation,
+            })}
           </H3>
-          <Description>Verrattuna kunnan väkilukuun</Description>
+          <Description>{t('main:comparedToMunicipalityPopulation')}</Description>
         </>
       ) : (
-        <p>Alueelta ei ole vielä tarpeeksi vastauksia</p>
+        <p>{t('main:notEnoughResponses')}</p>
       )}
       {formattedData.responsesTotal != null && (
         <Symptoms>
           <table>
             <tbody>
-              <tr>
-                <td>{formattedData.suspicionTotal}</td>
-                <td>{formattedData.suspicionPercentage} %</td>
-                <th scope="row">Epäilys koronavirus&shy;tartunnasta</th>
-              </tr>
-              <tr>
-                <td>{formattedData.coughTotal}</td>
-                <td>{formattedData.coughPercentage} %</td>
-                <th scope="row">Yskää</th>
-              </tr>
-              <tr>
-                <td>{formattedData.feverTotal}</td>
-                <td>{formattedData.feverPercentage} %</td>
-                <th scope="row">Kuumetta</th>
-              </tr>
-              <tr>
-                <td>{formattedData.breathingDifficultiesTotal}</td>
-                <td>{formattedData.breathingDifficultiesPercentage} %</td>
-                <th scope="row">Vaikeuksia hengittää</th>
-              </tr>
-              <tr>
-                <td>{formattedData.musclePainTotal}</td>
-                <td>{formattedData.musclePainPercentage} %</td>
-                <th scope="row">Lihaskipuja</th>
-              </tr>
-              <tr>
-                <td>{formattedData.headacheTotal}</td>
-                <td>{formattedData.headachePercentage} %</td>
-                <th scope="row">Päänsärkyä</th>
-              </tr>
-              <tr>
-                <td>{formattedData.soreThroatTotal}</td>
-                <td>{formattedData.soreThroatPercentage} %</td>
-                <th scope="row">Kurkkukipua</th>
-              </tr>
-              <tr>
-                <td>{formattedData.rhinitisTotal}</td>
-                <td>{formattedData.rhinitisPercentage} %</td>
-                <th scope="row">Nuhaa</th>
-              </tr>
-              <tr>
-                <td>{formattedData.stomachIssuesTotal}</td>
-                <td>{formattedData.stomachIssuesPercentage} %</td>
-                <th scope="row">Vatsaoireita</th>
-              </tr>
-              <tr>
-                <td>{formattedData.sensoryIssuesTotal}</td>
-                <td>{formattedData.sensoryIssuesPercentage} %</td>
-                <th scope="row">Hajuaistin tai makuaistin heikkenemistä</th>
-              </tr>
+              {(Object.keys(symptomLabels) as Array<keyof typeof symptomLabels>).map(key => {
+                const totalKey = `${key}Total` as ResponseDataKey;
+                const percentageKey = `${key}Percentage` as ResponseDataKey;
+                return (
+                  <tr key={`symptom-row-${key}`}>
+                    <td>{formattedData[totalKey]}</td>
+                    <td>
+                      {percentageKey in formattedData &&
+                        `${t('format:percentage', { percentage: formattedData[percentageKey] })}`}
+                    </td>
+                    <th scope="row">{t(`symptomLabels:${symptomLabels[key]}`)}</th>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </Symptoms>
       )}
-      <CloseButton type="button" data-dismiss="modal" aria-label="Sulje" label="Sulje" handleClick={hide} />
+      <CloseButton
+        type="button"
+        data-dismiss="modal"
+        aria-label={t('main:close')}
+        label={t('main:close')}
+        handleClick={hide}
+      />
     </>
   );
 };

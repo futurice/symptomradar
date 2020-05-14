@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
-import handleResponseData from './handleResponseData';
+import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
+import { symptomLabels } from './constants';
+import handleResponseData, { ResponseDataKey } from './handleResponseData';
 
 type CityTablesProps = {
   data: any;
@@ -9,7 +12,7 @@ type CityTablesProps = {
 };
 
 type TableViewWrapperProps = {
-  isEmbed: boolean;
+  readonly isEmbed: boolean;
 };
 
 const Table = styled.table`
@@ -33,7 +36,7 @@ const Table = styled.table`
 
     @media (min-width: 450px) {
       padding-left: 0;
-      width: 140px;
+      width: 145px;
     }
   }
 
@@ -108,6 +111,8 @@ const TableViewWrapper = styled.div<TableViewWrapperProps>`
 const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
   const [listItems, setListItems] = useState(data.slice(0, 10));
   const [isFetching, setIsFetching] = useState(false);
+  const { t } = useTranslation(['main', 'format']);
+
   const container = useRef<HTMLDivElement>(null);
 
   const fetchMoreListItems = useCallback(() => {
@@ -167,76 +172,45 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
         return (
           <TableContainer key={item.city}>
             <CityHeadingContainer>
-              <CityHeading>{item.city}</CityHeading>
+              <CityHeading id={`${item.city}-table-heading`}>{item.city}</CityHeading>
               {formattedData.responsesTotal != null ? (
                 <>
-                  <BoldText>Vastauksia yhteensä {formattedData.responsesTotal}</BoldText>
-                  <ItalicText>{formattedData.percentageOfPopulation} % väkiluvusta</ItalicText>
+                  <BoldText>
+                    {t('main:totalResponses')} {formattedData.responsesTotal}
+                  </BoldText>
+                  <ItalicText>
+                    {t('format:percentage', { percentage: formattedData.percentageOfPopulation })}{' '}
+                    {t('main:ofPopulation')}
+                  </ItalicText>
                 </>
               ) : (
-                <p>Alueelta ei ole vielä tarpeeksi vastauksia</p>
+                <p>{t('main:notEnoughResponses')}</p>
               )}
             </CityHeadingContainer>
             {formattedData.responsesTotal != null && (
-              <Table>
+              <Table aria-labelledby={`${item.city}-table-heading`}>
                 <TableHead>
                   <tr>
-                    <th>Oireet</th>
-                    <th>Vastauksia</th>
-                    <th>Osuus väkiluvusta</th>
+                    <th>{t('main:symptoms')}</th>
+                    <th>{t('main:responses')}</th>
+                    <th>{t('main:shareOfPopulation')}</th>
                   </tr>
                 </TableHead>
                 <tbody>
-                  <tr>
-                    <th scope="row">Epäilys koronavirus&shy;tartunnasta</th>
-                    <td>{formattedData.suspicionTotal}</td>
-                    <td>{formattedData.suspicionPercentage} %</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Yskää</th>
-                    <td>{formattedData.coughTotal}</td>
-                    <td>{formattedData.coughPercentage} %</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Kuumetta</th>
-                    <td>{formattedData.feverTotal}</td>
-                    <td>{formattedData.feverPercentage} %</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Vaikeuksia hengittää</th>
-                    <td>{formattedData.breathingDifficultiesTotal}</td>
-                    <td>{formattedData.breathingDifficultiesPercentage} %</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Lihaskipuja</th>
-                    <td>{formattedData.musclePainTotal}</td>
-                    <td>{formattedData.musclePainPercentage} %</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Päänsärkyä</th>
-                    <td>{formattedData.headacheTotal}</td>
-                    <td>{formattedData.headachePercentage} %</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Kurkkukipua</th>
-                    <td>{formattedData.soreThroatTotal}</td>
-                    <td>{formattedData.soreThroatPercentage} %</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Nuhaa</th>
-                    <td>{formattedData.rhinitisTotal}</td>
-                    <td>{formattedData.rhinitisPercentage} %</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Vatsaoireita</th>
-                    <td>{formattedData.stomachIssuesTotal}</td>
-                    <td>{formattedData.stomachIssuesPercentage} %</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Hajuaistin tai makuaistin heikkenemistä</th>
-                    <td>{formattedData.sensoryIssuesTotal}</td>
-                    <td>{formattedData.sensoryIssuesPercentage} %</td>
-                  </tr>
+                  {(Object.keys(symptomLabels) as Array<keyof typeof symptomLabels>).map(key => {
+                    const totalKey = `${key}Total` as ResponseDataKey;
+                    const percentageKey = `${key}Percentage` as ResponseDataKey;
+                    return (
+                      <tr key={`symptom-row-${key}-${i18n.language}`}>
+                        <th scope="row">{t(`symptomLabels:${symptomLabels[key]}`)}</th>
+                        <td>{totalKey in formattedData && formattedData[totalKey]}</td>
+                        <td>
+                          {percentageKey in formattedData &&
+                            `${t('format:percentage', { percentage: formattedData[percentageKey] })}`}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </Table>
             )}

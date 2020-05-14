@@ -241,6 +241,14 @@ The differences to the default one are
 - Start button hidden, the form is already expanded
 - Some margins adjusted with the `plain` class
 
+### Main site translations
+
+Opposing to the form translation, the main site's translation is using the [react-i18next](https://github.com/i18next/react-i18next) library.
+
+All translations for all languages are defined in `src/frontend/main/translations.ts`.
+
+During code review, it is important to check your brower's console log while browsing through different views of the application, since `react-i18next` will warn you about any missing translation key at run time.
+
 ### Notes on backend development
 
 #### Local open data dumps

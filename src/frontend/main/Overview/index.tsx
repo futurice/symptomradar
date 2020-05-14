@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import TimeSeries from './TimeSeries';
 import DonutSuspectingCorona from './DonutSuspectingCorona';
 import { RouteComponentProps } from '@reach/router';
+
+import { getLocaleDecimalString, getCurrentLocale } from '../translations';
 
 interface DashboardViewProps extends RouteComponentProps {
   isEmbed: boolean;
@@ -123,98 +126,93 @@ const Label = styled.label`
   margin-right: 8px;
 `;
 
+const symptomList = [
+  {
+    symptomID: 'fever',
+  },
+  {
+    symptomID: 'cough',
+  },
+  {
+    symptomID: 'breathing_difficulties',
+  },
+  {
+    symptomID: 'muscle_pain',
+  },
+  {
+    symptomID: 'headache',
+  },
+  {
+    symptomID: 'sore_throat',
+  },
+  {
+    symptomID: 'rhinitis',
+  },
+  {
+    symptomID: 'stomach_issues',
+  },
+  {
+    symptomID: 'sensory_issues',
+  },
+];
+
 const Dashboard = (props: DashboardViewProps) => {
   const [selectedSymptom, setSelectedSymptom] = useState('fever');
-  const symptomList = [
-    {
-      symptomName: 'Fever',
-      symptomID: 'fever',
-    },
-    {
-      symptomName: 'Cough',
-      symptomID: 'cough',
-    },
-    {
-      symptomName: 'Breathing Problems',
-      symptomID: 'breathing_difficulties',
-    },
-    {
-      symptomName: 'Muscle Pain',
-      symptomID: 'muscle_pain',
-    },
-    {
-      symptomName: 'Headache',
-      symptomID: 'headache',
-    },
-    {
-      symptomName: 'Sore Throat',
-      symptomID: 'sore_throat',
-    },
-    {
-      symptomName: 'Rhinitis',
-      symptomID: 'rhinitis',
-    },
-    {
-      symptomName: 'Stomach Issues',
-      symptomID: 'stomach_issues',
-    },
-    {
-      symptomName: 'Sensory Issues',
-      symptomID: 'sensory_issues',
-    },
-  ];
-  let finlandTotalData = {
+  const { t } = useTranslation(['symptoms', 'main']);
+  const currentLocale = getCurrentLocale();
+  const finlandTotalData = {
     population: 0,
     responses: 0,
     corona_suspicion_yes: 0,
     symptoms: [
       {
         symptom: 'fever_yes',
-        symptom_name: 'Fever',
+        symptomLabel: 'fever',
         value: 0,
       },
       {
         symptom: 'cough_yes',
-        symptom_name: 'Cough',
+        symptomLabel: 'cough',
         value: 0,
       },
       {
         symptom: 'breathing_difficulties_yes',
-        symptom_name: 'Breathing Problems',
+        symptomLabel: 'breathing_difficulties',
         value: 0,
       },
       {
         symptom: 'muscle_pain_yes',
-        symptom_name: 'Muscle Pain',
+        symptomLabel: 'muscle_pain',
         value: 0,
       },
       {
         symptom: 'headache_yes',
-        symptom_name: 'Headache',
+        symptomLabel: 'headache',
         value: 0,
       },
       {
         symptom: 'sore_throat_yes',
-        symptom_name: 'Sore Throat',
+        symptomLabel: 'sore_throat',
         value: 0,
       },
       {
         symptom: 'rhinitis_yes',
-        symptom_name: 'Rhinitis',
+        symptomLabel: 'rhinitis',
         value: 0,
       },
       {
         symptom: 'stomach_issues_yes',
-        symptom_name: 'Stomach Issues',
+        symptomLabel: 'stomach_issues',
         value: 0,
       },
       {
         symptom: 'sensory_issues_yes',
-        symptom_name: 'Sensory Issues',
+        symptomLabel: 'sensory_issues',
         value: 0,
       },
     ],
   };
+
   props.data.forEach((d: any) => {
     finlandTotalData.population += d.population;
     if (d.responses !== -1) {
@@ -228,47 +226,50 @@ const Dashboard = (props: DashboardViewProps) => {
       });
     }
   });
+
   finlandTotalData.symptoms.sort((a, b) => {
     return b.value - a.value;
   });
+
   const tableRow = finlandTotalData.symptoms.map((d, i: number) => {
     return (
-      <tr key={i}>
+      <tr key={`top-symptom-${d.symptom}`}>
         <td>{i + 1}</td>
-        <td>{d.symptom_name}</td>
+        <td>{t(`symptomLabels:${d.symptomLabel}`)}</td>
         <td>
-          {d.value.toLocaleString('fi-FI')} (
-          {parseFloat(((d.value * 100) / finlandTotalData.responses).toFixed(2))
-            .toLocaleString('fi-FI')
-            .replace('.', ',')}
+          {d.value.toLocaleString(currentLocale)} (
+          {getLocaleDecimalString((d.value * 100) / finlandTotalData.responses)}
           %)
         </td>
       </tr>
     );
   });
+
   const topCities: any = [...props.data]
     .filter((d: any) => d.responses !== -1)
     .sort((a, b) => {
       return (b.corona_suspicion_yes * 100) / b.responses - (a.corona_suspicion_yes * 100) / a.responses;
     })
     .filter((d: any, i: number) => i < 10);
+
   console.log(topCities);
+
   return (
     <Container>
-      <H1>Koko Soumi</H1>
-      <Heading>Total Responses</Heading>
+      <H1>{t('main:allOfFinland')}</H1>
+      <Heading>{t('main:totalResponses')}</Heading>
       <P>
-        <NumberText>{finlandTotalData.responses.toLocaleString('fi-FI')}</NumberText> (
-        {parseFloat(((finlandTotalData.responses * 100) / finlandTotalData.population).toFixed(2))
-          .toLocaleString('fi-FI')
-          .replace('.', ',')}
-        % of total population)
+        <NumberText>{finlandTotalData.responses.toLocaleString(currentLocale)}</NumberText> (
+        {t(`format:percentage`, {
+          percentage: getLocaleDecimalString((finlandTotalData.responses * 100) / finlandTotalData.population),
+        })}{' '}
+        {t('main:ofPopulation')})
       </P>
       <Heading>Respondant Suspecting Corona</Heading>
       <Div>
         Approx. every{' '}
         <SpanBold>
-          1 out of {parseInt((finlandTotalData.responses / finlandTotalData.corona_suspicion_yes).toFixed(0))}
+          1 out of {getLocaleDecimalString(finlandTotalData.responses / finlandTotalData.corona_suspicion_yes, 0)}
         </SpanBold>{' '}
         people who responded suspect Corona infection.
       </Div>
@@ -287,7 +288,7 @@ const Dashboard = (props: DashboardViewProps) => {
         <TableHead>
           <tr>
             <th>Sr. No.</th>
-            <th>Symptoms</th>
+            <th>{t('main:symptoms')}</th>
             <th>+ve Responses</th>
           </tr>
         </TableHead>
@@ -298,10 +299,10 @@ const Dashboard = (props: DashboardViewProps) => {
       <CitySelect>
         <Label htmlFor="symptom">Add a symptom</Label>
         <select name="select" id="symptom" onChange={e => setSelectedSymptom(e.currentTarget.value)}>
-          {symptomList.map((symptom: { symptomName: string; symptomID: string }, i: number) => {
+          {symptomList.map((symptom: { symptomID: string }, i: number) => {
             return (
               <option key={i} value={symptom.symptomID}>
-                {symptom.symptomName}
+                {t(`symptomLabels:${symptom.symptomID}`)}
               </option>
             );
           })}

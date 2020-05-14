@@ -1,4 +1,4 @@
-import { getCurrentLocale } from './translations';
+import { getCurrentLocale, getLocaleDecimalString } from './translations';
 
 export interface ResponseData {
   responsesTotal: string | null;
@@ -34,9 +34,7 @@ const handleResponseData = (data: any): ResponseData => {
   };
 
   const handlePercentageData = (value: number) => {
-    return data.responses > 25
-      ? (Math.round(((value * 100) / data.population) * 100) / 100).toLocaleString(currentLocale)
-      : null;
+    return data.responses > 25 ? getLocaleDecimalString((value * 100) / data.population) : null;
   };
 
   return {

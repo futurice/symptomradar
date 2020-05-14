@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import styled from 'styled-components';
 import FilterToggle from '../FilterToggle';
-import PrimaryButton from '../PrimaryButton';
 import MapContainer from './MapContainer';
 import CloseIcon from '../assets/CloseIcon';
 import { FILTERS, theme } from '../constants';
@@ -44,7 +43,12 @@ const FilterWrapper = styled.div<FilterWrapperProps>`
   }
 `;
 
-const ActiveFilter = styled(PrimaryButton)`
+const ActiveFilter = styled.div`
+  height: 35px;
+  padding: 5px 16px;
+  border-radius: 100px;
+  font-weight: bold;
+  font-size: 16px;
   background: ${props => props.theme.grey};
   color: ${props => props.theme.white};
   border: none;
@@ -136,7 +140,7 @@ const MapView = (props: MapViewProps) => {
       <Container>
         <FilterWrapper isEmbed={props.isEmbed}>
           <FilterToggle selectedFilter={selectedFilter} handleFilterChange={handleFilterChange} />
-          <ActiveFilter type="button" label={t(`symptomLabels:${FILTERS[selectedFilter].label}`)}></ActiveFilter>
+          <ActiveFilter>{t(`symptomLabels:${FILTERS[selectedFilter].label}`)}</ActiveFilter>
         </FilterWrapper>
       </Container>
       <MapInfo topBorder={showMapInfo}>

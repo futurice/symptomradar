@@ -172,7 +172,7 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
         return (
           <TableContainer key={item.city}>
             <CityHeadingContainer>
-              <CityHeading>{item.city}</CityHeading>
+              <CityHeading id={`${item.city}-table-heading`}>{item.city}</CityHeading>
               {formattedData.responsesTotal != null ? (
                 <>
                   <BoldText>
@@ -188,7 +188,7 @@ const CityTables = ({ data, selectedCity, isEmbed }: CityTablesProps) => {
               )}
             </CityHeadingContainer>
             {formattedData.responsesTotal != null && (
-              <Table>
+              <Table aria-labelledby={`${item.city}-table-heading`}>
                 <TableHead>
                   <tr>
                     <th>{t('main:symptoms')}</th>

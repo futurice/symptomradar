@@ -28,11 +28,11 @@ const RouterLink = styled(Link)`
   display: flex;
   text-decoration: none;
 
-  &:nth-child(1) span {
+  & span {
     border-left: 1px solid ${props => props.theme.grey};
   }
 
-  &:nth-child(2) span {
+  &:last-child span {
     border-right: 1px solid ${props => props.theme.grey};
   }
 `;

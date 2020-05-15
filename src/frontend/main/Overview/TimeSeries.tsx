@@ -31,8 +31,10 @@ const TimeSeries: React.FunctionComponent<{
   selectedSymptomFirstLine: string;
 }> = props => {
   const [data, setData] = useState<any>('FETCHING');
+  const dataEndpoint = process.env.REACT_APP_DATA_ENDPOINT;
+  const [username, password] = (process.env.REACT_APP_DATA_AUTH || '').split(':');
   useEffect(() => {
-    axios('https://data.oiretutka.fi/daily_totals.json').then(
+    axios(`${dataEndpoint}daily_totals.json`, { auth: { username, password } }).then(
       res => {
         let cumulative: dataObj = {
           total: 0,
@@ -146,7 +148,7 @@ const TimeSeries: React.FunctionComponent<{
       },
       () => setData('ERROR'),
     );
-  }, []);
+  }, [dataEndpoint]);
   useEffect(() => {
     if (data !== 'FETCHING' && data !== 'ERROR') {
       const svg = d3.select(graphNode);

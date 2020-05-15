@@ -9,7 +9,7 @@ import { exportTotalResponses } from './dataExports/totalResponses';
 import { exportCityLevelGeneralResults } from './dataExports/cityLevelGeneralResults';
 import { exportDailyTotals } from './dataExports/dailyTotals';
 import { exportOpenDataIndex } from './dataExports/openDataIndex';
-import { exportCityLevelWeeklyGeneralResults } from './dataExports/cityLevelWeeklyGeneralResults';
+import { exportCityLevelPastWeekGeneralResults } from './dataExports/cityLevelPastWeekGeneralResults';
 import { exportPostalCodeLevelGeneralResults } from './dataExports/postalCodeLevelGeneralResults';
 
 export const APP_VERSION = process.env.AWS_EXECUTION_ENV
@@ -126,7 +126,7 @@ export async function exportOpenData(app: App) {
     // prettier-ignore
     exportTotalResponses(app),
     exportCityLevelGeneralResults(app),
-    exportCityLevelWeeklyGeneralResults(app),
+    exportCityLevelPastWeekGeneralResults(app),
     exportPostalCodeLevelGeneralResults(app),
     exportDailyTotals(app),
   ]);

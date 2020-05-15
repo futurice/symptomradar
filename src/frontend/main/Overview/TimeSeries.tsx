@@ -148,12 +148,11 @@ const TimeSeries: React.FunctionComponent<{
       },
       () => setData('ERROR'),
     );
-  }, [dataEndpoint]);
+  }, [dataEndpoint, username, password]);
   useEffect(() => {
     if (data !== 'FETCHING' && data !== 'ERROR') {
       const svg = d3.select(graphNode);
       svg.selectAll('.graphG').remove();
-      console.log(props.selectedSymptom);
       const g = svg.append('g').attr('class', 'graphG');
 
       const margin = { top: 15, right: 0, bottom: 25, left: 0 },

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation, Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import FilterToggle from '../FilterToggle';
 import MapContainer from './MapContainer';
@@ -155,13 +155,7 @@ const MapView = (props: MapViewProps) => {
               >
                 <CloseIcon />
               </CloseButton>
-              <Trans i18nKey="main:mapInfo" t={t}>
-                <p>
-                  Kartta näyttää, millaisia oireita vastaajilla on eri kunnissa. Mukana ovat kunnat, joista on saatu yli
-                  25 vastausta.
-                </p>
-                <p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
-              </Trans>
+              <p>{t('main:mapInfo')}</p>
             </MapInfoContent>
           </>
         )}

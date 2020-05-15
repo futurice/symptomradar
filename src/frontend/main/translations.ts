@@ -63,11 +63,8 @@ export default {
       legendInfoLine2: 'of symptoms reported',
       legendInfoLine3: 'The size of the circle illustrates',
       legendInfoLine4: 'population size',
-      mapInfo: `
-<p>The map shows symptoms the respondents have in various municipalities. Only municipalities with over 25 answers are included.</p>
-
-<p>You can view answers by municipality by clicking the circle or using search.</p>
-      `,
+      mapInfo:
+        'The map shows symptoms the respondents have in various municipalities. Only municipalities with over 25 answers are included.',
       responses: 'Responses',
       shareOfPopulation: 'Share of population',
       totalResponses: 'Total responses',
@@ -90,7 +87,7 @@ export default {
 <0>Symptom Radar collects information about the coronavirus</0>
 
 <1>
-Oiretutka is a collaborative project between Helsingin Sanomat and digital engineering and innovation consultancy Futurice. It collects information about symptoms people have experienced all around Finland and disseminates this information to readers. Other Finnish medias are also taking part in collecting the information. The goal is to gain a better understanding of how the coronavirus might be spreading in Finland. The project follows open source principles. <2>The source code for the site is available here.</2>
+Symptom Radar is a collaborative project between Helsingin Sanomat and digital engineering and innovation consultancy Futurice. It collects information about symptoms people have experienced all around Finland and disseminates this information to readers. Other Finnish medias are also taking part in collecting the information. The goal is to gain a better understanding of how the coronavirus might be spreading in Finland. The project follows open source principles. <2>The source code for the site is available here.</2>
 </1>
 
 <2>
@@ -141,11 +138,8 @@ The information was collected using a questionnaire form. This site displays the
       legendInfoLine2: 'on raportoitu eniten',
       legendInfoLine3: 'Ympyrän koko kuvaa väkilukua',
       legendInfoLine4: '',
-      mapInfo: `
-<p>Kartta näyttää, millaisia oireita vastaajilla on eri kunnissa. Mukana ovat kunnat, joista on saatu yli 25 vastausta.</p>
-
-<p>Kuntien vastauksiin voi tutustua klikkaamalla palloja tai käyttämällä hakuvalikkoa.</p>
-      `,
+      mapInfo:
+        'Kartta näyttää, millaisia oireita vastaajilla on eri kunnissa. Mukana ovat kunnat, joista on saatu yli 25 vastausta.',
       responses: 'Vastauksia',
       shareOfPopulation: 'Osuus väkiluvusta',
       totalResponses: 'Vastauksia yhteensä',

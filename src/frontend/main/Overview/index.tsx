@@ -12,6 +12,10 @@ interface DashboardViewProps extends RouteComponentProps {
   data: any;
 }
 
+interface ColorBoxProps {
+  backgroundColor: string;
+}
+
 const Table = styled.table`
   width: 100%;
   table-layout: fixed;
@@ -61,11 +65,6 @@ const Container = styled.div`
   padding: 24px;
 `;
 
-const MessageContainer = styled.div`
-  text-align: center;
-  margin: 24px 0;
-`;
-
 const Heading = styled.div`
   font-size: 22px;
   font-weight: bold;
@@ -107,26 +106,64 @@ const TableHead = styled.thead`
   }
 `;
 
+const SelectionContainer = styled.div`
+  display: flex;
+  align-items: center;
+  p {
+    margin: 0 10px;
+  }
+  margin: 20px 0 15px 0;
+`;
+
 const CitySelect = styled.div`
-  height: ${({ theme }) => theme.citySelectHeight}px;
   padding: 0;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid ${props => props.theme.grey};
   max-width: 600px;
-  margin: 0 auto;
-
+  margin: 0;
   select {
-    max-width: 200px;
+    background: ${props => props.theme.lightGrey};
+    padding: 5px;
+    border-radius: 5px;
   }
-  margin-bottom: 20px;
 `;
 
-const Label = styled.label`
-  margin-right: 8px;
+const KeyContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const Keys = styled.div`
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.7);
+  margin-bottom: -30px;
+  z-index: 100;
+  position: relative;
+  width: fit-content;
+  p {
+    font-size: 14px;
+    margin: 0;
+  }
+`;
+
+const Key = styled.div`
+  display: flex;
+  margin: 10px;
+  align-items: center;
+`;
+
+const ColorBox = styled.div<ColorBoxProps>`
+  border-radius: 20px;
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+  background-color: ${props => props.backgroundColor};
 `;
 
 const symptomList = [
+  {
+    symptomID: 'corona_suspicion',
+  },
   {
     symptomID: 'fever',
   },
@@ -157,7 +194,8 @@ const symptomList = [
 ];
 
 const Dashboard = (props: DashboardViewProps) => {
-  const [selectedSymptom, setSelectedSymptom] = useState('fever');
+  const [selectedSymptomSecondLine, setSelectedSymptomSecondLine] = useState('fever');
+  const [selectedSymptomFirstLine, setSelectedSymptomFirstLine] = useState('corona_suspicion');
   const { t } = useTranslation(['symptoms', 'main']);
   const currentLocale = getCurrentLocale();
   const finlandTotalData = {
@@ -165,6 +203,11 @@ const Dashboard = (props: DashboardViewProps) => {
     responses: 0,
     corona_suspicion_yes: 0,
     symptoms: [
+      {
+        symptom: 'corona_suspicion_yes',
+        symptomLabel: 'corona_suspicion',
+        value: 0,
+      },
       {
         symptom: 'fever_yes',
         symptomLabel: 'fever',
@@ -295,23 +338,58 @@ const Dashboard = (props: DashboardViewProps) => {
         <tbody>{tableRow}</tbody>
       </Table>
       <Heading>Time Development</Heading>
-      <P>Select a symptom to see its development over time. Swipe to the right to reveal more information.</P>
-      <CitySelect>
-        <Label htmlFor="symptom">Add a symptom</Label>
-        <select name="select" id="symptom" onChange={e => setSelectedSymptom(e.currentTarget.value)}>
-          {symptomList.map((symptom: { symptomID: string }, i: number) => {
-            return (
-              <option key={i} value={symptom.symptomID}>
-                {t(`symptomLabels:${symptom.symptomID}`)}
-              </option>
-            );
-          })}
-        </select>
-      </CitySelect>
+      <SelectionContainer>
+        <CitySelect>
+          <select
+            name="select"
+            id="symptom1"
+            value={selectedSymptomFirstLine}
+            onChange={e => setSelectedSymptomFirstLine(e.currentTarget.value)}
+          >
+            {symptomList.map((symptom: { symptomID: string }, i: number) => {
+              return (
+                <option key={i} value={symptom.symptomID}>
+                  {t(`symptomLabels:${symptom.symptomID}`)}
+                </option>
+              );
+            })}
+          </select>
+        </CitySelect>
+        <p>v/s</p>
+        <CitySelect>
+          <select
+            name="select"
+            id="symptom2"
+            value={selectedSymptomSecondLine}
+            onChange={e => setSelectedSymptomSecondLine(e.currentTarget.value)}
+          >
+            {symptomList.map((symptom: { symptomID: string }, i: number) => {
+              return (
+                <option key={i} value={symptom.symptomID}>
+                  {t(`symptomLabels:${symptom.symptomID}`)}
+                </option>
+              );
+            })}
+          </select>
+        </CitySelect>
+      </SelectionContainer>
+      <KeyContainer>
+        <Keys>
+          <Key>
+            <ColorBox backgroundColor="#FF5252" />
+            <p>{t(`symptomLabels:${selectedSymptomFirstLine}`)}</p>
+          </Key>
+          <Key>
+            <ColorBox backgroundColor="#241A5F" />
+            <p>{t(`symptomLabels:${selectedSymptomSecondLine}`)}</p>
+          </Key>
+        </Keys>
+      </KeyContainer>
       <TimeSeries
         width={window.innerWidth > 648 ? 600 : window.innerWidth - 48}
         height={window.innerWidth > 648 ? 400 : ((window.innerWidth - 48) * 2) / 3}
-        selectedSymptom={selectedSymptom}
+        selectedSymptomFirstLine={selectedSymptomFirstLine}
+        selectedSymptom={selectedSymptomSecondLine}
       />
     </Container>
   );

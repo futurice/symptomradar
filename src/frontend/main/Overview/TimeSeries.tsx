@@ -24,7 +24,12 @@ interface dataObj {
   total: number;
 }
 
-const TimeSeries: React.FunctionComponent<{ width: number; height: number; selectedSymptom: string }> = props => {
+const TimeSeries: React.FunctionComponent<{
+  width: number;
+  height: number;
+  selectedSymptom: string;
+  selectedSymptomFirstLine: string;
+}> = props => {
   const [data, setData] = useState<any>('FETCHING');
   useEffect(() => {
     axios('https://data.oiretutka.fi/daily_totals.json').then(
@@ -164,7 +169,7 @@ const TimeSeries: React.FunctionComponent<{ width: number; height: number; selec
         .line()
         .curve(d3.curveCatmullRom)
         .x((d: dataObj, i: number) => x(i))
-        .y((d: dataObj) => y(((d.total - d.corona_suspicion.no) * 100) / d.total));
+        .y((d: any) => y(((d.total - d[props.selectedSymptomFirstLine].no) * 100) / d.total));
       const line1 = d3
         .line()
         .curve(d3.curveCatmullRom)

@@ -1,6 +1,7 @@
 import * as AWS from 'aws-sdk';
 import AthenaExpress from 'athena-express';
 import { createAbuseDetectionDbClient } from './abuseDetection';
+import { LowPopulationPostalCodes, PopulationPerCity, PostalCodeCityMappings, PostalCodeAreas } from '../common/model';
 
 //
 // Utils
@@ -36,6 +37,7 @@ export function createAppConstants() {
     // Bucket key names
     lowPopulationPostalCodesKey: 'low_population_postal_codes.json',
     populationPerCityKey: 'population_per_city.json',
+    postalCodeAreasKey: 'postalcode_areas.json',
     postalCodeCityMappingsKey: 'postalcode_city_mappings.json',
     topoJsonFinlandSimplifiedKey: 'topojson_finland_simplified.json',
     topoJsonFinlandWithoutAlandKey: 'topojson_finland_without_aland.json',
@@ -44,6 +46,7 @@ export function createAppConstants() {
     totalResponsesKey: 'total_responses.json',
     cityLevelGeneralResultsKey: 'city_level_general_results.json',
     cityLevelPastWeekGeneralResultsKey: 'city_level_past_week_general_results.json',
+    postalCodeLevelGeneralResultsKey: 'postalcode_level_general_results.json',
     dailyTotalsKey: 'daily_totals.json',
   };
 }
@@ -89,24 +92,31 @@ export async function s3PutJsonHelper(s3: AWS.S3, params: AWS.S3.PutObjectReques
 
 export function createS3Sources(appConstants: AppConstants, s3Client: AWS.S3) {
   return {
-    fetchLowPopulationPostalCodes() {
+    fetchLowPopulationPostalCodes(): Promise<LowPopulationPostalCodes> {
       return s3GetJsonHelper(s3Client, {
         Bucket: appConstants.openDataBucket,
         Key: appConstants.lowPopulationPostalCodesKey,
       });
     },
 
-    fetchPopulationPerCity() {
+    fetchPopulationPerCity(): Promise<PopulationPerCity> {
       return s3GetJsonHelper(s3Client, {
         Bucket: appConstants.openDataBucket,
         Key: appConstants.populationPerCityKey,
       });
     },
 
-    fetchPostalCodeCityMappings() {
+    fetchPostalCodeCityMappings(): Promise<PostalCodeCityMappings> {
       return s3GetJsonHelper(s3Client, {
         Bucket: appConstants.openDataBucket,
         Key: appConstants.postalCodeCityMappingsKey,
+      });
+    },
+
+    fetchPostalCodeAreas(): Promise<PostalCodeAreas> {
+      return s3GetJsonHelper(s3Client, {
+        Bucket: appConstants.openDataBucket,
+        Key: appConstants.postalCodeAreasKey,
       });
     },
   };

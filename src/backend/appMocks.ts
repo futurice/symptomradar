@@ -23,7 +23,7 @@ function notImplemented<T extends object>(target: any = {}): T {
 }
 
 export function createMockS3Sources(overrides: Partial<S3Sources> = {}) {
-  async function defaultMock() {
+  async function defaultMock(): Promise<any> {
     return {};
   }
 
@@ -31,6 +31,7 @@ export function createMockS3Sources(overrides: Partial<S3Sources> = {}) {
     fetchLowPopulationPostalCodes: overrides.fetchLowPopulationPostalCodes || defaultMock,
     fetchPopulationPerCity: overrides.fetchPopulationPerCity || defaultMock,
     fetchPostalCodeCityMappings: overrides.fetchPostalCodeCityMappings || defaultMock,
+    fetchPostalCodeAreas: overrides.fetchPostalCodeAreas || defaultMock,
   };
 }
 
@@ -68,6 +69,7 @@ export function createMockApp(overrides: Partial<App> = {}): App {
     // Bucket key names
     lowPopulationPostalCodesKey: 'low_population_postal_codes.json',
     populationPerCityKey: 'population_per_city.json',
+    postalCodeAreasKey: 'postalcode_areas.json',
     postalCodeCityMappingsKey: 'postalcode_city_mappings.json',
     topoJsonFinlandSimplifiedKey: 'topojson_finland_simplified.json',
     topoJsonFinlandWithoutAlandKey: 'topojson_finland_without_aland.json',
@@ -76,6 +78,7 @@ export function createMockApp(overrides: Partial<App> = {}): App {
     totalResponsesKey: 'total_responses.json',
     cityLevelGeneralResultsKey: 'city_level_general_results.json',
     cityLevelPastWeekGeneralResultsKey: 'city_level_past_week_general_results.json',
+    postalCodeLevelGeneralResultsKey: 'postalcode_level_general_results.json',
     dailyTotalsKey: 'daily_totals.json',
   };
 

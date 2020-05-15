@@ -1,5 +1,9 @@
 import { App, s3PutJsonHelper } from '../app';
 import { PostalCodeCityMappings, PopulationPerCity } from '../../common/model';
+import {
+  queryPostalCodeLevelGeneralResults,
+  PostalCodeLevelGeneralResultsQuery,
+} from './postalCodeLevelGeneralResults';
 
 export async function exportCityLevelGeneralResults(app: App) {
   const cityLevelGeneralResults = await fetchCityLevelGeneralResults(app);
@@ -8,8 +12,10 @@ export async function exportCityLevelGeneralResults(app: App) {
 
 export async function fetchCityLevelGeneralResults(app: App) {
   const postalCodeLevelResultsResult = await queryPostalCodeLevelGeneralResults(app);
-  const postalCodeCityMappings = (await app.s3Sources.fetchPostalCodeCityMappings()) as PostalCodeCityMappings;
-  const populationPerCity = (await app.s3Sources.fetchPopulationPerCity()) as PopulationPerCity;
+
+  const postalCodeCityMappings = await app.s3Sources.fetchPostalCodeCityMappings();
+  const populationPerCity = await app.s3Sources.fetchPopulationPerCity();
+
   const cityLevelGeneralResults = mapCityLevelGeneralResults(
     postalCodeLevelResultsResult.Items,
     postalCodeCityMappings,
@@ -19,90 +25,8 @@ export async function fetchCityLevelGeneralResults(app: App) {
 }
 
 //
-// Query
-
-// TODO: Move these queries to postalLevelGeneralResults.ts
-
-export interface PostalCodeLevelGeneralResultsQuery {
-  postal_code: string;
-  responses: string;
-  fever_no: string;
-  fever_slight: string;
-  fever_high: string;
-  cough_no: string;
-  cough_mild: string;
-  cough_intense: string;
-  general_wellbeing_fine: string;
-  general_wellbeing_impaired: string;
-  general_wellbeing_bad: string;
-  breathing_difficulties_no: string;
-  breathing_difficulties_yes: string;
-  muscle_pain_no: string;
-  muscle_pain_yes: string;
-  headache_no: string;
-  headache_yes: string;
-  sore_throat_no: string;
-  sore_throat_yes: string;
-  rhinitis_no: string;
-  rhinitis_yes: string;
-  stomach_issues_no: string;
-  stomach_issues_yes: string;
-  sensory_issues_no: string;
-  sensory_issues_yes: string;
-  longterm_medication_no: string;
-  longterm_medication_yes: string;
-  smoking_no: string;
-  smoking_yes: string;
-  corona_suspicion_no: string;
-  corona_suspicion_yes: string;
-}
-
-export const postalCodeLevelGeneralResultsQuery = `SELECT postal_code,
-  COUNT(*) AS responses,
-  COUNT(IF ( fever = 'no', 1, NULL)) AS fever_no,
-  COUNT(IF ( fever = 'slight', 1, NULL)) AS fever_slight,
-  COUNT(IF ( fever = 'high', 1, NULL)) AS fever_high,
-  COUNT(IF ( cough = 'no', 1, NULL)) AS cough_no,
-  COUNT(IF ( cough = 'mild', 1, NULL)) AS cough_mild,
-  COUNT(IF ( cough = 'intense', 1, NULL)) AS cough_intense,
-  COUNT(IF ( general_wellbeing = 'fine', 1, NULL)) AS general_wellbeing_fine,
-  COUNT(IF ( general_wellbeing = 'impaired', 1, NULL)) AS general_wellbeing_impaired,
-  COUNT(IF ( general_wellbeing = 'bad', 1, NULL)) AS general_wellbeing_bad,
-  COUNT(IF ( breathing_difficulties = 'no', 1, NULL)) AS breathing_difficulties_no,
-  COUNT(IF ( breathing_difficulties = 'yes', 1, NULL)) AS breathing_difficulties_yes,
-  COUNT(IF ( muscle_pain = 'no', 1, NULL)) AS muscle_pain_no,
-  COUNT(IF ( muscle_pain = 'yes', 1, NULL)) AS muscle_pain_yes,
-  COUNT(IF ( headache = 'no', 1, NULL)) AS headache_no,
-  COUNT(IF ( headache = 'yes', 1, NULL)) AS headache_yes,
-  COUNT(IF ( sore_throat = 'no', 1, NULL)) AS sore_throat_no,
-  COUNT(IF ( sore_throat = 'yes', 1, NULL)) AS sore_throat_yes,
-  COUNT(IF ( rhinitis = 'no', 1, NULL)) AS rhinitis_no,
-  COUNT(IF ( rhinitis = 'yes', 1, NULL)) AS rhinitis_yes,
-  COUNT(IF ( stomach_issues = 'no', 1, NULL)) AS stomach_issues_no,
-  COUNT(IF ( stomach_issues = 'yes', 1, NULL)) AS stomach_issues_yes,
-  COUNT(IF ( sensory_issues = 'no', 1, NULL)) AS sensory_issues_no,
-  COUNT(IF ( sensory_issues = 'yes', 1, NULL)) AS sensory_issues_yes,
-  COUNT(IF ( longterm_medication	 = 'no', 1, NULL)) AS longterm_medication_no,
-  COUNT(IF ( longterm_medication	 = 'yes', 1, NULL)) AS longterm_medication_yes,
-  COUNT(IF ( smoking	 = 'no', 1, NULL)) AS smoking_no,
-  COUNT(IF ( smoking	 = 'yes', 1, NULL)) AS smoking_yes,
-  COUNT(IF ( corona_suspicion	 = 'no', 1, NULL)) AS corona_suspicion_no,
-  COUNT(IF ( corona_suspicion	 = 'yes', 1, NULL)) AS corona_suspicion_yes
-FROM responses WHERE (country_code = 'FI' or country_code = '')
-GROUP BY  postal_code
-ORDER BY  responses DESC`;
-
-export async function queryPostalCodeLevelGeneralResults(app: App) {
-  return app.athenaClient.query<PostalCodeLevelGeneralResultsQuery>({
-    sql: postalCodeLevelGeneralResultsQuery,
-    db: app.constants.athenaDb,
-  });
-}
-
-//
 // Map
 
-// NOTE: Reuse for postal code level data
 export interface CityLevelGeneralResult {
   city: string;
   population: number;
@@ -300,7 +224,7 @@ export function filterResultsByCity(resultsByCity: ResultsByCity, fn: (cityData:
 //
 // Push
 
-async function pushCityLevelGeneralResults(app: App, cityLevelGeneralResults: CityLevelGeneralResults) {
+export async function pushCityLevelGeneralResults(app: App, cityLevelGeneralResults: CityLevelGeneralResults) {
   return s3PutJsonHelper(app.s3Client, {
     Bucket: app.constants.openDataBucket,
     Key: app.constants.cityLevelGeneralResultsKey,

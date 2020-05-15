@@ -104,6 +104,7 @@ locals {
   open_data_files = toset([
     "low_population_postal_codes",
     "population_per_city",
+    "postalcode_areas",
     "postalcode_city_mappings",
     "topojson_finland_simplified",
     "topojson_finland_without_aland",

@@ -5,6 +5,7 @@ import { Router, RouteComponentProps } from '@reach/router';
 import * as d3 from 'd3';
 import MapView from './map/MapView';
 import TableView from './TableView';
+import Overview from './Overview';
 
 import SubNav from './SubNav';
 
@@ -174,6 +175,7 @@ const MainWrapper = (props: MainWrapperProps) => {
           lastUpdated={lastUpdated}
         />
         <TableView path="dashboard" isEmbed={isEmbed} cities={cities} data={data} lastUpdated={lastUpdated} />
+        <Overview path="overview" isEmbed={isEmbed} data={data} />
       </Router>
     </>
   );

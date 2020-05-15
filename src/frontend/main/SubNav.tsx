@@ -28,11 +28,11 @@ const RouterLink = styled(Link)`
   display: flex;
   text-decoration: none;
 
-  &:nth-child(1) span {
+  & span {
     border-left: 1px solid ${props => props.theme.grey};
   }
 
-  &:nth-child(2) span {
+  &:last-child span {
     border-right: 1px solid ${props => props.theme.grey};
   }
 `;
@@ -68,6 +68,15 @@ const SubNav = ({ isEmbed }: SubNavProps) => {
   return (
     <>
       <SubNavContainer>
+        <Match path="overview">
+          {({ match }) => (
+            <RouterLink to="overview">
+              <SubNavLink isActive={match ? true : false} isEmbed={isEmbed}>
+                Overview
+              </SubNavLink>
+            </RouterLink>
+          )}
+        </Match>
         <Match path={mapPath}>
           {({ match }) => (
             <RouterLink to={mapPath}>

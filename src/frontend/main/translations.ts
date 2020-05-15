@@ -19,6 +19,12 @@ export function getLocaleDateMonth(date: Date): string {
   return currentLocale === 'fi-FI' ? `${dmString}.` : dmString;
 }
 
+export function getLocaleDecimalString(n: number, dec: number = 2): string {
+  const multiplier = Math.pow(10, dec);
+  const currentLocale = getCurrentLocale();
+  return (Math.round(n * multiplier) / multiplier).toLocaleString(currentLocale);
+}
+
 export default {
   en: {
     format: {

@@ -1,34 +1,24 @@
 import fs from 'fs';
 import { promisify } from 'util';
 import yargs from 'yargs';
-<<<<<<< HEAD
 import { createApp, App, AppConstants } from './app';
 import { fetchOpenDataIndex, pushOpenDataIndex } from './dataExports/openDataIndex';
 import { fetchTotalResponses, pushTotalResponses } from './dataExports/totalResponses';
 import { fetchCityLevelGeneralResults, pushCityLevelGeneralResults } from './dataExports/cityLevelGeneralResults';
 import {
-  fetchCityLevelWeeklyGeneralResults,
-  pushCityLevelWeeklyGeneralResults,
-} from './dataExports/cityLevelWeeklyGeneralResults';
+  fetchCityLevelPastWeekGeneralResults,
+  pushCityLevelPastWeekGeneralResults,
+} from './dataExports/cityLevelPastWeekGeneralResults';
 import { fetchDailyTotals, pushDailyTotals } from './dataExports/dailyTotals';
 import {
   fetchPostalCodeLevelGeneralResults,
   pushPostalCodeLevelGeneralResults,
 } from './dataExports/postalCodeLevelGeneralResults';
-=======
-import { createApp } from './app';
-import { fetchOpenDataIndex } from './dataExports/openDataIndex';
-import { fetchTotalResponses } from './dataExports/totalResponses';
-import { fetchCityLevelGeneralResults } from './dataExports/cityLevelGeneralResults';
-import { fetchCityLevelPastWeekGeneralResults } from './dataExports/cityLevelPastWeekGeneralResults';
-import { fetchDailyTotals } from './dataExports/dailyTotals';
->>>>>>> master
 
 const writeFile = promisify(fs.writeFile);
 
 const app = createApp();
 
-<<<<<<< HEAD
 interface DataExportHandler {
   fetch(app: App): Promise<any>;
   push(app: App, data: any): Promise<void>;
@@ -47,31 +37,15 @@ const dataExportHandlers: { [K in keyof AppConstants]?: DataExportHandler } = {
     fetch: fetchCityLevelGeneralResults,
     push: pushCityLevelGeneralResults,
   },
-  [app.constants.cityLevelWeeklyGeneralResultsKey]: {
-    fetch: fetchCityLevelWeeklyGeneralResults,
-    push: pushCityLevelWeeklyGeneralResults,
+  [app.constants.cityLevelPastWeekGeneralResultsKey]: {
+    fetch: fetchCityLevelPastWeekGeneralResults,
+    push: pushCityLevelPastWeekGeneralResults,
   },
   [app.constants.postalCodeLevelGeneralResultsKey]: {
     fetch: fetchPostalCodeLevelGeneralResults,
     push: pushPostalCodeLevelGeneralResults,
   },
   [app.constants.dailyTotalsKey]: { fetch: fetchDailyTotals, push: pushDailyTotals },
-=======
-const openDataFilenames = [
-  app.constants.openDataIndexKey,
-  app.constants.totalResponsesKey,
-  app.constants.cityLevelGeneralResultsKey,
-  app.constants.cityLevelPastWeekGeneralResultsKey,
-  app.constants.dailyTotalsKey,
-];
-
-const dumpHandlers = {
-  [app.constants.openDataIndexKey]: fetchOpenDataIndex,
-  [app.constants.totalResponsesKey]: fetchTotalResponses,
-  [app.constants.cityLevelGeneralResultsKey]: fetchCityLevelGeneralResults,
-  [app.constants.cityLevelPastWeekGeneralResultsKey]: fetchCityLevelPastWeekGeneralResults,
-  [app.constants.dailyTotalsKey]: fetchDailyTotals,
->>>>>>> master
 };
 
 interface CommonArgs {

@@ -209,9 +209,7 @@ export function accumulateResultsByCity(
     const city = postalCodeCityMappings.data[postalCodeData.postal_code];
 
     if (!city || !(city in resultsByCity)) {
-      console.warn(
-        `WARNING: mapCityLevelWeeklyGeneralResults: Skipping unknown postal code ${postalCodeData.postal_code}`,
-      );
+      console.warn(`WARNING: accumulateResultsByCity: Skipping unknown postal code ${postalCodeData.postal_code}`);
       continue;
     }
 

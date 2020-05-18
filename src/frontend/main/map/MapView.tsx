@@ -8,7 +8,6 @@ import MapContainer from './MapContainer';
 import CloseIcon from '../assets/CloseIcon';
 import { FILTERS, theme } from '../constants';
 import { getLocaleDateMonth, getCurrentLocale } from '../translations';
-import SubNav from '../SubNav';
 
 type FilterKey = keyof typeof FILTERS;
 

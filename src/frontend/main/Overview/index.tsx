@@ -20,8 +20,7 @@ const Table = styled.table`
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
-  border-bottom: 1px solid #ddd;
-  margin: 40px 0 30px 0;
+  margin: 10px 0 30px 0;
 
   th {
     font-weight: normal;
@@ -34,7 +33,7 @@ const Table = styled.table`
 
   th,
   td {
-    padding: 5px 4px;
+    padding: 6px 4px;
     line-height: 1.1;
     vertical-align: top;
   }
@@ -62,6 +61,10 @@ const Container = styled.div`
   max-width: ${({ theme }) => theme.mobileWidth}px;
   margin: 0 auto;
   padding: 0 10px;
+
+  @media (max-width: ${({ theme }) => theme.mobileWidth}px) {
+    padding: 0;
+  }
 
   h1 {
     font-size: 32px;
@@ -94,6 +97,12 @@ const TableHead = styled.thead`
   th {
     padding: 10px 4px;
     font-size: 14px;
+  }
+`;
+
+const MobilePadding = styled.div`
+  @media (max-width: ${({ theme }) => theme.mobileWidth}px) {
+    padding: 0 16px;
   }
 `;
 
@@ -152,36 +161,16 @@ const ColorBox = styled.div<ColorBoxProps>`
 `;
 
 const symptomList = [
-  {
-    symptomID: 'corona_suspicion',
-  },
-  {
-    symptomID: 'fever',
-  },
-  {
-    symptomID: 'cough',
-  },
-  {
-    symptomID: 'breathing_difficulties',
-  },
-  {
-    symptomID: 'muscle_pain',
-  },
-  {
-    symptomID: 'headache',
-  },
-  {
-    symptomID: 'sore_throat',
-  },
-  {
-    symptomID: 'rhinitis',
-  },
-  {
-    symptomID: 'stomach_issues',
-  },
-  {
-    symptomID: 'sensory_issues',
-  },
+  { symptomID: 'corona_suspicion' },
+  { symptomID: 'fever' },
+  { symptomID: 'cough' },
+  { symptomID: 'breathing_difficulties' },
+  { symptomID: 'muscle_pain' },
+  { symptomID: 'headache' },
+  { symptomID: 'sore_throat' },
+  { symptomID: 'rhinitis' },
+  { symptomID: 'stomach_issues' },
+  { symptomID: 'sensory_issues' },
 ];
 
 const initialTotalData = {
@@ -294,29 +283,37 @@ const Dashboard = (props: DashboardViewProps) => {
 
   return (
     <Container>
-      <h1>{t('main:allOfFinland')}</h1>
-      <h2>{t('main:totalResponses')}</h2>
-      <NumberText>{finlandTotalData.responses.toLocaleString(currentLocale)}</NumberText> (
-      {t(`format:percentage`, {
-        percentage: getLocaleDecimalString((finlandTotalData.responses * 100) / finlandTotalData.population),
-      })}{' '}
-      {t('main:ofPopulation')})<h2>Respondant Suspecting Corona</h2>
-      <Div>
-        Approx. every{' '}
-        <b>1 out of {getLocaleDecimalString(finlandTotalData.responses / finlandTotalData.corona_suspicion_yes, 0)}</b>{' '}
-        people who responded suspect Corona infection.
-      </Div>
-      <DonutSuspectingCorona
-        width={320}
-        height={320}
-        radius={160}
-        data={[
-          finlandTotalData.corona_suspicion_yes,
-          finlandTotalData.responses - finlandTotalData.corona_suspicion_yes,
-        ]}
-        color={['#FF5252', '#ececec']}
-      />
-      <h2>{t('main:topSymptoms')}</h2>
+      <MobilePadding>
+        <h1>{t('main:allOfFinland')}</h1>
+        <h2>{t('main:totalResponses')}</h2>
+        <NumberText>{finlandTotalData.responses.toLocaleString(currentLocale)}</NumberText> (
+        {t(`format:percentage`, {
+          percentage: getLocaleDecimalString((finlandTotalData.responses * 100) / finlandTotalData.population),
+        })}{' '}
+        {t('main:ofPopulation')})<h2>Respondant Suspecting Corona</h2>
+        <Div>
+          Approx. every{' '}
+          <b>
+            1 out of {getLocaleDecimalString(finlandTotalData.responses / finlandTotalData.corona_suspicion_yes, 0)}
+          </b>{' '}
+          people who responded suspect Corona infection.
+        </Div>
+        <DonutSuspectingCorona
+          width={280}
+          height={280}
+          radius={140}
+          data={[
+            finlandTotalData.corona_suspicion_yes,
+            finlandTotalData.responses - finlandTotalData.corona_suspicion_yes,
+          ]}
+          color={['#FF5252', '#ececec']}
+        />
+      </MobilePadding>
+
+      <MobilePadding>
+        <h2>{t('main:topSymptoms')}</h2>
+      </MobilePadding>
+
       <Table>
         <TableHead>
           <tr>
@@ -329,54 +326,58 @@ const Dashboard = (props: DashboardViewProps) => {
         </TableHead>
         <tbody>{tableRow}</tbody>
       </Table>
-      <h2>Time Development</h2>
-      <SelectionContainer>
-        <CitySelect>
-          <select
-            name="select"
-            id="symptom1"
-            value={selectedSymptomFirstLine}
-            onChange={e => setSelectedSymptomFirstLine(e.currentTarget.value)}
-          >
-            {symptomList.map((symptom: { symptomID: string }, i: number) => {
-              return (
-                <option key={i} value={symptom.symptomID}>
-                  {t(`symptomLabels:${symptom.symptomID}`)}
-                </option>
-              );
-            })}
-          </select>
-        </CitySelect>
-        <p>v/s</p>
-        <CitySelect>
-          <select
-            name="select"
-            id="symptom2"
-            value={selectedSymptomSecondLine}
-            onChange={e => setSelectedSymptomSecondLine(e.currentTarget.value)}
-          >
-            {symptomList.map((symptom: { symptomID: string }, i: number) => {
-              return (
-                <option key={i} value={symptom.symptomID}>
-                  {t(`symptomLabels:${symptom.symptomID}`)}
-                </option>
-              );
-            })}
-          </select>
-        </CitySelect>
-      </SelectionContainer>
-      <KeyContainer>
-        <Keys>
-          <Key>
-            <ColorBox backgroundColor="#FF5252" />
-            <p>{t(`symptomLabels:${selectedSymptomFirstLine}`)}</p>
-          </Key>
-          <Key>
-            <ColorBox backgroundColor="#241A5F" />
-            <p>{t(`symptomLabels:${selectedSymptomSecondLine}`)}</p>
-          </Key>
-        </Keys>
-      </KeyContainer>
+
+      <MobilePadding>
+        <h2>Time Development</h2>
+        <SelectionContainer>
+          <CitySelect>
+            <select
+              name="select"
+              id="symptom1"
+              value={selectedSymptomFirstLine}
+              onChange={e => setSelectedSymptomFirstLine(e.currentTarget.value)}
+            >
+              {symptomList.map((symptom: { symptomID: string }, i: number) => {
+                return (
+                  <option key={i} value={symptom.symptomID}>
+                    {t(`symptomLabels:${symptom.symptomID}`)}
+                  </option>
+                );
+              })}
+            </select>
+          </CitySelect>
+          <p>v/s</p>
+          <CitySelect>
+            <select
+              name="select"
+              id="symptom2"
+              value={selectedSymptomSecondLine}
+              onChange={e => setSelectedSymptomSecondLine(e.currentTarget.value)}
+            >
+              {symptomList.map((symptom: { symptomID: string }, i: number) => {
+                return (
+                  <option key={i} value={symptom.symptomID}>
+                    {t(`symptomLabels:${symptom.symptomID}`)}
+                  </option>
+                );
+              })}
+            </select>
+          </CitySelect>
+        </SelectionContainer>
+        <KeyContainer>
+          <Keys>
+            <Key>
+              <ColorBox backgroundColor="#FF5252" />
+              <p>{t(`symptomLabels:${selectedSymptomFirstLine}`)}</p>
+            </Key>
+            <Key>
+              <ColorBox backgroundColor="#241A5F" />
+              <p>{t(`symptomLabels:${selectedSymptomSecondLine}`)}</p>
+            </Key>
+          </Keys>
+        </KeyContainer>
+      </MobilePadding>
+
       <TimeSeries
         width={window.innerWidth > 648 ? 600 : window.innerWidth - 48}
         height={window.innerWidth > 648 ? 400 : ((window.innerWidth - 48) * 2) / 3}

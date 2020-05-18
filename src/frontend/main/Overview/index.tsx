@@ -46,10 +46,22 @@ const Table = styled.table`
     text-align: right;
   }
 
-  th:nth-child(3),
   td:nth-child(3) {
-    width: 21ch;
+    width: 10ch;
+    padding-right: 2px;
+    text-align: right;
+  }
+
+  td:nth-child(4) {
+    width: 12ch;
     padding-right: 16px;
+    text-align: right;
+  }
+
+  /* third th has colSpan = 2, so its width equals nth-child 3 and 4 of td combined */
+  th:nth-child(3) {
+    padding-right: 16px;
+    width: 22ch;
     text-align: right;
   }
 
@@ -242,7 +254,7 @@ const Dashboard = (props: DashboardViewProps) => {
 
   props.data.forEach((d: any) => {
     finlandTotalData.population += d.population;
-    if (d.responses !== -1) {
+    if (d.responses > -1) {
       finlandTotalData.responses += d.responses;
       finlandTotalData.corona_suspicion_yes += d.corona_suspicion_yes;
       finlandTotalData.symptoms.forEach((el: any) => {
@@ -265,23 +277,24 @@ const Dashboard = (props: DashboardViewProps) => {
           <b>{i + 1}.</b>
         </td>
         <td>{t(`symptomLabels:${d.symptomLabel}`)}</td>
+        <td>{d.value.toLocaleString(currentLocale)}</td>
         <td>
-          {d.value.toLocaleString(currentLocale)} (
-          {getLocaleDecimalString((d.value * 100) / finlandTotalData.responses)}
-          %)
+          (
+          {t('format:percentage', { percentage: getLocaleDecimalString((d.value * 100) / finlandTotalData.responses) })}
+          )
         </td>
       </tr>
     );
   });
 
-  const topCities: any = [...props.data]
-    .filter((d: any) => d.responses !== -1)
-    .sort((a, b) => {
-      return (b.corona_suspicion_yes * 100) / b.responses - (a.corona_suspicion_yes * 100) / a.responses;
-    })
-    .filter((d: any, i: number) => i < 10);
-
-  console.log(topCities);
+  // This data is not in used at the moment. Commenting out for now.
+  // const topCities: any = [...props.data]
+  //  .filter((d: any) => d.responses !== -1)
+  //  .sort((a, b) => {
+  //    return (b.corona_suspicion_yes * 100) / b.responses - (a.corona_suspicion_yes * 100) / a.responses;
+  //  })
+  //  .filter((d: any, i: number) => i < 10);
+  // console.log(topCities);
 
   return (
     <Container>
@@ -321,7 +334,7 @@ const Dashboard = (props: DashboardViewProps) => {
           <tr>
             <th></th>
             <th></th>
-            <th>
+            <th colSpan={2}>
               <i>{t('main:respondents')}</i>
             </th>
           </tr>

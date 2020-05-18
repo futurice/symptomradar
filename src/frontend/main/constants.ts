@@ -1,3 +1,16 @@
+export enum SYMPTOMS {
+  corona_suspicion = 'corona_suspicion',
+  fever = 'fever',
+  cough = 'cough',
+  breathing_difficulties = 'breathing_difficulties',
+  muscle_pain = 'muscle_pain',
+  headache = 'headache',
+  sore_throat = 'sore_throat',
+  rhinitis = 'rhinitis',
+  stomach_issues = 'stomach_issues',
+  sensory_issues = 'sensory_issues',
+}
+
 export const FILTERS = {
   corona_suspicion_yes: { id: 'corona_suspicion_yes', label: 'corona_suspicion' },
   cough_yes: { id: 'cough_yes', label: 'cough' },

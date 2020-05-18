@@ -80,6 +80,7 @@ export default {
       municipality: 'Municipality',
     },
     navigation: {
+      overview: 'Overview',
       map: 'Map',
       survey: 'Survey',
       info: 'Info',
@@ -157,6 +158,7 @@ The information was collected using a questionnaire form. This site displays the
       municipality: 'Kunta',
     },
     navigation: {
+      overview: 'Overview',
       map: 'Kartta',
       survey: 'Kyselylomake',
       info: 'Info',

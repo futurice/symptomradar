@@ -4,7 +4,7 @@ type svgProps = {
   fillColor: string;
 };
 
-const AboutIcon = ({ fillColor }: svgProps) => {
+const MapIcon = ({ fillColor }: svgProps) => {
   const pathFill = fillColor || '#000';
 
   return (
@@ -33,4 +33,4 @@ const AboutIcon = ({ fillColor }: svgProps) => {
   );
 };
 
-export default AboutIcon;
+export default MapIcon;

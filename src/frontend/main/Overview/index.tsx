@@ -3,11 +3,12 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import TimeSeries from './TimeSeries';
 import DonutSuspectingCorona from './DonutSuspectingCorona';
-import { RouteComponentProps } from '@reach/router';
+import { RouteComponentProps, Link } from '@reach/router';
 
 import { getLocaleDecimalString, getCurrentLocale } from '../translations';
 import { theme, FILTERS, Symptom } from '../constants';
 import { CompareFilterToggle } from '../FilterToggle';
+import RightArrowIcon from '../assets/RightArrowIcon';
 
 interface OverviewProps extends RouteComponentProps {
   isEmbed: boolean;
@@ -151,6 +152,28 @@ const SecondActiveFilter = styled(ActiveFilter)`
   background: ${({ theme }) => theme.darkBlue};
 `;
 
+const MapLink = styled(Link)`
+  background: ${({ theme }) => theme.grey};
+  color: ${({ theme }) => theme.white};
+  font-weight: bold;
+  height: 35px;
+  border-radius: 18px;
+  text-decoration: none;
+  display: inline-flex;
+  padding: 0 16px;
+  align-items: center;
+
+  svg {
+    margin-left: 8px;
+  }
+`;
+
+const OverviewFooter = styled.div`
+  margin: 35px 0;
+  padding: 16px 0;
+  border-top: 1px solid ${({ theme }) => theme.black};
+`;
+
 const Overview = (props: OverviewProps) => {
   const [selectedSymptomSecondLine, setSelectedSymptomSecondLine] = useState<Symptom>(Symptom.fever);
   const [selectedSymptomFirstLine, setSelectedSymptomFirstLine] = useState(Symptom.corona_suspicion);
@@ -278,6 +301,14 @@ const Overview = (props: OverviewProps) => {
         selectedSymptomFirstLine={selectedSymptomFirstLine}
         selectedSymptom={selectedSymptomSecondLine}
       />
+
+      <MobilePadding>
+        <OverviewFooter>
+          <MapLink to="map">
+            Go to map <RightArrowIcon fillColor={theme.white} />
+          </MapLink>
+        </OverviewFooter>
+      </MobilePadding>
     </Container>
   );
 };

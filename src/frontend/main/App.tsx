@@ -115,6 +115,16 @@ export const App = () => {
           }}
         </Location>
         <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}></Menu>
+        {/*
+         * Route structure:
+         * ===============
+         * /      -> Overview
+         * map    -> MapView
+         * cities -> TableView
+         * map-embed/       -> Overview
+         * map-embed/map    -> MapView
+         * map-embed/cities -> TableView
+         * */}
         <main>
           <Router>
             <MainWrapper path="/*" responseData={data} isEmbed={false} />

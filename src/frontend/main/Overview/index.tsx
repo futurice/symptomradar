@@ -9,7 +9,7 @@ import { getLocaleDecimalString, getCurrentLocale } from '../translations';
 import { theme, FILTERS, Symptom } from '../constants';
 import { CompareFilterToggle } from '../FilterToggle';
 
-interface CitiesViewProps extends RouteComponentProps {
+interface OverviewProps extends RouteComponentProps {
   isEmbed: boolean;
   data: any;
 }
@@ -151,7 +151,7 @@ const SecondActiveFilter = styled(ActiveFilter)`
   background: ${({ theme }) => theme.darkBlue};
 `;
 
-const Cities = (props: CitiesViewProps) => {
+const Overview = (props: OverviewProps) => {
   const [selectedSymptomSecondLine, setSelectedSymptomSecondLine] = useState<Symptom>(Symptom.fever);
   const [selectedSymptomFirstLine, setSelectedSymptomFirstLine] = useState(Symptom.corona_suspicion);
   const { t } = useTranslation(['symptoms', 'main']);
@@ -202,7 +202,7 @@ const Cities = (props: CitiesViewProps) => {
     );
   });
 
-  // This data is not in used at the moment. Commenting out for now.
+  // This data is not in use at the moment. Commenting out for now.
   // const topCities: any = [...props.data]
   //  .filter((d: any) => d.responses !== -1)
   //  .sort((a, b) => {
@@ -282,4 +282,4 @@ const Cities = (props: CitiesViewProps) => {
   );
 };
 
-export default Cities;
+export default Overview;

@@ -6,7 +6,8 @@ import DonutSuspectingCorona from './DonutSuspectingCorona';
 import { RouteComponentProps } from '@reach/router';
 
 import { getLocaleDecimalString, getCurrentLocale } from '../translations';
-import { theme } from '../constants';
+import { theme, FILTERS, Symptom } from '../constants';
+import { CompareFilterToggle } from '../FilterToggle';
 
 interface DashboardViewProps extends RouteComponentProps {
   isEmbed: boolean;
@@ -39,30 +40,29 @@ const Table = styled.table`
     vertical-align: top;
   }
 
-  th:nth-child(1),
+  th:nth-child(1) {
+    width: calc(2ch + 16px);
+  }
+
+  th:nth-child(3) {
+    /* ch = relative width of a character "0", seems to
+     * fit better for adjusting number column width
+     * */
+    width: calc(17ch + 20px);
+    padding-right: 16px;
+    padding-left: 4px;
+    text-align: right;
+  }
+
   td:nth-child(1) {
     padding-left: 0;
-    width: 34px;
     text-align: right;
   }
 
   td:nth-child(3) {
-    width: 10ch;
-    padding-right: 2px;
-    text-align: right;
-  }
-
-  td:nth-child(4) {
-    width: 12ch;
     padding-right: 16px;
-    text-align: right;
-  }
-
-  /* third th has colSpan = 2, so its width equals nth-child 3 and 4 of td combined */
-  th:nth-child(3) {
-    padding-right: 16px;
-    width: 22ch;
-    text-align: right;
+    padding-left: 4px;
+    text-align: left;
   }
 
   tr:nth-child(2n + 1) {
@@ -173,84 +173,25 @@ const ColorBox = styled.div<ColorBoxProps>`
   background-color: ${props => props.backgroundColor};
 `;
 
-const symptomList = [
-  { symptomID: 'corona_suspicion' },
-  { symptomID: 'fever' },
-  { symptomID: 'cough' },
-  { symptomID: 'breathing_difficulties' },
-  { symptomID: 'muscle_pain' },
-  { symptomID: 'headache' },
-  { symptomID: 'sore_throat' },
-  { symptomID: 'rhinitis' },
-  { symptomID: 'stomach_issues' },
-  { symptomID: 'sensory_issues' },
-];
-
 const initialTotalData = {
   population: 0,
   responses: 0,
   corona_suspicion_yes: 0,
-  symptoms: [
-    {
-      symptom: 'corona_suspicion_yes',
-      symptomLabel: 'corona_suspicion',
-      value: 0,
-    },
-    {
-      symptom: 'fever_yes',
-      symptomLabel: 'fever',
-      value: 0,
-    },
-    {
-      symptom: 'cough_yes',
-      symptomLabel: 'cough',
-      value: 0,
-    },
-    {
-      symptom: 'breathing_difficulties_yes',
-      symptomLabel: 'breathing_difficulties',
-      value: 0,
-    },
-    {
-      symptom: 'muscle_pain_yes',
-      symptomLabel: 'muscle_pain',
-      value: 0,
-    },
-    {
-      symptom: 'headache_yes',
-      symptomLabel: 'headache',
-      value: 0,
-    },
-    {
-      symptom: 'sore_throat_yes',
-      symptomLabel: 'sore_throat',
-      value: 0,
-    },
-    {
-      symptom: 'rhinitis_yes',
-      symptomLabel: 'rhinitis',
-      value: 0,
-    },
-    {
-      symptom: 'stomach_issues_yes',
-      symptomLabel: 'stomach_issues',
-      value: 0,
-    },
-    {
-      symptom: 'sensory_issues_yes',
-      symptomLabel: 'sensory_issues',
-      value: 0,
-    },
-  ],
+  symptoms: Object.values(FILTERS).map(symptom => ({ symptom: symptom.id, symptomLabel: symptom.label, value: 0 })),
 };
 
 const Dashboard = (props: DashboardViewProps) => {
-  const [selectedSymptomSecondLine, setSelectedSymptomSecondLine] = useState('fever');
-  const [selectedSymptomFirstLine, setSelectedSymptomFirstLine] = useState('corona_suspicion');
+  const [selectedSymptomSecondLine, setSelectedSymptomSecondLine] = useState<Symptom>(Symptom.fever);
+  const [selectedSymptomFirstLine, setSelectedSymptomFirstLine] = useState(Symptom.corona_suspicion);
   const { t } = useTranslation(['symptoms', 'main']);
   const currentLocale = getCurrentLocale();
   const finlandTotalData = initialTotalData;
   const { mobileWidth } = theme;
+
+  const setSelectedSymptoms = (firstFilter: Symptom, secondFilter: Symptom) => {
+    setSelectedSymptomFirstLine(firstFilter);
+    setSelectedSymptomSecondLine(secondFilter);
+  };
 
   props.data.forEach((d: any) => {
     finlandTotalData.population += d.population;
@@ -271,17 +212,16 @@ const Dashboard = (props: DashboardViewProps) => {
   });
 
   const tableRow = finlandTotalData.symptoms.map((d, i: number) => {
+    const percentage = getLocaleDecimalString((d.value * 100) / finlandTotalData.responses);
     return (
       <tr key={`top-symptom-${d.symptom}`}>
         <td>
           <b>{i + 1}.</b>
         </td>
         <td>{t(`symptomLabels:${d.symptomLabel}`)}</td>
-        <td>{d.value.toLocaleString(currentLocale)}</td>
         <td>
-          (
-          {t('format:percentage', { percentage: getLocaleDecimalString((d.value * 100) / finlandTotalData.responses) })}
-          )
+          {d.value.toLocaleString(currentLocale)}
+          {` `}({t('format:percentage', { percentage })})
         </td>
       </tr>
     );
@@ -334,7 +274,7 @@ const Dashboard = (props: DashboardViewProps) => {
           <tr>
             <th></th>
             <th></th>
-            <th colSpan={2}>
+            <th>
               <i>{t('main:respondents')}</i>
             </th>
           </tr>
@@ -344,41 +284,11 @@ const Dashboard = (props: DashboardViewProps) => {
 
       <MobilePadding>
         <h2>Time Development</h2>
-        <SelectionContainer>
-          <CitySelect>
-            <select
-              name="select"
-              id="symptom1"
-              value={selectedSymptomFirstLine}
-              onChange={e => setSelectedSymptomFirstLine(e.currentTarget.value)}
-            >
-              {symptomList.map((symptom: { symptomID: string }, i: number) => {
-                return (
-                  <option key={i} value={symptom.symptomID}>
-                    {t(`symptomLabels:${symptom.symptomID}`)}
-                  </option>
-                );
-              })}
-            </select>
-          </CitySelect>
-          <p>v/s</p>
-          <CitySelect>
-            <select
-              name="select"
-              id="symptom2"
-              value={selectedSymptomSecondLine}
-              onChange={e => setSelectedSymptomSecondLine(e.currentTarget.value)}
-            >
-              {symptomList.map((symptom: { symptomID: string }, i: number) => {
-                return (
-                  <option key={i} value={symptom.symptomID}>
-                    {t(`symptomLabels:${symptom.symptomID}`)}
-                  </option>
-                );
-              })}
-            </select>
-          </CitySelect>
-        </SelectionContainer>
+        <CompareFilterToggle
+          firstSelectedFilter={selectedSymptomFirstLine}
+          secondSelectedFilter={selectedSymptomSecondLine}
+          handleFilterChange={setSelectedSymptoms}
+        />
         <KeyContainer>
           <Keys>
             <Key>

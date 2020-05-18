@@ -1,4 +1,4 @@
-export enum SYMPTOMS {
+export enum Symptom {
   corona_suspicion = 'corona_suspicion',
   fever = 'fever',
   cough = 'cough',
@@ -22,7 +22,7 @@ export const FILTERS = {
   rhinitis_yes: { id: 'rhinitis_yes', label: 'rhinitis' },
   stomach_issues_yes: { id: 'stomach_issues_yes', label: 'stomach_issues' },
   sensory_issues_yes: { id: 'sensory_issues_yes', label: 'sensory_issues' },
-} as Record<string, { id: string; label: SYMPTOMS }>;
+} as Record<string, { id: string; label: Symptom }>;
 
 export type FilterKey = keyof typeof FILTERS;
 

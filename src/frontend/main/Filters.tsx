@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
 import PrimaryButton from './PrimaryButton';
-import { FILTERS, FilterKey } from './constants';
+import { Symptom, FILTERS, FilterKey } from './constants';
 
 type FilterProps = {
   hide: () => void;
@@ -81,3 +81,55 @@ const Filters = ({ hide, selectedFilter, handleFilterChange }: FilterProps) => {
 };
 
 export default Filters;
+
+type CompareFilterProps = {
+  hide: () => void;
+  firstSelectedFilter: Symptom;
+  secondSelectedFilter: Symptom;
+  handleFilterChange: (firstFilter: Symptom, secondFilder: Symptom) => void;
+};
+
+// CompareFilters allows selecting 2 symptoms for stat comparison
+export const CompareFilters = ({
+  hide,
+  firstSelectedFilter,
+  secondSelectedFilter,
+  handleFilterChange,
+}: CompareFilterProps) => {
+  const [firstActiveFilter, setFirstActiveFilter] = useState<Symptom>(firstSelectedFilter);
+  const [secondActiveFilter, setSecondActiveFilter] = useState<Symptom>(secondSelectedFilter);
+  const { t } = useTranslation(['main', 'symptomLabels']);
+
+  const applyFilters = () => {
+    handleFilterChange(firstActiveFilter, secondActiveFilter);
+    hide();
+  };
+  return (
+    <div>
+      <H2>{t('main:filterDialogTitle')}</H2>
+      <H3>{t('main:symptoms')}</H3>
+      <TagGroup>
+        {Object.values(Symptom).map(symptomId => {
+          const isActive = symptomId === firstActiveFilter || symptomId === secondActiveFilter;
+          return (
+            <Tag
+              key={symptomId}
+              type="button"
+              label={t(`symptomLabels:${symptomId}`)}
+              isActive={isActive}
+              handleClick={() => {
+                if (!isActive) {
+                  setFirstActiveFilter(secondActiveFilter);
+                  setSecondActiveFilter(symptomId);
+                }
+              }}
+            ></Tag>
+          );
+        })}
+      </TagGroup>
+      <ButtonWrapper>
+        <ActionButton type="button" label={t('main:filterResponses')} handleClick={applyFilters} />
+      </ButtonWrapper>
+    </div>
+  );
+};

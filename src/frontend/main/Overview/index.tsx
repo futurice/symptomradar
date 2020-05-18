@@ -148,20 +148,17 @@ const SecondActiveFilter = styled(ActiveFilter)`
   background: ${({ theme }) => theme.darkBlue};
 `;
 
-const initialTotalData = {
-  population: 0,
-  responses: 0,
-  corona_suspicion_yes: 0,
-  symptoms: Object.values(FILTERS).map(symptom => ({ symptom: symptom.id, symptomLabel: symptom.label, value: 0 })),
-};
-
 const Dashboard = (props: DashboardViewProps) => {
   const [selectedSymptomSecondLine, setSelectedSymptomSecondLine] = useState<Symptom>(Symptom.fever);
   const [selectedSymptomFirstLine, setSelectedSymptomFirstLine] = useState(Symptom.corona_suspicion);
   const { t } = useTranslation(['symptoms', 'main']);
   const currentLocale = getCurrentLocale();
-  const finlandTotalData = initialTotalData;
-  const { mobileWidth } = theme;
+  const finlandTotalData = {
+    population: 0,
+    responses: 0,
+    corona_suspicion_yes: 0,
+    symptoms: Object.values(FILTERS).map(symptom => ({ symptom: symptom.id, symptomLabel: symptom.label, value: 0 })),
+  };
 
   const setSelectedSymptoms = (firstFilter: Symptom, secondFilter: Symptom) => {
     setSelectedSymptomFirstLine(firstFilter);
@@ -170,7 +167,7 @@ const Dashboard = (props: DashboardViewProps) => {
 
   props.data.forEach((d: any) => {
     finlandTotalData.population += d.population;
-    if (d.responses > -1) {
+    if (d.responses !== -1) {
       finlandTotalData.responses += d.responses;
       finlandTotalData.corona_suspicion_yes += d.corona_suspicion_yes;
       finlandTotalData.symptoms.forEach((el: any) => {
@@ -272,8 +269,8 @@ const Dashboard = (props: DashboardViewProps) => {
       </FiltersWrapper>
 
       <TimeSeries
-        width={window.innerWidth > mobileWidth ? 600 : window.innerWidth - 10}
-        height={window.innerWidth > 648 ? 400 : ((window.innerWidth - 10) * 3) / 4}
+        width={window.innerWidth > theme.mobileWidth ? 600 : window.innerWidth - 10}
+        height={window.innerWidth > theme.mobileWidth ? 400 : ((window.innerWidth - 10) * 3) / 4}
         selectedSymptomFirstLine={selectedSymptomFirstLine}
         selectedSymptom={selectedSymptomSecondLine}
       />

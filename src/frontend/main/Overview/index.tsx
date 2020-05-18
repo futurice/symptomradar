@@ -6,6 +6,7 @@ import DonutSuspectingCorona from './DonutSuspectingCorona';
 import { RouteComponentProps } from '@reach/router';
 
 import { getLocaleDecimalString, getCurrentLocale } from '../translations';
+import { theme } from '../constants';
 
 interface DashboardViewProps extends RouteComponentProps {
   isEmbed: boolean;
@@ -237,6 +238,7 @@ const Dashboard = (props: DashboardViewProps) => {
   const { t } = useTranslation(['symptoms', 'main']);
   const currentLocale = getCurrentLocale();
   const finlandTotalData = initialTotalData;
+  const { mobileWidth } = theme;
 
   props.data.forEach((d: any) => {
     finlandTotalData.population += d.population;
@@ -379,8 +381,8 @@ const Dashboard = (props: DashboardViewProps) => {
       </MobilePadding>
 
       <TimeSeries
-        width={window.innerWidth > 648 ? 600 : window.innerWidth - 48}
-        height={window.innerWidth > 648 ? 400 : ((window.innerWidth - 48) * 2) / 3}
+        width={window.innerWidth > mobileWidth ? 600 : window.innerWidth - 10}
+        height={window.innerWidth > 648 ? 400 : ((window.innerWidth - 10) * 3) / 4}
         selectedSymptomFirstLine={selectedSymptomFirstLine}
         selectedSymptom={selectedSymptomSecondLine}
       />

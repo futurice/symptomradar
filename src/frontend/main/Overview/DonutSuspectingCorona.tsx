@@ -29,7 +29,6 @@ const Donut: React.FunctionComponent<{
       .outerRadius(props.radius - 10);
 
     let g = svg.append('g').attr('transform', `translate(${props.radius},${props.radius})`);
-    console.log(pie(props.data));
     g.append('text')
       .attr('fill', props.color[0])
       .attr('text-anchor', 'middle')

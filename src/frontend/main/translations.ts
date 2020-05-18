@@ -45,6 +45,8 @@ export default {
       loss_smell_or_taste: 'Loss of smell or taste',
     },
     main: {
+      respondents: 'Respondents',
+      topSymptoms: 'Top symptoms',
       loading: 'Loading...',
       errorLoadingData: 'Error loading data',
       languageSelector: 'Language',
@@ -120,6 +122,8 @@ The information was collected using a questionnaire form. This site displays the
       loss_smell_or_taste: 'Hajuaistin tai makuaistin heikkenemistä',
     },
     main: {
+      respondents: 'Respondents',
+      topSymptoms: 'Top symptoms',
       loading: 'Ladataan...',
       errorLoadingData: 'Virhe tietojen latauksessa',
       languageSelector: 'Kieli',

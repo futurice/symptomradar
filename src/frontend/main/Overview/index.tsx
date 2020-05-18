@@ -21,7 +21,7 @@ const Table = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
   border-bottom: 1px solid #ddd;
-  margin: 16px 0 30px 0;
+  margin: 40px 0 30px 0;
 
   th {
     font-weight: normal;
@@ -34,51 +34,45 @@ const Table = styled.table`
 
   th,
   td {
-    padding: 10px 4px;
-
-    @media (min-width: 450px) {
-      width: 140px;
-    }
+    padding: 5px 4px;
+    line-height: 1.1;
+    vertical-align: top;
   }
 
   th:nth-child(1),
   td:nth-child(1) {
-    padding-left: 16px;
-    width: 7%;
+    padding-left: 0;
+    width: 34px;
+    text-align: right;
   }
 
   th:nth-child(3),
   td:nth-child(3) {
-    width: 25%;
+    width: 21ch;
     padding-right: 16px;
     text-align: right;
   }
 
-  tr:nth-child(2n) {
-    background: #f1f1f1;
+  tr:nth-child(2n + 1) {
+    background: ${({ theme }) => theme.lightGrey};
   }
 `;
 
 const Container = styled.div`
-  max-width: 648px;
+  max-width: ${({ theme }) => theme.mobileWidth}px;
   margin: 0 auto;
-  padding: 24px;
-`;
+  padding: 0 10px;
 
-const Heading = styled.div`
-  font-size: 22px;
-  font-weight: bold;
-  margin: 30px 0 5px 0;
-`;
+  h1 {
+    font-size: 32px;
+    margin-bottom: 5px;
+    margin-top: 24px;
+  }
 
-const H1 = styled.h1`
-  font-size: 32px;
-  font-weight: bold;
-  margin-bottom: 5px;
-`;
-
-const P = styled.p`
-  margin-top: 0;
+  h2 {
+    font-size: 22px;
+    margin: 45px 0 5px 0;
+  }
 `;
 
 const NumberText = styled.span`
@@ -92,16 +86,13 @@ const Div = styled.div`
   margin: 10px 0;
 `;
 
-const SpanBold = styled.span`
-  font-weight: bold;
-`;
-
 const TableHead = styled.thead`
-  background: ${props => props.theme.lightGrey};
+  tr:first-child {
+    background: ${props => props.theme.white};
+  }
 
   th {
     padding: 10px 4px;
-    font-weight: bold;
     font-size: 14px;
   }
 `;
@@ -193,68 +184,70 @@ const symptomList = [
   },
 ];
 
+const initialTotalData = {
+  population: 0,
+  responses: 0,
+  corona_suspicion_yes: 0,
+  symptoms: [
+    {
+      symptom: 'corona_suspicion_yes',
+      symptomLabel: 'corona_suspicion',
+      value: 0,
+    },
+    {
+      symptom: 'fever_yes',
+      symptomLabel: 'fever',
+      value: 0,
+    },
+    {
+      symptom: 'cough_yes',
+      symptomLabel: 'cough',
+      value: 0,
+    },
+    {
+      symptom: 'breathing_difficulties_yes',
+      symptomLabel: 'breathing_difficulties',
+      value: 0,
+    },
+    {
+      symptom: 'muscle_pain_yes',
+      symptomLabel: 'muscle_pain',
+      value: 0,
+    },
+    {
+      symptom: 'headache_yes',
+      symptomLabel: 'headache',
+      value: 0,
+    },
+    {
+      symptom: 'sore_throat_yes',
+      symptomLabel: 'sore_throat',
+      value: 0,
+    },
+    {
+      symptom: 'rhinitis_yes',
+      symptomLabel: 'rhinitis',
+      value: 0,
+    },
+    {
+      symptom: 'stomach_issues_yes',
+      symptomLabel: 'stomach_issues',
+      value: 0,
+    },
+    {
+      symptom: 'sensory_issues_yes',
+      symptomLabel: 'sensory_issues',
+      value: 0,
+    },
+  ],
+};
+
 const Dashboard = (props: DashboardViewProps) => {
   const [selectedSymptomSecondLine, setSelectedSymptomSecondLine] = useState('fever');
   const [selectedSymptomFirstLine, setSelectedSymptomFirstLine] = useState('corona_suspicion');
   const { t } = useTranslation(['symptoms', 'main']);
   const currentLocale = getCurrentLocale();
-  const finlandTotalData = {
-    population: 0,
-    responses: 0,
-    corona_suspicion_yes: 0,
-    symptoms: [
-      {
-        symptom: 'corona_suspicion_yes',
-        symptomLabel: 'corona_suspicion',
-        value: 0,
-      },
-      {
-        symptom: 'fever_yes',
-        symptomLabel: 'fever',
-        value: 0,
-      },
-      {
-        symptom: 'cough_yes',
-        symptomLabel: 'cough',
-        value: 0,
-      },
-      {
-        symptom: 'breathing_difficulties_yes',
-        symptomLabel: 'breathing_difficulties',
-        value: 0,
-      },
-      {
-        symptom: 'muscle_pain_yes',
-        symptomLabel: 'muscle_pain',
-        value: 0,
-      },
-      {
-        symptom: 'headache_yes',
-        symptomLabel: 'headache',
-        value: 0,
-      },
-      {
-        symptom: 'sore_throat_yes',
-        symptomLabel: 'sore_throat',
-        value: 0,
-      },
-      {
-        symptom: 'rhinitis_yes',
-        symptomLabel: 'rhinitis',
-        value: 0,
-      },
-      {
-        symptom: 'stomach_issues_yes',
-        symptomLabel: 'stomach_issues',
-        value: 0,
-      },
-      {
-        symptom: 'sensory_issues_yes',
-        symptomLabel: 'sensory_issues',
-        value: 0,
-      },
-    ],
-  };
+  const finlandTotalData = initialTotalData;
 
   props.data.forEach((d: any) => {
     finlandTotalData.population += d.population;
@@ -277,7 +270,9 @@ const Dashboard = (props: DashboardViewProps) => {
   const tableRow = finlandTotalData.symptoms.map((d, i: number) => {
     return (
       <tr key={`top-symptom-${d.symptom}`}>
-        <td>{i + 1}</td>
+        <td>
+          <b>{i + 1}.</b>
+        </td>
         <td>{t(`symptomLabels:${d.symptomLabel}`)}</td>
         <td>
           {d.value.toLocaleString(currentLocale)} (
@@ -299,45 +294,42 @@ const Dashboard = (props: DashboardViewProps) => {
 
   return (
     <Container>
-      <H1>{t('main:allOfFinland')}</H1>
-      <Heading>{t('main:totalResponses')}</Heading>
-      <P>
-        <NumberText>{finlandTotalData.responses.toLocaleString(currentLocale)}</NumberText> (
-        {t(`format:percentage`, {
-          percentage: getLocaleDecimalString((finlandTotalData.responses * 100) / finlandTotalData.population),
-        })}{' '}
-        {t('main:ofPopulation')})
-      </P>
-      <Heading>Respondant Suspecting Corona</Heading>
+      <h1>{t('main:allOfFinland')}</h1>
+      <h2>{t('main:totalResponses')}</h2>
+      <NumberText>{finlandTotalData.responses.toLocaleString(currentLocale)}</NumberText> (
+      {t(`format:percentage`, {
+        percentage: getLocaleDecimalString((finlandTotalData.responses * 100) / finlandTotalData.population),
+      })}{' '}
+      {t('main:ofPopulation')})<h2>Respondant Suspecting Corona</h2>
       <Div>
         Approx. every{' '}
-        <SpanBold>
-          1 out of {getLocaleDecimalString(finlandTotalData.responses / finlandTotalData.corona_suspicion_yes, 0)}
-        </SpanBold>{' '}
+        <b>1 out of {getLocaleDecimalString(finlandTotalData.responses / finlandTotalData.corona_suspicion_yes, 0)}</b>{' '}
         people who responded suspect Corona infection.
       </Div>
       <DonutSuspectingCorona
         width={320}
-        height={280}
-        radius={140}
+        height={320}
+        radius={160}
         data={[
           finlandTotalData.corona_suspicion_yes,
           finlandTotalData.responses - finlandTotalData.corona_suspicion_yes,
         ]}
         color={['#FF5252', '#ececec']}
       />
-      <Heading>Top Symptoms</Heading>
+      <h2>{t('main:topSymptoms')}</h2>
       <Table>
         <TableHead>
           <tr>
-            <th>Sr. No.</th>
-            <th>{t('main:symptoms')}</th>
-            <th>+ve Responses</th>
+            <th></th>
+            <th></th>
+            <th>
+              <i>{t('main:respondents')}</i>
+            </th>
           </tr>
         </TableHead>
         <tbody>{tableRow}</tbody>
       </Table>
-      <Heading>Time Development</Heading>
+      <h2>Time Development</h2>
       <SelectionContainer>
         <CitySelect>
           <select

@@ -79,11 +79,13 @@ const Container = styled.div`
     font-size: 32px;
     margin-bottom: 5px;
     margin-top: 24px;
+    line-height: 1.1;
   }
 
   h2 {
     font-size: 22px;
     margin: 45px 0 5px 0;
+    line-height: 1.1;
   }
 `;
 
@@ -92,10 +94,10 @@ const NumberText = styled.span`
   font-weight: bold;
 `;
 
-const Div = styled.div`
+const SubHeadline = styled.div`
   font-size: 18px;
   font-style: italic;
-  margin: 10px 0;
+  margin-bottom: 10px;
 `;
 
 const TableHead = styled.thead`
@@ -219,13 +221,13 @@ const Dashboard = (props: DashboardViewProps) => {
           percentage: getLocaleDecimalString((finlandTotalData.responses * 100) / finlandTotalData.population),
         })}{' '}
         {t('main:ofPopulation')})<h2>Respondant Suspecting Corona</h2>
-        <Div>
+        <SubHeadline>
           Approx. every{' '}
           <b>
             1 out of {getLocaleDecimalString(finlandTotalData.responses / finlandTotalData.corona_suspicion_yes, 0)}
           </b>{' '}
           people who responded suspect Corona infection.
-        </Div>
+        </SubHeadline>
         <DonutSuspectingCorona
           width={280}
           height={280}

@@ -87,6 +87,9 @@ const Container = styled.div`
     margin: 45px 0 5px 0;
     line-height: 1.1;
   }
+  p {
+    margin-top: 0;
+  }
 `;
 
 const NumberText = styled.span`
@@ -256,6 +259,7 @@ const Cities = (props: CitiesViewProps) => {
 
       <MobilePadding>
         <h2>Time Development</h2>
+        <p>Select two symptoms to compair their development over time.</p>
       </MobilePadding>
 
       <FiltersWrapper>

@@ -22,7 +22,7 @@ export const FILTERS = {
   rhinitis_yes: { id: 'rhinitis_yes', label: 'rhinitis' },
   stomach_issues_yes: { id: 'stomach_issues_yes', label: 'stomach_issues' },
   sensory_issues_yes: { id: 'sensory_issues_yes', label: 'sensory_issues' },
-};
+} as Record<string, { id: string; label: SYMPTOMS }>;
 
 export type FilterKey = keyof typeof FILTERS;
 

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
+import { RouteComponentProps } from '@reach/router';
+
 import FilterToggle from '../FilterToggle';
 import MapContainer from './MapContainer';
 import CloseIcon from '../assets/CloseIcon';
 import { FILTERS, theme } from '../constants';
 import { getLocaleDateMonth, getCurrentLocale } from '../translations';
-import { RouteComponentProps } from '@reach/router';
+import SubNav from '../SubNav';
 
 type FilterKey = keyof typeof FILTERS;
 
@@ -130,41 +132,43 @@ const MapView = (props: MapViewProps) => {
   }, [topPartHeight]);
 
   return (
-    <MapWrapper>
-      <MapContainer
-        mapShapeData={props.dataForMap}
-        selectedFilter={selectedFilter}
-        mapHeight={mapHeight}
-        popUpOpen={showMapInfo}
-      />
-      <Container>
-        <FilterWrapper isEmbed={props.isEmbed}>
-          <FilterToggle selectedFilter={selectedFilter} handleFilterChange={handleFilterChange} />
-          <ActiveFilter>{t(`symptomLabels:${FILTERS[selectedFilter].label}`)}</ActiveFilter>
-        </FilterWrapper>
-      </Container>
-      <MapInfo topBorder={showMapInfo}>
-        {showMapInfo && (
-          <>
-            <MapInfoContent className="popUp">
-              <CloseButton
-                type="button"
-                data-dismiss="modal"
-                aria-label={t('main:close')}
-                onClick={() => setShowMapInfo(false)}
-              >
-                <CloseIcon />
-              </CloseButton>
-              <p>{t('main:mapInfo')}</p>
-            </MapInfoContent>
-          </>
-        )}
-        <LastUpdated>
-          {t('main:totalResponses')}: {props.totalResponses.toLocaleString(currentLocale)} ({t('main:lastUpdated')}:{' '}
-          {getLocaleDateMonth(props.lastUpdated)})
-        </LastUpdated>
-      </MapInfo>
-    </MapWrapper>
+    <>
+      <MapWrapper>
+        <MapContainer
+          mapShapeData={props.dataForMap}
+          selectedFilter={selectedFilter}
+          mapHeight={mapHeight}
+          popUpOpen={showMapInfo}
+        />
+        <Container>
+          <FilterWrapper isEmbed={props.isEmbed}>
+            <FilterToggle selectedFilter={selectedFilter} handleFilterChange={handleFilterChange} />
+            <ActiveFilter>{t(`symptomLabels:${FILTERS[selectedFilter].label}`)}</ActiveFilter>
+          </FilterWrapper>
+        </Container>
+        <MapInfo topBorder={showMapInfo}>
+          {showMapInfo && (
+            <>
+              <MapInfoContent className="popUp">
+                <CloseButton
+                  type="button"
+                  data-dismiss="modal"
+                  aria-label={t('main:close')}
+                  onClick={() => setShowMapInfo(false)}
+                >
+                  <CloseIcon />
+                </CloseButton>
+                <p>{t('main:mapInfo')}</p>
+              </MapInfoContent>
+            </>
+          )}
+          <LastUpdated>
+            {t('main:totalResponses')}: {props.totalResponses.toLocaleString(currentLocale)} ({t('main:lastUpdated')}:{' '}
+            {getLocaleDateMonth(props.lastUpdated)})
+          </LastUpdated>
+        </MapInfo>
+      </MapWrapper>
+    </>
   );
 };
 

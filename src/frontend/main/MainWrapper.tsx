@@ -63,6 +63,9 @@ const MessageContainer = styled.div`
 const MainWrapper = (props: MainWrapperProps) => {
   const { isEmbed } = props;
   const { t } = useTranslation(['main']);
+  const showSubNav = props.location
+    ? ['/map', '/cities', '/map-embed/map', '/map-embed/cities'].indexOf(props.location.pathname) > -1
+    : false;
 
   if (props.responseData === 'FETCHING') {
     return <MessageContainer>{t('main:loading')}</MessageContainer>;
@@ -165,17 +168,17 @@ const MainWrapper = (props: MainWrapperProps) => {
 
   return (
     <>
-      <SubNav isEmbed={isEmbed} />
+      {showSubNav && <SubNav isEmbed={isEmbed} />}
       <Router>
+        <Overview path="/" isEmbed={isEmbed} data={data} />
         <MapView
-          path="/"
+          path="map"
           isEmbed={isEmbed}
           dataForMap={dataForMap}
           totalResponses={totalResponses}
           lastUpdated={lastUpdated}
         />
         <TableView path="cities" isEmbed={isEmbed} cities={cities} data={data} lastUpdated={lastUpdated} />
-        <Overview path="overview" isEmbed={isEmbed} data={data} />
       </Router>
     </>
   );

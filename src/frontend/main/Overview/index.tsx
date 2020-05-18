@@ -14,10 +14,6 @@ interface DashboardViewProps extends RouteComponentProps {
   data: any;
 }
 
-interface ColorBoxProps {
-  backgroundColor: string;
-}
-
 const Table = styled.table`
   width: 100%;
   table-layout: fixed;
@@ -114,63 +110,40 @@ const TableHead = styled.thead`
 `;
 
 const MobilePadding = styled.div`
+  width: 100%;
   @media (max-width: ${({ theme }) => theme.mobileWidth}px) {
     padding: 0 16px;
   }
 `;
 
-const SelectionContainer = styled.div`
+const FiltersWrapper = styled.div`
+  margin: 20px 0;
   display: flex;
-  align-items: center;
-  p {
-    margin: 0 10px;
-  }
-  margin: 20px 0 15px 0;
-`;
-
-const CitySelect = styled.div`
-  padding: 0;
-  display: flex;
-  align-items: center;
-  max-width: 600px;
-  margin: 0;
-  select {
-    background: ${props => props.theme.lightGrey};
-    padding: 5px;
-    border-radius: 5px;
-  }
-`;
-
-const KeyContainer = styled.div`
-  display: flex;
+  width: 100%;
   justify-content: flex-end;
 `;
 
-const Keys = styled.div`
-  display: flex;
-  background-color: rgba(255, 255, 255, 0.7);
-  margin-bottom: -30px;
-  z-index: 100;
-  position: relative;
-  width: fit-content;
-  p {
-    font-size: 14px;
-    margin: 0;
-  }
+const ActiveFilter = styled.div`
+  color: ${({ theme }) => theme.white};
+  font-weight: bold;
+  border-radius: 18px;
+  padding: 0 16px;
+  height: 35px;
+  line-height: 35px;
+  display: inline-block;
+  margin-right: 8px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
-const Key = styled.div`
-  display: flex;
-  margin: 10px;
-  align-items: center;
+const FirstActiveFilter = styled(ActiveFilter)`
+  background: ${({ theme }) => theme.red};
+  margin-left: 8px;
 `;
 
-const ColorBox = styled.div<ColorBoxProps>`
-  border-radius: 20px;
-  width: 16px;
-  height: 16px;
-  margin-right: 5px;
-  background-color: ${props => props.backgroundColor};
+const SecondActiveFilter = styled(ActiveFilter)`
+  background: ${({ theme }) => theme.darkBlue};
 `;
 
 const initialTotalData = {
@@ -284,24 +257,17 @@ const Dashboard = (props: DashboardViewProps) => {
 
       <MobilePadding>
         <h2>Time Development</h2>
+      </MobilePadding>
+
+      <FiltersWrapper>
+        <FirstActiveFilter>{t(`symptomLabels:${selectedSymptomFirstLine}`)}</FirstActiveFilter>
+        <SecondActiveFilter>{t(`symptomLabels:${selectedSymptomSecondLine}`)}</SecondActiveFilter>
         <CompareFilterToggle
           firstSelectedFilter={selectedSymptomFirstLine}
           secondSelectedFilter={selectedSymptomSecondLine}
           handleFilterChange={setSelectedSymptoms}
         />
-        <KeyContainer>
-          <Keys>
-            <Key>
-              <ColorBox backgroundColor="#FF5252" />
-              <p>{t(`symptomLabels:${selectedSymptomFirstLine}`)}</p>
-            </Key>
-            <Key>
-              <ColorBox backgroundColor="#241A5F" />
-              <p>{t(`symptomLabels:${selectedSymptomSecondLine}`)}</p>
-            </Key>
-          </Keys>
-        </KeyContainer>
-      </MobilePadding>
+      </FiltersWrapper>
 
       <TimeSeries
         width={window.innerWidth > mobileWidth ? 600 : window.innerWidth - 10}

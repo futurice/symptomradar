@@ -174,7 +174,7 @@ const MainWrapper = (props: MainWrapperProps) => {
           totalResponses={totalResponses}
           lastUpdated={lastUpdated}
         />
-        <TableView path="dashboard" isEmbed={isEmbed} cities={cities} data={data} lastUpdated={lastUpdated} />
+        <TableView path="cities" isEmbed={isEmbed} cities={cities} data={data} lastUpdated={lastUpdated} />
         <Overview path="overview" isEmbed={isEmbed} data={data} />
       </Router>
     </>

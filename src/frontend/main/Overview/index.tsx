@@ -9,7 +9,7 @@ import { getLocaleDecimalString, getCurrentLocale } from '../translations';
 import { theme, FILTERS, Symptom } from '../constants';
 import { CompareFilterToggle } from '../FilterToggle';
 
-interface DashboardViewProps extends RouteComponentProps {
+interface CitiesViewProps extends RouteComponentProps {
   isEmbed: boolean;
   data: any;
 }
@@ -148,7 +148,7 @@ const SecondActiveFilter = styled(ActiveFilter)`
   background: ${({ theme }) => theme.darkBlue};
 `;
 
-const Dashboard = (props: DashboardViewProps) => {
+const Cities = (props: CitiesViewProps) => {
   const [selectedSymptomSecondLine, setSelectedSymptomSecondLine] = useState<Symptom>(Symptom.fever);
   const [selectedSymptomFirstLine, setSelectedSymptomFirstLine] = useState(Symptom.corona_suspicion);
   const { t } = useTranslation(['symptoms', 'main']);
@@ -278,4 +278,4 @@ const Dashboard = (props: DashboardViewProps) => {
   );
 };
 
-export default Dashboard;
+export default Cities;

@@ -86,9 +86,9 @@ const SubNav = ({ isEmbed }: SubNavProps) => {
             </RouterLink>
           )}
         </Match>
-        <Match path="dashboard">
+        <Match path="cities">
           {({ match }) => (
-            <RouterLink to="dashboard">
+            <RouterLink to="cities">
               <SubNavLink isActive={match ? true : false} isEmbed={isEmbed}>
                 {t('main:chooseMunicipality')}
               </SubNavLink>

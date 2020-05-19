@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
-import { getLocaleDecimalString } from '../translations';
+import { getLocaleDecimalString, getCurrentLocale } from '../translations';
 
 let graphNode!: SVGSVGElement | null;
 
@@ -20,7 +20,10 @@ const Donut: React.FunctionComponent<{
   color: [string, string];
 }> = props => {
   const { t } = useTranslation(['main', 'format']);
+  const currentLocale = getCurrentLocale();
   useEffect(() => {
+    // Clear out all previous nodes before adding new svgs
+    d3.selectAll('#respondants-donut-chart > svg > *').remove();
     let svg = d3.select(graphNode);
     const pie = d3
       .pie()
@@ -62,9 +65,9 @@ const Donut: React.FunctionComponent<{
       .attr('stroke', 'white')
       .attr('stroke-width', 1)
       .attr('fill', (d: any, i: number) => props.color[i]);
-  });
+  }, [props.data, currentLocale, props.color, props.radius, t]);
   return (
-    <Div>
+    <Div id="respondants-donut-chart">
       <svg
         role="graphics-datachart"
         aria-label={t('main:respondantSuspectingCorona')}

@@ -48,7 +48,7 @@ const Table = styled.table`
     width: calc(17ch + 20px);
     padding-right: 16px;
     padding-left: 4px;
-    text-align: right;
+    text-align: left;
   }
 
   td:nth-child(1) {
@@ -244,7 +244,7 @@ const Overview = (props: OverviewProps) => {
         {t(`format:percentage`, {
           percentage: getLocaleDecimalString((finlandTotalData.responses * 100) / finlandTotalData.population),
         })}{' '}
-        {t('main:ofPopulation')})<h2>Respondant Suspecting Corona</h2>
+        {t('main:ofPopulation')})<h2>{t('main:respondantSuspectingCorona')}</h2>
         <SubHeadline>
           Approx. every{' '}
           <b>
@@ -265,15 +265,15 @@ const Overview = (props: OverviewProps) => {
       </MobilePadding>
 
       <MobilePadding>
-        <h2>{t('main:topSymptoms')}</h2>
+        <h2 id="top-symptoms-table-heading">{t('main:topSymptoms')}</h2>
       </MobilePadding>
 
-      <Table>
+      <Table aria-labelledby="top-symptoms-table-heading">
         <TableHead>
           <tr>
-            <th></th>
-            <th></th>
-            <th>
+            <th scope="row"></th>
+            <th scope="row"></th>
+            <th scope="row">
               <i>{t('main:respondents')}</i>
             </th>
           </tr>
@@ -282,8 +282,8 @@ const Overview = (props: OverviewProps) => {
       </Table>
 
       <MobilePadding>
-        <h2>Time Development</h2>
-        <p>Select two symptoms to compair their development over time.</p>
+        <h2>{t('main:timeDevelopment')}</h2>
+        <p>{t('main:selectTwoSymptomsToCompare')}</p>
       </MobilePadding>
 
       <FiltersWrapper>
@@ -306,7 +306,8 @@ const Overview = (props: OverviewProps) => {
       <MobilePadding>
         <OverviewFooter>
           <MapLink to="map">
-            Go to map <RightArrowIcon fillColor={theme.white} />
+            {t('main:goToMap')}
+            <RightArrowIcon fillColor={theme.white} />
           </MapLink>
         </OverviewFooter>
       </MobilePadding>

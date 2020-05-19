@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import * as d3 from 'd3';
 import axios from 'axios';
 
@@ -33,6 +34,7 @@ const TimeSeries: React.FunctionComponent<{
   const [data, setData] = useState<any>('FETCHING');
   const dataEndpoint = process.env.REACT_APP_DATA_ENDPOINT;
   const [username, password] = (process.env.REACT_APP_DATA_AUTH || '').split(':');
+  const { t } = useTranslation(['main']);
   useEffect(() => {
     axios(`${dataEndpoint}daily_totals.json`, { auth: { username, password } }).then(
       res => {
@@ -242,7 +244,13 @@ const TimeSeries: React.FunctionComponent<{
   });
   return (
     <div>
-      <svg width={props.width} height={props.height} ref={node => (graphNode = node)} />
+      <svg
+        aria-label={t('main:timeDevelopment')}
+        role="graphics-datachart"
+        width={props.width}
+        height={props.height}
+        ref={node => (graphNode = node)}
+      />
     </div>
   );
 };

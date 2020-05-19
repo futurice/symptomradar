@@ -307,6 +307,7 @@ const Map: React.FunctionComponent<{
   return (
     <div style={{ height: `${props.mapHeight}px`, width: 'calc(100vW)' }}>
       <svg
+        role="graphics-map"
         width="100%"
         height="100%"
         ref={node => (mapNode = node)}

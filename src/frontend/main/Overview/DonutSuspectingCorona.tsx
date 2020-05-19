@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
 let graphNode!: SVGSVGElement | null;
@@ -16,6 +17,7 @@ const Donut: React.FunctionComponent<{
   data: [number, number];
   color: [string, string];
 }> = props => {
+  const { t } = useTranslation(['main']);
   useEffect(() => {
     let svg = d3.select(graphNode);
     const pie = d3
@@ -61,7 +63,13 @@ const Donut: React.FunctionComponent<{
   });
   return (
     <Div>
-      <svg width={props.width} height={props.height} ref={node => (graphNode = node)} />
+      <svg
+        role="graphics-datachart"
+        aria-label={t('main:respondantSuspectingCorona')}
+        width={props.width}
+        height={props.height}
+        ref={node => (graphNode = node)}
+      />
     </Div>
   );
 };

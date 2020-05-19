@@ -23,6 +23,9 @@ const Donut: React.FunctionComponent<{
   const currentLocale = getCurrentLocale();
   useEffect(() => {
     // Clear out all previous nodes before adding new svgs
+    // TODO: find out why new svg gets rendered on top of the old one between renders if
+    // To test: remove the line below and switch language. The old text
+    //          at the center of the chart would still appear beneath new one.
     d3.selectAll('#respondants-donut-chart > svg > *').remove();
     let svg = d3.select(graphNode);
     const pie = d3

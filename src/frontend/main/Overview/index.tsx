@@ -70,10 +70,10 @@ const Table = styled.table`
 const Container = styled.div`
   max-width: ${({ theme }) => theme.mobileWidth}px;
   margin: 0 auto;
-  padding: 0 10px;
+  padding: 0;
 
-  @media (max-width: ${({ theme }) => theme.mobileWidth}px) {
-    padding: 0;
+  @media (min-width: ${({ theme }) => theme.mobileWidth}px) {
+    padding: 0 10px;
   }
 
   h1 {
@@ -117,8 +117,9 @@ const TableHead = styled.thead`
 
 const MobilePadding = styled.div`
   width: 100%;
-  @media (max-width: ${({ theme }) => theme.mobileWidth}px) {
-    padding: 0 16px;
+  padding: 0 16px;
+  @media (min-width: ${({ theme }) => theme.mobileWidth}px) {
+    padding: 0;
   }
 `;
 

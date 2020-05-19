@@ -45,7 +45,7 @@ const Table = styled.table`
     /* ch = relative width of a character "0", seems to
      * fit better for adjusting number column width
      * */
-    width: calc(17ch + 20px);
+    width: calc(17ch + 26px);
     padding-right: 16px;
     padding-left: 4px;
     text-align: left;
@@ -272,7 +272,7 @@ const Overview = (props: OverviewProps) => {
             <th scope="row"></th>
             <th scope="row"></th>
             <th scope="row">
-              <i>{t('main:respondents')}</i>
+              <i>{t('main:positiveResponses')}</i>
             </th>
           </tr>
         </TableHead>

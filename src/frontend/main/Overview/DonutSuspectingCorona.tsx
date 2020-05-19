@@ -3,6 +3,8 @@ import * as d3 from 'd3';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
+import { getLocaleDecimalString, getCurrentLocale } from '../translations';
+
 let graphNode!: SVGSVGElement | null;
 
 const Div = styled.div`
@@ -17,7 +19,8 @@ const Donut: React.FunctionComponent<{
   data: [number, number];
   color: [string, string];
 }> = props => {
-  const { t } = useTranslation(['main']);
+  const { t } = useTranslation(['main', 'format']);
+  const currentLocale = getCurrentLocale();
   useEffect(() => {
     let svg = d3.select(graphNode);
     const pie = d3
@@ -43,9 +46,9 @@ const Donut: React.FunctionComponent<{
       .attr('font-size', '16px')
       .attr('dy', '20px')
       .text(
-        `${parseFloat(((props.data[0] * 100) / (props.data[1] + props.data[0])).toFixed(1))
-          .toLocaleString('fi-FI')
-          .replace('.', ',')}% of all responses`,
+        `${t('format:percentage', {
+          percentage: getLocaleDecimalString((props.data[0] * 100) / (props.data[1] + props.data[0]), 1),
+        })} ${t('main:ofAllResponses')}`,
       );
     const path = g
       .selectAll('.arcs')

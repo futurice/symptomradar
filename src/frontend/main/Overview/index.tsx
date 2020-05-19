@@ -246,11 +246,9 @@ const Overview = (props: OverviewProps) => {
         })}{' '}
         {t('main:ofPopulation')})<h2>{t('main:respondantSuspectingCorona')}</h2>
         <SubHeadline>
-          Approx. every{' '}
-          <b>
-            1 out of {getLocaleDecimalString(finlandTotalData.responses / finlandTotalData.corona_suspicion_yes, 0)}
-          </b>{' '}
-          people who responded suspect Corona infection.
+          {t('main:approxOutOf', {
+            denominator: getLocaleDecimalString(finlandTotalData.responses / finlandTotalData.corona_suspicion_yes, 0),
+          })}
         </SubHeadline>
         <DonutSuspectingCorona
           width={280}

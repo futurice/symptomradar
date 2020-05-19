@@ -116,8 +116,8 @@ export const App = () => {
         </Location>
         <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}></Menu>
         {/*
-         * Route structure:
-         * ===============
+         * Route structure for stat views:
+         * ==============================
          * /       -> Overview
          * /map    -> MapView
          * /cities -> TableView

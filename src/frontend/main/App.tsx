@@ -118,12 +118,12 @@ export const App = () => {
         {/*
          * Route structure:
          * ===============
-         * /      -> Overview
-         * map    -> MapView
-         * cities -> TableView
-         * map-embed/       -> Overview
-         * map-embed/map    -> MapView
-         * map-embed/cities -> TableView
+         * /       -> Overview
+         * /map    -> MapView
+         * /cities -> TableView
+         * /map-embed/       -> Overview
+         * /map-embed/map    -> MapView
+         * /map-embed/cities -> TableView
          * */}
         <main>
           <Router>

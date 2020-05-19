@@ -86,7 +86,7 @@ type CompareFilterProps = {
   hide: () => void;
   firstSelectedFilter: Symptom;
   secondSelectedFilter: Symptom;
-  handleFilterChange: (firstFilter: Symptom, secondFilder: Symptom) => void;
+  handleFilterChange: (firstFilter: Symptom, secondFilter: Symptom) => void;
 };
 
 // CompareFilters allows selecting 2 symptoms for stat comparison

@@ -45,6 +45,10 @@ export default {
       loss_smell_or_taste: 'Loss of smell or taste',
     },
     main: {
+      respondantSuspectingCorona: 'Respondant Suspecting Corona',
+      goToMap: 'Go to map',
+      selectTwoSymptomsToCompare: 'Select two symptoms to compair their development over time.',
+      timeDevelopment: 'Time Development',
       respondents: 'Respondents',
       topSymptoms: 'Top symptoms',
       loading: 'Loading...',
@@ -123,6 +127,10 @@ The information was collected using a questionnaire form. This site displays the
       loss_smell_or_taste: 'Hajuaistin tai makuaistin heikkenemistä',
     },
     main: {
+      respondantSuspectingCorona: 'Respondant Suspecting Corona',
+      goToMap: 'Go to map',
+      selectTwoSymptomsToCompare: 'Select two symptoms to compair their development over time.',
+      timeDevelopment: 'Time Development',
       respondents: 'Respondents',
       topSymptoms: 'Top symptoms',
       loading: 'Ladataan...',

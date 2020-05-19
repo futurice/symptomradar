@@ -84,7 +84,7 @@ const Container = styled.div`
   }
 
   h2 {
-    font-size: 22px;
+    font-size: 21px;
     margin: 45px 0 5px 0;
     line-height: 1.1;
   }
@@ -251,9 +251,9 @@ const Overview = (props: OverviewProps) => {
           })}
         </SubHeadline>
         <DonutSuspectingCorona
-          width={280}
-          height={280}
-          radius={140}
+          width={310}
+          height={310}
+          radius={155}
           data={[
             finlandTotalData.corona_suspicion_yes,
             finlandTotalData.responses - finlandTotalData.corona_suspicion_yes,

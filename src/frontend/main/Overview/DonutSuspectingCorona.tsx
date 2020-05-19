@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
-import { getLocaleDecimalString, getCurrentLocale } from '../translations';
+import { getLocaleDecimalString } from '../translations';
 
 let graphNode!: SVGSVGElement | null;
 
@@ -20,7 +20,6 @@ const Donut: React.FunctionComponent<{
   color: [string, string];
 }> = props => {
   const { t } = useTranslation(['main', 'format']);
-  const currentLocale = getCurrentLocale();
   useEffect(() => {
     let svg = d3.select(graphNode);
     const pie = d3

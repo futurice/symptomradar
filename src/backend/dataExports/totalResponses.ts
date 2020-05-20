@@ -18,7 +18,7 @@ interface TotalResponsesQuery {
   total_responses: string;
 }
 
-const totalResponsesQuery = 'SELECT COUNT(*) as total_responses FROM responses';
+export const totalResponsesQuery = 'SELECT COUNT(*) as total_responses FROM responses';
 
 export async function queryTotalResponses(app: App) {
   return app.athenaClient.query<TotalResponsesQuery>({ sql: totalResponsesQuery, db: app.constants.athenaDb });

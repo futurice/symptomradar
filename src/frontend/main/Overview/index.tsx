@@ -1,71 +1,17 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import TimeSeries from './TimeSeries';
-import DonutSuspectingCorona from './DonutSuspectingCorona';
 import { RouteComponentProps, Link } from '@reach/router';
+import * as d3 from 'd3';
 
-import { getLocaleDecimalString, getCurrentLocale } from '../translations';
-import { theme, FILTERS, Symptom } from '../constants';
-import { CompareFilterToggle } from '../FilterToggle';
+import { theme, FILTERS } from '../constants';
 import RightArrowIcon from '../assets/RightArrowIcon';
+import Body from './Body';
 
 interface OverviewProps extends RouteComponentProps {
   isEmbed: boolean;
   data: any;
 }
-
-const Table = styled.table`
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
-  margin: 10px 0 30px 0;
-
-  th {
-    font-weight: normal;
-    text-align: left;
-
-    &:nth-child(3) {
-      text-align: right;
-    }
-  }
-
-  th,
-  td {
-    padding: 6px 4px;
-    line-height: 1.1;
-    vertical-align: top;
-  }
-
-  th:nth-child(1) {
-    width: calc(2ch + 16px);
-  }
-
-  th:nth-child(3) {
-    /* ch = relative width of a character "0", seems to
-     * fit better for adjusting number column width
-     * */
-    width: calc(17ch + 26px);
-    padding-right: 16px;
-    padding-left: 4px;
-    text-align: left;
-  }
-
-  td:nth-child(1) {
-    padding-left: 0;
-    text-align: right;
-  }
-
-  td:nth-child(3) {
-    padding-right: 16px;
-    padding-left: 4px;
-    text-align: left;
-  }
-
-  tr:nth-child(2n + 1) {
-    background: ${({ theme }) => theme.lightGrey};
-  }
-`;
 
 const Container = styled.div`
   max-width: ${({ theme }) => theme.mobileWidth}px;
@@ -93,64 +39,12 @@ const Container = styled.div`
   }
 `;
 
-const NumberText = styled.span`
-  font-size: 28px;
-  font-weight: bold;
-`;
-
-const SubHeadline = styled.div`
-  font-size: 18px;
-  font-style: italic;
-  margin-bottom: 10px;
-`;
-
-const TableHead = styled.thead`
-  tr:first-child {
-    background: ${props => props.theme.white};
-  }
-
-  th {
-    padding: 10px 4px;
-    font-size: 14px;
-  }
-`;
-
 const MobilePadding = styled.div`
   width: 100%;
   padding: 0 16px;
   @media (min-width: ${({ theme }) => theme.mobileWidth}px) {
     padding: 0;
   }
-`;
-
-const FiltersWrapper = styled.div`
-  margin: 20px 0;
-  display: flex;
-  width: 100%;
-  justify-content: flex-end;
-`;
-
-const ActiveFilter = styled.div`
-  color: ${({ theme }) => theme.white};
-  font-weight: bold;
-  border-radius: 18px;
-  padding: 0 16px;
-  height: 35px;
-  line-height: 35px;
-  display: inline-block;
-  margin-right: 8px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-`;
-
-const FirstActiveFilter = styled(ActiveFilter)`
-  background: ${({ theme }) => theme.red};
-  margin-left: 8px;
-`;
-
-const SecondActiveFilter = styled(ActiveFilter)`
-  background: ${({ theme }) => theme.darkBlue};
 `;
 
 const MapLink = styled(Link)`
@@ -175,21 +69,32 @@ const OverviewFooter = styled.div`
   border-top: 1px solid ${({ theme }) => theme.black};
 `;
 
+const CitySelect = styled.div`
+  height: ${({ theme }) => theme.citySelectHeight}px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid ${props => props.theme.grey};
+  max-width: 600px;
+  margin: 0 auto;
+
+  select {
+    max-width: 200px;
+  }
+`;
+
+const Label = styled.label`
+  margin-right: 8px;
+`;
+
 const Overview = (props: OverviewProps) => {
-  const [selectedSymptomSecondLine, setSelectedSymptomSecondLine] = useState<Symptom>(Symptom.fever);
-  const [selectedSymptomFirstLine, setSelectedSymptomFirstLine] = useState(Symptom.corona_suspicion);
   const { t } = useTranslation(['symptoms', 'main']);
-  const currentLocale = getCurrentLocale();
+  const [selectedCity, setSelectedCity] = useState('');
   const finlandTotalData = {
     population: 0,
     responses: 0,
     corona_suspicion_yes: 0,
     symptoms: Object.values(FILTERS).map(symptom => ({ symptom: symptom.id, symptomLabel: symptom.label, value: 0 })),
-  };
-
-  const setSelectedSymptoms = (firstFilter: Symptom, secondFilter: Symptom) => {
-    setSelectedSymptomFirstLine(firstFilter);
-    setSelectedSymptomSecondLine(secondFilter);
   };
 
   props.data.forEach((d: any) => {
@@ -209,23 +114,7 @@ const Overview = (props: OverviewProps) => {
   finlandTotalData.symptoms.sort((a, b) => {
     return b.value - a.value;
   });
-
-  const tableRow = finlandTotalData.symptoms.map((d, i: number) => {
-    const percentage = getLocaleDecimalString((d.value * 100) / finlandTotalData.responses);
-    return (
-      <tr key={`top-symptom-${d.symptom}`}>
-        <td>
-          <b>{i + 1}.</b>
-        </td>
-        <td>{t(`symptomLabels:${d.symptomLabel}`)}</td>
-        <td>
-          {d.value.toLocaleString(currentLocale)}
-          {` `}({t('format:percentage', { percentage })})
-        </td>
-      </tr>
-    );
-  });
-
+  const [dataForSelectedCity, setDataForSelectedCity] = useState(finlandTotalData);
   // This data is not in use at the moment. Commenting out for now.
   // const topCities: any = [...props.data]
   //  .filter((d: any) => d.responses !== -1)
@@ -235,72 +124,67 @@ const Overview = (props: OverviewProps) => {
   //  .filter((d: any, i: number) => i < 10);
   // console.log(topCities);
 
+  const cities: string[] = props.data
+    .sort((x: any, y: any) => d3.ascending(x.city, y.city))
+    .map((item: any) => {
+      return item.city;
+    });
   return (
     <Container>
-      <MobilePadding>
-        <h1>{t('main:allOfFinland')}</h1>
-        <h2>{t('main:totalResponses')}</h2>
-        <NumberText>{finlandTotalData.responses.toLocaleString(currentLocale)}</NumberText> (
-        {t(`format:percentage`, {
-          percentage: getLocaleDecimalString((finlandTotalData.responses * 100) / finlandTotalData.population),
-        })}{' '}
-        {t('main:ofPopulation')})<h2>{t('main:respondantSuspectingCorona')}</h2>
-        <SubHeadline>
-          {t('main:approxOutOf', {
-            denominator: getLocaleDecimalString(finlandTotalData.responses / finlandTotalData.corona_suspicion_yes, 0),
+      <CitySelect>
+        <Label htmlFor="city">{t('main:municipality')}</Label>
+        <select
+          name="select"
+          id="city"
+          onChange={e => {
+            setSelectedCity(e.currentTarget.value);
+            let dataSelected = finlandTotalData;
+            const data = {
+              population: 0,
+              responses: 0,
+              corona_suspicion_yes: 0,
+              symptoms: Object.values(FILTERS).map(symptom => ({
+                symptom: symptom.id,
+                symptomLabel: symptom.label,
+                value: 0,
+              })),
+            };
+            const index = props.data.findIndex((el: any) => e.currentTarget.value === el.city);
+            if (index !== -1) {
+              let cityData: any = props.data[index];
+              data.population = cityData.population;
+              if (cityData.responses !== -1) {
+                data.responses = cityData.responses;
+                data.corona_suspicion_yes = cityData.corona_suspicion_yes;
+                data.symptoms.forEach((el: any) => {
+                  if (el.symptom === 'fever_yes' || el.symptom === 'cough_yes') {
+                    if (el.symptom === 'fever_yes')
+                      el.value = el.value + cityData['fever_slight'] + cityData['fever_high'];
+                    if (el.symptom === 'cough_yes')
+                      el.value = el.value + cityData['cough_intense'] + cityData['cough_mild'];
+                  } else el.value += cityData[el.symptom];
+                });
+              }
+
+              data.symptoms.sort((a, b) => {
+                return b.value - a.value;
+              });
+              dataSelected = data;
+            }
+            setDataForSelectedCity(dataSelected);
+          }}
+        >
+          <option value="">{t('main:allMunicipalities')}</option>
+          {cities.map((city: string) => {
+            return (
+              <option key={city} value={city}>
+                {city}
+              </option>
+            );
           })}
-        </SubHeadline>
-        <DonutSuspectingCorona
-          width={310}
-          height={310}
-          radius={155}
-          data={[
-            finlandTotalData.corona_suspicion_yes,
-            finlandTotalData.responses - finlandTotalData.corona_suspicion_yes,
-          ]}
-          color={['#FF5252', '#ececec']}
-        />
-      </MobilePadding>
-
-      <MobilePadding>
-        <h2 id="top-symptoms-table-heading">{t('main:topSymptoms')}</h2>
-      </MobilePadding>
-
-      <Table aria-labelledby="top-symptoms-table-heading">
-        <TableHead>
-          <tr>
-            <th scope="row"></th>
-            <th scope="row"></th>
-            <th scope="row">
-              <i>{t('main:positiveResponses')}</i>
-            </th>
-          </tr>
-        </TableHead>
-        <tbody>{tableRow}</tbody>
-      </Table>
-
-      <MobilePadding>
-        <h2>{t('main:timeDevelopment')}</h2>
-        <p>{t('main:selectTwoSymptomsToCompare')}</p>
-      </MobilePadding>
-
-      <FiltersWrapper>
-        <FirstActiveFilter>{t(`symptomLabels:${selectedSymptomFirstLine}`)}</FirstActiveFilter>
-        <SecondActiveFilter>{t(`symptomLabels:${selectedSymptomSecondLine}`)}</SecondActiveFilter>
-        <CompareFilterToggle
-          firstSelectedFilter={selectedSymptomFirstLine}
-          secondSelectedFilter={selectedSymptomSecondLine}
-          handleFilterChange={setSelectedSymptoms}
-        />
-      </FiltersWrapper>
-
-      <TimeSeries
-        width={window.innerWidth > theme.mobileWidth ? 600 : window.innerWidth - 10}
-        height={window.innerWidth > theme.mobileWidth ? 400 : ((window.innerWidth - 10) * 3) / 4}
-        selectedSymptomFirstLine={selectedSymptomFirstLine}
-        selectedSymptom={selectedSymptomSecondLine}
-      />
-
+        </select>
+      </CitySelect>
+      <Body data={dataForSelectedCity} city={selectedCity} />
       <MobilePadding>
         <OverviewFooter>
           <MapLink to="map">

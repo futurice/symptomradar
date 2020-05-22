@@ -115,20 +115,9 @@ export const App = () => {
           }}
         </Location>
         <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}></Menu>
-        {/*
-         * Route structure for stat views:
-         * ==============================
-         * /       -> Overview
-         * /map    -> MapView
-         * /cities -> TableView
-         * /map-embed/       -> Overview
-         * /map-embed/map    -> MapView
-         * /map-embed/cities -> TableView
-         * */}
         <main>
           <Router>
-            <MainWrapper path="/*" responseData={data} isEmbed={false} />
-            <MainWrapper path="/map-embed/*" responseData={data} isEmbed={true} />
+            <MainWrapper path="/*" responseData={data} />
             <About path="about" />
             <Privacy path="tietosuojalauseke" />
             <Survey path="survey" />

@@ -62,21 +62,12 @@ const SubNavLink = styled.span<SubNavLinkProps>`
 `;
 
 const SubNav = ({ isEmbed }: SubNavProps) => {
-  const mapPath = isEmbed ? '/map-embed' : '/';
+  const mapPath = isEmbed ? '/map-embed/map' : '/map';
   const { t } = useTranslation(['main']);
 
   return (
     <>
       <SubNavContainer>
-        <Match path="overview">
-          {({ match }) => (
-            <RouterLink to="overview">
-              <SubNavLink isActive={match ? true : false} isEmbed={isEmbed}>
-                Overview
-              </SubNavLink>
-            </RouterLink>
-          )}
-        </Match>
         <Match path={mapPath}>
           {({ match }) => (
             <RouterLink to={mapPath}>
@@ -86,9 +77,9 @@ const SubNav = ({ isEmbed }: SubNavProps) => {
             </RouterLink>
           )}
         </Match>
-        <Match path="dashboard">
+        <Match path="cities">
           {({ match }) => (
-            <RouterLink to="dashboard">
+            <RouterLink to="cities">
               <SubNavLink isActive={match ? true : false} isEmbed={isEmbed}>
                 {t('main:chooseMunicipality')}
               </SubNavLink>

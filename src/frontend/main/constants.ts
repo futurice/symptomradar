@@ -1,3 +1,16 @@
+export enum Symptom {
+  corona_suspicion = 'corona_suspicion',
+  fever = 'fever',
+  cough = 'cough',
+  breathing_difficulties = 'breathing_difficulties',
+  muscle_pain = 'muscle_pain',
+  headache = 'headache',
+  sore_throat = 'sore_throat',
+  rhinitis = 'rhinitis',
+  stomach_issues = 'stomach_issues',
+  sensory_issues = 'sensory_issues',
+}
+
 export const FILTERS = {
   corona_suspicion_yes: { id: 'corona_suspicion_yes', label: 'corona_suspicion' },
   cough_yes: { id: 'cough_yes', label: 'cough' },
@@ -9,7 +22,7 @@ export const FILTERS = {
   rhinitis_yes: { id: 'rhinitis_yes', label: 'rhinitis' },
   stomach_issues_yes: { id: 'stomach_issues_yes', label: 'stomach_issues' },
   sensory_issues_yes: { id: 'sensory_issues_yes', label: 'sensory_issues' },
-};
+} as Record<string, { id: string; label: Symptom }>;
 
 export type FilterKey = keyof typeof FILTERS;
 
@@ -32,7 +45,9 @@ export const theme = {
   white: '#FFFFFF',
   black: '#000000',
   blue: '#0047FF',
+  darkBlue: '#241A5F',
   green: '#328709',
+  red: '#FF5252',
   headerHeight: 90,
   navHeight: 40,
   citySelectHeight: 58,

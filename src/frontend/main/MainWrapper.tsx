@@ -11,7 +11,6 @@ import SubNav from './SubNav';
 
 interface MainWrapperProps extends RouteComponentProps {
   responseData: any;
-  isEmbed: boolean;
 }
 
 interface mapProperties {
@@ -61,8 +60,11 @@ const MessageContainer = styled.div`
 `;
 
 const MainWrapper = (props: MainWrapperProps) => {
-  const { isEmbed } = props;
+  const isEmbed = props.location ? !!(props.location.pathname || '').match(/^\/map-embed.*/) : false;
   const { t } = useTranslation(['main']);
+  const showSubNav = props.location
+    ? ['/map', '/cities', '/map-embed', '/map-embed/cities'].indexOf(props.location.pathname) > -1
+    : false;
 
   if (props.responseData === 'FETCHING') {
     return <MessageContainer>{t('main:loading')}</MessageContainer>;
@@ -165,17 +167,39 @@ const MainWrapper = (props: MainWrapperProps) => {
 
   return (
     <>
-      <SubNav isEmbed={isEmbed} />
+      {showSubNav && <SubNav isEmbed={isEmbed} />}
+
+      {/*
+       * Route structure for stat views:
+       * ==============================
+       * /       -> Overview
+       * /map    -> MapView
+       * /cities -> TableView
+       * /map-embed/         -> MapView
+       * /map-embed/overview -> OverView
+       * /map-embed/cities   -> TableView
+       * */}
+
       <Router>
+        <Overview path="/" isEmbed={false} data={data} />
         <MapView
-          path="/"
+          path="map"
           isEmbed={isEmbed}
           dataForMap={dataForMap}
           totalResponses={totalResponses}
           lastUpdated={lastUpdated}
         />
-        <TableView path="dashboard" isEmbed={isEmbed} cities={cities} data={data} lastUpdated={lastUpdated} />
-        <Overview path="overview" isEmbed={isEmbed} data={data} />
+        <TableView path="cities" isEmbed={isEmbed} cities={cities} data={data} lastUpdated={lastUpdated} />
+
+        <MapView
+          path="map-embed"
+          isEmbed={isEmbed}
+          dataForMap={dataForMap}
+          totalResponses={totalResponses}
+          lastUpdated={lastUpdated}
+        />
+        <Overview path="map-embed/overview" isEmbed={false} data={data} />
+        <TableView path="map-embed/cities" isEmbed={isEmbed} cities={cities} data={data} lastUpdated={lastUpdated} />
       </Router>
     </>
   );

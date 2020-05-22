@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import AboutIcon from './assets/AboutIcon';
 import MapIcon from './assets/MapIcon';
 import SurveyIcon from './assets/SurveyIcon';
+import OverviewIcon from './assets/OverviewIcon';
 
 type MenuProps = {
   setMenuOpen?: any;
@@ -109,6 +110,14 @@ const Navigation = ({ setMenuOpen }: MenuProps) => {
         <li>
           <LinkItem
             to="/"
+            linkText={t('overview')}
+            setMenuOpen={setMenuOpen}
+            icon={match => <OverviewIcon fillColor={match ? '#000' : '#0047FF'} />}
+          />
+        </li>
+        <li>
+          <LinkItem
+            to="/map"
             linkText={t('map')}
             setMenuOpen={setMenuOpen}
             icon={match => <MapIcon fillColor={match ? '#000' : '#0047FF'} />}

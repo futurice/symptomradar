@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
+
+import { getLocaleDecimalString, getCurrentLocale } from '../translations';
 
 let graphNode!: SVGSVGElement | null;
 
@@ -16,7 +19,14 @@ const Donut: React.FunctionComponent<{
   data: [number, number];
   color: [string, string];
 }> = props => {
+  const { t } = useTranslation(['main', 'format']);
+  const currentLocale = getCurrentLocale();
   useEffect(() => {
+    // Clear out all previous nodes before adding new svgs
+    // TODO: find out why new svg gets rendered on top of the old one between renders if
+    // To test: remove the line below and switch language. The old text
+    //          at the center of the chart would still appear beneath new one.
+    d3.selectAll('#respondants-donut-chart > svg > *').remove();
     let svg = d3.select(graphNode);
     const pie = d3
       .pie()
@@ -29,7 +39,6 @@ const Donut: React.FunctionComponent<{
       .outerRadius(props.radius - 10);
 
     let g = svg.append('g').attr('transform', `translate(${props.radius},${props.radius})`);
-    console.log(pie(props.data));
     g.append('text')
       .attr('fill', props.color[0])
       .attr('text-anchor', 'middle')
@@ -42,9 +51,9 @@ const Donut: React.FunctionComponent<{
       .attr('font-size', '16px')
       .attr('dy', '20px')
       .text(
-        `${parseFloat(((props.data[0] * 100) / (props.data[1] + props.data[0])).toFixed(1))
-          .toLocaleString('fi-FI')
-          .replace('.', ',')}% of all responses`,
+        `${t('format:percentage', {
+          percentage: getLocaleDecimalString((props.data[0] * 100) / (props.data[1] + props.data[0]), 1),
+        })} ${t('main:ofAllResponses')}`,
       );
     const path = g
       .selectAll('.arcs')
@@ -59,10 +68,16 @@ const Donut: React.FunctionComponent<{
       .attr('stroke', 'white')
       .attr('stroke-width', 1)
       .attr('fill', (d: any, i: number) => props.color[i]);
-  });
+  }, [props.data, currentLocale, props.color, props.radius, t]);
   return (
-    <Div>
-      <svg width={props.width} height={props.height} ref={node => (graphNode = node)} />
+    <Div id="respondants-donut-chart">
+      <svg
+        role="graphics-datachart"
+        aria-label={t('main:respondantSuspectingCorona')}
+        width={props.width}
+        height={props.height}
+        ref={node => (graphNode = node)}
+      />
     </Div>
   );
 };

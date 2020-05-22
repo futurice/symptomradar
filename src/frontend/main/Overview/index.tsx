@@ -78,6 +78,10 @@ const CitySelect = styled.div`
   max-width: 600px;
   margin: 0 auto;
 
+  @media (min-width: ${({ theme }) => theme.mobileWidth}px) {
+    padding: 0;
+  }
+
   select {
     max-width: 200px;
   }

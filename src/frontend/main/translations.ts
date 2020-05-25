@@ -45,6 +45,7 @@ export default {
       loss_smell_or_taste: 'Loss of smell or taste',
     },
     main: {
+      onlyApplicableForWholeFinland: 'Only applicable for whole Finland',
       ofAllResponses: 'of all responses',
       approxOutOf: 'Approx. 1 out of {{denominator}} respondents suspect they have a corona infection.',
       respondantSuspectingCorona: 'Respondents with suspected corona symptoms',
@@ -129,6 +130,7 @@ The information was collected using a questionnaire form. This site displays the
       loss_smell_or_taste: 'Hajuaistin tai makuaistin heikkenemistä',
     },
     main: {
+      onlyApplicableForWholeFinland: 'Vain koko Suomelle',
       ofAllResponses: 'kaikista vastauksista',
       approxOutOf: 'Vastaajista noin 1/{{denominator}} epäilee koronatartuntaa',
       respondantSuspectingCorona: 'Vastaajia jotka epäilevät koronaa',

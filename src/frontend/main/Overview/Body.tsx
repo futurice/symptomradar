@@ -175,7 +175,7 @@ const Body: React.FunctionComponent<{ data: any; city: string }> = props => {
   );
 
   if (props.city !== '') {
-    timeSeries = <Div>Only Applicable for Whole Finland</Div>;
+    timeSeries = <Div>{t('main:onlyApplicableForWholeFinland')}</Div>;
   }
 
   return (

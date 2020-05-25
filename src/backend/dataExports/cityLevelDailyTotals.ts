@@ -63,6 +63,7 @@ function mapCityLevelDailyTotals(
     cities: map(items, item => ({
       city: item.city,
       total: Number(item.responses),
+      population: item.population,
       ...collateDailyTotalItem(item as any),
     })),
   }));

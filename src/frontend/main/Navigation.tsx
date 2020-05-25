@@ -101,7 +101,7 @@ const Navigation = ({ setMenuOpen }: MenuProps) => {
           <LanguageSelector>
             <label htmlFor="language-selector">{t('main:languageSelector')}</label>
             <br />
-            <select id="language-selector" onChange={selectLanguage} defaultValue={i18n.language}>
+            <select id="language-selector" onChange={selectLanguage} value={i18n.language}>
               <option value="fi">Suomi</option>
               <option value="en">English</option>
             </select>

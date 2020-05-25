@@ -64,7 +64,9 @@ const MainWrapper = (props: MainWrapperProps) => {
   const { t } = useTranslation(['main']);
   const showSubNav =
     props.location && props.location.pathname
-      ? ['/map', '/cities', '/map-embed', '/map-embed/cities'].indexOf(props.location.pathname) > -1
+      ? ['/map', '/cities', '/map-embed', '/map-embed/', '/map-embed/cities', '/map-embed/cities/'].indexOf(
+          props.location.pathname,
+        ) > -1
       : false;
 
   if (props.responseData === 'FETCHING') {

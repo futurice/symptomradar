@@ -241,7 +241,7 @@ const TimeSeries: React.FunctionComponent<{
         .attr('stroke-linecap', 'round')
         .attr('d', line1);
     }
-  });
+  }, [data, props.height, props.selectedSymptom, props.selectedSymptomFirstLine, props.width]);
   return (
     <div>
       <svg

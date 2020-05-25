@@ -201,7 +201,7 @@ const MainWrapper = (props: MainWrapperProps) => {
           totalResponses={totalResponses}
           lastUpdated={lastUpdated}
         />
-        <Overview path="map-embed/overview" isEmbed={false} data={data} />
+        <Overview path="map-embed/overview" isEmbed={true} data={data} />
         <TableView path="map-embed/cities" isEmbed={isEmbed} cities={cities} data={data} lastUpdated={lastUpdated} />
       </Router>
     </>

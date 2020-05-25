@@ -94,6 +94,8 @@ const Label = styled.label`
 const Overview = (props: OverviewProps) => {
   const { t } = useTranslation(['symptoms', 'main']);
   const [selectedCity, setSelectedCity] = useState('');
+  const mapPath = props.isEmbed ? '/map-embed' : '/map';
+
   const finlandTotalData = {
     population: 0,
     responses: 0,
@@ -191,7 +193,7 @@ const Overview = (props: OverviewProps) => {
       <Body data={dataForSelectedCity} city={selectedCity} />
       <MobilePadding>
         <OverviewFooter>
-          <MapLink to="map">
+          <MapLink to={mapPath}>
             {t('main:goToMap')}
             <RightArrowIcon fillColor={theme.white} />
           </MapLink>

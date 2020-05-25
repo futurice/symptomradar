@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Router, Location } from '@reach/router';
+import i18n from 'i18next';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import axios from 'axios';
 import Header from './Header';
@@ -90,6 +91,26 @@ const AppContainer = styled.div`
   width: 100%;
 `;
 
+function getQueryData(queryStr: string) {
+  if (!queryStr) {
+    return {};
+  }
+  return queryStr
+    .substr(1)
+    .split('&')
+    .reduce((result, param) => {
+      const valuePair = param.split('=');
+      // Ignore if not a key value pair "key=value"
+      if (valuePair.length !== 2) {
+        return result;
+      }
+      return {
+        ...result,
+        [valuePair[0]]: valuePair[1],
+      };
+    }, {}) as Record<string, string>;
+}
+
 export const App = () => {
   const [data, setData] = useState<'FETCHING' | 'ERROR' | object>('FETCHING');
   const dataEndpoint = process.env.REACT_APP_DATA_ENDPOINT;
@@ -104,6 +125,15 @@ export const App = () => {
       () => setData('ERROR'),
     );
   }, [dataEndpoint, username, password]);
+
+  useEffect(() => {
+    if (window.location.search) {
+      const queryData = getQueryData(window.location.search);
+      if (queryData.lang) {
+        i18n.changeLanguage(queryData.lang);
+      }
+    }
+  }, []);
 
   return (
     <AppContainer>

@@ -16,6 +16,11 @@ import {
   pushPostalCodeLevelGeneralResults,
   postalCodeLevelGeneralResultsQuery,
 } from './dataExports/postalCodeLevelGeneralResults';
+import {
+  fetchCityLevelDailyTotals,
+  pushCityLevelDailyTotals,
+  postalCodeLevelDailyTotalsQuery,
+} from './dataExports/cityLevelDailyTotals';
 
 const writeFile = promisify(fs.writeFile);
 
@@ -53,6 +58,12 @@ const dataExportHandlers: { [K in keyof AppConstants]?: DataExportHandler } = {
     query: postalCodeLevelGeneralResultsQuery,
   },
   [app.constants.dailyTotalsKey]: { fetch: fetchDailyTotals, push: pushDailyTotals, query: dailyTotalsQuery },
+
+  [app.constants.cityLevelDailyTotalsKey]: {
+    fetch: fetchCityLevelDailyTotals,
+    push: pushCityLevelDailyTotals,
+    query: postalCodeLevelDailyTotalsQuery,
+  },
 };
 
 interface CommonArgs {

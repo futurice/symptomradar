@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import TimeSeries from './TimeSeries';
@@ -129,6 +129,10 @@ const Div = styled.div`
 const Body: React.FunctionComponent<{ data: any; city: string }> = props => {
   const currentLocale = getCurrentLocale();
   const { t } = useTranslation(['main']);
+  const [[timeSeriesWidth, timeSeriesHeight], setTimeSeriesSizes] = useState<[number, number]>([
+    window.innerWidth > theme.mobileWidth ? 600 : window.innerWidth - 10,
+    window.innerWidth > theme.mobileWidth ? 400 : ((window.innerWidth - 10) * 3) / 4,
+  ]);
   const [selectedSymptomSecondLine, setSelectedSymptomSecondLine] = useState<Symptom>(Symptom.fever);
   const [selectedSymptomFirstLine, setSelectedSymptomFirstLine] = useState(Symptom.corona_suspicion);
 
@@ -136,6 +140,17 @@ const Body: React.FunctionComponent<{ data: any; city: string }> = props => {
     setSelectedSymptomFirstLine(firstFilter);
     setSelectedSymptomSecondLine(secondFilter);
   };
+
+  useEffect(() => {
+    const resizeTimeSeries = () => {
+      setTimeSeriesSizes([
+        window.innerWidth > theme.mobileWidth ? 600 : window.innerWidth - 10,
+        window.innerWidth > theme.mobileWidth ? 400 : ((window.innerWidth - 10) * 3) / 4,
+      ]);
+    };
+    window.addEventListener('resize', resizeTimeSeries);
+    return () => window.removeEventListener('resize', resizeTimeSeries);
+  }, [setTimeSeriesSizes]);
 
   const tableRow = props.data.symptoms.map((d: any, i: number) => {
     const percentage = getLocaleDecimalString((d.value * 100) / props.data.responses);
@@ -166,8 +181,8 @@ const Body: React.FunctionComponent<{ data: any; city: string }> = props => {
       </FiltersWrapper>
 
       <TimeSeries
-        width={window.innerWidth > theme.mobileWidth ? 600 : window.innerWidth - 10}
-        height={window.innerWidth > theme.mobileWidth ? 400 : ((window.innerWidth - 10) * 3) / 4}
+        width={timeSeriesWidth}
+        height={timeSeriesHeight}
         selectedSymptomFirstLine={selectedSymptomFirstLine}
         selectedSymptom={selectedSymptomSecondLine}
       />

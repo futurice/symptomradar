@@ -14,6 +14,7 @@ import {
   fetchPostalCodeLevelGeneralResults,
   pushPostalCodeLevelGeneralResults,
 } from './dataExports/postalCodeLevelGeneralResults';
+import { fetchResponses, pushResponses } from './dataExports/responses';
 
 const writeFile = promisify(fs.writeFile);
 
@@ -46,12 +47,17 @@ const dataExportHandlers: { [K in keyof AppConstants]?: DataExportHandler } = {
     push: pushPostalCodeLevelGeneralResults,
   },
   [app.constants.dailyTotalsKey]: { fetch: fetchDailyTotals, push: pushDailyTotals },
+  [app.constants.responsesFullKey]: {
+    fetch: fetchResponses,
+    push: pushResponses,
+  },
 };
 
 interface CommonArgs {
   env: 'dev' | 'prod';
 }
 
+// prettier-ignore
 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
 yargs
   .command(
@@ -95,7 +101,11 @@ yargs
         process.exit(1);
       }
     },
-  ).argv;
+  )
+  .strict()
+  .demandCommand()
+  .help()
+  .argv;
 
 interface DumpArgs extends CommonArgs {
   filename: string;

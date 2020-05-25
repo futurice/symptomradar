@@ -35,7 +35,7 @@ const Donut: React.FunctionComponent<{
 
     const arc = d3
       .arc()
-      .innerRadius(props.radius - 50)
+      .innerRadius(props.radius - 47)
       .outerRadius(props.radius - 10);
 
     let g = svg.append('g').attr('transform', `translate(${props.radius},${props.radius})`);

@@ -193,14 +193,15 @@ const Body: React.FunctionComponent<{ data: any; city: string }> = props => {
             denominator: getLocaleDecimalString(props.data.responses / props.data.corona_suspicion_yes, 0),
           })}
         </SubHeadline>
-        <DonutSuspectingCorona
-          width={310}
-          height={310}
-          radius={155}
-          data={[props.data.corona_suspicion_yes, props.data.responses - props.data.corona_suspicion_yes]}
-          color={['#FF5252', '#ececec']}
-        />
       </MobilePadding>
+
+      <DonutSuspectingCorona
+        width={310}
+        height={310}
+        radius={155}
+        data={[props.data.corona_suspicion_yes, props.data.responses - props.data.corona_suspicion_yes]}
+        color={['#FF5252', '#ececec']}
+      />
 
       <MobilePadding>
         <h2 id="top-symptoms-table-heading">{t('main:topSymptoms')}</h2>

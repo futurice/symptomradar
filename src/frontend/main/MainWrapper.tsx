@@ -60,11 +60,12 @@ const MessageContainer = styled.div`
 `;
 
 const MainWrapper = (props: MainWrapperProps) => {
-  const isEmbed = props.location ? !!(props.location.pathname || '').match(/^\/map-embed.*/) : false;
+  const isEmbed = props.location && props.location.pathname ? !!props.location.pathname.match(/^\/map-embed.*/) : false;
   const { t } = useTranslation(['main']);
-  const showSubNav = props.location
-    ? ['/map', '/cities', '/map-embed', '/map-embed/cities'].indexOf(props.location.pathname) > -1
-    : false;
+  const showSubNav =
+    props.location && props.location.pathname
+      ? ['/map', '/cities', '/map-embed', '/map-embed/cities'].indexOf(props.location.pathname) > -1
+      : false;
 
   if (props.responseData === 'FETCHING') {
     return <MessageContainer>{t('main:loading')}</MessageContainer>;

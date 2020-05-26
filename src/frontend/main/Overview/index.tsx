@@ -94,7 +94,7 @@ const Label = styled.label`
 const Overview = (props: OverviewProps) => {
   const { t } = useTranslation(['symptoms', 'main']);
   const [selectedCity, setSelectedCity] = useState('');
-  const mapPath = props.isEmbed ? '/map-embed' : '/map';
+  const mapPath = props.isEmbed ? '/map-embed' : '/';
 
   const finlandTotalData = {
     population: 0,

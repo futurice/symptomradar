@@ -109,7 +109,7 @@ const Navigation = ({ setMenuOpen }: MenuProps) => {
         </li>
         <li>
           <LinkItem
-            to="/"
+            to="overview"
             linkText={t('overview')}
             setMenuOpen={setMenuOpen}
             icon={match => <OverviewIcon fillColor={match ? '#000' : '#0047FF'} />}
@@ -117,7 +117,7 @@ const Navigation = ({ setMenuOpen }: MenuProps) => {
         </li>
         <li>
           <LinkItem
-            to="/map"
+            to="/"
             linkText={t('map')}
             setMenuOpen={setMenuOpen}
             icon={match => <MapIcon fillColor={match ? '#000' : '#0047FF'} />}

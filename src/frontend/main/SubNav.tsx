@@ -62,7 +62,7 @@ const SubNavLink = styled.span<SubNavLinkProps>`
 `;
 
 const SubNav = ({ isEmbed }: SubNavProps) => {
-  const mapPath = isEmbed ? '/map-embed' : '/map';
+  const mapPath = isEmbed ? '/map-embed' : '/';
   const citiesPath = isEmbed ? '/map-embed/cities' : '/cities';
   const { t } = useTranslation(['main']);
 

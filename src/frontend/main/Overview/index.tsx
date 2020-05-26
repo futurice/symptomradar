@@ -208,14 +208,16 @@ const Overview = (props: OverviewProps) => {
         </select>
       </CitySelect>
       <Body data={dataForSelectedCity} city={selectedCity} />
-      <MobilePadding>
-        <OverviewFooter>
-          <MapLink to={mapPath}>
-            {t('main:goToMap')}
-            <RightArrowIcon fillColor={theme.white} />
-          </MapLink>
-        </OverviewFooter>
-      </MobilePadding>
+      {!props.isEmbed && (
+        <MobilePadding>
+          <OverviewFooter>
+            <MapLink to={mapPath}>
+              {t('main:goToMap')}
+              <RightArrowIcon fillColor={theme.white} />
+            </MapLink>
+          </OverviewFooter>
+        </MobilePadding>
+      )}
     </Container>
   );
 };

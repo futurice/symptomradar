@@ -146,7 +146,7 @@ export const App = () => {
         </Location>
         <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}></Menu>
         <main>
-          <Router>
+          <Router primary={false}>
             <MainWrapper path="/*" responseData={data} />
             <About path="about" />
             <Privacy path="tietosuojalauseke" />

@@ -176,14 +176,14 @@ const MainWrapper = (props: MainWrapperProps) => {
        * Route structure for stat views:
        * ==============================
        * /         -> MapView
-       * /overview -> MapView
+       * /overview -> Overview
        * /cities   -> TableView
        * /map-embed/         -> MapView
-       * /map-embed/overview -> OverView
+       * /map-embed/overview -> Overview
        * /map-embed/cities   -> TableView
        * */}
 
-      <Router>
+      <Router primary={false}>
         <MapView
           path="/"
           isEmbed={isEmbed}

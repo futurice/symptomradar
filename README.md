@@ -169,7 +169,7 @@ If the map view is edited, the embed version should also be tested. Locally you 
 
 #### Overview embed
 
-Overview view has tow router paths, `/overview` and `/map-embed/overview`. Although this view comes as an integrated part as the main site, it should be separated from the map in `/map-embed`. This translates to not showing any visible link in Overview that allows users to navigate to the map view while in embed. In case the article needs to show both Overview and Map, two separate iframes will be needed.
+Overview view has two router paths, `/overview` and `/map-embed/overview`. Although this view comes as an integrated part as the main site, it should be separated from the map in `/map-embed`. This translates to not showing any visible link in Overview that allows users to navigate to the map view while in embed. In case the article needs to show both Overview and Map, two separate iframes will be needed.
 
 The reason for this is because Overview provides support for `iframeResizer` by dynamically importing `iframe-resizer/js/iframeResizer.contentWindow` when the view is loaded, activating auto-resizing for the iframe. Subsequently, navigating to the Map view from Overview would also trigger auto-resizing for Map, causing the view to collapse because Map does not have a fixed height and will try to adapt to its container's sizes.
 

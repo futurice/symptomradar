@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { RouteComponentProps, Link } from '@reach/router';
@@ -135,6 +135,23 @@ const Overview = (props: OverviewProps) => {
     .map((item: any) => {
       return item.city;
     });
+
+  useEffect(() => {
+    // Add support for articles that already has iframe-resizer/js/iframeResizer
+    // parent running.
+    // Using dynamic import to make sure the script iframeResizer.contentWindow
+    // is only loaded when this view loads.
+    // Since the parent articles that are embedding this page via iframe
+    // already have `iframe-resizer/js/iframeResizer` running and waiting, having
+    // `iframe-resizer/js/iframeResizer.contentWindow` included in the main bundle,
+    // a.k.a using the normal `import ....` syntax at the top of the file,
+    // would unwantedly triggers autoresizing for all other views - incuding
+    // MapView and CitiesView - which should expect a fixed height iframe instead.
+    if (props.isEmbed) {
+      import('iframe-resizer/js/iframeResizer.contentWindow');
+    }
+  }, [props.isEmbed]);
+
   return (
     <Container>
       <CitySelect>

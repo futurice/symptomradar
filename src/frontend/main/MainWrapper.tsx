@@ -176,7 +176,7 @@ const MainWrapper = (props: MainWrapperProps) => {
        * Route structure for stat views:
        * ==============================
        * /         -> MapView
-       * /overview -> MapView
+       * /overview -> Overview
        * /cities   -> TableView
        * /map-embed/         -> MapView
        * /map-embed/overview -> OverView

@@ -7,3 +7,5 @@ declare module '*.svg';
 // We can't import the whole "iframe-resizer" library, so its typings aren't useful to us, either.
 // See the import "iframe-resizer/js/iframeResizer" for details.
 declare module 'iframe-resizer/js/iframeResizer';
+// And the import "iframe-resizer/js/iframeResizer.contentWindow" for details.
+declare module 'iframe-resizer/js/iframeResizer.contentWindow';

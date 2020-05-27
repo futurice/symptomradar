@@ -9,6 +9,7 @@ const openDataConstantKeys: Array<keyof AppConstants> = [
   'cityLevelPastWeekGeneralResultsKey',
   'postalCodeLevelGeneralResultsKey',
   'dailyTotalsKey',
+  'cityLevelDailyTotalsKey',
   'lowPopulationPostalCodesKey',
   'populationPerCityKey',
   'postalCodeAreasKey',

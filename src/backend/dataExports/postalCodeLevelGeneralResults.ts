@@ -53,6 +53,8 @@ export interface PostalCodeLevelGeneralResultsQuery {
   stomach_issues_yes: string;
   sensory_issues_no: string;
   sensory_issues_yes: string;
+  healthcare_contact_yes: string;
+  healthcare_contact_no: string;
   longterm_medication_no: string;
   longterm_medication_yes: string;
   smoking_no: string;
@@ -86,6 +88,8 @@ export const postalCodeLevelGeneralResultsQuery = `SELECT postal_code,
   COUNT(IF ( stomach_issues = 'yes', 1, NULL)) AS stomach_issues_yes,
   COUNT(IF ( sensory_issues = 'no', 1, NULL)) AS sensory_issues_no,
   COUNT(IF ( sensory_issues = 'yes', 1, NULL)) AS sensory_issues_yes,
+  COUNT(IF ( healthcare_contact = 'no', 1, NULL)) AS healthcare_contact_no,
+  COUNT(IF ( healthcare_contact = 'yes', 1, NULL)) AS healthcare_contact_yes,
   COUNT(IF ( longterm_medication	 = 'no', 1, NULL)) AS longterm_medication_no,
   COUNT(IF ( longterm_medication	 = 'yes', 1, NULL)) AS longterm_medication_yes,
   COUNT(IF ( smoking	 = 'no', 1, NULL)) AS smoking_no,
@@ -134,6 +138,8 @@ export interface PostalCodeLevelGeneralResult {
   stomach_issues_yes: number;
   sensory_issues_no: number;
   sensory_issues_yes: number;
+  healthcare_contact_yes: number;
+  healthcare_contact_no: number;
   longterm_medication_no: number;
   longterm_medication_yes: number;
   smoking_no: number;
@@ -202,6 +208,8 @@ function accumulateResultsByPostalCode(
         stomach_issues_yes: 0,
         sensory_issues_no: 0,
         sensory_issues_yes: 0,
+        healthcare_contact_yes: 0,
+        healthcare_contact_no: 0,
         longterm_medication_no: 0,
         longterm_medication_yes: 0,
         smoking_no: 0,
@@ -222,36 +230,40 @@ function accumulateResultsByPostalCode(
       continue;
     }
 
-    resultsByPostalCode[postalCode].responses += Number(postalCodeData.responses);
-    resultsByPostalCode[postalCode].fever_no += Number(postalCodeData.fever_no);
-    resultsByPostalCode[postalCode].fever_slight += Number(postalCodeData.fever_slight);
-    resultsByPostalCode[postalCode].fever_high += Number(postalCodeData.fever_high);
-    resultsByPostalCode[postalCode].cough_no += Number(postalCodeData.cough_no);
-    resultsByPostalCode[postalCode].cough_mild += Number(postalCodeData.cough_mild);
-    resultsByPostalCode[postalCode].cough_intense += Number(postalCodeData.cough_intense);
-    resultsByPostalCode[postalCode].general_wellbeing_fine += Number(postalCodeData.general_wellbeing_fine);
-    resultsByPostalCode[postalCode].general_wellbeing_impaired += Number(postalCodeData.general_wellbeing_impaired);
-    resultsByPostalCode[postalCode].general_wellbeing_bad += Number(postalCodeData.general_wellbeing_bad);
-    resultsByPostalCode[postalCode].breathing_difficulties_no += Number(postalCodeData.breathing_difficulties_no);
-    resultsByPostalCode[postalCode].breathing_difficulties_yes += Number(postalCodeData.breathing_difficulties_yes);
-    resultsByPostalCode[postalCode].muscle_pain_no += Number(postalCodeData.muscle_pain_no);
-    resultsByPostalCode[postalCode].muscle_pain_yes += Number(postalCodeData.muscle_pain_yes);
-    resultsByPostalCode[postalCode].headache_no += Number(postalCodeData.headache_no);
-    resultsByPostalCode[postalCode].headache_yes += Number(postalCodeData.headache_yes);
-    resultsByPostalCode[postalCode].sore_throat_no += Number(postalCodeData.sore_throat_no);
-    resultsByPostalCode[postalCode].sore_throat_yes += Number(postalCodeData.sore_throat_yes);
-    resultsByPostalCode[postalCode].rhinitis_no += Number(postalCodeData.rhinitis_no);
-    resultsByPostalCode[postalCode].rhinitis_yes += Number(postalCodeData.rhinitis_yes);
-    resultsByPostalCode[postalCode].stomach_issues_no += Number(postalCodeData.stomach_issues_no);
-    resultsByPostalCode[postalCode].stomach_issues_yes += Number(postalCodeData.stomach_issues_yes);
-    resultsByPostalCode[postalCode].sensory_issues_no += Number(postalCodeData.sensory_issues_no);
-    resultsByPostalCode[postalCode].sensory_issues_yes += Number(postalCodeData.sensory_issues_yes);
-    resultsByPostalCode[postalCode].longterm_medication_no += Number(postalCodeData.longterm_medication_no);
-    resultsByPostalCode[postalCode].longterm_medication_yes += Number(postalCodeData.longterm_medication_yes);
-    resultsByPostalCode[postalCode].smoking_no += Number(postalCodeData.smoking_no);
-    resultsByPostalCode[postalCode].smoking_yes += Number(postalCodeData.smoking_yes);
-    resultsByPostalCode[postalCode].corona_suspicion_no += Number(postalCodeData.corona_suspicion_no);
-    resultsByPostalCode[postalCode].corona_suspicion_yes += Number(postalCodeData.corona_suspicion_yes);
+    resultsByPostalCode[postalCode].responses += Number(postalCodeData.responses) || 0;
+    resultsByPostalCode[postalCode].fever_no += Number(postalCodeData.fever_no) || 0;
+    resultsByPostalCode[postalCode].fever_slight += Number(postalCodeData.fever_slight) || 0;
+    resultsByPostalCode[postalCode].fever_high += Number(postalCodeData.fever_high) || 0;
+    resultsByPostalCode[postalCode].cough_no += Number(postalCodeData.cough_no) || 0;
+    resultsByPostalCode[postalCode].cough_mild += Number(postalCodeData.cough_mild) || 0;
+    resultsByPostalCode[postalCode].cough_intense += Number(postalCodeData.cough_intense) || 0;
+    resultsByPostalCode[postalCode].general_wellbeing_fine += Number(postalCodeData.general_wellbeing_fine) || 0;
+    resultsByPostalCode[postalCode].general_wellbeing_impaired +=
+      Number(postalCodeData.general_wellbeing_impaired) || 0;
+    resultsByPostalCode[postalCode].general_wellbeing_bad += Number(postalCodeData.general_wellbeing_bad) || 0;
+    resultsByPostalCode[postalCode].breathing_difficulties_no += Number(postalCodeData.breathing_difficulties_no) || 0;
+    resultsByPostalCode[postalCode].breathing_difficulties_yes +=
+      Number(postalCodeData.breathing_difficulties_yes) || 0;
+    resultsByPostalCode[postalCode].muscle_pain_no += Number(postalCodeData.muscle_pain_no) || 0;
+    resultsByPostalCode[postalCode].muscle_pain_yes += Number(postalCodeData.muscle_pain_yes) || 0;
+    resultsByPostalCode[postalCode].headache_no += Number(postalCodeData.headache_no) || 0;
+    resultsByPostalCode[postalCode].headache_yes += Number(postalCodeData.headache_yes) || 0;
+    resultsByPostalCode[postalCode].sore_throat_no += Number(postalCodeData.sore_throat_no) || 0;
+    resultsByPostalCode[postalCode].sore_throat_yes += Number(postalCodeData.sore_throat_yes) || 0;
+    resultsByPostalCode[postalCode].rhinitis_no += Number(postalCodeData.rhinitis_no) || 0;
+    resultsByPostalCode[postalCode].rhinitis_yes += Number(postalCodeData.rhinitis_yes) || 0;
+    resultsByPostalCode[postalCode].stomach_issues_no += Number(postalCodeData.stomach_issues_no) || 0;
+    resultsByPostalCode[postalCode].stomach_issues_yes += Number(postalCodeData.stomach_issues_yes) || 0;
+    resultsByPostalCode[postalCode].sensory_issues_no += Number(postalCodeData.sensory_issues_no) || 0;
+    resultsByPostalCode[postalCode].sensory_issues_yes += Number(postalCodeData.sensory_issues_yes) || 0;
+    resultsByPostalCode[postalCode].healthcare_contact_no += Number(postalCodeData.healthcare_contact_no) || 0;
+    resultsByPostalCode[postalCode].healthcare_contact_yes += Number(postalCodeData.healthcare_contact_yes) || 0;
+    resultsByPostalCode[postalCode].longterm_medication_no += Number(postalCodeData.longterm_medication_no) || 0;
+    resultsByPostalCode[postalCode].longterm_medication_yes += Number(postalCodeData.longterm_medication_yes) || 0;
+    resultsByPostalCode[postalCode].smoking_no += Number(postalCodeData.smoking_no) || 0;
+    resultsByPostalCode[postalCode].smoking_yes += Number(postalCodeData.smoking_yes) || 0;
+    resultsByPostalCode[postalCode].corona_suspicion_no += Number(postalCodeData.corona_suspicion_no) || 0;
+    resultsByPostalCode[postalCode].corona_suspicion_yes += Number(postalCodeData.corona_suspicion_yes) || 0;
   }
 
   return resultsByPostalCode;
@@ -296,6 +308,8 @@ export function filterResultsByPostalCode(
         stomach_issues_yes: -1,
         sensory_issues_no: -1,
         sensory_issues_yes: -1,
+        healthcare_contact_yes: -1,
+        healthcare_contact_no: -1,
         longterm_medication_no: -1,
         longterm_medication_yes: -1,
         smoking_no: -1,

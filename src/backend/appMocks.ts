@@ -80,6 +80,7 @@ export function createMockApp(overrides: Partial<App> = {}): App {
     cityLevelPastWeekGeneralResultsKey: 'city_level_past_week_general_results.json',
     postalCodeLevelGeneralResultsKey: 'postalcode_level_general_results.json',
     dailyTotalsKey: 'daily_totals.json',
+    cityLevelDailyTotalsKey: 'city_level_daily_totals.json',
   };
 
   const mockApp: App = {

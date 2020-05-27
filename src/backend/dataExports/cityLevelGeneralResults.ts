@@ -54,6 +54,8 @@ export interface CityLevelGeneralResult {
   stomach_issues_yes: number;
   sensory_issues_no: number;
   sensory_issues_yes: number;
+  healthcare_contact_yes: number;
+  healthcare_contact_no: number;
   longterm_medication_no: number;
   longterm_medication_yes: number;
   smoking_no: number;
@@ -118,6 +120,8 @@ export function accumulateResultsByCity(
       stomach_issues_yes: 0,
       sensory_issues_no: 0,
       sensory_issues_yes: 0,
+      healthcare_contact_yes: 0,
+      healthcare_contact_no: 0,
       longterm_medication_no: 0,
       longterm_medication_yes: 0,
       smoking_no: 0,
@@ -133,40 +137,41 @@ export function accumulateResultsByCity(
     const city = postalCodeCityMappings.data[postalCodeData.postal_code];
 
     if (!city || !(city in resultsByCity)) {
-      console.warn(`WARNING: accumulateResultsByCity: Skipping unknown postal code ${postalCodeData.postal_code}`);
       continue;
     }
 
-    resultsByCity[city].responses += Number(postalCodeData.responses);
-    resultsByCity[city].fever_no += Number(postalCodeData.fever_no);
-    resultsByCity[city].fever_slight += Number(postalCodeData.fever_slight);
-    resultsByCity[city].fever_high += Number(postalCodeData.fever_high);
-    resultsByCity[city].cough_no += Number(postalCodeData.cough_no);
-    resultsByCity[city].cough_mild += Number(postalCodeData.cough_mild);
-    resultsByCity[city].cough_intense += Number(postalCodeData.cough_intense);
-    resultsByCity[city].general_wellbeing_fine += Number(postalCodeData.general_wellbeing_fine);
-    resultsByCity[city].general_wellbeing_impaired += Number(postalCodeData.general_wellbeing_impaired);
-    resultsByCity[city].general_wellbeing_bad += Number(postalCodeData.general_wellbeing_bad);
-    resultsByCity[city].breathing_difficulties_no += Number(postalCodeData.breathing_difficulties_no);
-    resultsByCity[city].breathing_difficulties_yes += Number(postalCodeData.breathing_difficulties_yes);
-    resultsByCity[city].muscle_pain_no += Number(postalCodeData.muscle_pain_no);
-    resultsByCity[city].muscle_pain_yes += Number(postalCodeData.muscle_pain_yes);
-    resultsByCity[city].headache_no += Number(postalCodeData.headache_no);
-    resultsByCity[city].headache_yes += Number(postalCodeData.headache_yes);
-    resultsByCity[city].sore_throat_no += Number(postalCodeData.sore_throat_no);
-    resultsByCity[city].sore_throat_yes += Number(postalCodeData.sore_throat_yes);
-    resultsByCity[city].rhinitis_no += Number(postalCodeData.rhinitis_no);
-    resultsByCity[city].rhinitis_yes += Number(postalCodeData.rhinitis_yes);
-    resultsByCity[city].stomach_issues_no += Number(postalCodeData.stomach_issues_no);
-    resultsByCity[city].stomach_issues_yes += Number(postalCodeData.stomach_issues_yes);
-    resultsByCity[city].sensory_issues_no += Number(postalCodeData.sensory_issues_no);
-    resultsByCity[city].sensory_issues_yes += Number(postalCodeData.sensory_issues_yes);
-    resultsByCity[city].longterm_medication_no += Number(postalCodeData.longterm_medication_no);
-    resultsByCity[city].longterm_medication_yes += Number(postalCodeData.longterm_medication_yes);
-    resultsByCity[city].smoking_no += Number(postalCodeData.smoking_no);
-    resultsByCity[city].smoking_yes += Number(postalCodeData.smoking_yes);
-    resultsByCity[city].corona_suspicion_no += Number(postalCodeData.corona_suspicion_no);
-    resultsByCity[city].corona_suspicion_yes += Number(postalCodeData.corona_suspicion_yes);
+    resultsByCity[city].responses += Number(postalCodeData.responses) || 0;
+    resultsByCity[city].fever_no += Number(postalCodeData.fever_no) || 0;
+    resultsByCity[city].fever_slight += Number(postalCodeData.fever_slight) || 0;
+    resultsByCity[city].fever_high += Number(postalCodeData.fever_high) || 0;
+    resultsByCity[city].cough_no += Number(postalCodeData.cough_no) || 0;
+    resultsByCity[city].cough_mild += Number(postalCodeData.cough_mild) || 0;
+    resultsByCity[city].cough_intense += Number(postalCodeData.cough_intense) || 0;
+    resultsByCity[city].general_wellbeing_fine += Number(postalCodeData.general_wellbeing_fine) || 0;
+    resultsByCity[city].general_wellbeing_impaired += Number(postalCodeData.general_wellbeing_impaired) || 0;
+    resultsByCity[city].general_wellbeing_bad += Number(postalCodeData.general_wellbeing_bad) || 0;
+    resultsByCity[city].breathing_difficulties_no += Number(postalCodeData.breathing_difficulties_no) || 0;
+    resultsByCity[city].breathing_difficulties_yes += Number(postalCodeData.breathing_difficulties_yes) || 0;
+    resultsByCity[city].muscle_pain_no += Number(postalCodeData.muscle_pain_no) || 0;
+    resultsByCity[city].muscle_pain_yes += Number(postalCodeData.muscle_pain_yes) || 0;
+    resultsByCity[city].headache_no += Number(postalCodeData.headache_no) || 0;
+    resultsByCity[city].headache_yes += Number(postalCodeData.headache_yes) || 0;
+    resultsByCity[city].sore_throat_no += Number(postalCodeData.sore_throat_no) || 0;
+    resultsByCity[city].sore_throat_yes += Number(postalCodeData.sore_throat_yes) || 0;
+    resultsByCity[city].rhinitis_no += Number(postalCodeData.rhinitis_no) || 0;
+    resultsByCity[city].rhinitis_yes += Number(postalCodeData.rhinitis_yes) || 0;
+    resultsByCity[city].stomach_issues_no += Number(postalCodeData.stomach_issues_no) || 0;
+    resultsByCity[city].stomach_issues_yes += Number(postalCodeData.stomach_issues_yes) || 0;
+    resultsByCity[city].sensory_issues_no += Number(postalCodeData.sensory_issues_no) || 0;
+    resultsByCity[city].sensory_issues_yes += Number(postalCodeData.sensory_issues_yes) || 0;
+    resultsByCity[city].healthcare_contact_no += Number(postalCodeData.healthcare_contact_no) || 0;
+    resultsByCity[city].healthcare_contact_yes += Number(postalCodeData.healthcare_contact_yes) || 0;
+    resultsByCity[city].longterm_medication_no += Number(postalCodeData.longterm_medication_no) || 0;
+    resultsByCity[city].longterm_medication_yes += Number(postalCodeData.longterm_medication_yes) || 0;
+    resultsByCity[city].smoking_no += Number(postalCodeData.smoking_no) || 0;
+    resultsByCity[city].smoking_yes += Number(postalCodeData.smoking_yes) || 0;
+    resultsByCity[city].corona_suspicion_no += Number(postalCodeData.corona_suspicion_no) || 0;
+    resultsByCity[city].corona_suspicion_yes += Number(postalCodeData.corona_suspicion_yes) || 0;
   }
 
   return resultsByCity;
@@ -208,6 +213,8 @@ export function filterResultsByCity(resultsByCity: ResultsByCity, fn: (cityData:
         stomach_issues_yes: -1,
         sensory_issues_no: -1,
         sensory_issues_yes: -1,
+        healthcare_contact_yes: -1,
+        healthcare_contact_no: -1,
         longterm_medication_no: -1,
         longterm_medication_yes: -1,
         smoking_no: -1,

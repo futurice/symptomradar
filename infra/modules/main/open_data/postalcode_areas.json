@@ -2,7 +2,7 @@
   "meta": {
     "description": "Population per each postal code area in Finland in the end of 2019. Source is Tilastokeskus.",
     "generated": "2020-05-12T09:00:00.000Z",
-    "link": "https://data.dev.oiretutka.fi/postalcode_areas.json"
+    "link": "https://data.oiretutka.fi/postalcode_areas.json"
   },
   "data": [
     {

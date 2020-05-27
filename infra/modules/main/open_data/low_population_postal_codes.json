@@ -2,7 +2,7 @@
   "meta": {
     "description": "Mapping of postal code areas with too low a population to their nearest neighbor with high enough population. This is used before storing answers, to ensure privacy is preserved for participants from postal code areas with low population. Population data from Tilastokeskus.",
     "generated": "2020-04-08T09:00:00.000Z",
-    "link": "https://data.dev.oiretutka.fi/low_population_postal_codes.json"
+    "link": "https://data.oiretutka.fi/low_population_postal_codes.json"
   },
   "data": {
     "10350": "10300",

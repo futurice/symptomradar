@@ -2,7 +2,7 @@
   "meta": {
     "description": "Mapping of postal codes to city names. Source is Tilastokeskus.",
     "generated": "2020-04-20T09:00:00.000Z",
-    "link": "https://data.dev.oiretutka.fi/postalcode_city_mappings.json"
+    "link": "https://data.oiretutka.fi/postalcode_city_mappings.json"
   },
   "data": {
     "10120": "Inkoo",

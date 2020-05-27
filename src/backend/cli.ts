@@ -116,7 +116,7 @@ yargs
   )
   .command(
     'show-query [filename]',
-    'Shows Athena query forgiven data file',
+    'Shows Athena query for given data file',
     yargs => {
       yargs.positional('filename', {
         describe: 'Filename of open data file',

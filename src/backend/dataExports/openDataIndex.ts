@@ -1,3 +1,4 @@
+import url from 'url';
 import { App, s3GetJsonHelper, AppConstants, s3PutJsonHelper } from '../app';
 import { OpenDataModel } from '../../common/model';
 
@@ -30,7 +31,14 @@ export async function fetchOpenDataIndex(app: App) {
   for (const constantKey of openDataConstantKeys) {
     const key = app.constants[constantKey];
     const data = await s3GetJsonHelper(app.s3Client, { Bucket: app.constants.openDataBucket, Key: key });
-    openDataIndex[key] = data.meta;
+    // Fix the URL to point to the correct domain we are in
+    const link = url.parse(data.meta.link);
+    link.host = app.constants.domainName;
+
+    openDataIndex[key] = {
+      ...data.meta,
+      link: url.format(link),
+    };
   }
 
   const openData: OpenDataModel<OpenDataIndex> = {

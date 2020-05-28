@@ -271,7 +271,7 @@ npm run open-data-cli dump total_responses.json -- --out=/tmp/total_responses.js
 
 ### Running backend locally
 
-To run the backend locally, use the following NPM script that starts a small Node.js server that wraps the Lambdas in `src/index-backend.ts`:
+To run the backend locally, use the following NPM script that starts a small Node.js server on port 3001 that wraps the Lambdas in `src/index-backend.ts`:
 
 ```sh
 npm run backend-start
@@ -280,7 +280,7 @@ npm run backend-start
 After that you can call the Lambda functions with HTTP requests:
 
 ```sh
-curl http://localhost:3000/workerEntrypoint
+curl http://localhost:3001/workerEntrypoint
 ```
 
 _NOTE: There is lot of room for improvements on this solution, for e.g using [SAM](https://aws.amazon.com/serverless/sam/) or [serverless](https://github.com/serverless/serverless) that would provide better integration for AWS Lambda surface. Currently it's pretty much an ugly hack wrapping the current needs of current endpoints into a simple Node.js server._

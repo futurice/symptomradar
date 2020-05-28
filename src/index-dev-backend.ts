@@ -71,7 +71,7 @@ const server = http.createServer((req: http.IncomingMessage, res: http.ServerRes
     });
 });
 
-server.listen(3000, () => {
+server.listen(3001, () => {
   const addr = server.address() as AddressInfo;
   console.log(`Local development server started at ${addr.address}:${addr.port} (${addr.family})`);
 });

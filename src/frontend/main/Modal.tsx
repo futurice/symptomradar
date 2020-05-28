@@ -11,6 +11,12 @@ type ModalProps = {
   ariaLabel: string;
 };
 
+const ModalOverlay = styled(DialogOverlay)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const ModalDialogContent = styled(DialogContent)`
   padding: 24px 18px 24px;
   position: relative;
@@ -41,14 +47,14 @@ const ModalCloseButton = styled.button`
 const Modal: React.FC<ModalProps> = ({ isShowing, hide, children, ariaLabel }) => {
   const { t } = useTranslation(['main']);
   return (
-    <DialogOverlay isOpen={isShowing} onDismiss={hide}>
+    <ModalOverlay isOpen={isShowing} onDismiss={hide}>
       <ModalDialogContent aria-label={ariaLabel}>
         <ModalCloseButton type="button" aria-label={t('main:close')} onClick={hide}>
           <CloseIcon />
         </ModalCloseButton>
         {children}
       </ModalDialogContent>
-    </DialogOverlay>
+    </ModalOverlay>
   );
 };
 

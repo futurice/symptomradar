@@ -65,6 +65,12 @@ export const CompareFilterToggle = ({
       <FilterButton type="button" handleClick={toggleModal} label={t('main:filter')}>
         <FilterIcon />
       </FilterButton>
+      {/* In case of embedded iframe, we havea very long overview page, and the modal
+       * will be centerred to the iframe's height, but not with respect to the device's
+       * screen sizes. That means there will be cases where the modal appear on top of
+       * the screen while in embed. So placing the modal at the bottom of the iframe seems
+       * to be a more ideal location.
+       * */}
       <Modal isShowing={isShowing} hide={toggleModal} ariaLabel={t('main:filterDialogTitle')} positionBottom={isEmbed}>
         <CompareFilters
           firstSelectedFilter={firstSelectedFilter}

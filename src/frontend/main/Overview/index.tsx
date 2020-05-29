@@ -207,7 +207,7 @@ const Overview = (props: OverviewProps) => {
           })}
         </select>
       </CitySelect>
-      <Body data={dataForSelectedCity} city={selectedCity} />
+      <Body data={dataForSelectedCity} city={selectedCity} isEmbed={props.isEmbed} />
       {!props.isEmbed && (
         <MobilePadding>
           <OverviewFooter>

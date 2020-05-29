@@ -126,7 +126,7 @@ const Div = styled.div`
   background-color: #fafafa;
   font-style: italic;
 `;
-const Body: React.FunctionComponent<{ data: any; city: string }> = props => {
+const Body: React.FunctionComponent<{ data: any; city: string; isEmbed: boolean }> = props => {
   const currentLocale = getCurrentLocale();
   const { t } = useTranslation(['main']);
   const [[timeSeriesWidth, timeSeriesHeight], setTimeSeriesSizes] = useState<[number, number]>([
@@ -177,6 +177,7 @@ const Body: React.FunctionComponent<{ data: any; city: string }> = props => {
           firstSelectedFilter={selectedSymptomFirstLine}
           secondSelectedFilter={selectedSymptomSecondLine}
           handleFilterChange={setSelectedSymptoms}
+          isEmbed={props.isEmbed}
         />
       </FiltersWrapper>
 

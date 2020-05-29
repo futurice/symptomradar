@@ -9,11 +9,12 @@ type ModalProps = {
   isShowing: boolean;
   hide: () => void;
   ariaLabel: string;
+  positionBottom?: boolean;
 };
 
-const ModalOverlay = styled(DialogOverlay)`
+const ModalOverlay = styled(DialogOverlay)<{ positionBottom?: boolean }>`
   display: flex;
-  align-items: center;
+  align-items: ${({ positionBottom = false }) => (positionBottom ? 'flex-end' : 'center')};
   justify-content: center;
 `;
 
@@ -22,6 +23,7 @@ const ModalDialogContent = styled(DialogContent)`
   position: relative;
   width: 100%;
   max-width: 95vw;
+  margin: 2vh 0;
 
   @media (min-width: 520px) {
     max-width: 500px;
@@ -44,10 +46,10 @@ const ModalCloseButton = styled.button`
   }
 `;
 
-const Modal: React.FC<ModalProps> = ({ isShowing, hide, children, ariaLabel }) => {
+const Modal: React.FC<ModalProps> = ({ isShowing, hide, children, ariaLabel, positionBottom = false }) => {
   const { t } = useTranslation(['main']);
   return (
-    <ModalOverlay isOpen={isShowing} onDismiss={hide}>
+    <ModalOverlay isOpen={isShowing} onDismiss={hide} positionBottom={positionBottom}>
       <ModalDialogContent aria-label={ariaLabel}>
         <ModalCloseButton type="button" aria-label={t('main:close')} onClick={hide}>
           <CloseIcon />

@@ -55,7 +55,8 @@
     "returning_user_title": "Tervetuloa takaisin Oiretutkaan!",
     "returning_user_text_1": "Tämän laitteen käyttäjä on raportoinut palvelussa aiemmin oireistaan.",
     "returning_user_text_2": "Voit vastata kyselyyn uudelleen ja kertoa tämänhetkisistä oireistasi. Yhdistämme tiedot aiempiin vastauksiin, jolloin tieto on entistä hyödyllisempää. Emme edelleenkään tallenna tietoja niin, että niitä voisi yhdistää tunnistettuun käyttäjään.",
-    "thank_you_help": "Kiitos avustasi!"
+    "thank_you_help": "Kiitos avustasi!",
+    "language": "Kieli"
   },
   "en": {
     "lng": "en",
@@ -113,6 +114,7 @@
     "returning_user_title": "Welcome back to Oiretutka!",
     "returning_user_text_1": "The user of this device has previously reported their symptoms in this service.",
     "returning_user_text_2": "You can respond to the questionnaire again and fill us in about your current symptoms. We will connect the data to your earlier responses, which will make the information even more useful. We will still not store any data in such a way that it could be connected back to the identified user.",
-    "thank_you_help": "Thank you for your help!"
+    "thank_you_help": "Thank you for your help!",
+    "language": "Language"
   }
 }

@@ -75,7 +75,8 @@ resource "aws_iam_policy" "replication" {
     {
       "Action": [
         "s3:GetObjectVersion",
-        "s3:GetObjectVersionAcl"
+        "s3:GetObjectVersionAcl",
+        "s3:GetObjectVersionTagging"
       ],
       "Effect": "Allow",
       "Resource": [
@@ -85,7 +86,9 @@ resource "aws_iam_policy" "replication" {
     {
       "Action": [
         "s3:ReplicateObject",
-        "s3:ReplicateDelete"
+        "s3:ReplicateDelete",
+        "s3:ReplicateTags",
+        "s3:ObjectOwnerOverrideToBucketOwner"
       ],
       "Effect": "Allow",
       "Resource": "${var.central_log_vault_arn}/*"

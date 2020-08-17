@@ -43,6 +43,11 @@ export const workerEntrypoint: Handler<unknown> = async () => {
   }
 };
 
+export const ping: Handler<unknown> = async () => {
+  console.log('Ping');
+  return response(200, { pong: 'pong' });
+};
+
 if (process.argv[0].match(/\/ts-node$/)) {
   const test: FrontendResponseModelT = {
     participant_id: uuidV4(),

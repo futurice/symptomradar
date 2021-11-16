@@ -70,7 +70,7 @@
     "@types/react-responsive": "^8.0.2",
     "@types/styled-components": "^5.0.1",
     "@types/uuid": "^7.0.2",
-    "aws-sdk": "^2.642.0",
+    "aws-sdk": "^2.814.0",
     "check-node-version": "^4.0.2",
     "concurrently": "^5.1.0",
     "nan": "2.14.1",

@@ -33,7 +33,7 @@
   "dependencies": {
     "@reach/dialog": "^0.10.0",
     "athena-express": "5.2.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.2",
     "d3": "^5.15.1",
     "d3-geo-projection": "^2.8.1",
     "fp-ts": "^2.5.3",

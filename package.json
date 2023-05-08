@@ -46,7 +46,7 @@
     "react-dom": "^16.13.1",
     "react-i18next": "^11.4.0",
     "react-responsive": "^8.0.3",
-    "react-scripts": "3.4.1",
+    "react-scripts": "5.0.1",
     "styled-components": "^5.0.1",
     "topojson": "^3.0.2",
     "uuid": "^7.0.2",
